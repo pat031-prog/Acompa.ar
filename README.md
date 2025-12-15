@@ -51,6 +51,17 @@ Este proyecto es una Single Page Application (SPA) moderna construida con:
 
 **Requisitos:** Node.js
 
+### 🪟 Windows (Anaconda Prompt / CMD)
+
+**¡Inicio rápido!** Simplemente ejecuta:
+```bash
+start.bat
+```
+
+Para instrucciones detalladas de Windows, consulta **[WINDOWS_SETUP.md](./WINDOWS_SETUP.md)**
+
+### 🐧 Linux / macOS
+
 1.  **Instalar dependencias:**
 
     ```bash
@@ -59,6 +70,11 @@ Este proyecto es una Single Page Application (SPA) moderna construida con:
 
 2.  **Configurar la API Key:**
     Crea un archivo `.env.local` en la raíz del proyecto y añade tu API key de Google Gemini:
+
+    ```bash
+    cp .env.local.example .env.local
+    # Edita .env.local y agrega tu API key
+    ```
 
     ```
     GEMINI_API_KEY=TU_API_KEY_AQUI
