@@ -8,11 +8,67 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
     <title>ACompañ.Ar — Chatbot & Observatorio de Consumos</title>
     <style>
-      /* Custom Font - Sanseriffic */
+      /* Roboto Font Family - Multiple Variants */
       @font-face {
-        font-family: 'Sanseriffic';
-        src: url('/Sanseriffic.otf') format('opentype');
-        font-weight: 100 900;
+        font-family: 'Roboto';
+        src: url('/Roboto-Thin.ttf') format('truetype');
+        font-weight: 100;
+        font-style: normal;
+        font-display: swap;
+      }
+
+      @font-face {
+        font-family: 'Roboto';
+        src: url('/Roboto-Light.ttf') format('truetype');
+        font-weight: 300;
+        font-style: normal;
+        font-display: swap;
+      }
+
+      @font-face {
+        font-family: 'Roboto';
+        src: url('/Roboto-Regular.ttf') format('truetype');
+        font-weight: 400;
+        font-style: normal;
+        font-display: swap;
+      }
+
+      @font-face {
+        font-family: 'Roboto';
+        src: url('/Roboto-Medium.ttf') format('truetype');
+        font-weight: 500;
+        font-style: normal;
+        font-display: swap;
+      }
+
+      @font-face {
+        font-family: 'Roboto';
+        src: url('/Roboto-Bold.ttf') format('truetype');
+        font-weight: 700;
+        font-style: normal;
+        font-display: swap;
+      }
+
+      @font-face {
+        font-family: 'Roboto';
+        src: url('/Roboto-Black.ttf') format('truetype');
+        font-weight: 900;
+        font-style: normal;
+        font-display: swap;
+      }
+
+      @font-face {
+        font-family: 'Roboto Condensed';
+        src: url('/Roboto-Condensed.ttf') format('truetype');
+        font-weight: 400;
+        font-style: normal;
+        font-display: swap;
+      }
+
+      @font-face {
+        font-family: 'Roboto Condensed';
+        src: url('/Roboto-BoldCondensed.ttf') format('truetype');
+        font-weight: 700;
         font-style: normal;
         font-display: swap;
       }
@@ -30,11 +86,13 @@
         overflow: hidden;
         -webkit-text-size-adjust: 100%;
         -webkit-overflow-scrolling: touch;
-        font-family: 'Sanseriffic', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        font-family: 'Roboto', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+        font-weight: 400;
         -webkit-font-smoothing: antialiased;
         -moz-osx-font-smoothing: grayscale;
         background: linear-gradient(180deg, #0a0a0f 0%, #121218 100%);
-        font-size: 16px;
+        font-size: 17px;
+        letter-spacing: 0.01em;
       }
 
       #root {
@@ -114,6 +172,36 @@
 
       button, a, input, select {
         transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+      }
+
+      /* Typography Utilities for Roboto Variants */
+      h1, h2, h3, .font-heading {
+        font-family: 'Roboto', sans-serif;
+        font-weight: 900;
+        letter-spacing: -0.02em;
+      }
+
+      h4, h5, h6, .font-subheading {
+        font-family: 'Roboto', sans-serif;
+        font-weight: 700;
+        letter-spacing: -0.01em;
+      }
+
+      button, .font-medium {
+        font-family: 'Roboto', sans-serif;
+        font-weight: 500;
+        letter-spacing: 0.01em;
+      }
+
+      .font-light {
+        font-family: 'Roboto', sans-serif;
+        font-weight: 300;
+        letter-spacing: 0.02em;
+      }
+
+      .font-condensed {
+        font-family: 'Roboto Condensed', sans-serif;
+        letter-spacing: 0;
       }
     </style>
     <script src="https://cdn.tailwindcss.com"></script>
