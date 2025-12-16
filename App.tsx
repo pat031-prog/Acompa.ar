@@ -95,10 +95,10 @@ const App: React.FC = () => {
         <div className="px-4 py-3">
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center shadow-lg shadow-blue-500/20">
-              <span className="text-lg font-black text-white" style={{ fontFamily: "'Space Grotesk', sans-serif" }}>A</span>
+              <span className="text-lg font-black text-white">A</span>
             </div>
             <div>
-              <h1 className="text-lg font-bold bg-gradient-to-r from-gray-100 to-gray-300 bg-clip-text text-transparent" style={{ fontFamily: "'Space Grotesk', sans-serif" }}>
+              <h1 className="text-lg font-bold bg-gradient-to-r from-gray-100 to-gray-300 bg-clip-text text-transparent">
                 ACompañ.Ar
               </h1>
               <p className="text-xs font-medium text-gray-500">Reducción de Daños</p>
