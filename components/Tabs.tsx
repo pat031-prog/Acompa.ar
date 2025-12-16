@@ -26,16 +26,24 @@ export const Tabs: React.FC<TabsProps> = ({ activeTab, setActiveTab }) => {
       >
         Chat
       </button>
-      <button 
-        id="tab-library" 
+      <button
+        id="tab-library"
         className={getButtonClasses('library')}
         onClick={() => setActiveTab('library')}
         aria-pressed={activeTab === 'library'}
       >
         Biblioteca
       </button>
-      <button 
-        id="tab-observatory" 
+      <button
+        id="tab-testing"
+        className={getButtonClasses('testing')}
+        onClick={() => setActiveTab('testing')}
+        aria-pressed={activeTab === 'testing'}
+      >
+        Testeo
+      </button>
+      <button
+        id="tab-observatory"
         className={getButtonClasses('observatory')}
         onClick={() => setActiveTab('observatory')}
         aria-pressed={activeTab === 'observatory'}

@@ -1,5 +1,5 @@
 // Fix: Import MapDataset type
-import type { LibraryEntry, MapDataset, SubstanceCategory } from './types';
+import type { LibraryEntry, MapDataset, SubstanceCategory, ReagentTest, TestingResource } from './types';
 
 export const SYSTEM_PROMPT = `
 Actuás como acompañante de reducción de daños para consumos en Argentina. Tu lenguaje debe ser español rioplatense, empático, breve, claro y sin juicios.
@@ -799,3 +799,192 @@ export const LIBRARY_DATA: LibraryEntry[] = [
     }
   }
 ];
+
+// === REAGENT TESTING DATA ===
+
+export const REAGENT_TESTS: ReagentTest[] = [
+  {
+    name: "Marquis",
+    description: "El reactivo más común y versátil. Detecta principalmente anfetaminas, MDMA, opioides y cathinonas.",
+    substances: [
+      { substance: "MDMA", reaction: "Violeta oscuro a negro", color: "#2D1B4E" },
+      { substance: "Anfetamina / Speed", reaction: "Naranja a marrón", color: "#8B4513" },
+      { substance: "Metanfetamina", reaction: "Naranja a rojo", color: "#FF4500" },
+      { substance: "2C-B", reaction: "Amarillo a verde", color: "#9ACD32" },
+      { substance: "Cocaína", reaction: "Sin cambio o amarillo muy leve", color: "#F5F5DC" },
+      { substance: "LSD", reaction: "Sin cambio", color: "#FFFFFF" },
+      { substance: "Heroína", reaction: "Violeta a púrpura", color: "#8B008B" },
+      { substance: "DXM", reaction: "Gris a negro", color: "#2F4F4F" },
+    ]
+  },
+  {
+    name: "Mandelin",
+    description: "Útil para diferenciar entre MDMA y sustancias adulterantes como cathinonas sintéticas (bath salts).",
+    substances: [
+      { substance: "MDMA", reaction: "Negro", color: "#000000" },
+      { substance: "Anfetamina", reaction: "Verde a marrón", color: "#556B2F" },
+      { substance: "Metanfetamina", reaction: "Verde a marrón", color: "#6B8E23" },
+      { substance: "2C-B", reaction: "Verde", color: "#228B22" },
+      { substance: "Metilona (bk-MDMA)", reaction: "Marrón a negro", color: "#3E2723" },
+      { substance: "MDPV", reaction: "Naranja", color: "#FFA500" },
+    ]
+  },
+  {
+    name: "Mecke",
+    description: "Detecta principalmente opioides y cathinonas. Complementa bien a Marquis y Mandelin.",
+    substances: [
+      { substance: "MDMA", reaction: "Azul oscuro a negro", color: "#191970" },
+      { substance: "Heroína", reaction: "Verde a azul oscuro", color: "#006400" },
+      { substance: "Codeína", reaction: "Verde a azul", color: "#4682B4" },
+      { substance: "MDPV", reaction: "Amarillo verdoso", color: "#ADFF2F" },
+      { substance: "PMA/PMMA", reaction: "Azul oscuro a negro", color: "#000033" },
+    ]
+  },
+  {
+    name: "Simon's",
+    description: "Reactivo de dos pasos que distingue entre MDMA y MDA. También detecta metanfetamina.",
+    substances: [
+      { substance: "MDMA", reaction: "Azul (paso 1), sin cambio (paso 2)", color: "#0000FF" },
+      { substance: "MDA", reaction: "Sin cambio en ambos pasos", color: "#F5F5F5" },
+      { substance: "Metanfetamina", reaction: "Azul", color: "#4169E1" },
+      { substance: "Anfetamina", reaction: "Sin cambio", color: "#FFFFF0" },
+    ]
+  },
+  {
+    name: "Froehde",
+    description: "Similar a Marquis, pero útil para diferenciar opioides y anfetaminas.",
+    substances: [
+      { substance: "MDMA", reaction: "Negro", color: "#000000" },
+      { substance: "Anfetamina", reaction: "Verde", color: "#008000" },
+      { substance: "Heroína", reaction: "Púrpura", color: "#800080" },
+      { substance: "2C-B", reaction: "Amarillo a verde", color: "#FFD700" },
+    ]
+  },
+  {
+    name: "Ehrlich",
+    description: "Detecta indoles (LSD, DMT, psilocibina). Esencial para testar psicodélicos.",
+    substances: [
+      { substance: "LSD", reaction: "Púrpura", color: "#9370DB" },
+      { substance: "Psilocibina/Psilocina", reaction: "Púrpura", color: "#8A2BE2" },
+      { substance: "DMT", reaction: "Púrpura", color: "#9400D3" },
+      { substance: "NBOMe (25I, 25C, etc.)", reaction: "Sin cambio", color: "#FFFFFF" },
+      { substance: "DOx (DOB, DOC, etc.)", reaction: "Sin cambio", color: "#F5F5F5" },
+    ]
+  },
+  {
+    name: "Hofmann",
+    description: "Complementa a Ehrlich para confirmar LSD. Reacciona con indoles pero no con todos.",
+    substances: [
+      { substance: "LSD", reaction: "Azul a verde", color: "#1E90FF" },
+      { substance: "Psilocibina", reaction: "Azul", color: "#4169E1" },
+      { substance: "NBOMe", reaction: "Sin cambio o amarillo", color: "#FFFACD" },
+    ]
+  }
+];
+
+export const TESTING_RESOURCES: TestingResource[] = [
+  {
+    name: "ArgenPills",
+    type: "organization",
+    website: "https://argenpills.org",
+    description: "Organización líder en reducción de daños en Argentina. Ofrece testeo de sustancias gratuito y anónimo, información sobre alertas y análisis de pastillas circulantes.",
+    contact: "Instagram: @argenpills"
+  },
+  {
+    name: "Mamisepuede",
+    type: "organization",
+    website: "https://www.instagram.com/mamisepuede.ok/",
+    description: "Organización de reducción de daños con presencia en Buenos Aires. Realizan testeo en eventos y ofrecen información sobre consumo responsable.",
+    contact: "Instagram: @mamisepuede.ok"
+  },
+  {
+    name: "Energy Control Argentina",
+    type: "organization",
+    location: "Buenos Aires",
+    description: "Servicio de análisis de sustancias y asesoramiento. Presentes en festivales y eventos.",
+    contact: "Consultar redes sociales para ubicación y horarios"
+  },
+  {
+    name: "Test Kits Argentina (Online)",
+    type: "online",
+    website: "https://www.mercadolibre.com.ar",
+    description: "Se pueden encontrar kits de testeo en MercadoLibre Argentina buscando 'reactivos marquis', 'reagent test kit' o 'test MDMA'. Vendedores confiables varían, verificar reputación.",
+    contact: "Buscar en MercadoLibre Argentina"
+  },
+  {
+    name: "Importación Internacional",
+    type: "online",
+    website: "https://www.testkitplus.com / https://www.eztest.com",
+    description: "Sitios internacionales que envían a Argentina (puede haber demoras aduaneras). TestKitPlus, EZ Test, y Bunk Police son marcas confiables.",
+    contact: "Verificar políticas de envío internacional"
+  },
+  {
+    name: "Puntos de Reducción de Daños",
+    type: "physical",
+    location: "Varias provincias",
+    description: "Algunas provincias tienen puntos fijos de reducción de daños que ofrecen testeo gratuito. Consultar con organizaciones locales de reducción de daños.",
+    contact: "Contactar a ArgenPills para referencias locales"
+  }
+];
+
+export const TESTING_GUIDE = {
+  intro: "El testeo de sustancias es una herramienta fundamental de reducción de daños. Te permite identificar qué contiene realmente una pastilla, polvo o papel, reduciendo significativamente los riesgos de consumo.",
+
+  whyTest: [
+    "**Adulteración es común:** Muchas sustancias vendidas como 'éxtasis' o 'LSD' contienen otras drogas más peligrosas o no contienen nada de lo que dicen.",
+    "**Dosis variables:** Las pastillas pueden tener dosis muy altas o muy bajas.",
+    "**Sustancias desconocidas:** Cathinonas sintéticas, fentanilo, NBOMe y otras sustancias peligrosas se venden como otras cosas.",
+    "**Seguridad:** Saber qué vas a consumir te permite tomar decisiones más informadas y reducir riesgos."
+  ],
+
+  howToTest: [
+    {
+      step: 1,
+      title: "Preparar el área",
+      description: "Trabaja en un lugar bien iluminado, con superficie blanca (plato de cerámica blanco ideal). Usa guantes si es posible."
+    },
+    {
+      step: 2,
+      title: "Tomar una muestra pequeña",
+      description: "Solo necesitás una cantidad muy pequeña (tamaño de grano de arroz o menos). Raspá o triturá la sustancia para exponer el interior."
+    },
+    {
+      step: 3,
+      title: "Aplicar el reactivo",
+      description: "Colocá 1-2 gotas del reactivo sobre la muestra. NO pongas la sustancia dentro del frasco del reactivo."
+    },
+    {
+      step: 4,
+      title: "Observar la reacción",
+      description: "El cambio de color suele ser inmediato (segundos). Comparar con la tabla de colores del kit o con referencias en línea."
+    },
+    {
+      step: 5,
+      title: "Usar múltiples reactivos",
+      description: "Un solo reactivo NO es suficiente. Usá al menos 2-3 reactivos diferentes para confirmar. Por ejemplo: Marquis + Mandelin + Mecke para MDMA."
+    },
+    {
+      step: 6,
+      title: "Interpretar con precaución",
+      description: "Los reactivos NO te dicen pureza o dosis exacta. Solo indican presencia/ausencia de ciertas sustancias. Un resultado negativo NO garantiza seguridad total."
+    }
+  ],
+
+  recommendations: [
+    "🔬 **Usá siempre múltiples reactivos:** Nunca confíes en un solo test.",
+    "📸 **Documentá:** Sacá fotos de las reacciones para comparar después.",
+    "⏱️ **Esperá unos segundos:** Algunas reacciones son lentas.",
+    "🧪 **Guardá correctamente:** Los reactivos tienen fecha de vencimiento. Guardarlos en lugar fresco y oscuro.",
+    "🚫 **Los test tienen limitaciones:** No detectan todos los adulterantes y no miden pureza.",
+    "💡 **Consultá con expertos:** Llevá tus sustancias a servicios de análisis como ArgenPills para un análisis más completo (GC/MS)."
+  ],
+
+  commonAdulterants: [
+    { substance: "NBOMe (25I-NBOMe, etc.)", risk: "Extremadamente peligroso. Vendido como LSD. Puede causar convulsiones y muerte en dosis altas. Ehrlich NO reacciona con NBOMe." },
+    { substance: "PMA/PMMA", risk: "Vendido como MDMA. Mucho más tóxico, tarda más en hacer efecto (riesgo de sobredosis por redosificar)." },
+    { substance: "Cathinonas (MDPV, Metilona, etc.)", risk: "Vendidas como MDMA. Efectos más estimulantes, mayor riesgo cardíaco y psicosis." },
+    { substance: "Fentanilo", risk: "Opioide sintético ultra-potente. Puede estar en cualquier cosa. Riesgo altísimo de sobredosis fatal." },
+    { substance: "N-etilpentilona", risk: "Vendida como MDMA. Efectos más cortos, mayor ansiedad, mayor riesgo de dosificación compulsiva." },
+    { substance: "Cafeína/Metanfetamina en éxtasis", risk: "Aumentan efectos estimulantes, carga cardíaca y riesgo de deshidratación." }
+  ]
+};

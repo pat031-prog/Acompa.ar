@@ -66,4 +66,24 @@ export interface MapDataset {
   }[];
 }
 
-export type Tab = 'chat' | 'library' | 'observatory';
+export type Tab = 'chat' | 'library' | 'testing' | 'observatory';
+
+// Reagent testing types
+export interface ReagentTest {
+  name: string;
+  description: string;
+  substances: {
+    substance: string;
+    reaction: string;
+    color: string;
+  }[];
+}
+
+export interface TestingResource {
+  name: string;
+  type: 'online' | 'physical' | 'organization';
+  location?: string;
+  website?: string;
+  description: string;
+  contact?: string;
+}
