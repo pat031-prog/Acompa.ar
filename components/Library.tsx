@@ -3,6 +3,7 @@ import React, { useState, useMemo, useEffect } from 'react';
 import { LIBRARY_DATA, SUBSTANCE_CATEGORIES } from '../constants';
 import type { LibraryEntry, SubstanceCategory } from '../types';
 import { toggleFavorite, isFavorite, getFavorites } from '../services/favoritesService';
+import { CompareSubstances } from './CompareSubstances';
 
 // --- Icon Components ---
 const SearchIcon: React.FC = () => (
@@ -38,6 +39,11 @@ const StarIcon: React.FC<{ filled?: boolean }> = ({ filled = false }) => (
             <path strokeLinecap="round" strokeLinejoin="round" d="M11.48 3.499a.562.562 0 0 1 1.04 0l2.125 5.111a.563.563 0 0 0 .475.345l5.518.442c.499.04.701.663.321.988l-4.204 3.602a.563.563 0 0 0-.182.557l1.285 5.385a.562.562 0 0 1-.84.61l-4.725-2.885a.562.562 0 0 0-.586 0L6.982 20.54a.562.562 0 0 1-.84-.61l1.285-5.386a.562.562 0 0 0-.182-.557l-4.204-3.602a.562.562 0 0 1 .321-.988l5.518-.442a.563.563 0 0 0 .475-.345L11.48 3.5Z" />
         </svg>
     )
+);
+const CompareIcon: React.FC = () => (
+  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5">
+    <path strokeLinecap="round" strokeLinejoin="round" d="M7.5 21 3 16.5m0 0L7.5 12M3 16.5h13.5m0-13.5L21 7.5m0 0L16.5 12M21 7.5H7.5" />
+  </svg>
 );
 // --- End Icon Components ---
 
@@ -168,6 +174,7 @@ export const Library: React.FC = () => {
   const [selectedItem, setSelectedItem] = useState<LibraryEntry | null>(null);
   const [showOnlyFavorites, setShowOnlyFavorites] = useState(false);
   const [favoritesUpdateTrigger, setFavoritesUpdateTrigger] = useState(0);
+  const [viewMode, setViewMode] = useState<'browse' | 'compare'>('browse');
 
   const filteredLibraryData = useMemo(() => {
     let data = LIBRARY_DATA;
@@ -202,6 +209,24 @@ export const Library: React.FC = () => {
   const handleFavoriteToggle = () => {
     setFavoritesUpdateTrigger(prev => prev + 1);
   };
+
+  // If in compare mode, render the CompareSubstances component
+  if (viewMode === 'compare') {
+    return (
+      <div className="flex-1 flex flex-col min-h-0">
+        <div className="p-3 border-b border-gray-800 flex items-center justify-between">
+          <h2 className="text-lg font-semibold text-gray-100">Modo Comparación</h2>
+          <button
+            onClick={() => setViewMode('browse')}
+            className="px-3 py-1.5 text-sm bg-gray-700/40 hover:bg-gray-700/60 text-gray-300 rounded-lg transition-colors flex items-center gap-2"
+          >
+            Volver a Biblioteca
+          </button>
+        </div>
+        <CompareSubstances />
+      </div>
+    );
+  }
 
   return (
     <div className="flex-1 flex flex-col md:flex-row min-h-0">
@@ -247,6 +272,13 @@ export const Library: React.FC = () => {
                 >
                     <StarIcon filled={showOnlyFavorites} />
                     {showOnlyFavorites ? 'Mostrar Todas' : 'Solo Favoritos'}
+                </button>
+                <button
+                    onClick={() => setViewMode('compare')}
+                    className="mt-2 w-full px-3 py-2 text-sm rounded-lg transition-all flex items-center justify-center gap-2 bg-blue-600/20 text-blue-400 border border-blue-600/40 hover:bg-blue-600/30"
+                >
+                    <CompareIcon />
+                    Comparar Sustancias
                 </button>
             </div>
             <nav className="overflow-y-auto p-3 h-48 md:h-auto md:flex-1">
