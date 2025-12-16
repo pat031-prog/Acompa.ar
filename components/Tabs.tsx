@@ -17,8 +17,8 @@ export const Tabs: React.FC<TabsProps> = ({ activeTab, setActiveTab }) => {
   };
 
   return (
-    <nav className="flex gap-1 sm:gap-2 border-b border-gray-800 mb-4 overflow-x-auto overflow-y-hidden scrollbar-hide -mx-4 px-4 sm:mx-0 sm:px-0"
-         style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
+    <nav className="flex gap-1 sm:gap-2 border-b border-gray-800 mb-3 sm:mb-4 overflow-x-auto overflow-y-hidden scrollbar-hide"
+         style={{ scrollbarWidth: 'none', msOverflowStyle: 'none', WebkitOverflowScrolling: 'touch' }}>
       <button 
         id="tab-chat" 
         className={getButtonClasses('chat')}
