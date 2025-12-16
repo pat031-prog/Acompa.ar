@@ -58,6 +58,14 @@ export const Tabs: React.FC<TabsProps> = ({ activeTab, setActiveTab }) => {
       >
         Observatorio
       </button>
+      <button
+        id="tab-reminders"
+        className={getButtonClasses('reminders')}
+        onClick={() => setActiveTab('reminders')}
+        aria-pressed={activeTab === 'reminders'}
+      >
+        Recordatorios
+      </button>
     </nav>
   );
 };
