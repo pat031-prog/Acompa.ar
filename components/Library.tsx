@@ -4,6 +4,7 @@ import { LIBRARY_DATA, SUBSTANCE_CATEGORIES } from '../constants';
 import type { LibraryEntry, SubstanceCategory } from '../types';
 import { toggleFavorite, isFavorite, getFavorites } from '../services/favoritesService';
 import { CompareSubstances } from './CompareSubstances';
+import { PsychonautWikiInfo } from './PsychonautWikiInfo';
 
 // --- Icon Components ---
 const SearchIcon: React.FC = () => (
@@ -163,6 +164,9 @@ const LibraryDetailView: React.FC<{ item: LibraryEntry; onFavoriteToggle: () => 
       <InfoSection title="Alertas del Mercado" icon={<AlertIcon />}>
           <p>{item.content.alerts}</p>
       </InfoSection>
+
+      {/* PsychonautWiki additional information */}
+      <PsychonautWikiInfo substanceName={item.title} />
     </div>
   );
 };
