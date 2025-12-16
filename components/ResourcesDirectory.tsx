@@ -60,8 +60,8 @@ const getTypeColor = (type: LocalResource['type']) => {
 
 const ResourceCard: React.FC<{ resource: LocalResource }> = ({ resource }) => {
   return (
-    <div className="bg-gray-800/40 border border-gray-700 rounded-lg p-3 sm:p-4 hover:border-gray-600 transition-colors">
-      <div className="flex items-start gap-2 sm:gap-3">
+    <div className="bg-gray-800/40 border border-gray-700 rounded-lg p-5 sm:p-6 hover:border-gray-600 transition-colors">
+      <div className="flex items-start gap-3 sm:gap-4">
         <div className={`flex-shrink-0 w-10 h-10 sm:w-12 sm:h-12 rounded-lg flex items-center justify-center text-xl sm:text-2xl border ${getTypeColor(resource.type)}`}>
           {getTypeIcon(resource.type)}
         </div>
@@ -176,7 +176,7 @@ export const ResourcesDirectory: React.FC = () => {
 
   return (
     <div className="flex-1 flex flex-col min-h-0">
-      <div className="p-3 sm:p-4 border-b border-gray-800">
+      <div className="p-6 sm:p-8 border-b border-gray-800">
         <h1 className="text-xl sm:text-2xl font-bold text-gray-100 flex items-center gap-2">
           <MapPinIcon />
           <span className="hidden sm:inline">Directorio de Recursos en Argentina</span>
@@ -188,8 +188,8 @@ export const ResourcesDirectory: React.FC = () => {
       </div>
 
       {/* Filters */}
-      <div className="p-3 sm:p-4 border-b border-gray-800 space-y-2 sm:space-y-3">
-        <div className="flex flex-col sm:flex-row gap-2 sm:gap-3">
+      <div className="p-6 sm:p-8 border-b border-gray-800 space-y-3 sm:space-y-4">
+        <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
           <div className="flex-1">
             <label className="block text-xs font-medium text-gray-400 mb-1.5">Buscar</label>
             <input
@@ -249,9 +249,9 @@ export const ResourcesDirectory: React.FC = () => {
       </div>
 
       {/* Resources List */}
-      <div className="flex-1 overflow-y-auto p-3 sm:p-4 md:p-6">
+      <div className="flex-1 overflow-y-auto p-6 sm:p-8 md:p-10 lg:p-12">
         {resourceCount === 0 ? (
-          <div className="text-center py-10">
+          <div className="text-center py-12">
             <p className="text-sm sm:text-base text-gray-400">No se encontraron recursos con esos criterios.</p>
             <button
               onClick={() => {
@@ -265,7 +265,7 @@ export const ResourcesDirectory: React.FC = () => {
             </button>
           </div>
         ) : (
-          <div className="grid gap-3 sm:gap-4 max-w-5xl mx-auto">
+          <div className="grid gap-5 sm:gap-6 max-w-5xl mx-auto">
             {filteredResources.map((resource, idx) => (
               <ResourceCard key={idx} resource={resource} />
             ))}

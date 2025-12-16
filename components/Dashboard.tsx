@@ -71,8 +71,8 @@ const AlertCard: React.FC<{ alert: TerritorialAlert; onDelete: () => void }> = (
   const timeAgo = getTimeAgo(alert.timestamp);
 
   return (
-    <div className={`border rounded-lg p-3 sm:p-4 ${getSeverityColor(alert.severity)}`}>
-      <div className="flex items-start justify-between gap-2 sm:gap-3 mb-2">
+    <div className={`border rounded-lg p-5 sm:p-6 ${getSeverityColor(alert.severity)}`}>
+      <div className="flex items-start justify-between gap-3 sm:gap-4 mb-3">
         <div className="flex items-center gap-1.5 sm:gap-2 flex-wrap">
           <ExclamationTriangleIcon />
           <span className={`text-xs px-1.5 sm:px-2 py-0.5 rounded-full font-semibold ${badge.color}`}>
@@ -260,7 +260,7 @@ export const Dashboard: React.FC = () => {
 
   return (
     <div className="flex-1 flex flex-col min-h-0">
-      <div className="p-3 sm:p-4 border-b border-gray-800">
+      <div className="p-6 sm:p-8 border-b border-gray-800">
         <h1 className="text-xl sm:text-2xl font-bold text-gray-100 flex items-center gap-2">
           <ChartBarIcon />
           <span className="hidden sm:inline">Dashboard de Estadísticas</span>
@@ -272,8 +272,8 @@ export const Dashboard: React.FC = () => {
       </div>
 
       {/* Filters */}
-      <div className="p-3 sm:p-4 border-b border-gray-800">
-        <div className="flex flex-col sm:flex-row gap-2 sm:gap-3">
+      <div className="p-6 sm:p-8 border-b border-gray-800">
+        <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
           <div className="flex-1">
             <label className="block text-xs font-medium text-gray-400 mb-1.5">Provincia</label>
             <select
@@ -321,21 +321,21 @@ export const Dashboard: React.FC = () => {
         </div>
       </div>
 
-      <div className="flex-1 overflow-y-auto p-3 sm:p-4 md:p-6">
-        <div className="max-w-6xl mx-auto space-y-4 sm:space-y-6">
+      <div className="flex-1 overflow-y-auto p-6 sm:p-8 md:p-10 lg:p-12">
+        <div className="max-w-6xl mx-auto space-y-6 sm:space-y-8 lg:space-y-10">
           {/* Alerts Section */}
           <div>
-            <h2 className="text-lg font-semibold text-gray-200 mb-3 flex items-center gap-2">
+            <h2 className="text-lg font-semibold text-gray-200 mb-4 sm:mb-5 flex items-center gap-2">
               <ExclamationTriangleIcon />
               Alertas Territoriales ({alerts.length})
             </h2>
 
             {alerts.length === 0 ? (
-              <div className="bg-gray-800/40 border border-gray-700 rounded-lg p-8 text-center">
+              <div className="bg-gray-800/40 border border-gray-700 rounded-lg p-10 sm:p-12 text-center">
                 <p className="text-gray-400">No hay alertas activas para esta provincia.</p>
               </div>
             ) : (
-              <div className="grid gap-3">
+              <div className="grid gap-5 sm:gap-6">
                 {alerts.map(alert => (
                   <AlertCard
                     key={alert.id}
@@ -348,42 +348,42 @@ export const Dashboard: React.FC = () => {
           </div>
 
           {/* Stats Summary */}
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4">
-            <div className="bg-blue-500/10 border border-blue-500/30 rounded-lg p-4">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-5 sm:gap-6 lg:gap-8">
+            <div className="bg-blue-500/10 border border-blue-500/30 rounded-lg p-6 sm:p-8">
               <h3 className="text-sm font-medium text-blue-300 mb-1">Total de Consultas</h3>
               <p className="text-3xl font-bold text-white">{stats.totalQueries}</p>
             </div>
 
-            <div className="bg-green-500/10 border border-green-500/30 rounded-lg p-4">
+            <div className="bg-green-500/10 border border-green-500/30 rounded-lg p-6 sm:p-8">
               <h3 className="text-sm font-medium text-green-300 mb-1">Sustancias Únicas</h3>
               <p className="text-3xl font-bold text-white">{stats.topSubstances.length}</p>
             </div>
 
-            <div className="bg-purple-500/10 border border-purple-500/30 rounded-lg p-4">
+            <div className="bg-purple-500/10 border border-purple-500/30 rounded-lg p-6 sm:p-8">
               <h3 className="text-sm font-medium text-purple-300 mb-1">Categorías Activas</h3>
               <p className="text-3xl font-bold text-white">{Object.keys(stats.queriesByCategory).length}</p>
             </div>
           </div>
 
           {/* Trend Chart */}
-          <div className="bg-gray-800/40 border border-gray-700 rounded-lg p-3 sm:p-4">
-            <h3 className="text-sm sm:text-base font-semibold text-gray-200 mb-3 sm:mb-4">Tendencia de Consultas</h3>
+          <div className="bg-gray-800/40 border border-gray-700 rounded-lg p-5 sm:p-6 lg:p-8">
+            <h3 className="text-sm sm:text-base font-semibold text-gray-200 mb-4 sm:mb-5 lg:mb-6">Tendencia de Consultas</h3>
             <div className="h-48 sm:h-64">
               <Line data={trendData} options={chartOptions} />
             </div>
           </div>
 
           {/* Category & Top Substances Charts */}
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-3 sm:gap-4">
-            <div className="bg-gray-800/40 border border-gray-700 rounded-lg p-3 sm:p-4">
-              <h3 className="text-sm sm:text-base font-semibold text-gray-200 mb-3 sm:mb-4">Por Categoría</h3>
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-5 sm:gap-6 lg:gap-8">
+            <div className="bg-gray-800/40 border border-gray-700 rounded-lg p-5 sm:p-6 lg:p-8">
+              <h3 className="text-sm sm:text-base font-semibold text-gray-200 mb-4 sm:mb-5 lg:mb-6">Por Categoría</h3>
               <div className="h-48 sm:h-64">
                 <Doughnut data={categoryData} options={doughnutOptions} />
               </div>
             </div>
 
-            <div className="bg-gray-800/40 border border-gray-700 rounded-lg p-3 sm:p-4">
-              <h3 className="text-sm sm:text-base font-semibold text-gray-200 mb-3 sm:mb-4">Sustancias Más Consultadas</h3>
+            <div className="bg-gray-800/40 border border-gray-700 rounded-lg p-5 sm:p-6 lg:p-8">
+              <h3 className="text-sm sm:text-base font-semibold text-gray-200 mb-4 sm:mb-5 lg:mb-6">Sustancias Más Consultadas</h3>
               <div className="h-48 sm:h-64">
                 <Bar data={topSubstancesData} options={chartOptions} />
               </div>

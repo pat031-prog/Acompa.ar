@@ -79,8 +79,8 @@ const ReminderCard: React.FC<{
   };
 
   return (
-    <div className={`border rounded-lg p-3 sm:p-4 ${getTypeColor(reminder.type)}`}>
-      <div className="flex items-start justify-between gap-3">
+    <div className={`border rounded-lg p-5 sm:p-6 ${getTypeColor(reminder.type)}`}>
+      <div className="flex items-start justify-between gap-4">
         <div className="flex items-start gap-3 flex-1">
           <div className="flex-shrink-0 text-3xl">
             {getTypeIcon(reminder.type)}
@@ -227,7 +227,7 @@ export const CareReminders: React.FC = () => {
 
   return (
     <div className="flex-1 flex flex-col min-h-0">
-      <div className="p-3 sm:p-4 border-b border-gray-800">
+      <div className="p-6 sm:p-8 border-b border-gray-800">
         <h1 className="text-xl sm:text-2xl font-bold text-gray-100 flex items-center gap-2">
           <BellIcon />
           <span className="hidden sm:inline">Recordatorios de Cuidado</span>
@@ -238,11 +238,11 @@ export const CareReminders: React.FC = () => {
         </p>
       </div>
 
-      <div className="flex-1 overflow-y-auto p-3 sm:p-4 md:p-6">
-        <div className="max-w-3xl mx-auto space-y-6">
+      <div className="flex-1 overflow-y-auto p-6 sm:p-8 md:p-10 lg:p-12">
+        <div className="max-w-3xl mx-auto space-y-8 lg:space-y-10">
           {/* Notification Permission Banner */}
           {notificationPermission !== 'granted' && (
-            <div className="bg-blue-500/10 border border-blue-500/30 rounded-lg p-4">
+            <div className="bg-blue-500/10 border border-blue-500/30 rounded-lg p-5 sm:p-6">
               <div className="flex items-start gap-3">
                 <div className="flex-shrink-0 text-2xl">🔔</div>
                 <div className="flex-1">
@@ -264,7 +264,7 @@ export const CareReminders: React.FC = () => {
           )}
 
           {/* Status Summary */}
-          <div className="bg-gray-800/40 border border-gray-700 rounded-lg p-4">
+          <div className="bg-gray-800/40 border border-gray-700 rounded-lg p-5 sm:p-6">
             <div className="flex items-center justify-between">
               <div>
                 <h3 className="text-sm font-medium text-gray-300">Estado</h3>
@@ -282,7 +282,7 @@ export const CareReminders: React.FC = () => {
           </div>
 
           {/* Info Banner */}
-          <div className="bg-amber-500/10 border border-amber-500/30 rounded-lg p-4">
+          <div className="bg-amber-500/10 border border-amber-500/30 rounded-lg p-5 sm:p-6">
             <p className="text-sm text-amber-300">
               <strong>💡 Consejo:</strong> Los recordatorios son especialmente útiles durante experiencias psicoactivas.
               Hidratarse, descansar y alimentarse de forma regular reduce riesgos y mejora el bienestar.
@@ -290,8 +290,8 @@ export const CareReminders: React.FC = () => {
           </div>
 
           {/* Reminders List */}
-          <div className="space-y-3">
-            <h2 className="text-lg font-semibold text-gray-200">Tus Recordatorios</h2>
+          <div className="space-y-5">
+            <h2 className="text-lg font-semibold text-gray-200 mb-2">Tus Recordatorios</h2>
             {reminders.map(reminder => (
               <ReminderCard
                 key={reminder.id}
@@ -303,7 +303,7 @@ export const CareReminders: React.FC = () => {
           </div>
 
           {/* Usage Tips */}
-          <div className="bg-gray-800/40 border border-gray-700 rounded-lg p-4">
+          <div className="bg-gray-800/40 border border-gray-700 rounded-lg p-5 sm:p-6">
             <h3 className="text-sm font-semibold text-gray-300 mb-2">Cómo usar los recordatorios</h3>
             <ul className="space-y-2 text-sm text-gray-400">
               <li>• <strong className="text-gray-300">Activá/desactivá:</strong> Usa el interruptor para habilitar o deshabilitar cada recordatorio</li>

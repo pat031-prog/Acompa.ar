@@ -56,12 +56,12 @@ const CalculatorIcon: React.FC = () => (
 
 
 const InfoSection: React.FC<{ title: string; icon: React.ReactNode; children: React.ReactNode; }> = ({ title, icon, children }) => (
-  <div className="mt-5">
+  <div className="mt-8 lg:mt-10">
     <h3 className="flex items-center gap-2 font-semibold text-gray-200">
       {icon}
       {title}
     </h3>
-    <div className="mt-2 pl-7 text-sm text-gray-300/90 leading-relaxed space-y-2">
+    <div className="mt-3 pl-7 text-sm text-gray-300/90 leading-relaxed space-y-3">
       {children}
     </div>
   </div>
@@ -85,8 +85,8 @@ const LibraryDetailView: React.FC<{ item: LibraryEntry; onFavoriteToggle: () => 
   };
 
   return (
-    <div className="p-3 sm:p-6 lg:p-8">
-      <div className="flex items-start justify-between gap-3 sm:gap-4">
+    <div className="p-6 sm:p-8 lg:p-10 xl:p-12">
+      <div className="flex items-start justify-between gap-4 sm:gap-6">
         <div className="flex-1 min-w-0">
           <h2 className="text-xl sm:text-2xl font-bold text-gray-100">{item.title}</h2>
           <p className="text-xs sm:text-sm text-gray-400 mt-1">
@@ -108,7 +108,7 @@ const LibraryDetailView: React.FC<{ item: LibraryEntry; onFavoriteToggle: () => 
       </div>
 
       {item.structureImage && !imageError ? (
-        <div className="my-4 p-3 bg-white/5 rounded-lg flex justify-center items-center border border-gray-800 min-h-[148px]">
+        <div className="my-6 p-4 bg-white/5 rounded-lg flex justify-center items-center border border-gray-800 min-h-[148px]">
           <img 
             src={item.structureImage} 
             alt={`Estructura química de ${item.title}`} 
@@ -117,12 +117,12 @@ const LibraryDetailView: React.FC<{ item: LibraryEntry; onFavoriteToggle: () => 
           />
         </div>
       ) : (
-         <div className="my-4 p-3 bg-[#0e0f11]/50 rounded-lg flex justify-center items-center border border-gray-800 min-h-[148px]">
+         <div className="my-6 p-4 bg-[#0e0f11]/50 rounded-lg flex justify-center items-center border border-gray-800 min-h-[148px]">
             <p className="font-mono text-xl text-gray-400 tracking-wider select-all">{item.chemicalFormula}</p>
         </div>
       )}
 
-      <p className="mt-4 text-sm text-gray-300">{item.content.description}</p>
+      <p className="mt-6 text-sm text-gray-300 leading-relaxed">{item.content.description}</p>
       
       <InfoSection title="Efectos" icon={<HeartIcon />}>
         <div>
@@ -225,7 +225,7 @@ export const Library: React.FC = () => {
   if (viewMode === 'compare') {
     return (
       <div className="flex-1 flex flex-col min-h-0">
-        <div className="p-3 border-b border-gray-800 flex items-center justify-between">
+        <div className="p-5 sm:p-6 border-b border-gray-800 flex items-center justify-between">
           <h2 className="text-lg font-semibold text-gray-100">Modo Comparación</h2>
           <button
             onClick={() => setViewMode('browse')}
@@ -243,7 +243,7 @@ export const Library: React.FC = () => {
   if (viewMode === 'calculator') {
     return (
       <div className="flex-1 flex flex-col min-h-0">
-        <div className="p-3 border-b border-gray-800 flex items-center justify-between">
+        <div className="p-5 sm:p-6 border-b border-gray-800 flex items-center justify-between">
           <h2 className="text-lg font-semibold text-gray-100">Calculadora de Dosis</h2>
           <button
             onClick={() => setViewMode('browse')}
@@ -261,7 +261,7 @@ export const Library: React.FC = () => {
     <div className="flex-1 flex flex-col md:flex-row min-h-0">
         {/* Left Pane: Navigation */}
         <div className="w-full md:w-1/3 md:max-w-sm flex flex-col border-b md:border-b-0 md:border-r border-gray-800">
-            <div className="p-3 sm:p-4 border-b border-gray-800">
+            <div className="p-5 sm:p-6 border-b border-gray-800">
                  <div className="relative">
                     <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3 text-gray-400">
                         <SearchIcon />
@@ -274,7 +274,7 @@ export const Library: React.FC = () => {
                         className="w-full p-2.5 pl-10 text-sm bg-[#121316] text-white border border-[#2a2d33] rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none transition-all"
                     />
                 </div>
-                <div className="flex flex-wrap gap-2 mt-3">
+                <div className="flex flex-wrap gap-2 mt-4">
                     <button
                         onClick={() => setSelectedCategory('All')}
                         className={`px-2.5 py-1 text-xs rounded-full transition-colors ${selectedCategory === 'All' ? 'bg-blue-600 text-white font-semibold' : 'bg-gray-700/60 hover:bg-gray-600/80 text-gray-300'}`}
@@ -293,7 +293,7 @@ export const Library: React.FC = () => {
                 </div>
                 <button
                     onClick={() => setShowOnlyFavorites(!showOnlyFavorites)}
-                    className={`mt-2 w-full px-3 py-2 text-sm rounded-lg transition-all flex items-center justify-center gap-2 ${
+                    className={`mt-4 w-full px-3 py-2.5 text-sm rounded-lg transition-all flex items-center justify-center gap-2 ${
                         showOnlyFavorites
                             ? 'bg-yellow-500/20 text-yellow-400 border border-yellow-500/40 font-semibold'
                             : 'bg-gray-700/40 text-gray-300 border border-gray-700/60 hover:bg-gray-700/60'
@@ -304,26 +304,26 @@ export const Library: React.FC = () => {
                 </button>
                 <button
                     onClick={() => setViewMode('compare')}
-                    className="mt-2 w-full px-3 py-2 text-sm rounded-lg transition-all flex items-center justify-center gap-2 bg-blue-600/20 text-blue-400 border border-blue-600/40 hover:bg-blue-600/30"
+                    className="mt-3 w-full px-3 py-2.5 text-sm rounded-lg transition-all flex items-center justify-center gap-2 bg-blue-600/20 text-blue-400 border border-blue-600/40 hover:bg-blue-600/30"
                 >
                     <CompareIcon />
                     Comparar Sustancias
                 </button>
                 <button
                     onClick={() => setViewMode('calculator')}
-                    className="mt-2 w-full px-3 py-2 text-sm rounded-lg transition-all flex items-center justify-center gap-2 bg-green-600/20 text-green-400 border border-green-600/40 hover:bg-green-600/30"
+                    className="mt-3 w-full px-3 py-2.5 text-sm rounded-lg transition-all flex items-center justify-center gap-2 bg-green-600/20 text-green-400 border border-green-600/40 hover:bg-green-600/30"
                 >
                     <CalculatorIcon />
                     Calculadora de Dosis
                 </button>
             </div>
-            <nav className="overflow-y-auto p-3 sm:p-4 h-64 md:h-auto md:flex-1">
-                <ul className="space-y-1">
+            <nav className="overflow-y-auto p-5 sm:p-6 h-64 md:h-auto md:flex-1">
+                <ul className="space-y-2">
                     {filteredLibraryData.map(item => (
                         <li key={item.title}>
                             <button
                                 onClick={() => setSelectedItem(item)}
-                                className={`w-full text-left text-sm p-3 rounded-md transition-colors duration-150 active:scale-[0.98] ${
+                                className={`w-full text-left text-sm p-3.5 sm:p-4 rounded-md transition-colors duration-150 active:scale-[0.98] ${
                                     selectedItem?.title === item.title
                                         ? 'bg-blue-600/40 text-gray-100 font-semibold'
                                         : 'text-gray-300 hover:bg-gray-700/50 active:bg-gray-700/70'

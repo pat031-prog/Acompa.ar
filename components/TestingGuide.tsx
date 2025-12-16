@@ -34,7 +34,7 @@ export const TestingGuide: React.FC = () => {
 
   return (
     <div className="flex-1 flex flex-col min-h-0">
-      <div className="p-4 border-b border-gray-800">
+      <div className="p-6 sm:p-8 border-b border-gray-800">
         <h1 className="text-2xl font-bold text-gray-100 flex items-center gap-2">
           <BeakerIcon />
           Guía de Testeo de Sustancias
@@ -45,7 +45,7 @@ export const TestingGuide: React.FC = () => {
       </div>
 
       {/* Navigation tabs */}
-      <div className="flex gap-2 p-3 border-b border-gray-800 overflow-x-auto">
+      <div className="flex gap-2 p-5 sm:p-6 border-b border-gray-800 overflow-x-auto">
         <button
           onClick={() => setActiveSection('guide')}
           className={`px-4 py-2 text-sm rounded-lg transition-all whitespace-nowrap ${
@@ -101,7 +101,7 @@ export const TestingGuide: React.FC = () => {
       </div>
 
       {/* Content */}
-      <div className="flex-1 overflow-y-auto p-4 sm:p-6">
+      <div className="flex-1 overflow-y-auto p-6 sm:p-8 md:p-10 lg:p-12">
         {activeSection === 'guide' && <GuideSection />}
         {activeSection === 'reagents' && <ReagentsSection />}
         {activeSection === 'resources' && <ResourcesSection />}
@@ -113,7 +113,7 @@ export const TestingGuide: React.FC = () => {
 
 const GuideSection: React.FC = () => (
   <div className="max-w-4xl mx-auto space-y-6">
-    <div className="bg-blue-500/10 border border-blue-500/30 rounded-lg p-4">
+    <div className="bg-blue-500/10 border border-blue-500/30 rounded-lg p-5 sm:p-6">
       <p className="text-gray-200 leading-relaxed">{TESTING_GUIDE.intro}</p>
     </div>
 
@@ -130,7 +130,7 @@ const GuideSection: React.FC = () => (
       <h2 className="text-xl font-bold text-gray-100 mb-3">Cómo testear paso a paso</h2>
       <div className="space-y-4">
         {TESTING_GUIDE.howToTest.map((step) => (
-          <div key={step.step} className="bg-gray-800/40 border border-gray-700 rounded-lg p-4">
+          <div key={step.step} className="bg-gray-800/40 border border-gray-700 rounded-lg p-5 sm:p-6">
             <div className="flex items-start gap-3">
               <div className="flex-shrink-0 w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center text-white font-bold">
                 {step.step}
@@ -198,9 +198,9 @@ const ResourcesSection: React.FC = () => (
       Estos son los recursos disponibles en Argentina para conseguir kits de testeo o acceder a servicios de análisis de sustancias.
     </p>
 
-    <div className="grid gap-4">
+    <div className="grid gap-5 sm:gap-6">
       {TESTING_RESOURCES.map((resource, idx) => (
-        <div key={idx} className="bg-gray-800/40 border border-gray-700 rounded-lg p-4">
+        <div key={idx} className="bg-gray-800/40 border border-gray-700 rounded-lg p-5 sm:p-6">
           <div className="flex items-start gap-3">
             <div className="flex-shrink-0 mt-1">
               {resource.type === 'organization' && (
@@ -256,7 +256,7 @@ const AdulterantsSection: React.FC = () => (
       </p>
     </div>
 
-    <div className="grid gap-4">
+    <div className="grid gap-5 sm:gap-6">
       {TESTING_GUIDE.commonAdulterants.map((adulterant, idx) => (
         <div key={idx} className="bg-red-900/10 border border-red-800/40 rounded-lg p-4">
           <h3 className="font-bold text-red-400 flex items-center gap-2">

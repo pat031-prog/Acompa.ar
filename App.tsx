@@ -79,7 +79,7 @@ const App: React.FC = () => {
   };
 
   return (
-    <div className="flex flex-col h-full w-full max-w-5xl lg:max-w-6xl xl:max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-gray-200 overflow-hidden relative z-10">
+    <div className="flex flex-col h-full w-full max-w-5xl lg:max-w-6xl xl:max-w-7xl mx-auto px-6 sm:px-8 lg:px-10 xl:px-12 text-gray-200 overflow-hidden relative z-10">
       {!consent && <ConsentModal onConsent={handleConsent} />}
       <div className="flex-shrink-0">
         <Header />
