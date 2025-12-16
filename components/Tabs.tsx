@@ -43,6 +43,14 @@ export const Tabs: React.FC<TabsProps> = ({ activeTab, setActiveTab }) => {
         Testeo
       </button>
       <button
+        id="tab-resources"
+        className={getButtonClasses('resources')}
+        onClick={() => setActiveTab('resources')}
+        aria-pressed={activeTab === 'resources'}
+      >
+        Recursos
+      </button>
+      <button
         id="tab-observatory"
         className={getButtonClasses('observatory')}
         onClick={() => setActiveTab('observatory')}
