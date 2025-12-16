@@ -79,7 +79,7 @@ const App: React.FC = () => {
   };
 
   return (
-    <div className="flex flex-col h-full w-full max-w-4xl lg:max-w-5xl xl:max-w-6xl mx-auto px-3 sm:px-6 lg:px-8 text-gray-200 overflow-hidden">
+    <div className="flex flex-col h-full w-full max-w-5xl lg:max-w-6xl xl:max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-gray-200 overflow-hidden relative z-10">
       {!consent && <ConsentModal onConsent={handleConsent} />}
       <div className="flex-shrink-0">
         <Header />
@@ -88,7 +88,7 @@ const App: React.FC = () => {
         <Tabs activeTab={activeTab} setActiveTab={setActiveTab} />
       </div>
 
-      <main className="flex-1 flex flex-col min-h-0 overflow-hidden">
+      <main className="flex-1 flex flex-col min-h-0 overflow-hidden rounded-t-2xl">
         {activeTab === 'chat' && (
           <div className="flex flex-col flex-1 h-full overflow-hidden">
             <ChatWindow messages={messages} isLoading={isLoading} />

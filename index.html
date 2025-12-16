@@ -7,6 +7,9 @@
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
     <title>ACompañ.Ar — Chatbot & Observatorio de Consumos</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
       /* Reset box sizing and margins */
       * {
@@ -15,19 +18,36 @@
         padding: 0;
       }
 
-      /* Full height setup */
+      /* Full height setup with modern font */
       html, body {
         width: 100%;
         height: 100%;
         overflow: hidden;
         -webkit-text-size-adjust: 100%;
         -webkit-overflow-scrolling: touch;
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+        background: linear-gradient(180deg, #0a0a0f 0%, #121218 100%);
       }
 
       #root {
         width: 100%;
         height: 100%;
         overflow: hidden;
+      }
+
+      /* Modern gradient background */
+      body::before {
+        content: '';
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 400px;
+        background: radial-gradient(ellipse 80% 50% at 50% -20%, rgba(59, 130, 246, 0.15), transparent);
+        pointer-events: none;
+        z-index: 0;
       }
 
       /* Hide scrollbar for Chrome, Safari and Opera */
@@ -41,34 +61,53 @@
         scrollbar-width: none;
       }
 
-      /* Custom scrollbar styling for visible scrollbars */
+      /* Modern scrollbar styling */
       ::-webkit-scrollbar {
-        width: 6px;
-        height: 6px;
+        width: 5px;
+        height: 5px;
       }
 
       ::-webkit-scrollbar-track {
-        background: transparent;
+        background: rgba(20, 20, 30, 0.3);
+        border-radius: 10px;
       }
 
       ::-webkit-scrollbar-thumb {
-        background: rgba(100, 100, 100, 0.3);
-        border-radius: 3px;
+        background: linear-gradient(180deg, rgba(100, 120, 180, 0.4), rgba(80, 100, 160, 0.3));
+        border-radius: 10px;
+        transition: background 0.2s;
       }
 
       ::-webkit-scrollbar-thumb:hover {
-        background: rgba(120, 120, 120, 0.5);
+        background: linear-gradient(180deg, rgba(100, 120, 180, 0.6), rgba(80, 100, 160, 0.5));
       }
 
       /* Firefox scrollbar */
       * {
         scrollbar-width: thin;
-        scrollbar-color: rgba(100, 100, 100, 0.3) transparent;
+        scrollbar-color: rgba(100, 120, 180, 0.4) rgba(20, 20, 30, 0.3);
       }
 
       /* Prevent horizontal overflow */
       body {
         overflow-x: hidden;
+      }
+
+      /* Glass effect utility */
+      .glass-effect {
+        background: rgba(20, 20, 30, 0.6);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        border: 1px solid rgba(255, 255, 255, 0.06);
+      }
+
+      /* Smooth transitions */
+      * {
+        transition: background-color 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
+      }
+
+      button, a, input, select {
+        transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
       }
     </style>
     <script src="https://cdn.tailwindcss.com"></script>

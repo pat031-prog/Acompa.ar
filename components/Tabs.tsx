@@ -9,15 +9,15 @@ interface TabsProps {
 
 export const Tabs: React.FC<TabsProps> = ({ activeTab, setActiveTab }) => {
   const getButtonClasses = (tabName: Tab) => {
-    return `bg-none border-none px-3 sm:px-4 py-3 cursor-pointer text-xs sm:text-sm font-medium border-b-2 transition-colors duration-200 whitespace-nowrap flex-shrink-0
+    return `relative px-4 sm:px-5 py-3 sm:py-3.5 cursor-pointer text-xs sm:text-sm font-semibold whitespace-nowrap flex-shrink-0 rounded-lg transition-all duration-300
       ${activeTab === tabName
-        ? 'text-gray-100 border-blue-500'
-        : 'text-gray-400 border-transparent hover:text-gray-200 active:text-gray-100'
+        ? 'text-white bg-gradient-to-r from-blue-500/20 to-blue-600/20 border border-blue-500/30 shadow-lg shadow-blue-500/10'
+        : 'text-gray-400 hover:text-gray-200 hover:bg-white/5 border border-transparent'
       }`;
   };
 
   return (
-    <nav className="flex gap-1 sm:gap-2 border-b border-gray-800 mb-3 sm:mb-4 overflow-x-auto overflow-y-hidden scrollbar-hide"
+    <nav className="flex gap-2 sm:gap-3 mb-4 sm:mb-6 overflow-x-auto overflow-y-hidden scrollbar-hide relative z-10 pb-2"
          style={{ scrollbarWidth: 'none', msOverflowStyle: 'none', WebkitOverflowScrolling: 'touch' }}>
       <button 
         id="tab-chat" 
