@@ -11,6 +11,7 @@ import { TestingGuide } from './components/TestingGuide';
 import { ResourcesDirectory } from './components/ResourcesDirectory';
 import { Observatory } from './components/Map';
 import { CareReminders } from './components/CareReminders';
+import { Dashboard } from './components/Dashboard';
 import type { Message, ConsentData, HistoryContent, Tab } from './types';
 import { INITIAL_BOT_MESSAGE } from './constants';
 
@@ -95,6 +96,7 @@ const App: React.FC = () => {
         {activeTab === 'resources' && <ResourcesDirectory />}
         {activeTab === 'observatory' && <Observatory />}
         {activeTab === 'reminders' && <CareReminders />}
+        {activeTab === 'dashboard' && <Dashboard />}
       </main>
     </div>
   );
