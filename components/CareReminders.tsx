@@ -79,7 +79,7 @@ const ReminderCard: React.FC<{
   };
 
   return (
-    <div className={`border rounded-lg p-4 ${getTypeColor(reminder.type)}`}>
+    <div className={`border rounded-lg p-3 sm:p-4 ${getTypeColor(reminder.type)}`}>
       <div className="flex items-start justify-between gap-3">
         <div className="flex items-start gap-3 flex-1">
           <div className="flex-shrink-0 text-3xl">
@@ -227,17 +227,18 @@ export const CareReminders: React.FC = () => {
 
   return (
     <div className="flex-1 flex flex-col min-h-0">
-      <div className="p-4 border-b border-gray-800">
-        <h1 className="text-2xl font-bold text-gray-100 flex items-center gap-2">
+      <div className="p-3 sm:p-4 border-b border-gray-800">
+        <h1 className="text-xl sm:text-2xl font-bold text-gray-100 flex items-center gap-2">
           <BellIcon />
-          Recordatorios de Cuidado
+          <span className="hidden sm:inline">Recordatorios de Cuidado</span>
+          <span className="sm:hidden">Recordatorios</span>
         </h1>
-        <p className="text-sm text-gray-400 mt-1">
+        <p className="text-xs sm:text-sm text-gray-400 mt-1">
           Configurá recordatorios automáticos para hidratación, descanso y alimentación
         </p>
       </div>
 
-      <div className="flex-1 overflow-y-auto p-4">
+      <div className="flex-1 overflow-y-auto p-3 sm:p-4 md:p-6">
         <div className="max-w-3xl mx-auto space-y-6">
           {/* Notification Permission Banner */}
           {notificationPermission !== 'granted' && (

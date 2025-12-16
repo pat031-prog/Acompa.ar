@@ -9,15 +9,16 @@ interface TabsProps {
 
 export const Tabs: React.FC<TabsProps> = ({ activeTab, setActiveTab }) => {
   const getButtonClasses = (tabName: Tab) => {
-    return `bg-none border-none px-4 py-2.5 cursor-pointer text-sm font-medium border-b-2 transition-colors duration-200
-      ${activeTab === tabName 
-        ? 'text-gray-100 border-blue-500' 
-        : 'text-gray-400 border-transparent hover:text-gray-200'
+    return `bg-none border-none px-3 sm:px-4 py-3 cursor-pointer text-xs sm:text-sm font-medium border-b-2 transition-colors duration-200 whitespace-nowrap flex-shrink-0
+      ${activeTab === tabName
+        ? 'text-gray-100 border-blue-500'
+        : 'text-gray-400 border-transparent hover:text-gray-200 active:text-gray-100'
       }`;
   };
 
   return (
-    <nav className="flex gap-2 border-b border-gray-800 mb-4">
+    <nav className="flex gap-1 sm:gap-2 border-b border-gray-800 mb-4 overflow-x-auto overflow-y-hidden scrollbar-hide -mx-4 px-4 sm:mx-0 sm:px-0"
+         style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
       <button 
         id="tab-chat" 
         className={getButtonClasses('chat')}
@@ -56,7 +57,8 @@ export const Tabs: React.FC<TabsProps> = ({ activeTab, setActiveTab }) => {
         onClick={() => setActiveTab('observatory')}
         aria-pressed={activeTab === 'observatory'}
       >
-        Observatorio
+        <span className="hidden sm:inline">Observatorio</span>
+        <span className="sm:hidden">Observ.</span>
       </button>
       <button
         id="tab-reminders"
@@ -64,7 +66,8 @@ export const Tabs: React.FC<TabsProps> = ({ activeTab, setActiveTab }) => {
         onClick={() => setActiveTab('reminders')}
         aria-pressed={activeTab === 'reminders'}
       >
-        Recordatorios
+        <span className="hidden sm:inline">Recordatorios</span>
+        <span className="sm:hidden">Record.</span>
       </button>
       <button
         id="tab-dashboard"
@@ -72,7 +75,8 @@ export const Tabs: React.FC<TabsProps> = ({ activeTab, setActiveTab }) => {
         onClick={() => setActiveTab('dashboard')}
         aria-pressed={activeTab === 'dashboard'}
       >
-        Estadísticas
+        <span className="hidden sm:inline">Estadísticas</span>
+        <span className="sm:hidden">Stats</span>
       </button>
     </nav>
   );

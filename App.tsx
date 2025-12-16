@@ -79,7 +79,7 @@ const App: React.FC = () => {
   };
 
   return (
-    <div className="flex flex-col h-screen max-w-4xl lg:max-w-5xl xl:max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-gray-200">
+    <div className="flex flex-col h-screen max-w-4xl lg:max-w-5xl xl:max-w-6xl mx-auto px-3 sm:px-6 lg:px-8 text-gray-200">
       {!consent && <ConsentModal onConsent={handleConsent} />}
       <Header />
       <Tabs activeTab={activeTab} setActiveTab={setActiveTab} />

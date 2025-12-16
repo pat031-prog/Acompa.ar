@@ -85,22 +85,23 @@ const LibraryDetailView: React.FC<{ item: LibraryEntry; onFavoriteToggle: () => 
   };
 
   return (
-    <div className="p-4 sm:p-6 lg:p-8">
-      <div className="flex items-start justify-between gap-4">
-        <div className="flex-1">
-          <h2 className="text-2xl font-bold text-gray-100">{item.title}</h2>
-          <p className="text-sm text-gray-400 mt-1">
+    <div className="p-3 sm:p-6 lg:p-8">
+      <div className="flex items-start justify-between gap-3 sm:gap-4">
+        <div className="flex-1 min-w-0">
+          <h2 className="text-xl sm:text-2xl font-bold text-gray-100">{item.title}</h2>
+          <p className="text-xs sm:text-sm text-gray-400 mt-1">
             También conocido como: {item.aliases.join(', ')}.
           </p>
         </div>
         <button
           onClick={handleFavoriteClick}
-          className={`flex-shrink-0 p-2 rounded-lg transition-all ${
+          className={`flex-shrink-0 p-2.5 sm:p-2 rounded-lg transition-all active:scale-95 ${
             isItemFavorite
-              ? 'bg-yellow-500/20 text-yellow-400 hover:bg-yellow-500/30'
-              : 'bg-gray-700/40 text-gray-400 hover:bg-gray-700/60'
+              ? 'bg-yellow-500/20 text-yellow-400 hover:bg-yellow-500/30 active:bg-yellow-500/40'
+              : 'bg-gray-700/40 text-gray-400 hover:bg-gray-700/60 active:bg-gray-700/80'
           }`}
           title={isItemFavorite ? 'Quitar de favoritos' : 'Agregar a favoritos'}
+          aria-label={isItemFavorite ? 'Quitar de favoritos' : 'Agregar a favoritos'}
         >
           <StarIcon filled={isItemFavorite} />
         </button>
@@ -260,7 +261,7 @@ export const Library: React.FC = () => {
     <div className="flex-1 flex flex-col md:flex-row min-h-0">
         {/* Left Pane: Navigation */}
         <div className="w-full md:w-1/3 md:max-w-sm flex flex-col border-b md:border-b-0 md:border-r border-gray-800">
-            <div className="p-3 border-b border-gray-800">
+            <div className="p-3 sm:p-4 border-b border-gray-800">
                  <div className="relative">
                     <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3 text-gray-400">
                         <SearchIcon />
@@ -316,16 +317,16 @@ export const Library: React.FC = () => {
                     Calculadora de Dosis
                 </button>
             </div>
-            <nav className="overflow-y-auto p-3 h-48 md:h-auto md:flex-1">
+            <nav className="overflow-y-auto p-3 sm:p-4 h-64 md:h-auto md:flex-1">
                 <ul className="space-y-1">
                     {filteredLibraryData.map(item => (
                         <li key={item.title}>
                             <button
                                 onClick={() => setSelectedItem(item)}
-                                className={`w-full text-left text-sm p-2.5 rounded-md transition-colors duration-150 ${
+                                className={`w-full text-left text-sm p-3 rounded-md transition-colors duration-150 active:scale-[0.98] ${
                                     selectedItem?.title === item.title
                                         ? 'bg-blue-600/40 text-gray-100 font-semibold'
-                                        : 'text-gray-300 hover:bg-gray-700/50'
+                                        : 'text-gray-300 hover:bg-gray-700/50 active:bg-gray-700/70'
                                 }`}
                             >
                                 {item.title}
