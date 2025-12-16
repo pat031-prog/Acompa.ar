@@ -43,21 +43,27 @@
 
       /* Custom scrollbar styling for visible scrollbars */
       ::-webkit-scrollbar {
-        width: 8px;
-        height: 8px;
+        width: 6px;
+        height: 6px;
       }
 
       ::-webkit-scrollbar-track {
-        background: rgba(30, 30, 30, 0.3);
+        background: transparent;
       }
 
       ::-webkit-scrollbar-thumb {
-        background: rgba(100, 100, 100, 0.5);
-        border-radius: 4px;
+        background: rgba(100, 100, 100, 0.3);
+        border-radius: 3px;
       }
 
       ::-webkit-scrollbar-thumb:hover {
-        background: rgba(120, 120, 120, 0.7);
+        background: rgba(120, 120, 120, 0.5);
+      }
+
+      /* Firefox scrollbar */
+      * {
+        scrollbar-width: thin;
+        scrollbar-color: rgba(100, 100, 100, 0.3) transparent;
       }
 
       /* Prevent horizontal overflow */
