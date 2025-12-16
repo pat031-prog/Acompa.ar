@@ -5,6 +5,7 @@ import type { LibraryEntry, SubstanceCategory } from '../types';
 import { toggleFavorite, isFavorite, getFavorites } from '../services/favoritesService';
 import { CompareSubstances } from './CompareSubstances';
 import { PsychonautWikiInfo } from './PsychonautWikiInfo';
+import DoseCalculator from './DoseCalculator';
 
 // --- Icon Components ---
 const SearchIcon: React.FC = () => (
@@ -44,6 +45,11 @@ const StarIcon: React.FC<{ filled?: boolean }> = ({ filled = false }) => (
 const CompareIcon: React.FC = () => (
   <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5">
     <path strokeLinecap="round" strokeLinejoin="round" d="M7.5 21 3 16.5m0 0L7.5 12M3 16.5h13.5m0-13.5L21 7.5m0 0L16.5 12M21 7.5H7.5" />
+  </svg>
+);
+const CalculatorIcon: React.FC = () => (
+  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5">
+    <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 15.75V18m-7.5-6.75h.008v.008H8.25v-.008Zm0 2.25h.008v.008H8.25V13.5Zm0 2.25h.008v.008H8.25v-.008Zm0 2.25h.008v.008H8.25V18Zm2.498-6.75h.007v.008h-.007v-.008Zm0 2.25h.007v.008h-.007V13.5Zm0 2.25h.007v.008h-.007v-.008Zm0 2.25h.007v.008h-.007V18Zm2.504-6.75h.008v.008h-.008v-.008Zm0 2.25h.008v.008h-.008V13.5Zm0 2.25h.008v.008h-.008v-.008Zm0 2.25h.008v.008h-.008V18Zm2.498-6.75h.008v.008h-.008v-.008Zm0 2.25h.008v.008h-.008V13.5ZM8.25 6h7.5v2.25h-7.5V6ZM12 2.25c-1.892 0-3.758.11-5.593.322C5.307 2.7 4.5 3.65 4.5 4.757V19.5a2.25 2.25 0 0 0 2.25 2.25h10.5a2.25 2.25 0 0 0 2.25-2.25V4.757c0-1.108-.806-2.057-1.907-2.185A48.507 48.507 0 0 0 12 2.25Z" />
   </svg>
 );
 // --- End Icon Components ---
@@ -178,7 +184,7 @@ export const Library: React.FC = () => {
   const [selectedItem, setSelectedItem] = useState<LibraryEntry | null>(null);
   const [showOnlyFavorites, setShowOnlyFavorites] = useState(false);
   const [favoritesUpdateTrigger, setFavoritesUpdateTrigger] = useState(0);
-  const [viewMode, setViewMode] = useState<'browse' | 'compare'>('browse');
+  const [viewMode, setViewMode] = useState<'browse' | 'compare' | 'calculator'>('browse');
 
   const filteredLibraryData = useMemo(() => {
     let data = LIBRARY_DATA;
@@ -228,6 +234,24 @@ export const Library: React.FC = () => {
           </button>
         </div>
         <CompareSubstances />
+      </div>
+    );
+  }
+
+  // If in calculator mode, render the DoseCalculator component
+  if (viewMode === 'calculator') {
+    return (
+      <div className="flex-1 flex flex-col min-h-0">
+        <div className="p-3 border-b border-gray-800 flex items-center justify-between">
+          <h2 className="text-lg font-semibold text-gray-100">Calculadora de Dosis</h2>
+          <button
+            onClick={() => setViewMode('browse')}
+            className="px-3 py-1.5 text-sm bg-gray-700/40 hover:bg-gray-700/60 text-gray-300 rounded-lg transition-colors flex items-center gap-2"
+          >
+            Volver a Biblioteca
+          </button>
+        </div>
+        <DoseCalculator />
       </div>
     );
   }
@@ -283,6 +307,13 @@ export const Library: React.FC = () => {
                 >
                     <CompareIcon />
                     Comparar Sustancias
+                </button>
+                <button
+                    onClick={() => setViewMode('calculator')}
+                    className="mt-2 w-full px-3 py-2 text-sm rounded-lg transition-all flex items-center justify-center gap-2 bg-green-600/20 text-green-400 border border-green-600/40 hover:bg-green-600/30"
+                >
+                    <CalculatorIcon />
+                    Calculadora de Dosis
                 </button>
             </div>
             <nav className="overflow-y-auto p-3 h-48 md:h-auto md:flex-1">
