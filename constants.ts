@@ -1,5 +1,5 @@
 // Fix: Import MapDataset type
-import type { LibraryEntry, MapDataset, SubstanceCategory, ReagentTest, TestingResource } from './types';
+import type { LibraryEntry, MapDataset, SubstanceCategory, ReagentTest, TestingResource, LocalResource } from './types';
 
 export const SYSTEM_PROMPT = `
 Actuás como acompañante de reducción de daños para consumos en Argentina. Tu lenguaje debe ser español rioplatense, empático, breve, claro y sin juicios.
@@ -988,3 +988,242 @@ export const TESTING_GUIDE = {
     { substance: "Cafeína/Metanfetamina en éxtasis", risk: "Aumentan efectos estimulantes, carga cardíaca y riesgo de deshidratación." }
   ]
 };
+
+// === LOCAL RESOURCES DATABASE ===
+
+export const LOCAL_RESOURCES: LocalResource[] = [
+  // National Hotlines
+  {
+    name: "Línea 141 - Atención a Consumos Problemáticos",
+    type: "hotline",
+    province: "Nacional",
+    phone: "141",
+    description: "Línea gratuita nacional de SEDRONAR para orientación, contención y derivación en casos de consumo problemático de sustancias. Atención las 24 horas.",
+    services: ["Orientación", "Contención telefónica", "Derivación a centros de tratamiento", "Información para familiares"],
+    hours: "24 horas, todos los días",
+    free: true
+  },
+  {
+    name: "Línea 135 - Salud Mental",
+    type: "hotline",
+    province: "Ciudad Autónoma de Buenos Aires",
+    phone: "135",
+    description: "Línea gratuita de atención en crisis de salud mental del Gobierno de la Ciudad de Buenos Aires. Atención especializada para situaciones de consumo y crisis.",
+    services: ["Atención en crisis", "Orientación psicológica", "Derivación a hospitales", "Seguimiento post-crisis"],
+    hours: "24 horas, todos los días",
+    free: true
+  },
+  {
+    name: "SAME - Emergencias Médicas",
+    type: "hotline",
+    province: "Nacional",
+    phone: "107",
+    description: "Sistema de Atención Médica de Emergencias. Llamar en casos de sobredosis, intoxicación o emergencia médica relacionada con consumos.",
+    services: ["Emergencias médicas", "Ambulancias", "Atención de sobredosis", "Traslados hospitalarios"],
+    hours: "24 horas, todos los días",
+    free: true
+  },
+
+  // Buenos Aires Province & CABA
+  {
+    name: "Hospital Borda - Unidad de Internación de Agudos",
+    type: "hospital",
+    province: "Ciudad Autónoma de Buenos Aires",
+    city: "Buenos Aires",
+    address: "Ramón Carrillo 375, Parque Patricios",
+    phone: "011 4305-5555",
+    description: "Hospital psiquiátrico con unidad especializada en adicciones. Internación breve, consultas ambulatorias y programas de seguimiento.",
+    services: ["Internación aguda", "Desintoxicación", "Consultas ambulatorias", "Grupos terapéuticos", "Psiquiatría"],
+    hours: "Guardia 24hs, consultorios externos de lunes a viernes",
+    free: true
+  },
+  {
+    name: "Hospital Torcuato de Alvear - Servicio de Adicciones",
+    type: "hospital",
+    province: "Ciudad Autónoma de Buenos Aires",
+    city: "Buenos Aires",
+    address: "Warnes 2630, Villa Crespo",
+    phone: "011 4581-2255",
+    description: "Hospital público con servicio especializado en adicciones. Internación, Hospital de Día y consultas externas.",
+    services: ["Internación", "Hospital de Día", "Consultorios externos", "Grupos terapéuticos", "Familia"],
+    hours: "Guardia 24hs",
+    free: true
+  },
+  {
+    name: "Centro CEDECOR - SEDRONAR",
+    type: "clinic",
+    province: "Buenos Aires",
+    city: "Mar del Plata",
+    phone: "0800-333-1665",
+    description: "Centro de Día para el abordaje de consumos problemáticos. Modalidad ambulatoria con equipos interdisciplinarios.",
+    services: ["Atención ambulatoria", "Grupos terapéuticos", "Orientación familiar", "Talleres", "Seguimiento individual"],
+    free: true
+  },
+
+  // Córdoba
+  {
+    name: "Hospital Neuropsiquiátrico Provincial",
+    type: "hospital",
+    province: "Córdoba",
+    city: "Córdoba",
+    address: "Av. Vélez Sársfield 1395",
+    phone: "0351 468-1300",
+    description: "Hospital con servicio de adicciones. Internación, consultas externas y programas ambulatorios.",
+    services: ["Internación", "Consultas externas", "Desintoxicación", "Hospital de Día", "Grupos"],
+    hours: "Guardia 24hs",
+    free: true
+  },
+  {
+    name: "Programa Provincial de Prevención y Asistencia de las Adicciones",
+    type: "clinic",
+    province: "Córdoba",
+    city: "Córdoba",
+    phone: "0351 434-3258",
+    description: "Red provincial de centros de atención para consumos problemáticos. Derivación y coordinación territorial.",
+    services: ["Derivación a centros", "Orientación", "Programas ambulatorios", "Prevención comunitaria"],
+    free: true
+  },
+
+  // Santa Fe
+  {
+    name: "Hospital Mira y López",
+    type: "hospital",
+    province: "Santa Fe",
+    city: "Santa Fe",
+    address: "Blas Parera 8300",
+    phone: "0342 489-3368",
+    description: "Hospital psiquiátrico con unidad de adicciones. Internación, consultas y programas terapéuticos.",
+    services: ["Internación", "Consultas externas", "Desintoxicación", "Grupos terapéuticos"],
+    hours: "Guardia 24hs",
+    free: true
+  },
+
+  // Mendoza
+  {
+    name: "Centro Integral de Adicciones - Hospital El Sauce",
+    type: "clinic",
+    province: "Mendoza",
+    city: "Guaymallén",
+    phone: "0261 449-9200",
+    description: "Centro especializado en tratamiento de adicciones. Modalidad ambulatoria e internación.",
+    services: ["Internación", "Consultas", "Hospital de Día", "Grupos", "Atención familiar"],
+    free: true
+  },
+
+  // Tucumán
+  {
+    name: "Hospital del Carmen - Servicio de Adicciones",
+    type: "hospital",
+    province: "Tucumán",
+    city: "San Miguel de Tucumán",
+    address: "Av. Aconquija 1050",
+    phone: "0381 450-6000",
+    description: "Hospital general con servicio de adicciones. Consultas externas e internación breve.",
+    services: ["Consultas externas", "Internación breve", "Desintoxicación", "Derivación"],
+    hours: "Lunes a viernes 8-13hs",
+    free: true
+  },
+
+  // NGOs and Community Organizations
+  {
+    name: "FONGA - Fundación Nuestros Gurises en Acción",
+    type: "ngo",
+    province: "Ciudad Autónoma de Buenos Aires",
+    city: "Buenos Aires",
+    website: "https://www.fonga.org.ar",
+    description: "ONG que trabaja en prevención y asistencia a jóvenes en situación de vulnerabilidad. Programas de reducción de daños y acompañamiento.",
+    services: ["Reducción de daños", "Talleres", "Acompañamiento", "Asesoramiento", "Prevención comunitaria"],
+    free: true
+  },
+  {
+    name: "Intercambios A.C.",
+    type: "ngo",
+    province: "Ciudad Autónoma de Buenos Aires",
+    city: "Buenos Aires",
+    website: "https://www.intercambios.org.ar",
+    phone: "011 4363-2358",
+    description: "Asociación civil pionera en reducción de daños en Argentina. Programas de intercambio de jeringas, testeo de sustancias y capacitación.",
+    services: ["Intercambio de jeringas", "Testeo de VIH/Hepatitis", "Capacitación", "Asesoramiento", "Materiales de prevención"],
+    free: true
+  },
+  {
+    name: "Mamisepuede",
+    type: "ngo",
+    province: "Ciudad Autónoma de Buenos Aires",
+    city: "Buenos Aires",
+    website: "https://www.instagram.com/mamisepuede.ok/",
+    description: "Organización de reducción de daños con presencia en eventos y festivales. Testeo de sustancias, información y acompañamiento.",
+    services: ["Testeo de sustancias", "Información en eventos", "Acompañamiento", "Talleres", "Materiales educativos"],
+    free: true
+  },
+  {
+    name: "ArgenPills",
+    type: "ngo",
+    province: "Nacional",
+    website: "https://argenpills.org",
+    description: "Principal organización de análisis y reducción de daños en Argentina. Base de datos de pastillas analizadas, alertas territoriales y testeo gratuito.",
+    services: ["Testeo de sustancias (GC/MS)", "Alertas de adulteración", "Base de datos de análisis", "Información", "Talleres"],
+    free: true
+  },
+
+  // Therapy and Support Groups
+  {
+    name: "Narcóticos Anónimos Argentina",
+    type: "community_center",
+    province: "Nacional",
+    website: "https://na.org.ar",
+    phone: "0800-333-4720",
+    description: "Comunidad de recuperación basada en los 12 pasos. Reuniones en todo el país, gratuitas y anónimas.",
+    services: ["Grupos de autoayuda", "Apadrinamiento", "Reuniones semanales", "Apoyo entre pares"],
+    free: true
+  },
+  {
+    name: "Alcohólicos Anónimos Argentina",
+    type: "community_center",
+    province: "Nacional",
+    website: "https://aa.org.ar",
+    description: "Comunidad de recuperación del alcoholismo basada en los 12 pasos. Reuniones gratuitas en todo el país.",
+    services: ["Grupos de autoayuda", "Apadrinamiento", "Reuniones semanales", "Apoyo entre pares"],
+    free: true
+  },
+
+  // Additional Provincial Resources
+  {
+    name: "Programa Provincial de Adicciones de Salta",
+    type: "clinic",
+    province: "Salta",
+    city: "Salta",
+    phone: "0387 431-3333",
+    description: "Red provincial de centros de atención. Derivación, consultas y programas ambulatorios.",
+    services: ["Derivación", "Consultas", "Programas ambulatorios", "Prevención"],
+    free: true
+  },
+  {
+    name: "Centro de Día Municipal - Rosario",
+    type: "community_center",
+    province: "Santa Fe",
+    city: "Rosario",
+    description: "Centro municipal de atención a consumos problemáticos. Modalidad de Hospital de Día con equipos interdisciplinarios.",
+    services: ["Hospital de Día", "Talleres", "Grupos terapéuticos", "Atención psicológica", "Orientación familiar"],
+    free: true
+  },
+  {
+    name: "Centro Provincial de Atención a las Adicciones - Neuquén",
+    type: "clinic",
+    province: "Neuquén",
+    city: "Neuquén",
+    description: "Centro especializado en adicciones. Atención ambulatoria, consultas e internación breve.",
+    services: ["Internación breve", "Consultas externas", "Hospital de Día", "Grupos", "Familia"],
+    free: true
+  }
+];
+
+export const RESOURCE_TYPES = [
+  { value: 'all', label: 'Todos los tipos' },
+  { value: 'hospital', label: 'Hospitales' },
+  { value: 'clinic', label: 'Centros/Clínicas' },
+  { value: 'hotline', label: 'Líneas telefónicas' },
+  { value: 'ngo', label: 'ONGs' },
+  { value: 'community_center', label: 'Centros comunitarios' },
+  { value: 'therapy', label: 'Terapia/Apoyo' },
+] as const;

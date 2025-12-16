@@ -87,3 +87,19 @@ export interface TestingResource {
   description: string;
   contact?: string;
 }
+
+// Local resources types
+export interface LocalResource {
+  name: string;
+  type: 'hospital' | 'clinic' | 'hotline' | 'ngo' | 'community_center' | 'therapy';
+  province: string;
+  city?: string;
+  address?: string;
+  phone?: string;
+  email?: string;
+  website?: string;
+  description: string;
+  services: string[];
+  hours?: string;
+  free?: boolean;
+}
