@@ -1,105 +1,225 @@
-
 import React, { useState, useMemo } from 'react';
 import { MAP_DATA } from '../constants';
+import { PageShell } from './ui/PageShell';
+import { Section, Callout, Chip, Divider } from './ui/Section';
 import type { MapDataset } from '../types';
 
 const SearchIcon: React.FC = () => (
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-5 h-5">
-        <path fillRule="evenodd" d="M9 3.5a5.5 5.5 0 1 0 0 11 5.5 5.5 0 0 0 0 -11ZM2 9a7 7 0 1 1 12.452 4.391l3.328 3.329a.75.75 0 1 1-1.06 1.06l-3.329-3.328A7 7 0 0 1 2 9Z" clipRule="evenodd" />
-    </svg>
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-5 h-5">
+    <path fillRule="evenodd" d="M9 3.5a5.5 5.5 0 1 0 0 11 5.5 5.5 0 0 0 0 -11ZM2 9a7 7 0 1 1 12.452 4.391l3.328 3.329a.75.75 0 1 1-1.06 1.06l-3.329-3.328A7 7 0 0 1 2 9Z" clipRule="evenodd" />
+  </svg>
 );
 
-interface ProvinceCardProps {
-  provinceName: string;
-  data: MapDataset;
+interface Signal {
+  location: string;
+  totalQueries: number;
+  severity: 'high' | 'medium' | 'low';
+  topCategories: Array<{ category: string; percentage: number }>;
 }
 
-const ProvinceCard: React.FC<ProvinceCardProps> = ({ provinceName, data }) => {
+const getSeverity = (queries: number): 'high' | 'medium' | 'low' => {
+  if (queries > 1500) return 'high';
+  if (queries > 800) return 'medium';
+  return 'low';
+};
+
+const getSeverityStyle = (severity: 'high' | 'medium' | 'low') => {
+  const styles = {
+    high: { bg: 'rgba(239, 68, 68, 0.12)', color: '#ef4444', label: 'Alta' },
+    medium: { bg: 'rgba(251, 146, 60, 0.12)', color: '#fb923c', label: 'Media' },
+    low: { bg: 'rgba(34, 197, 94, 0.12)', color: '#22c55e', label: 'Baja' }
+  };
+  return styles[severity];
+};
+
+const SignalRow: React.FC<{ signal: Signal; index: number }> = ({ signal, index }) => {
+  const severityStyle = getSeverityStyle(signal.severity);
+
+  // Generate narrative summary
+  const narrative = signal.topCategories.length > 0
+    ? `${signal.topCategories[0].category} (${signal.topCategories[0].percentage}%)${
+        signal.topCategories.length > 1
+          ? `, ${signal.topCategories[1].category} (${signal.topCategories[1].percentage}%)`
+          : ''
+      }${
+        signal.topCategories.length > 2
+          ? `, ${signal.topCategories[2].category} (${signal.topCategories[2].percentage}%)`
+          : ''
+      }`
+    : 'Sin datos de categorías';
+
   return (
-    <div className="bg-[#1b1d21] p-4 rounded-lg border border-[#2a2d33]">
-      <h4 className="font-bold text-gray-100">{provinceName}</h4>
-      <div className="mt-3">
-        <p className="text-sm text-gray-400">Consultas totales: <span className="font-bold text-gray-200">{data.totalQueries.toLocaleString('es-AR')}</span></p>
+    <div
+      className="flex items-start gap-4 p-4 rounded-lg border-l-2"
+      style={{
+        background: 'var(--surface-1)',
+        borderColor: 'var(--border)',
+        borderLeftColor: severityStyle.color,
+        animation: `fadeIn 0.2s ease-out ${index * 0.05}s both`
+      }}
+    >
+      {/* Location & Severity */}
+      <div className="flex-1 min-w-0">
+        <div className="flex items-center gap-3 mb-2">
+          <h3
+            className="text-sm font-semibold"
+            style={{ color: 'var(--text)' }}
+          >
+            {signal.location}
+          </h3>
+          <span
+            className="px-2 py-0.5 rounded-full text-xs font-medium"
+            style={{
+              background: severityStyle.bg,
+              color: severityStyle.color
+            }}
+          >
+            {severityStyle.label}
+          </span>
+        </div>
+
+        {/* Narrative summary */}
+        <p
+          className="editorial text-sm leading-relaxed"
+          style={{ color: 'var(--muted)' }}
+        >
+          {narrative}
+        </p>
       </div>
-      <div className="mt-4">
-        <h5 className="text-sm font-semibold text-gray-300 mb-2">Categorías principales:</h5>
-        {data.topCategories.length > 0 ? (
-          <ul className="space-y-3">
-            {data.topCategories.map(cat => (
-              <li key={cat.category}>
-                <div className="flex justify-between text-xs mb-1">
-                  <span className="text-gray-400">{cat.category}</span>
-                  <span className="text-gray-300">{cat.percentage}%</span>
-                </div>
-                <div className="w-full bg-gray-600/50 rounded-full h-1.5">
-                  <div className="bg-blue-500 h-1.5 rounded-full" style={{ width: `${cat.percentage}%` }}></div>
-                </div>
-              </li>
-            ))}
-          </ul>
-        ) : (
-          <p className="text-xs text-gray-500">No hay suficientes datos de categorías para esta provincia.</p>
-        )}
+
+      {/* Queries count */}
+      <div className="flex-shrink-0 text-right">
+        <div
+          className="text-2xl font-semibold"
+          style={{ color: 'var(--text)' }}
+        >
+          {signal.totalQueries.toLocaleString('es-AR')}
+        </div>
+        <div
+          className="text-xs mt-1"
+          style={{ color: 'var(--muted)' }}
+        >
+          consultas
+        </div>
       </div>
     </div>
   );
 };
 
 export const Observatory: React.FC = () => {
-    const [searchTerm, setSearchTerm] = useState('');
+  const [searchTerm, setSearchTerm] = useState('');
 
-    const provinceData = useMemo(() => {
-        const dataArray = Object.entries(MAP_DATA)
-            .map(([provinceName, data]) => ({ provinceName, data }))
-            // Sort by total queries descending
-            .sort((a, b) => b.data.totalQueries - a.data.totalQueries);
-        
-        if (!searchTerm) {
-            return dataArray;
-        }
+  const signals = useMemo((): Signal[] => {
+    const signalsArray = Object.entries(MAP_DATA)
+      .map(([location, data]) => ({
+        location,
+        totalQueries: data.totalQueries,
+        severity: getSeverity(data.totalQueries),
+        topCategories: data.topCategories
+      }))
+      .sort((a, b) => b.totalQueries - a.totalQueries);
 
-        const lowercasedFilter = searchTerm.toLowerCase();
-        return dataArray.filter(({ provinceName }) => 
-            provinceName.toLowerCase().includes(lowercasedFilter)
-        );
+    if (!searchTerm) {
+      return signalsArray;
+    }
 
-    }, [searchTerm]);
-
-    return (
-        <div className="flex-1 overflow-y-auto pb-4 flex flex-col">
-            <div className="mb-4">
-                <h3 className="text-lg font-bold text-gray-100">Observatorio Territorial Anónimo</h3>
-                <p className="text-xs text-gray-400 mt-1">
-                    Datos agregados y anónimos de consultas por provincia, ordenados por cantidad.
-                </p>
-            </div>
-            
-            <div className="relative mb-4">
-                <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3 text-gray-400">
-                    <SearchIcon />
-                </div>
-                <input
-                    type="text"
-                    placeholder="Buscar provincia..."
-                    value={searchTerm}
-                    onChange={(e) => setSearchTerm(e.target.value)}
-                    className="w-full p-3 pl-10 text-sm bg-[#121316] text-white border border-[#2a2d33] rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none transition-all"
-                />
-            </div>
-    
-            <div className="flex-1 overflow-y-auto">
-                {provinceData.length > 0 ? (
-                    <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
-                        {provinceData.map(({ provinceName, data }) => (
-                            <ProvinceCard key={provinceName} provinceName={provinceName} data={data} />
-                        ))}
-                    </div>
-                ) : (
-                    <div className="text-center py-10">
-                        <p className="text-gray-400">No se encontraron resultados para "{searchTerm}".</p>
-                    </div>
-                )}
-            </div>
-        </div>
+    const lowercasedFilter = searchTerm.toLowerCase();
+    return signalsArray.filter(signal =>
+      signal.location.toLowerCase().includes(lowercasedFilter)
     );
+  }, [searchTerm]);
+
+  return (
+    <div className="flex-1 flex flex-col min-h-0 overflow-y-auto">
+      <div className="max-w-4xl mx-auto w-full p-6 sm:p-8 lg:p-10 space-y-8">
+        {/* Header */}
+        <div>
+          <h1
+            className="text-2xl sm:text-3xl font-semibold"
+            style={{
+              color: 'var(--text)',
+              lineHeight: 'var(--line-height-heading)'
+            }}
+          >
+            Observatorio Territorial
+          </h1>
+          <p className="editorial text-sm mt-2" style={{ color: 'var(--muted)' }}>
+            Señales agregadas y anónimas de consultas por provincia
+          </p>
+        </div>
+
+        {/* Search */}
+        <div className="relative">
+          <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3" style={{ color: 'var(--muted)' }}>
+            <SearchIcon />
+          </div>
+          <input
+            type="text"
+            placeholder="Buscar provincia..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            className="w-full p-3 pl-10 text-sm rounded-[var(--radius-md)] border focus:outline-none focus:ring-2"
+            style={{
+              background: 'var(--surface-1)',
+              color: 'var(--text)',
+              borderColor: 'var(--border)',
+              transition: `all var(--t-fast) var(--ease)`
+            }}
+            onFocus={(e) => {
+              e.currentTarget.style.borderColor = 'var(--accent)';
+              e.currentTarget.style.boxShadow = `0 0 0 3px var(--accent-weak)`;
+            }}
+            onBlur={(e) => {
+              e.currentTarget.style.borderColor = 'var(--border)';
+              e.currentTarget.style.boxShadow = 'none';
+            }}
+          />
+        </div>
+
+        {/* Signal Timeline */}
+        <Section
+          title="Señales de Actividad"
+          meta={`${signals.length} provincia${signals.length !== 1 ? 's' : ''} registrada${signals.length !== 1 ? 's' : ''}`}
+        >
+          {signals.length > 0 ? (
+            <div className="space-y-3">
+              {signals.map((signal, idx) => (
+                <SignalRow key={signal.location} signal={signal} index={idx} />
+              ))}
+            </div>
+          ) : (
+            <div className="text-center py-12">
+              <p className="editorial text-sm" style={{ color: 'var(--muted)' }}>
+                No se encontraron resultados para "{searchTerm}"
+              </p>
+            </div>
+          )}
+        </Section>
+
+        <Divider />
+
+        {/* Context callout */}
+        <Callout variant="neutral" icon="ℹ️">
+          <p className="editorial text-sm" style={{ color: 'var(--muted)' }}>
+            <strong style={{ color: 'var(--text)' }}>Sobre estos datos:</strong> Las señales territoriales muestran consultas agregadas y completamente anónimas. No se recopila información personal identificable. La actividad alta en una provincia no indica necesariamente mayor consumo, sino mayor acceso a información de reducción de daños.
+          </p>
+        </Callout>
+
+        {/* Map Visualization Section - Placeholder */}
+        <Section title="Visualización Territorial" meta="Mapa interactivo de Argentina">
+          <div
+            className="w-full rounded-lg border p-8 flex items-center justify-center min-h-[400px]"
+            style={{
+              background: 'var(--surface-1)',
+              borderColor: 'var(--border)'
+            }}
+          >
+            <p className="editorial text-sm text-center" style={{ color: 'var(--muted)' }}>
+              Visualización de mapa en desarrollo
+            </p>
+          </div>
+        </Section>
+      </div>
+    </div>
+  );
 };
