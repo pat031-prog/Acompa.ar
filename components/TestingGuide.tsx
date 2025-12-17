@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { REAGENT_TESTS, TESTING_RESOURCES, TESTING_GUIDE } from '../constants';
+import { Section, Callout, Chip } from './ui/Section';
 
 // Icons
 const BeakerIcon: React.FC = () => (
@@ -15,275 +16,432 @@ const MapPinIcon: React.FC = () => (
   </svg>
 );
 
-const BookOpenIcon: React.FC = () => (
-  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5">
-    <path strokeLinecap="round" strokeLinejoin="round" d="M12 6.042A8.967 8.967 0 0 0 6 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 0 1 6 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 0 1 6-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0 0 18 18a8.967 8.967 0 0 0-6 2.292m0-14.25v14.25" />
-  </svg>
-);
+type Step = 1 | 2 | 3 | 4 | 5;
 
-const ExclamationTriangleIcon: React.FC = () => (
-  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5">
-    <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126ZM12 15.75h.007v.008H12v-.008Z" />
-  </svg>
-);
-
-type Section = 'guide' | 'reagents' | 'resources' | 'adulterants';
+const steps: Array<{ id: Step; label: string; title: string }> = [
+  { id: 1, label: 'Preparar', title: 'Preparar el material' },
+  { id: 2, label: 'Aplicar', title: 'Aplicar el reactivo' },
+  { id: 3, label: 'Observar', title: 'Observar la reacción' },
+  { id: 4, label: 'Interpretar', title: 'Interpretar resultados' },
+  { id: 5, label: 'Actuar', title: 'Decidir y actuar' }
+];
 
 export const TestingGuide: React.FC = () => {
-  const [activeSection, setActiveSection] = useState<Section>('guide');
+  const [activeStep, setActiveStep] = useState<Step | null>(null);
+
+  const scrollToStep = (stepId: Step) => {
+    setActiveStep(stepId);
+    const element = document.getElementById(`step-${stepId}`);
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  };
 
   return (
-    <div className="flex-1 flex flex-col min-h-0">
-      <div className="p-6 sm:p-8 border-b border-gray-800">
-        <h1 className="text-2xl font-bold text-gray-100 flex items-center gap-2">
-          <BeakerIcon />
-          Guía de Testeo de Sustancias
-        </h1>
-        <p className="text-sm text-gray-400 mt-1">
-          Información completa sobre reactivos, recursos y cómo testear sustancias en Argentina
-        </p>
+    <div className="flex-1 flex flex-col lg:flex-row min-h-0">
+      {/* Left rail: Step navigation (desktop) */}
+      <div
+        className="hidden lg:flex lg:w-64 xl:w-80 flex-col border-r p-6 space-y-2"
+        style={{ borderColor: 'var(--border)' }}
+      >
+        <h3
+          className="text-sm font-semibold mb-4"
+          style={{ color: 'var(--text)' }}
+        >
+          Pasos
+        </h3>
+        {steps.map((step) => (
+          <button
+            key={step.id}
+            onClick={() => scrollToStep(step.id)}
+            className="text-left px-3 py-2.5 rounded-lg text-sm active:scale-98"
+            style={{
+              background: activeStep === step.id ? 'var(--surface-3)' : 'transparent',
+              color: activeStep === step.id ? 'var(--text)' : 'var(--muted)',
+              fontWeight: activeStep === step.id ? 500 : 400,
+              borderLeft: activeStep === step.id ? `2px solid var(--accent)` : '2px solid transparent',
+              transition: `all var(--t-fast) var(--ease)`
+            }}
+          >
+            <div className="flex items-center gap-2">
+              <span
+                className="flex-shrink-0 w-6 h-6 rounded-full flex items-center justify-center text-xs font-semibold"
+                style={{
+                  background: activeStep === step.id ? 'var(--accent)' : 'var(--surface-2)',
+                  color: activeStep === step.id ? 'white' : 'var(--muted)'
+                }}
+              >
+                {step.id}
+              </span>
+              <span>{step.label}</span>
+            </div>
+          </button>
+        ))}
+
+        {/* Quick links */}
+        <div className="pt-6 mt-6" style={{ borderTop: `1px solid var(--border)` }}>
+          <h3
+            className="text-sm font-semibold mb-4"
+            style={{ color: 'var(--text)' }}
+          >
+            Más información
+          </h3>
+          <a
+            href="#recursos"
+            className="block px-3 py-2 rounded-lg text-sm hover:underline"
+            style={{
+              color: 'var(--muted)',
+              transition: `all var(--t-fast) var(--ease)`
+            }}
+          >
+            Dónde conseguir kits
+          </a>
+          <a
+            href="#adulterantes"
+            className="block px-3 py-2 rounded-lg text-sm hover:underline"
+            style={{
+              color: 'var(--muted)',
+              transition: `all var(--t-fast) var(--ease)`
+            }}
+          >
+            Adulterantes comunes
+          </a>
+        </div>
       </div>
 
-      {/* Navigation tabs */}
-      <div className="flex gap-2 p-5 sm:p-6 border-b border-gray-800 overflow-x-auto">
-        <button
-          onClick={() => setActiveSection('guide')}
-          className={`px-4 py-2 text-sm rounded-lg transition-all whitespace-nowrap ${
-            activeSection === 'guide'
-              ? 'bg-blue-600 text-white font-semibold'
-              : 'bg-gray-700/40 text-gray-300 hover:bg-gray-700/60'
-          }`}
-        >
-          <div className="flex items-center gap-2">
-            <BookOpenIcon />
-            Guía de Testeo
+      {/* Main content */}
+      <div className="flex-1 overflow-y-auto">
+        <div className="max-w-3xl mx-auto p-6 sm:p-8 lg:p-10 space-y-12">
+          {/* Mobile step chips */}
+          <div className="lg:hidden flex flex-wrap gap-2 mb-6">
+            {steps.map((step) => (
+              <Chip
+                key={step.id}
+                label={`${step.id}. ${step.label}`}
+                active={activeStep === step.id}
+                onClick={() => scrollToStep(step.id)}
+              />
+            ))}
           </div>
-        </button>
-        <button
-          onClick={() => setActiveSection('reagents')}
-          className={`px-4 py-2 text-sm rounded-lg transition-all whitespace-nowrap ${
-            activeSection === 'reagents'
-              ? 'bg-blue-600 text-white font-semibold'
-              : 'bg-gray-700/40 text-gray-300 hover:bg-gray-700/60'
-          }`}
-        >
-          <div className="flex items-center gap-2">
-            <BeakerIcon />
-            Reactivos
-          </div>
-        </button>
-        <button
-          onClick={() => setActiveSection('resources')}
-          className={`px-4 py-2 text-sm rounded-lg transition-all whitespace-nowrap ${
-            activeSection === 'resources'
-              ? 'bg-blue-600 text-white font-semibold'
-              : 'bg-gray-700/40 text-gray-300 hover:bg-gray-700/60'
-          }`}
-        >
-          <div className="flex items-center gap-2">
-            <MapPinIcon />
-            Dónde Conseguir
-          </div>
-        </button>
-        <button
-          onClick={() => setActiveSection('adulterants')}
-          className={`px-4 py-2 text-sm rounded-lg transition-all whitespace-nowrap ${
-            activeSection === 'adulterants'
-              ? 'bg-blue-600 text-white font-semibold'
-              : 'bg-gray-700/40 text-gray-300 hover:bg-gray-700/60'
-          }`}
-        >
-          <div className="flex items-center gap-2">
-            <ExclamationTriangleIcon />
-            Adulterantes Comunes
-          </div>
-        </button>
-      </div>
 
-      {/* Content */}
-      <div className="flex-1 overflow-y-auto p-6 sm:p-8 md:p-10 lg:p-12">
-        {activeSection === 'guide' && <GuideSection />}
-        {activeSection === 'reagents' && <ReagentsSection />}
-        {activeSection === 'resources' && <ResourcesSection />}
-        {activeSection === 'adulterants' && <AdulterantsSection />}
+          {/* Introduction */}
+          <Section spacing="loose">
+            <Callout variant="neutral" icon="🧪">
+              {TESTING_GUIDE.intro}
+            </Callout>
+          </Section>
+
+          {/* Why test */}
+          <Section title="¿Por qué testear?" spacing="loose">
+            <ul className="editorial space-y-3 text-sm" style={{ color: 'var(--muted)' }}>
+              {TESTING_GUIDE.whyTest.map((reason, idx) => (
+                <li
+                  key={idx}
+                  className="relative pl-6"
+                  style={{ animation: `fadeIn 0.2s ease-out ${idx * 0.05}s both` }}
+                  dangerouslySetInnerHTML={{
+                    __html: `<span class="absolute left-0" style="color: var(--accent)">•</span>${reason.replace(/\*\*(.*?)\*\*/g, '<strong style="color: var(--text); font-weight: 600">$1</strong>')}`
+                  }}
+                />
+              ))}
+            </ul>
+          </Section>
+
+          {/* Step 1: Prepare */}
+          <Section
+            title="1. Preparar"
+            meta="Reúne el material y prepara el espacio de trabajo"
+            spacing="normal"
+          >
+            <div id="step-1" className="scroll-mt-4">
+              <div className="editorial text-sm space-y-4" style={{ color: 'var(--muted)' }}>
+                <p>
+                  <strong style={{ color: 'var(--text)' }}>Material necesario:</strong> Kit de reactivos (Marquis, Mecke, Mandelin, etc.), placa de cerámica blanca, muestra pequeña de la sustancia (una pizca), guantes desechables.
+                </p>
+                <p>
+                  Trabajá en un espacio bien iluminado y ventilado. Los reactivos son corrosivos y deben manejarse con cuidado.
+                </p>
+                <Callout variant="warning" icon="⚠️">
+                  <strong>Seguridad:</strong> Usá guantes. No toques los reactivos directamente. Mantené alejado de niños y mascotas.
+                </Callout>
+              </div>
+            </div>
+          </Section>
+
+          {/* Step 2: Apply */}
+          <Section
+            title="2. Aplicar"
+            meta="Coloca la muestra y añade el reactivo"
+            spacing="normal"
+          >
+            <div id="step-2" className="scroll-mt-4">
+              <div className="editorial text-sm space-y-4" style={{ color: 'var(--muted)' }}>
+                <p>
+                  Colocá una cantidad muy pequeña de la sustancia (del tamaño de un grano de arroz) sobre la placa blanca. Añadí 1-2 gotas del reactivo directamente sobre la muestra.
+                </p>
+                <p>
+                  <strong style={{ color: 'var(--text)' }}>Importante:</strong> No agregues demasiado reactivo. Una gota es suficiente para ver la reacción.
+                </p>
+              </div>
+            </div>
+          </Section>
+
+          {/* Step 3: Observe */}
+          <Section
+            title="3. Observar"
+            meta="Espera y observa el cambio de color"
+            spacing="normal"
+          >
+            <div id="step-3" className="scroll-mt-4">
+              <div className="editorial text-sm space-y-4" style={{ color: 'var(--muted)' }}>
+                <p>
+                  La reacción ocurre rápidamente, generalmente en segundos. Observá el color inmediato y cualquier cambio que ocurra en los primeros 30-60 segundos.
+                </p>
+                <p>
+                  Anotá o fotografiá el color resultante para compararlo con las tablas de referencia.
+                </p>
+              </div>
+            </div>
+          </Section>
+
+          {/* Step 4: Interpret - with color swatches */}
+          <Section
+            title="4. Interpretar"
+            meta="Compara el color con las tablas de referencia"
+            spacing="normal"
+          >
+            <div id="step-4" className="scroll-mt-4">
+              <div className="editorial text-sm space-y-4 mb-6" style={{ color: 'var(--muted)' }}>
+                <p>
+                  Cada reactivo produce colores diferentes para cada sustancia. <strong style={{ color: 'var(--text)' }}>Usá VARIOS reactivos</strong> para confirmar la identidad de una sustancia, ya que un solo reactivo puede dar falsos positivos.
+                </p>
+              </div>
+
+              {/* Reagent color tables */}
+              <div className="space-y-6">
+                {REAGENT_TESTS.map((reagent) => (
+                  <div key={reagent.name}>
+                    <h4
+                      className="text-sm font-semibold mb-3"
+                      style={{ color: 'var(--text)' }}
+                    >
+                      {reagent.name}
+                    </h4>
+                    <p
+                      className="editorial text-xs mb-3"
+                      style={{ color: 'var(--muted)' }}
+                    >
+                      {reagent.description}
+                    </p>
+                    <div className="space-y-2">
+                      {reagent.substances.map((sub, idx) => (
+                        <div
+                          key={idx}
+                          className="flex items-center justify-between py-2 px-3 rounded-lg border"
+                          style={{
+                            background: 'var(--surface-1)',
+                            borderColor: 'var(--border)'
+                          }}
+                        >
+                          <span
+                            className="text-sm font-medium"
+                            style={{ color: 'var(--text)' }}
+                          >
+                            {sub.substance}
+                          </span>
+                          <div className="flex items-center gap-3">
+                            <span
+                              className="text-xs"
+                              style={{ color: 'var(--muted)' }}
+                            >
+                              {sub.reaction}
+                            </span>
+                            <div
+                              className="w-12 h-6 rounded border flex-shrink-0"
+                              style={{
+                                backgroundColor: sub.color,
+                                borderColor: 'var(--border)'
+                              }}
+                              title={sub.reaction}
+                            />
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              <Callout variant="warning" icon="ℹ️">
+                <strong>Limitaciones:</strong> Los reactivos de color NO detectan todos los adulterantes ni confirman pureza. Para análisis completo (GC/MS), contactá con organizaciones especializadas.
+              </Callout>
+            </div>
+          </Section>
+
+          {/* Step 5: Act */}
+          <Section
+            title="5. Actuar"
+            meta="Toma decisiones informadas sobre el consumo"
+            spacing="normal"
+          >
+            <div id="step-5" className="scroll-mt-4">
+              <div className="editorial text-sm space-y-4" style={{ color: 'var(--muted)' }}>
+                <p>
+                  Si el test confirma la presencia de la sustancia esperada:
+                </p>
+                <ul className="list-disc pl-5 space-y-2">
+                  <li>Considerá empezar con dosis bajas</li>
+                  <li>Asegurate de tener un entorno seguro</li>
+                  <li>Nunca consumas solo/a</li>
+                </ul>
+                <p className="mt-4">
+                  Si el test muestra resultados inesperados o presencia de adulterantes:
+                </p>
+                <ul className="list-disc pl-5 space-y-2">
+                  <li><strong style={{ color: 'var(--text)' }}>No consumir</strong></li>
+                  <li>Descarta la sustancia de forma segura</li>
+                  <li>Avisa a tu red sobre sustancias adulteradas en circulación</li>
+                </ul>
+                <Callout variant="warning" icon="🚨">
+                  <strong>Recuerda:</strong> Un test negativo no garantiza seguridad total. Siempre aplicá estrategias de reducción de daños.
+                </Callout>
+              </div>
+            </div>
+          </Section>
+
+          {/* Recommendations */}
+          <Section title="Recomendaciones importantes" spacing="loose">
+            <ul className="editorial space-y-3 text-sm" style={{ color: 'var(--muted)' }}>
+              {TESTING_GUIDE.recommendations.map((rec, idx) => (
+                <li
+                  key={idx}
+                  className="relative pl-6"
+                  dangerouslySetInnerHTML={{
+                    __html: `<span class="absolute left-0" style="color: var(--accent)">•</span>${rec.replace(/\*\*(.*?)\*\*/g, '<strong style="color: var(--text); font-weight: 600">$1</strong>')}`
+                  }}
+                />
+              ))}
+            </ul>
+          </Section>
+
+          {/* Resources */}
+          <Section
+            title="Dónde conseguir kits"
+            meta="Recursos en Argentina para acceder a kits de testeo"
+            spacing="loose"
+          >
+            <div id="recursos" className="scroll-mt-4">
+              <div className="space-y-4">
+                {TESTING_RESOURCES.map((resource, idx) => (
+                  <div
+                    key={idx}
+                    className="border rounded-lg p-5"
+                    style={{
+                      background: 'var(--surface-1)',
+                      borderColor: 'var(--border)'
+                    }}
+                  >
+                    <div className="flex items-start gap-3">
+                      <div
+                        className="flex-shrink-0 w-10 h-10 rounded-lg flex items-center justify-center"
+                        style={{
+                          background: resource.type === 'organization'
+                            ? 'rgba(168, 85, 247, 0.1)'
+                            : resource.type === 'online'
+                            ? 'rgba(59, 130, 246, 0.1)'
+                            : 'rgba(34, 197, 94, 0.1)',
+                          color: resource.type === 'organization'
+                            ? '#a855f7'
+                            : resource.type === 'online'
+                            ? '#3b82f6'
+                            : '#22c55e'
+                        }}
+                      >
+                        {resource.type === 'physical' ? <MapPinIcon /> : <BeakerIcon />}
+                      </div>
+                      <div className="flex-1">
+                        <h4
+                          className="font-semibold text-sm"
+                          style={{ color: 'var(--text)' }}
+                        >
+                          {resource.name}
+                        </h4>
+                        {resource.location && (
+                          <p className="text-xs mt-0.5" style={{ color: 'var(--muted)' }}>
+                            📍 {resource.location}
+                          </p>
+                        )}
+                        <p
+                          className="editorial text-xs mt-2"
+                          style={{ color: 'var(--muted)' }}
+                        >
+                          {resource.description}
+                        </p>
+                        {resource.website && (
+                          <a
+                            href={resource.website}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="text-xs mt-2 inline-block hover:underline"
+                            style={{ color: 'var(--accent)' }}
+                          >
+                            🔗 {resource.website}
+                          </a>
+                        )}
+                        {resource.contact && (
+                          <p className="text-xs mt-1" style={{ color: 'var(--muted)' }}>
+                            📞 {resource.contact}
+                          </p>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </Section>
+
+          {/* Adulterants */}
+          <Section
+            title="Adulterantes comunes"
+            meta="Sustancias peligrosas que pueden estar presentes"
+            spacing="loose"
+          >
+            <div id="adulterantes" className="scroll-mt-4">
+              <Callout variant="warning" icon="⚠️">
+                <strong>Advertencia:</strong> Estos son algunos de los adulterantes más peligrosos en el mercado ilegal. El testeo es fundamental para detectarlos.
+              </Callout>
+
+              <div className="space-y-3 mt-6">
+                {TESTING_GUIDE.commonAdulterants.map((adulterant, idx) => (
+                  <div
+                    key={idx}
+                    className="border-l-2 rounded-lg p-4"
+                    style={{
+                      background: 'var(--surface-1)',
+                      borderColor: 'var(--border)',
+                      borderLeftColor: 'rgba(239, 68, 68, 0.4)'
+                    }}
+                  >
+                    <h5
+                      className="font-semibold text-sm flex items-center gap-2"
+                      style={{ color: 'var(--text)' }}
+                    >
+                      {adulterant.substance}
+                    </h5>
+                    <p
+                      className="editorial text-xs mt-1"
+                      style={{ color: 'var(--muted)' }}
+                    >
+                      {adulterant.risk}
+                    </p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </Section>
+        </div>
       </div>
     </div>
   );
 };
-
-const GuideSection: React.FC = () => (
-  <div className="max-w-4xl mx-auto space-y-8">
-    <div
-      className="bg-[var(--surface-1)] border border-[var(--border)] rounded-[var(--radius-lg)] p-6 transition-all duration-300 hover:shadow-[var(--shadow-2)]"
-      style={{ borderLeft: '3px solid var(--accent)' }}
-    >
-      <p className="editorial text-[var(--text)] leading-relaxed text-base">{TESTING_GUIDE.intro}</p>
-    </div>
-
-    <section className="space-y-4">
-      <h2 className="text-2xl font-semibold text-[var(--text)] mb-4">¿Por qué testear?</h2>
-      <ul className="space-y-3">
-        {TESTING_GUIDE.whyTest.map((reason, idx) => (
-          <li
-            key={idx}
-            className="editorial text-[var(--muted)] leading-relaxed pl-6 relative"
-            style={{
-              animation: `fadeIn 0.4s ease-out ${idx * 0.1}s both`,
-            }}
-            dangerouslySetInnerHTML={{
-              __html: `<span class="absolute left-0 text-[var(--accent)]">•</span>${reason.replace(/\*\*(.*?)\*\*/g, '<strong class="font-semibold text-[var(--text)]">$1</strong>')}`
-            }}
-          />
-        ))}
-      </ul>
-    </section>
-
-    <section>
-      <h2 className="text-xl font-bold text-gray-100 mb-3">Cómo testear paso a paso</h2>
-      <div className="space-y-4">
-        {TESTING_GUIDE.howToTest.map((step) => (
-          <div key={step.step} className="bg-gray-800/40 border border-gray-700 rounded-lg p-5 sm:p-6">
-            <div className="flex items-start gap-3">
-              <div className="flex-shrink-0 w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center text-white font-bold">
-                {step.step}
-              </div>
-              <div className="flex-1">
-                <h3 className="font-semibold text-gray-100">{step.title}</h3>
-                <p className="text-sm text-gray-300 mt-1">{step.description}</p>
-              </div>
-            </div>
-          </div>
-        ))}
-      </div>
-    </section>
-
-    <section>
-      <h2 className="text-xl font-bold text-gray-100 mb-3">Recomendaciones importantes</h2>
-      <ul className="space-y-2">
-        {TESTING_GUIDE.recommendations.map((rec, idx) => (
-          <li key={idx} className="text-gray-300 text-sm leading-relaxed" dangerouslySetInnerHTML={{ __html: rec.replace(/\*\*(.*?)\*\*/g, '<strong class="font-semibold text-yellow-300">$1</strong>') }} />
-        ))}
-      </ul>
-    </section>
-  </div>
-);
-
-const ReagentsSection: React.FC = () => (
-  <div className="max-w-5xl mx-auto space-y-6">
-    <p className="text-gray-300 text-sm">
-      Estos son los reactivos más comunes para testear sustancias. Cada reactivo reacciona de forma diferente con distintas sustancias, por eso es crucial usar varios reactivos para confirmar.
-    </p>
-
-    <div className="grid gap-6">
-      {REAGENT_TESTS.map((reagent) => (
-        <div key={reagent.name} className="bg-gray-800/40 border border-gray-700 rounded-lg overflow-hidden">
-          <div className="bg-gray-800/60 p-4 border-b border-gray-700">
-            <h3 className="text-lg font-bold text-gray-100">{reagent.name}</h3>
-            <p className="text-sm text-gray-400 mt-1">{reagent.description}</p>
-          </div>
-          <div className="p-4">
-            <div className="grid gap-2">
-              {reagent.substances.map((sub, idx) => (
-                <div key={idx} className="flex items-center justify-between p-2 bg-gray-900/40 rounded-md">
-                  <span className="text-sm text-gray-200 font-medium">{sub.substance}</span>
-                  <div className="flex items-center gap-3">
-                    <span className="text-xs text-gray-400">{sub.reaction}</span>
-                    <div
-                      className="w-12 h-6 rounded border border-gray-600"
-                      style={{ backgroundColor: sub.color }}
-                      title={sub.reaction}
-                    />
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-      ))}
-    </div>
-  </div>
-);
-
-const ResourcesSection: React.FC = () => (
-  <div className="max-w-4xl mx-auto space-y-6">
-    <p className="text-gray-300 text-sm">
-      Estos son los recursos disponibles en Argentina para conseguir kits de testeo o acceder a servicios de análisis de sustancias.
-    </p>
-
-    <div className="grid gap-5 sm:gap-6">
-      {TESTING_RESOURCES.map((resource, idx) => (
-        <div key={idx} className="bg-gray-800/40 border border-gray-700 rounded-lg p-5 sm:p-6">
-          <div className="flex items-start gap-3">
-            <div className="flex-shrink-0 mt-1">
-              {resource.type === 'organization' && (
-                <div className="w-10 h-10 bg-purple-600/20 rounded-lg flex items-center justify-center text-purple-400">
-                  <BeakerIcon />
-                </div>
-              )}
-              {resource.type === 'online' && (
-                <div className="w-10 h-10 bg-blue-600/20 rounded-lg flex items-center justify-center text-blue-400">
-                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5">
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M13.19 8.688a4.5 4.5 0 0 1 1.242 7.244l-4.5 4.5a4.5 4.5 0 0 1-6.364-6.364l1.757-1.757m13.35-.622 1.757-1.757a4.5 4.5 0 0 0-6.364-6.364l-4.5 4.5a4.5 4.5 0 0 0 1.242 7.244" />
-                  </svg>
-                </div>
-              )}
-              {resource.type === 'physical' && (
-                <div className="w-10 h-10 bg-green-600/20 rounded-lg flex items-center justify-center text-green-400">
-                  <MapPinIcon />
-                </div>
-              )}
-            </div>
-            <div className="flex-1">
-              <h3 className="font-semibold text-gray-100">{resource.name}</h3>
-              {resource.location && (
-                <p className="text-xs text-gray-400 mt-0.5">📍 {resource.location}</p>
-              )}
-              <p className="text-sm text-gray-300 mt-2">{resource.description}</p>
-              {resource.website && (
-                <a
-                  href={resource.website}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-xs text-blue-400 hover:text-blue-300 mt-2 inline-block"
-                >
-                  🔗 {resource.website}
-                </a>
-              )}
-              {resource.contact && (
-                <p className="text-xs text-gray-400 mt-1">📞 {resource.contact}</p>
-              )}
-            </div>
-          </div>
-        </div>
-      ))}
-    </div>
-  </div>
-);
-
-const AdulterantsSection: React.FC = () => (
-  <div className="max-w-4xl mx-auto space-y-6">
-    <div className="bg-white/[0.02] border border-white/[0.06] border-l-2 border-l-red-500/50 rounded-lg p-4">
-      <p className="text-gray-200 text-sm leading-relaxed">
-        <strong className="text-white/90">⚠️ Advertencia:</strong> Estos son algunos de los adulterantes más peligrosos que se encuentran en el mercado ilegal. El testeo de sustancias es fundamental para detectarlos.
-      </p>
-    </div>
-
-    <div className="grid gap-5 sm:gap-6">
-      {TESTING_GUIDE.commonAdulterants.map((adulterant, idx) => (
-        <div key={idx} className="bg-white/[0.02] border border-white/[0.06] border-l-2 border-l-red-500/40 rounded-lg p-4">
-          <h3 className="font-bold text-white/90 flex items-center gap-2">
-            <ExclamationTriangleIcon />
-            {adulterant.substance}
-          </h3>
-          <p className="text-sm text-white/70 mt-2">{adulterant.risk}</p>
-        </div>
-      ))}
-    </div>
-
-    <div className="bg-white/[0.02] border border-white/[0.06] border-l-2 border-l-blue-500/40 rounded-lg p-4 mt-6">
-      <p className="text-gray-200 text-sm leading-relaxed">
-        <strong className="text-white/90">💡 Recuerda:</strong> Los reactivos de color NO detectan todos los adulterantes. Para un análisis completo (GC/MS), llevá tus sustancias a organizaciones como ArgenPills.
-      </p>
-    </div>
-  </div>
-);
