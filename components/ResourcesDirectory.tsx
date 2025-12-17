@@ -1,36 +1,23 @@
 import React, { useState, useMemo } from 'react';
 import { LOCAL_RESOURCES, PROVINCES, RESOURCE_TYPES } from '../constants';
+import { Section, Callout, Chip } from './ui/Section';
 import type { LocalResource } from '../types';
 
-// Icons
 const PhoneIcon: React.FC = () => (
-  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5">
+  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-4 h-4">
     <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 0 0 2.25-2.25v-1.372c0-.516-.351-.966-.852-1.091l-4.423-1.106c-.44-.11-.902.055-1.173.417l-.97 1.293c-.282.376-.769.542-1.21.38a12.035 12.035 0 0 1-7.143-7.143c-.162-.441.004-.928.38-1.21l1.293-.97c.363-.271.527-.734.417-1.173L6.963 3.102a1.125 1.125 0 0 0-1.091-.852H4.5A2.25 2.25 0 0 0 2.25 4.5v2.25Z" />
   </svg>
 );
 
-const MapPinIcon: React.FC = () => (
-  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5">
-    <path strokeLinecap="round" strokeLinejoin="round" d="M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
-    <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1 1 15 0Z" />
-  </svg>
-);
-
-const ClockIcon: React.FC = () => (
-  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5">
-    <path strokeLinecap="round" strokeLinejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
-  </svg>
-);
-
 const GlobeIcon: React.FC = () => (
-  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5">
+  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-4 h-4">
     <path strokeLinecap="round" strokeLinejoin="round" d="M12 21a9.004 9.004 0 0 0 8.716-6.747M12 21a9.004 9.004 0 0 1-8.716-6.747M12 21c2.485 0 4.5-4.03 4.5-9S14.485 3 12 3m0 18c-2.485 0-4.5-4.03-4.5-9S9.515 3 12 3m0 0a8.997 8.997 0 0 1 7.843 4.582M12 3a8.997 8.997 0 0 0-7.843 4.582m15.686 0A11.953 11.953 0 0 1 12 10.5c-2.998 0-5.74-1.1-7.843-2.918m15.686 0A8.959 8.959 0 0 1 21 12c0 .778-.099 1.533-.284 2.253m0 0A17.919 17.919 0 0 1 12 16.5c-3.162 0-6.133-.815-8.716-2.247m0 0A9.015 9.015 0 0 1 3 12c0-1.605.42-3.113 1.157-4.418" />
   </svg>
 );
 
-const CheckBadgeIcon: React.FC = () => (
-  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5">
-    <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75 11.25 15 15 9.75M21 12c0 1.268-.63 2.39-1.593 3.068a3.745 3.745 0 0 1-1.043 3.296 3.745 3.745 0 0 1-3.296 1.043A3.745 3.745 0 0 1 12 21c-1.268 0-2.39-.63-3.068-1.593a3.746 3.746 0 0 1-3.296-1.043 3.745 3.745 0 0 1-1.043-3.296A3.745 3.745 0 0 1 3 12c0-1.268.63-2.39 1.593-3.068a3.745 3.745 0 0 1 1.043-3.296 3.746 3.746 0 0 1 3.296-1.043A3.746 3.746 0 0 1 12 3c1.268 0 2.39.63 3.068 1.593a3.746 3.746 0 0 1 3.296 1.043 3.746 3.746 0 0 1 1.043 3.296A3.745 3.745 0 0 1 21 12Z" />
+const SearchIcon: React.FC = () => (
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-5 h-5">
+    <path fillRule="evenodd" d="M9 3.5a5.5 5.5 0 1 0 0 11 5.5 5.5 0 0 0 0 -11ZM2 9a7 7 0 1 1 12.452 4.391l3.328 3.329a.75.75 0 1 1-1.06 1.06l-3.329-3.328A7 7 0 0 1 2 9Z" clipRule="evenodd" />
   </svg>
 );
 
@@ -46,104 +33,148 @@ const getTypeIcon = (type: LocalResource['type']) => {
   return iconMap[type] || '📍';
 };
 
-const getTypeColor = (type: LocalResource['type']) => {
-  const colorMap = {
-    hospital: 'bg-white/[0.02] text-white/90 border-white/[0.08]',
-    clinic: 'bg-white/[0.02] text-white/90 border-white/[0.08]',
-    hotline: 'bg-white/[0.02] text-white/90 border-white/[0.08]',
-    ngo: 'bg-white/[0.02] text-white/90 border-white/[0.08]',
-    community_center: 'bg-white/[0.02] text-white/90 border-white/[0.08]',
-    therapy: 'bg-white/[0.02] text-white/90 border-white/[0.08]',
-  };
-  return colorMap[type] || 'bg-white/[0.02] text-white/90 border-white/[0.08]';
-};
+const ResourceRow: React.FC<{ resource: LocalResource; index: number }> = ({ resource, index }) => {
+  // Build location string
+  const location = [resource.city, resource.province].filter(Boolean).join(', ');
 
-const ResourceCard: React.FC<{ resource: LocalResource }> = ({ resource }) => {
   return (
     <div
-      className="hover-glow rounded-[var(--radius-md)] p-5 sm:p-6"
+      className="py-5 border-b"
       style={{
-        background: 'var(--surface-1)',
-        border: '1px solid var(--border)'
+        borderColor: 'var(--border)',
+        animation: `fadeIn 0.15s ease-out ${index * 0.03}s both`
       }}
     >
-      <div className="flex items-start gap-3 sm:gap-4">
-        <div className={`flex-shrink-0 w-10 h-10 sm:w-12 sm:h-12 rounded-lg flex items-center justify-center text-xl sm:text-2xl border ${getTypeColor(resource.type)}`}>
+      <div className="flex items-start gap-4">
+        {/* Icon */}
+        <div
+          className="flex-shrink-0 w-10 h-10 rounded-lg flex items-center justify-center text-xl border"
+          style={{
+            background: 'var(--surface-2)',
+            borderColor: 'var(--border)'
+          }}
+        >
           {getTypeIcon(resource.type)}
         </div>
+
+        {/* Content */}
         <div className="flex-1 min-w-0">
-          <div className="flex items-start justify-between gap-2 mb-2">
-            <h3 className="font-semibold text-gray-100 text-sm sm:text-base">{resource.name}</h3>
-            {resource.free && (
-              <span className="flex-shrink-0 px-2 py-0.5 text-xs bg-white/[0.04] text-white/75 rounded-full border border-white/[0.12]">
-                Gratuito
-              </span>
-            )}
-          </div>
+          {/* Header line */}
+          <div className="flex items-start justify-between gap-3 mb-2">
+            <div className="flex-1 min-w-0">
+              <div className="flex items-center gap-2 mb-1">
+                <h3
+                  className="text-base font-semibold"
+                  style={{ color: 'var(--text)' }}
+                >
+                  {resource.name}
+                </h3>
+                {resource.free && (
+                  <span
+                    className="px-2 py-0.5 rounded-full text-xs font-medium"
+                    style={{
+                      background: 'rgba(34, 197, 94, 0.12)',
+                      color: '#22c55e'
+                    }}
+                  >
+                    Gratuito
+                  </span>
+                )}
+              </div>
+              {location && (
+                <p className="text-sm" style={{ color: 'var(--muted)' }}>
+                  {location}
+                </p>
+              )}
+            </div>
 
-          <p className="text-sm text-gray-300 mb-3 leading-relaxed">{resource.description}</p>
-
-          <div className="space-y-2 text-sm">
-            {resource.phone && (
-              <div className="flex items-center gap-2 text-gray-400">
-                <PhoneIcon />
-                <a href={`tel:${resource.phone}`} className="hover:text-blue-400 transition-colors">
-                  {resource.phone}
+            {/* Action buttons */}
+            <div className="flex-shrink-0 flex items-center gap-2">
+              {resource.phone && (
+                <a
+                  href={`tel:${resource.phone}`}
+                  className="p-2 rounded-md border active:scale-95"
+                  style={{
+                    background: 'var(--surface-2)',
+                    borderColor: 'var(--border)',
+                    color: 'var(--text)',
+                    transition: `all var(--t-fast) var(--ease)`
+                  }}
+                  title={`Llamar: ${resource.phone}`}
+                >
+                  <PhoneIcon />
                 </a>
-              </div>
-            )}
-
-            {(resource.address || resource.city) && (
-              <div className="flex items-center gap-2 text-gray-400">
-                <MapPinIcon />
-                <span>
-                  {resource.address && `${resource.address}, `}
-                  {resource.city && `${resource.city}, `}
-                  {resource.province}
-                </span>
-              </div>
-            )}
-
-            {resource.hours && (
-              <div className="flex items-center gap-2 text-gray-400">
-                <ClockIcon />
-                <span>{resource.hours}</span>
-              </div>
-            )}
-
-            {resource.website && (
-              <div className="flex items-center gap-2 text-gray-400">
-                <GlobeIcon />
+              )}
+              {resource.website && (
                 <a
                   href={resource.website}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="hover:text-blue-400 transition-colors truncate"
+                  className="p-2 rounded-md border active:scale-95"
+                  style={{
+                    background: 'var(--surface-2)',
+                    borderColor: 'var(--border)',
+                    color: 'var(--text)',
+                    transition: `all var(--t-fast) var(--ease)`
+                  }}
+                  title="Visitar sitio web"
                 >
-                  {resource.website.replace(/^https?:\/\//,'')}
+                  <GlobeIcon />
                 </a>
-              </div>
-            )}
+              )}
+            </div>
           </div>
 
-          {resource.services.length > 0 && (
-            <div className="mt-3 pt-3 border-t border-gray-700">
-              <div className="flex items-center gap-1 text-xs text-gray-500 mb-1.5">
-                <CheckBadgeIcon />
-                <span>Servicios:</span>
+          {/* Description */}
+          <p
+            className="editorial text-sm leading-relaxed mb-3"
+            style={{ color: 'var(--muted)' }}
+          >
+            {resource.description}
+          </p>
+
+          {/* Metadata row */}
+          <div className="flex flex-wrap items-center gap-x-4 gap-y-2 text-xs">
+            {/* Services */}
+            {resource.services.length > 0 && (
+              <div className="flex items-center gap-1.5">
+                <span style={{ color: 'var(--faint)' }}>Servicios:</span>
+                <div className="flex flex-wrap gap-1">
+                  {resource.services.slice(0, 3).map((service, idx) => (
+                    <span
+                      key={idx}
+                      className="px-2 py-0.5 rounded"
+                      style={{
+                        background: 'var(--surface-3)',
+                        color: 'var(--muted)'
+                      }}
+                    >
+                      {service}
+                    </span>
+                  ))}
+                  {resource.services.length > 3 && (
+                    <span style={{ color: 'var(--faint)' }}>
+                      +{resource.services.length - 3} más
+                    </span>
+                  )}
+                </div>
               </div>
-              <div className="flex flex-wrap gap-1.5">
-                {resource.services.map((service, idx) => (
-                  <span
-                    key={idx}
-                    className="px-2 py-0.5 text-xs bg-gray-700/50 text-gray-300 rounded"
-                  >
-                    {service}
-                  </span>
-                ))}
-              </div>
-            </div>
-          )}
+            )}
+
+            {/* Hours */}
+            {resource.hours && (
+              <span style={{ color: 'var(--faint)' }}>
+                {resource.hours}
+              </span>
+            )}
+
+            {/* Address */}
+            {resource.address && (
+              <span style={{ color: 'var(--faint)' }}>
+                {resource.address}
+              </span>
+            )}
+          </div>
         </div>
       </div>
     </div>
@@ -178,114 +209,175 @@ export const ResourcesDirectory: React.FC = () => {
     return filtered;
   }, [selectedProvince, selectedType, searchTerm]);
 
-  const resourceCount = filteredResources.length;
-
   return (
-    <div className="flex-1 flex flex-col min-h-0">
-      <div className="p-6 sm:p-8 border-b border-gray-800">
-        <h1 className="text-xl sm:text-2xl font-bold text-gray-100 flex items-center gap-2">
-          <MapPinIcon />
-          <span className="hidden sm:inline">Directorio de Recursos en Argentina</span>
-          <span className="sm:hidden">Recursos</span>
-        </h1>
-        <p className="text-xs sm:text-sm text-gray-400 mt-1">
-          Centros de atención, líneas de ayuda y organizaciones de reducción de daños
-        </p>
-      </div>
-
-      {/* Filters */}
-      <div className="p-6 sm:p-8 border-b border-gray-800 space-y-3 sm:space-y-4">
-        <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
-          <div className="flex-1">
-            <label className="block text-xs font-medium text-gray-400 mb-1.5">Buscar</label>
-            <input
-              type="text"
-              placeholder="Buscar por nombre, servicio..."
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full p-2.5 text-sm bg-[#121316] text-white border border-[#2a2d33] rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none"
-            />
-          </div>
-
-          <div className="flex-1">
-            <label className="block text-xs font-medium text-gray-400 mb-1.5">Provincia</label>
-            <select
-              value={selectedProvince}
-              onChange={(e) => setSelectedProvince(e.target.value)}
-              className="w-full p-2.5 text-sm bg-[#121316] text-white border border-[#2a2d33] rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none"
-            >
-              <option value="all">Todas las provincias</option>
-              {['Nacional', ...PROVINCES.sort()].map(province => (
-                <option key={province} value={province}>{province}</option>
-              ))}
-            </select>
-          </div>
-
-          <div className="flex-1">
-            <label className="block text-xs font-medium text-gray-400 mb-1.5">Tipo de recurso</label>
-            <select
-              value={selectedType}
-              onChange={(e) => setSelectedType(e.target.value)}
-              className="w-full p-2.5 text-sm bg-[#121316] text-white border border-[#2a2d33] rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none"
-            >
-              {RESOURCE_TYPES.map(type => (
-                <option key={type.value} value={type.value}>{type.label}</option>
-              ))}
-            </select>
-          </div>
-        </div>
-
-        <div className="flex items-center justify-between text-sm">
-          <span className="text-gray-400">
-            {resourceCount} {resourceCount === 1 ? 'recurso encontrado' : 'recursos encontrados'}
-          </span>
-          {(selectedProvince !== 'all' || selectedType !== 'all' || searchTerm) && (
-            <button
-              onClick={() => {
-                setSelectedProvince('all');
-                setSelectedType('all');
-                setSearchTerm('');
-              }}
-              className="text-blue-400 hover:text-blue-300 transition-colors"
-            >
-              Limpiar filtros
-            </button>
-          )}
-        </div>
-      </div>
-
-      {/* Resources List */}
-      <div className="flex-1 overflow-y-auto p-6 sm:p-8 md:p-10 lg:p-12">
-        {resourceCount === 0 ? (
-          <div className="text-center py-12">
-            <p className="text-sm sm:text-base text-gray-400">No se encontraron recursos con esos criterios.</p>
-            <button
-              onClick={() => {
-                setSelectedProvince('all');
-                setSelectedType('all');
-                setSearchTerm('');
-              }}
-              className="mt-3 text-sm sm:text-base text-blue-400 hover:text-blue-300 transition-colors"
-            >
-              Ver todos los recursos
-            </button>
-          </div>
-        ) : (
-          <div className="grid gap-5 sm:gap-6 max-w-5xl mx-auto">
-            {filteredResources.map((resource, idx) => (
-              <ResourceCard key={idx} resource={resource} />
-            ))}
-          </div>
-        )}
-      </div>
-
-      {/* Emergency notice */}
-      <div className="p-4 border-t border-gray-800 bg-red-500/5">
-        <div className="max-w-5xl mx-auto">
-          <p className="text-sm text-red-400 font-semibold">
-            ⚠️ En caso de emergencia médica, llamá inmediatamente al SAME: <a href="tel:107" className="underline">107</a>
+    <div className="flex-1 flex flex-col min-h-0 overflow-y-auto">
+      <div className="max-w-4xl mx-auto w-full p-6 sm:p-8 lg:p-10 space-y-8">
+        {/* Header */}
+        <div>
+          <h1
+            className="text-2xl sm:text-3xl font-semibold"
+            style={{
+              color: 'var(--text)',
+              lineHeight: 'var(--line-height-heading)'
+            }}
+          >
+            Directorio de Recursos
+          </h1>
+          <p className="editorial text-sm mt-2" style={{ color: 'var(--muted)' }}>
+            Centros de atención, líneas de ayuda y organizaciones en Argentina
           </p>
         </div>
+
+        {/* Search */}
+        <div className="relative">
+          <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3" style={{ color: 'var(--muted)' }}>
+            <SearchIcon />
+          </div>
+          <input
+            type="text"
+            placeholder="Buscar por nombre o servicio..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            className="w-full p-3 pl-10 text-sm rounded-[var(--radius-md)] border focus:outline-none"
+            style={{
+              background: 'var(--surface-1)',
+              color: 'var(--text)',
+              borderColor: 'var(--border)',
+              transition: `all var(--t-fast) var(--ease)`
+            }}
+            onFocus={(e) => {
+              e.currentTarget.style.borderColor = 'var(--accent)';
+              e.currentTarget.style.boxShadow = `0 0 0 3px var(--accent-weak)`;
+            }}
+            onBlur={(e) => {
+              e.currentTarget.style.borderColor = 'var(--border)';
+              e.currentTarget.style.boxShadow = 'none';
+            }}
+          />
+        </div>
+
+        {/* Category chips */}
+        <Section title="Categorías" meta="Filtrar por tipo de recurso">
+          <div className="flex flex-wrap gap-2">
+            {RESOURCE_TYPES.map((type) => (
+              <Chip
+                key={type.value}
+                label={type.label}
+                active={selectedType === type.value}
+                onClick={() => setSelectedType(type.value)}
+              />
+            ))}
+          </div>
+        </Section>
+
+        {/* Province filter */}
+        <Section title="Provincia" meta="Filtrar por ubicación">
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2">
+            <Chip
+              label="Todas"
+              active={selectedProvince === 'all'}
+              onClick={() => setSelectedProvince('all')}
+            />
+            <Chip
+              label="Nacional"
+              active={selectedProvince === 'Nacional'}
+              onClick={() => setSelectedProvince('Nacional')}
+            />
+            {PROVINCES.sort().slice(0, 6).map((province) => (
+              <Chip
+                key={province}
+                label={province}
+                active={selectedProvince === province}
+                onClick={() => setSelectedProvince(province)}
+              />
+            ))}
+          </div>
+          {selectedProvince !== 'all' && selectedProvince !== 'Nacional' && !PROVINCES.slice(0, 6).includes(selectedProvince) && (
+            <div className="mt-3">
+              <Chip
+                label={`✓ ${selectedProvince}`}
+                active={true}
+                onClick={() => setSelectedProvince('all')}
+              />
+            </div>
+          )}
+          <details className="mt-3">
+            <summary
+              className="text-sm cursor-pointer"
+              style={{ color: 'var(--accent)' }}
+            >
+              Ver todas las provincias
+            </summary>
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2 mt-3">
+              {PROVINCES.sort().slice(6).map((province) => (
+                <Chip
+                  key={province}
+                  label={province}
+                  active={selectedProvince === province}
+                  onClick={() => setSelectedProvince(province)}
+                />
+              ))}
+            </div>
+          </details>
+        </Section>
+
+        {/* Resources list */}
+        <Section
+          title="Resultados"
+          meta={`${filteredResources.length} recurso${filteredResources.length !== 1 ? 's' : ''}`}
+        >
+          {filteredResources.length === 0 ? (
+            <div className="text-center py-12">
+              <p className="editorial text-sm" style={{ color: 'var(--muted)' }}>
+                No se encontraron recursos con esos criterios.
+              </p>
+              <button
+                onClick={() => {
+                  setSelectedProvince('all');
+                  setSelectedType('all');
+                  setSearchTerm('');
+                }}
+                className="mt-4 px-4 py-2 rounded-[var(--radius-sm)] text-sm font-medium"
+                style={{
+                  background: 'var(--surface-2)',
+                  color: 'var(--accent)',
+                  transition: `all var(--t-fast) var(--ease)`
+                }}
+              >
+                Limpiar filtros
+              </button>
+            </div>
+          ) : (
+            <div>
+              {filteredResources.map((resource, idx) => (
+                <ResourceRow key={idx} resource={resource} index={idx} />
+              ))}
+            </div>
+          )}
+        </Section>
+
+        {/* Emergency callout */}
+        <Callout variant="warning" icon="⚠️">
+          <strong style={{ color: 'var(--text)' }}>Emergencia médica:</strong>{' '}
+          <span className="editorial" style={{ color: 'var(--muted)' }}>
+            Si necesitás atención urgente, llamá al SAME{' '}
+            <a
+              href="tel:107"
+              style={{ color: 'var(--accent)' }}
+              className="font-semibold underline"
+            >
+              107
+            </a>
+            {' '}o al{' '}
+            <a
+              href="tel:911"
+              style={{ color: 'var(--accent)' }}
+              className="font-semibold underline"
+            >
+              911
+            </a>
+          </span>
+        </Callout>
       </div>
     </div>
   );
