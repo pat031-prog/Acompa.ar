@@ -26,19 +26,27 @@ export const ChatInput: React.FC<ChatInputProps> = ({ onSendMessage, isLoading, 
   };
 
   return (
-    <form onSubmit={handleSubmit} className="flex items-center gap-3 p-3 bg-white/[0.02] border-t border-white/[0.06] mb-4">
+    <form
+      onSubmit={handleSubmit}
+      className="flex items-center gap-4 p-4 bg-[var(--surface-1)] border-t border-[var(--border)] mb-4"
+    >
       <input
         type="text"
         value={text}
         onChange={(e) => setText(e.target.value)}
         placeholder={disabled ? "Por favor, aceptá los términos para comenzar..." : "Escribí tu pregunta o situación..."}
-        className="flex-1 w-full px-4 py-3 text-sm bg-white/[0.02] text-white/90 placeholder:text-white/40 border border-white/[0.08] rounded-lg focus:ring-2 focus:ring-blue-500/50 focus:border-white/[0.12] focus:outline-none transition-all duration-200"
+        className="flex-1 w-full px-4 py-3 text-base bg-[var(--surface-2)] text-[var(--text)] placeholder:text-[var(--faint)] border border-[var(--border)] rounded-[var(--radius-md)] focus:outline-none disabled:opacity-50"
+        style={{
+          transition: `all var(--t-med) var(--ease)`,
+          fontFamily: 'var(--font-ui)'
+        }}
         disabled={isLoading || disabled}
       />
       <button
         type="submit"
         disabled={isLoading || disabled || !text.trim()}
-        className="p-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 active:scale-95 disabled:bg-white/[0.06] disabled:text-white/30 disabled:cursor-not-allowed transition-all duration-200 focus:ring-2 focus:ring-blue-500/50 focus:outline-none"
+        className="p-3 bg-[var(--accent)] text-white rounded-[var(--radius-md)] hover:opacity-90 active:scale-95 disabled:bg-[var(--surface-3)] disabled:text-[var(--faint)] disabled:cursor-not-allowed"
+        style={{ transition: `all var(--t-fast) var(--ease)` }}
         aria-label="Enviar mensaje"
       >
         <SendIcon />

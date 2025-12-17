@@ -21,23 +21,33 @@ const SourceLink: React.FC<{ source: Source }> = ({ source }) => (
 
 export const MessageBubble: React.FC<MessageBubbleProps> = ({ message }) => {
   const isUser = message.sender === 'user';
+
+  // User: UI sans, slightly raised surface
+  // Assistant: Editorial serif, subtle surface
   const bubbleClasses = isUser
-    ? 'bg-white/[0.04] border border-white/[0.12] justify-end'
-    : 'bg-white/[0.02] border border-white/[0.06]';
+    ? 'bg-[var(--surface-2)] border border-[var(--border)]'
+    : 'bg-[var(--surface-1)] border border-[var(--border)]';
+
+  const textClasses = isUser
+    ? 'font-[var(--font-ui)] text-[var(--text)]'
+    : 'editorial text-[var(--text)]';
+
   const containerClasses = isUser ? 'justify-end' : 'justify-start';
 
   // Format text to render markdown-style bold (**) as <strong> tags
   const formattedText = {
-    __html: message.text.replace(/\*\*(.*?)\*\*/g, '<strong class="font-semibold text-white/95">$1</strong>')
+    __html: message.text.replace(/\*\*(.*?)\*\*/g, '<strong class="font-semibold">$1</strong>')
   };
 
   return (
     <div className={`flex ${containerClasses}`}>
       <div
-        className={`max-w-[85%] sm:max-w-md md:max-w-lg lg:max-w-xl xl:max-w-2xl px-4 py-3 rounded-xl whitespace-pre-wrap transition-all duration-200 ${bubbleClasses}`}
+        className={`max-w-[85%] sm:max-w-md md:max-w-lg lg:max-w-xl xl:max-w-2xl px-5 py-4 rounded-[var(--radius-md)] whitespace-pre-wrap ${bubbleClasses}`}
+        style={{ transition: `all var(--t-med) var(--ease)` }}
       >
         <p
-          className="text-sm text-white/85 leading-relaxed"
+          className={`text-base ${textClasses}`}
+          style={{ lineHeight: 'var(--line-height-body)' }}
           dangerouslySetInnerHTML={formattedText}
         />
         {message.sources && message.sources.length > 0 && (
