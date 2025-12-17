@@ -50,9 +50,9 @@ const ExclamationTriangleIcon: React.FC = () => (
 
 const getSeverityColor = (severity: TerritorialAlert['severity']) => {
   const colorMap = {
-    high: 'bg-red-500/10 text-red-400 border-red-500/30',
-    medium: 'bg-yellow-500/10 text-yellow-400 border-yellow-500/30',
-    low: 'bg-blue-500/10 text-blue-400 border-blue-500/30',
+    high: 'bg-white/[0.02] text-white/90 border-white/[0.06]',
+    medium: 'bg-white/[0.02] text-white/90 border-white/[0.06]',
+    low: 'bg-white/[0.02] text-white/90 border-white/[0.06]',
   };
   return colorMap[severity];
 };
@@ -70,8 +70,17 @@ const AlertCard: React.FC<{ alert: TerritorialAlert; onDelete: () => void }> = (
   const badge = getSeverityBadge(alert.severity);
   const timeAgo = getTimeAgo(alert.timestamp);
 
+  const getBorderColor = (severity: TerritorialAlert['severity']) => {
+    const colors = {
+      high: 'border-l-red-500/60',
+      medium: 'border-l-yellow-500/60',
+      low: 'border-l-blue-500/60',
+    };
+    return colors[severity];
+  };
+
   return (
-    <div className={`border rounded-lg p-5 sm:p-6 ${getSeverityColor(alert.severity)}`}>
+    <div className={`border rounded-lg p-5 sm:p-6 border-l-2 ${getSeverityColor(alert.severity)} ${getBorderColor(alert.severity)}`}>
       <div className="flex items-start justify-between gap-3 sm:gap-4 mb-3">
         <div className="flex items-center gap-1.5 sm:gap-2 flex-wrap">
           <ExclamationTriangleIcon />
@@ -349,18 +358,18 @@ export const Dashboard: React.FC = () => {
 
           {/* Stats Summary */}
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-5 sm:gap-6 lg:gap-8">
-            <div className="bg-blue-500/10 border border-blue-500/30 rounded-lg p-6 sm:p-8">
-              <h3 className="text-sm font-medium text-blue-300 mb-1">Total de Consultas</h3>
+            <div className="bg-white/[0.02] border border-white/[0.06] border-l-2 border-l-blue-500/40 rounded-lg p-6 sm:p-8">
+              <h3 className="text-sm font-medium text-white/60 mb-1">Total de Consultas</h3>
               <p className="text-3xl font-bold text-white">{stats.totalQueries}</p>
             </div>
 
-            <div className="bg-green-500/10 border border-green-500/30 rounded-lg p-6 sm:p-8">
-              <h3 className="text-sm font-medium text-green-300 mb-1">Sustancias Únicas</h3>
+            <div className="bg-white/[0.02] border border-white/[0.06] border-l-2 border-l-green-500/40 rounded-lg p-6 sm:p-8">
+              <h3 className="text-sm font-medium text-white/60 mb-1">Sustancias Únicas</h3>
               <p className="text-3xl font-bold text-white">{stats.topSubstances.length}</p>
             </div>
 
-            <div className="bg-purple-500/10 border border-purple-500/30 rounded-lg p-6 sm:p-8">
-              <h3 className="text-sm font-medium text-purple-300 mb-1">Categorías Activas</h3>
+            <div className="bg-white/[0.02] border border-white/[0.06] border-l-2 border-l-purple-500/40 rounded-lg p-6 sm:p-8">
+              <h3 className="text-sm font-medium text-white/60 mb-1">Categorías Activas</h3>
               <p className="text-3xl font-bold text-white">{Object.keys(stats.queriesByCategory).length}</p>
             </div>
           </div>

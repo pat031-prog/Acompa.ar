@@ -48,14 +48,14 @@ const getTypeIcon = (type: LocalResource['type']) => {
 
 const getTypeColor = (type: LocalResource['type']) => {
   const colorMap = {
-    hospital: 'bg-red-500/10 text-red-400 border-red-500/30',
-    clinic: 'bg-blue-500/10 text-blue-400 border-blue-500/30',
-    hotline: 'bg-green-500/10 text-green-400 border-green-500/30',
-    ngo: 'bg-purple-500/10 text-purple-400 border-purple-500/30',
-    community_center: 'bg-yellow-500/10 text-yellow-400 border-yellow-500/30',
-    therapy: 'bg-pink-500/10 text-pink-400 border-pink-500/30',
+    hospital: 'bg-white/[0.02] text-white/90 border-white/[0.08]',
+    clinic: 'bg-white/[0.02] text-white/90 border-white/[0.08]',
+    hotline: 'bg-white/[0.02] text-white/90 border-white/[0.08]',
+    ngo: 'bg-white/[0.02] text-white/90 border-white/[0.08]',
+    community_center: 'bg-white/[0.02] text-white/90 border-white/[0.08]',
+    therapy: 'bg-white/[0.02] text-white/90 border-white/[0.08]',
   };
-  return colorMap[type] || 'bg-gray-500/10 text-gray-400 border-gray-500/30';
+  return colorMap[type] || 'bg-white/[0.02] text-white/90 border-white/[0.08]';
 };
 
 const ResourceCard: React.FC<{ resource: LocalResource }> = ({ resource }) => {
@@ -69,7 +69,7 @@ const ResourceCard: React.FC<{ resource: LocalResource }> = ({ resource }) => {
           <div className="flex items-start justify-between gap-2 mb-2">
             <h3 className="font-semibold text-gray-100 text-sm sm:text-base">{resource.name}</h3>
             {resource.free && (
-              <span className="flex-shrink-0 px-2 py-0.5 text-xs bg-green-500/20 text-green-400 rounded-full border border-green-500/30">
+              <span className="flex-shrink-0 px-2 py-0.5 text-xs bg-white/[0.04] text-white/75 rounded-full border border-white/[0.12]">
                 Gratuito
               </span>
             )}

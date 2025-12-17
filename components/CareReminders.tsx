@@ -34,13 +34,24 @@ const getTypeIcon = (type: Reminder['type']) => {
 
 const getTypeColor = (type: Reminder['type']) => {
   const colorMap = {
-    hydration: 'bg-blue-500/10 text-blue-400 border-blue-500/30',
-    rest: 'bg-purple-500/10 text-purple-400 border-purple-500/30',
-    nutrition: 'bg-green-500/10 text-green-400 border-green-500/30',
-    break: 'bg-yellow-500/10 text-yellow-400 border-yellow-500/30',
-    custom: 'bg-gray-500/10 text-gray-400 border-gray-500/30',
+    hydration: 'bg-white/[0.02] text-white/90 border-white/[0.06]',
+    rest: 'bg-white/[0.02] text-white/90 border-white/[0.06]',
+    nutrition: 'bg-white/[0.02] text-white/90 border-white/[0.06]',
+    break: 'bg-white/[0.02] text-white/90 border-white/[0.06]',
+    custom: 'bg-white/[0.02] text-white/90 border-white/[0.06]',
   };
-  return colorMap[type] || 'bg-gray-500/10 text-gray-400 border-gray-500/30';
+  return colorMap[type] || 'bg-white/[0.02] text-white/90 border-white/[0.06]';
+};
+
+const getTypeBorderColor = (type: Reminder['type']) => {
+  const colorMap = {
+    hydration: 'border-l-blue-500/40',
+    rest: 'border-l-purple-500/40',
+    nutrition: 'border-l-green-500/40',
+    break: 'border-l-yellow-500/40',
+    custom: 'border-l-gray-500/40',
+  };
+  return colorMap[type] || 'border-l-gray-500/40';
 };
 
 const ReminderCard: React.FC<{
@@ -79,7 +90,7 @@ const ReminderCard: React.FC<{
   };
 
   return (
-    <div className={`border rounded-lg p-5 sm:p-6 ${getTypeColor(reminder.type)}`}>
+    <div className={`border rounded-lg border-l-2 p-5 sm:p-6 ${getTypeColor(reminder.type)} ${getTypeBorderColor(reminder.type)}`}>
       <div className="flex items-start justify-between gap-4">
         <div className="flex items-start gap-3 flex-1">
           <div className="flex-shrink-0 text-3xl">
@@ -242,14 +253,14 @@ export const CareReminders: React.FC = () => {
         <div className="max-w-3xl mx-auto space-y-8 lg:space-y-10">
           {/* Notification Permission Banner */}
           {notificationPermission !== 'granted' && (
-            <div className="bg-blue-500/10 border border-blue-500/30 rounded-lg p-5 sm:p-6">
+            <div className="bg-white/[0.02] border border-white/[0.06] border-l-2 border-l-blue-500/40 rounded-lg p-5 sm:p-6">
               <div className="flex items-start gap-3">
                 <div className="flex-shrink-0 text-2xl">🔔</div>
                 <div className="flex-1">
-                  <h3 className="font-semibold text-blue-300 mb-1">
+                  <h3 className="font-semibold text-white/90 mb-1">
                     Activá las notificaciones
                   </h3>
-                  <p className="text-sm text-blue-300/80 mb-3">
+                  <p className="text-sm text-white/60 mb-3">
                     Para recibir recordatorios cuando estés en otra pestaña o app, necesitamos tu permiso para enviar notificaciones.
                   </p>
                   <button
@@ -282,9 +293,9 @@ export const CareReminders: React.FC = () => {
           </div>
 
           {/* Info Banner */}
-          <div className="bg-amber-500/10 border border-amber-500/30 rounded-lg p-5 sm:p-6">
-            <p className="text-sm text-amber-300">
-              <strong>💡 Consejo:</strong> Los recordatorios son especialmente útiles durante experiencias psicoactivas.
+          <div className="bg-white/[0.02] border border-white/[0.06] border-l-2 border-l-yellow-500/40 rounded-lg p-5 sm:p-6">
+            <p className="text-sm text-white/70">
+              <strong className="text-white/90">💡 Consejo:</strong> Los recordatorios son especialmente útiles durante experiencias psicoactivas.
               Hidratarse, descansar y alimentarse de forma regular reduce riesgos y mejora el bienestar.
             </p>
           </div>

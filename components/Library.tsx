@@ -97,8 +97,8 @@ const LibraryDetailView: React.FC<{ item: LibraryEntry; onFavoriteToggle: () => 
           onClick={handleFavoriteClick}
           className={`flex-shrink-0 p-2.5 sm:p-2 rounded-lg transition-all active:scale-95 ${
             isItemFavorite
-              ? 'bg-yellow-500/20 text-yellow-400 hover:bg-yellow-500/30 active:bg-yellow-500/40'
-              : 'bg-gray-700/40 text-gray-400 hover:bg-gray-700/60 active:bg-gray-700/80'
+              ? 'bg-white/[0.08] text-yellow-400/90 hover:bg-white/[0.12]'
+              : 'bg-white/[0.03] text-white/40 hover:bg-white/[0.06]'
           }`}
           title={isItemFavorite ? 'Quitar de favoritos' : 'Agregar a favoritos'}
           aria-label={isItemFavorite ? 'Quitar de favoritos' : 'Agregar a favoritos'}
@@ -149,8 +149,8 @@ const LibraryDetailView: React.FC<{ item: LibraryEntry; onFavoriteToggle: () => 
           {item.content.dosage.oral && <p><strong>Oral:</strong> {item.content.dosage.oral}</p>}
           {item.content.dosage.nasal && <p><strong>Nasal:</strong> {item.content.dosage.nasal}</p>}
           {item.content.dosage.inhalation && <p><strong>Inhalado:</strong> {item.content.dosage.inhalation}</p>}
-          <p className="mt-2 text-xs text-amber-300/80 bg-amber-900/30 p-2 rounded-md border border-amber-500/30">
-            <strong className="font-semibold">Importante:</strong> {item.content.dosage.warning}
+          <p className="mt-2 text-xs text-white/70 bg-white/[0.02] p-2 rounded-md border border-white/[0.06] border-l-2 border-l-yellow-500/40">
+            <strong className="font-semibold text-white/90">Importante:</strong> {item.content.dosage.warning}
           </p>
       </InfoSection>
 
@@ -295,8 +295,8 @@ export const Library: React.FC = () => {
                     onClick={() => setShowOnlyFavorites(!showOnlyFavorites)}
                     className={`mt-4 w-full px-3 py-2.5 text-sm rounded-lg transition-all flex items-center justify-center gap-2 ${
                         showOnlyFavorites
-                            ? 'bg-yellow-500/20 text-yellow-400 border border-yellow-500/40 font-semibold'
-                            : 'bg-gray-700/40 text-gray-300 border border-gray-700/60 hover:bg-gray-700/60'
+                            ? 'bg-white/[0.06] text-white/90 border border-white/[0.12] font-semibold'
+                            : 'bg-white/[0.02] text-white/60 border border-white/[0.06] hover:bg-white/[0.04]'
                     }`}
                 >
                     <StarIcon filled={showOnlyFavorites} />
@@ -304,14 +304,14 @@ export const Library: React.FC = () => {
                 </button>
                 <button
                     onClick={() => setViewMode('compare')}
-                    className="mt-3 w-full px-3 py-2.5 text-sm rounded-lg transition-all flex items-center justify-center gap-2 bg-blue-600/20 text-blue-400 border border-blue-600/40 hover:bg-blue-600/30"
+                    className="mt-3 w-full px-3 py-2.5 text-sm rounded-lg transition-all flex items-center justify-center gap-2 bg-white/[0.02] text-white/70 border border-white/[0.06] hover:bg-white/[0.04]"
                 >
                     <CompareIcon />
                     Comparar Sustancias
                 </button>
                 <button
                     onClick={() => setViewMode('calculator')}
-                    className="mt-3 w-full px-3 py-2.5 text-sm rounded-lg transition-all flex items-center justify-center gap-2 bg-green-600/20 text-green-400 border border-green-600/40 hover:bg-green-600/30"
+                    className="mt-3 w-full px-3 py-2.5 text-sm rounded-lg transition-all flex items-center justify-center gap-2 bg-white/[0.02] text-white/70 border border-white/[0.06] hover:bg-white/[0.04]"
                 >
                     <CalculatorIcon />
                     Calculadora de Dosis
@@ -325,8 +325,8 @@ export const Library: React.FC = () => {
                                 onClick={() => setSelectedItem(item)}
                                 className={`w-full text-left text-sm p-3.5 sm:p-4 rounded-md transition-colors duration-150 active:scale-[0.98] ${
                                     selectedItem?.title === item.title
-                                        ? 'bg-blue-600/40 text-gray-100 font-semibold'
-                                        : 'text-gray-300 hover:bg-gray-700/50 active:bg-gray-700/70'
+                                        ? 'bg-white/[0.06] text-white/95 font-medium'
+                                        : 'text-white/60 hover:bg-white/[0.03] hover:text-white/75'
                                 }`}
                             >
                                 {item.title}

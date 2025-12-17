@@ -113,7 +113,7 @@ export const TestingGuide: React.FC = () => {
 
 const GuideSection: React.FC = () => (
   <div className="max-w-4xl mx-auto space-y-6">
-    <div className="bg-blue-500/10 border border-blue-500/30 rounded-lg p-5 sm:p-6">
+    <div className="bg-white/[0.02] border border-white/[0.06] border-l-2 border-l-blue-500/40 rounded-lg p-5 sm:p-6">
       <p className="text-gray-200 leading-relaxed">{TESTING_GUIDE.intro}</p>
     </div>
 
@@ -250,27 +250,27 @@ const ResourcesSection: React.FC = () => (
 
 const AdulterantsSection: React.FC = () => (
   <div className="max-w-4xl mx-auto space-y-6">
-    <div className="bg-red-500/10 border border-red-500/30 rounded-lg p-4">
+    <div className="bg-white/[0.02] border border-white/[0.06] border-l-2 border-l-red-500/50 rounded-lg p-4">
       <p className="text-gray-200 text-sm leading-relaxed">
-        <strong className="text-red-400">⚠️ Advertencia:</strong> Estos son algunos de los adulterantes más peligrosos que se encuentran en el mercado ilegal. El testeo de sustancias es fundamental para detectarlos.
+        <strong className="text-white/90">⚠️ Advertencia:</strong> Estos son algunos de los adulterantes más peligrosos que se encuentran en el mercado ilegal. El testeo de sustancias es fundamental para detectarlos.
       </p>
     </div>
 
     <div className="grid gap-5 sm:gap-6">
       {TESTING_GUIDE.commonAdulterants.map((adulterant, idx) => (
-        <div key={idx} className="bg-red-900/10 border border-red-800/40 rounded-lg p-4">
-          <h3 className="font-bold text-red-400 flex items-center gap-2">
+        <div key={idx} className="bg-white/[0.02] border border-white/[0.06] border-l-2 border-l-red-500/40 rounded-lg p-4">
+          <h3 className="font-bold text-white/90 flex items-center gap-2">
             <ExclamationTriangleIcon />
             {adulterant.substance}
           </h3>
-          <p className="text-sm text-gray-300 mt-2">{adulterant.risk}</p>
+          <p className="text-sm text-white/70 mt-2">{adulterant.risk}</p>
         </div>
       ))}
     </div>
 
-    <div className="bg-blue-500/10 border border-blue-500/30 rounded-lg p-4 mt-6">
+    <div className="bg-white/[0.02] border border-white/[0.06] border-l-2 border-l-blue-500/40 rounded-lg p-4 mt-6">
       <p className="text-gray-200 text-sm leading-relaxed">
-        <strong className="text-blue-300">💡 Recuerda:</strong> Los reactivos de color NO detectan todos los adulterantes. Para un análisis completo (GC/MS), llevá tus sustancias a organizaciones como ArgenPills.
+        <strong className="text-white/90">💡 Recuerda:</strong> Los reactivos de color NO detectan todos los adulterantes. Para un análisis completo (GC/MS), llevá tus sustancias a organizaciones como ArgenPills.
       </p>
     </div>
   </div>
