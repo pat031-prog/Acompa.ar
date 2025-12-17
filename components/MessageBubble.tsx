@@ -22,23 +22,23 @@ const SourceLink: React.FC<{ source: Source }> = ({ source }) => (
 export const MessageBubble: React.FC<MessageBubbleProps> = ({ message }) => {
   const isUser = message.sender === 'user';
   const bubbleClasses = isUser
-    ? 'bg-blue-900/50 border border-blue-500/60 justify-end'
-    : 'bg-[#1b1d21] border border-[#2a2d33]';
+    ? 'bg-white/[0.04] border border-white/[0.12] justify-end'
+    : 'bg-white/[0.02] border border-white/[0.06]';
   const containerClasses = isUser ? 'justify-end' : 'justify-start';
 
   // Format text to render markdown-style bold (**) as <strong> tags
   const formattedText = {
-    __html: message.text.replace(/\*\*(.*?)\*\*/g, '<strong class="font-semibold">$1</strong>')
+    __html: message.text.replace(/\*\*(.*?)\*\*/g, '<strong class="font-semibold text-white/95">$1</strong>')
   };
 
   return (
     <div className={`flex ${containerClasses}`}>
       <div
-        className={`max-w-[85%] sm:max-w-md md:max-w-lg lg:max-w-xl xl:max-w-2xl px-4 py-2 rounded-xl whitespace-pre-wrap ${bubbleClasses}`}
+        className={`max-w-[85%] sm:max-w-md md:max-w-lg lg:max-w-xl xl:max-w-2xl px-4 py-3 rounded-xl whitespace-pre-wrap transition-all duration-200 ${bubbleClasses}`}
       >
-        <p 
-          className="text-sm text-gray-200" 
-          dangerouslySetInnerHTML={formattedText} 
+        <p
+          className="text-sm text-white/85 leading-relaxed"
+          dangerouslySetInnerHTML={formattedText}
         />
         {message.sources && message.sources.length > 0 && (
           <div className="mt-3 pt-2 border-t border-gray-700/50">
