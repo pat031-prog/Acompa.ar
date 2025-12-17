@@ -69,7 +69,7 @@ const navItems: NavItem[] = [
 
 export const Tabs: React.FC<TabsProps> = ({ activeTab, setActiveTab }) => {
   return (
-    <nav className="flex flex-col gap-0.5 py-3 px-2">
+    <nav className="flex flex-col gap-1 py-4 px-2">
       {navItems.map((item) => {
         const isActive = activeTab === item.id;
         return (
@@ -78,25 +78,29 @@ export const Tabs: React.FC<TabsProps> = ({ activeTab, setActiveTab }) => {
             id={`tab-${item.id}`}
             onClick={() => setActiveTab(item.id)}
             aria-pressed={isActive}
-            className={`
-              group relative flex items-center gap-3 px-3 py-2.5 rounded-lg
-              text-left text-sm font-medium
-              transition-all duration-200
-              ${isActive
-                ? 'bg-white/[0.06] text-white/95'
-                : 'text-white/55 hover:text-white/75 hover:bg-white/[0.03]'
-              }
-            `}
+            className="group relative flex items-center gap-3 px-3 py-2.5 text-left text-sm font-medium rounded-[var(--radius-sm)]"
             style={{
+              background: isActive ? 'var(--surface-3)' : 'transparent',
+              color: isActive ? 'var(--text)' : 'var(--muted)',
+              transition: `all var(--t-med) var(--ease)`,
               WebkitTapHighlightColor: 'transparent'
             }}
           >
-            <span className={`flex-shrink-0 transition-all duration-200 ${isActive ? 'text-white/80' : 'text-white/40 group-hover:text-white/60'}`}>
+            <span
+              className="flex-shrink-0"
+              style={{
+                color: isActive ? 'var(--text)' : 'var(--faint)',
+                transition: `color var(--t-med) var(--ease)`
+              }}
+            >
               {item.icon}
             </span>
-            <span className="flex-1 tracking-tight">{item.label}</span>
+            <span className="flex-1">{item.label}</span>
             {isActive && (
-              <span className="absolute right-0 top-1/2 -translate-y-1/2 w-0.5 h-4 bg-blue-500/80 rounded-l-full"></span>
+              <span
+                className="absolute right-0 top-1/2 -translate-y-1/2 w-0.5 h-4 rounded-l-full"
+                style={{ background: 'var(--accent)' }}
+              ></span>
             )}
           </button>
         );

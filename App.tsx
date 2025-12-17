@@ -79,29 +79,29 @@ const App: React.FC = () => {
   };
 
   return (
-    <div className="flex h-full w-full text-gray-200 overflow-hidden relative z-10">
+    <div className="flex h-full w-full overflow-hidden relative z-10" style={{ color: 'var(--text)', fontFamily: 'var(--font-ui)' }}>
       {!consent && <ConsentModal onConsent={handleConsent} />}
 
-      {/* Sidebar */}
-      <aside className="hidden lg:flex flex-col w-72 xl:w-80 border-r border-gray-800/50 bg-gray-900/20 backdrop-blur-sm flex-shrink-0">
+      {/* Sidebar - quiet frame */}
+      <aside className="hidden lg:flex flex-col w-72 xl:w-80 border-r flex-shrink-0" style={{ borderColor: 'var(--border)', background: 'var(--bg)' }}>
         <Header />
         <div className="flex-1 overflow-y-auto px-3">
           <Tabs activeTab={activeTab} setActiveTab={setActiveTab} />
         </div>
       </aside>
 
-      {/* Mobile Header - Only visible on mobile */}
-      <div className="lg:hidden fixed top-0 left-0 right-0 z-50 bg-gray-900/95 backdrop-blur-md border-b border-gray-800/50">
+      {/* Mobile Header */}
+      <div className="lg:hidden fixed top-0 left-0 right-0 z-50 backdrop-blur-md border-b" style={{ background: 'var(--surface-1)', borderColor: 'var(--border)' }}>
         <div className="px-4 py-3">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center shadow-lg shadow-blue-500/20">
-              <span className="text-lg font-black text-white">A</span>
+            <div className="w-10 h-10 rounded-xl flex items-center justify-center" style={{ background: 'var(--accent)' }}>
+              <span className="text-lg font-semibold text-white">A</span>
             </div>
             <div>
-              <h1 className="text-lg font-bold bg-gradient-to-r from-gray-100 to-gray-300 bg-clip-text text-transparent">
+              <h1 className="text-lg font-semibold" style={{ color: 'var(--text)' }}>
                 ACompañ.Ar
               </h1>
-              <p className="text-xs font-medium text-gray-500">Reducción de Daños</p>
+              <p className="text-xs font-medium" style={{ color: 'var(--faint)' }}>Reducción de Daños</p>
             </div>
           </div>
         </div>
@@ -113,11 +113,17 @@ const App: React.FC = () => {
               <button
                 key={tab}
                 onClick={() => setActiveTab(tab as Tab)}
-                className={`px-4 py-2 rounded-lg text-sm font-medium whitespace-nowrap transition-all ${
-                  activeTab === tab
-                    ? 'bg-blue-500/20 text-white border border-blue-500/30'
-                    : 'bg-gray-800/40 text-gray-400 border border-gray-700/30'
+                className={`px-4 py-2 rounded-[var(--radius-md)] text-sm font-medium whitespace-nowrap ${
+                  activeTab === tab ? '' : ''
                 }`}
+                style={{
+                  background: activeTab === tab ? 'var(--surface-3)' : 'var(--surface-2)',
+                  color: activeTab === tab ? 'var(--text)' : 'var(--muted)',
+                  borderWidth: '1px',
+                  borderStyle: 'solid',
+                  borderColor: activeTab === tab ? 'var(--border-strong)' : 'var(--border)',
+                  transition: `all var(--t-fast) var(--ease)`
+                }}
               >
                 {tab === 'chat' && 'Chat'}
                 {tab === 'library' && 'Biblioteca'}
