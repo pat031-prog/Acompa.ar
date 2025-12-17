@@ -20,6 +20,7 @@ import {
   type TerritorialAlert,
 } from '../services/analyticsService';
 import { PROVINCES } from '../constants';
+import { Section, Callout, Chip, Divider } from './ui/Section';
 import type { SubstanceCategory } from '../types';
 
 // Register Chart.js components
@@ -35,79 +36,19 @@ ChartJS.register(
   ArcElement
 );
 
-// Icons
-const ChartBarIcon: React.FC = () => (
-  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
-    <path strokeLinecap="round" strokeLinejoin="round" d="M3 13.125C3 12.504 3.504 12 4.125 12h2.25c.621 0 1.125.504 1.125 1.125v6.75C7.5 20.496 6.996 21 6.375 21h-2.25A1.125 1.125 0 0 1 3 19.875v-6.75ZM9.75 8.625c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125v11.25c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 0 1-1.125-1.125V8.625ZM16.5 4.125c0-.621.504-1.125 1.125-1.125h2.25C20.496 3 21 3.504 21 4.125v15.75c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 0 1-1.125-1.125V4.125Z" />
+const ArrowRightIcon: React.FC = () => (
+  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-4 h-4">
+    <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" />
   </svg>
 );
 
-const ExclamationTriangleIcon: React.FC = () => (
-  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5">
-    <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126ZM12 15.75h.007v.008H12v-.008Z" />
-  </svg>
-);
-
-const getSeverityColor = (severity: TerritorialAlert['severity']) => {
-  const colorMap = {
-    high: 'bg-white/[0.02] text-white/90 border-white/[0.06]',
-    medium: 'bg-white/[0.02] text-white/90 border-white/[0.06]',
-    low: 'bg-white/[0.02] text-white/90 border-white/[0.06]',
+const getSeverityStyle = (severity: TerritorialAlert['severity']) => {
+  const styles = {
+    high: { bg: 'rgba(239, 68, 68, 0.12)', color: '#ef4444', label: 'Urgente' },
+    medium: { bg: 'rgba(251, 146, 60, 0.12)', color: '#fb923c', label: 'Importante' },
+    low: { bg: 'rgba(59, 130, 246, 0.12)', color: '#3b82f6', label: 'Info' }
   };
-  return colorMap[severity];
-};
-
-const getSeverityBadge = (severity: TerritorialAlert['severity']) => {
-  const badgeMap = {
-    high: { label: 'URGENTE', color: 'bg-red-500 text-white' },
-    medium: { label: 'IMPORTANTE', color: 'bg-yellow-500 text-gray-900' },
-    low: { label: 'INFO', color: 'bg-blue-500 text-white' },
-  };
-  return badgeMap[severity];
-};
-
-const AlertCard: React.FC<{ alert: TerritorialAlert; onDelete: () => void }> = ({ alert, onDelete }) => {
-  const badge = getSeverityBadge(alert.severity);
-  const timeAgo = getTimeAgo(alert.timestamp);
-
-  const getBorderColor = (severity: TerritorialAlert['severity']) => {
-    const colors = {
-      high: 'border-l-red-500/60',
-      medium: 'border-l-yellow-500/60',
-      low: 'border-l-blue-500/60',
-    };
-    return colors[severity];
-  };
-
-  return (
-    <div className={`border rounded-lg p-5 sm:p-6 border-l-2 ${getSeverityColor(alert.severity)} ${getBorderColor(alert.severity)}`}>
-      <div className="flex items-start justify-between gap-3 sm:gap-4 mb-3">
-        <div className="flex items-center gap-1.5 sm:gap-2 flex-wrap">
-          <ExclamationTriangleIcon />
-          <span className={`text-xs px-1.5 sm:px-2 py-0.5 rounded-full font-semibold ${badge.color}`}>
-            {badge.label}
-          </span>
-          <span className="text-xs opacity-75">{alert.province}</span>
-        </div>
-        <button
-          onClick={onDelete}
-          className="text-sm sm:text-xs opacity-50 hover:opacity-100 active:opacity-100 transition-opacity flex-shrink-0 w-6 h-6 flex items-center justify-center"
-          title="Descartar alerta"
-          aria-label="Descartar alerta"
-        >
-          ✕
-        </button>
-      </div>
-
-      <h3 className="font-semibold text-sm sm:text-base mb-1">{alert.title}</h3>
-      <p className="text-xs sm:text-sm opacity-90 mb-2">{alert.message}</p>
-
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-1 sm:gap-0 text-xs opacity-75">
-        <span className="truncate">{alert.source && `Fuente: ${alert.source}`}</span>
-        <span className="flex-shrink-0">{timeAgo}</span>
-      </div>
-    </div>
-  );
+  return styles[severity];
 };
 
 const getTimeAgo = (timestamp: number): string => {
@@ -117,17 +58,17 @@ const getTimeAgo = (timestamp: number): string => {
   const hours = Math.floor(diff / (60 * 60 * 1000));
   const minutes = Math.floor(diff / (60 * 1000));
 
-  if (days > 0) return `Hace ${days} ${days === 1 ? 'día' : 'días'}`;
-  if (hours > 0) return `Hace ${hours} ${hours === 1 ? 'hora' : 'horas'}`;
-  if (minutes > 0) return `Hace ${minutes} ${minutes === 1 ? 'minuto' : 'minutos'}`;
-  return 'Hace un momento';
+  if (days > 0) return `Hace ${days}d`;
+  if (hours > 0) return `Hace ${hours}h`;
+  if (minutes > 0) return `Hace ${minutes}m`;
+  return 'Ahora';
 };
 
 export const Dashboard: React.FC = () => {
   const [selectedProvince, setSelectedProvince] = useState<string>('all');
-  const [selectedCategory, setSelectedCategory] = useState<string>('all');
-  const [timeRange, setTimeRange] = useState<number>(30); // days
+  const [timeRange, setTimeRange] = useState<number>(30);
   const [alerts, setAlerts] = useState<TerritorialAlert[]>([]);
+  const [showCharts, setShowCharts] = useState(false);
 
   useEffect(() => {
     setAlerts(getAlerts(selectedProvince));
@@ -139,9 +80,9 @@ export const Dashboard: React.FC = () => {
       startDate,
       undefined,
       selectedProvince !== 'all' ? selectedProvince : undefined,
-      selectedCategory !== 'all' ? (selectedCategory as SubstanceCategory) : undefined
+      undefined
     );
-  }, [selectedProvince, selectedCategory, timeRange]);
+  }, [selectedProvince, timeRange]);
 
   const trendData = useMemo(() => {
     const queriesByDate = getQueriesByDate(timeRange);
@@ -157,46 +98,14 @@ export const Dashboard: React.FC = () => {
         {
           label: 'Consultas',
           data: values,
-          borderColor: 'rgb(59, 130, 246)',
-          backgroundColor: 'rgba(59, 130, 246, 0.1)',
+          borderColor: 'rgb(209, 153, 91)',
+          backgroundColor: 'rgba(209, 153, 91, 0.1)',
           tension: 0.3,
           fill: true,
         },
       ],
     };
   }, [timeRange]);
-
-  const categoryData = useMemo(() => {
-    const categories = Object.keys(stats.queriesByCategory);
-    const values = categories.map(cat => stats.queriesByCategory[cat as SubstanceCategory] || 0);
-
-    return {
-      labels: categories,
-      datasets: [
-        {
-          label: 'Consultas por categoría',
-          data: values,
-          backgroundColor: [
-            'rgba(59, 130, 246, 0.6)',
-            'rgba(16, 185, 129, 0.6)',
-            'rgba(245, 158, 11, 0.6)',
-            'rgba(239, 68, 68, 0.6)',
-            'rgba(139, 92, 246, 0.6)',
-            'rgba(236, 72, 153, 0.6)',
-          ],
-          borderColor: [
-            'rgb(59, 130, 246)',
-            'rgb(16, 185, 129)',
-            'rgb(245, 158, 11)',
-            'rgb(239, 68, 68)',
-            'rgb(139, 92, 246)',
-            'rgb(236, 72, 153)',
-          ],
-          borderWidth: 1,
-        },
-      ],
-    };
-  }, [stats]);
 
   const topSubstancesData = useMemo(() => {
     return {
@@ -205,8 +114,8 @@ export const Dashboard: React.FC = () => {
         {
           label: 'Consultas',
           data: stats.topSubstances.map(s => s.count),
-          backgroundColor: 'rgba(59, 130, 246, 0.6)',
-          borderColor: 'rgb(59, 130, 246)',
+          backgroundColor: 'rgba(209, 153, 91, 0.6)',
+          borderColor: 'rgb(209, 153, 91)',
           borderWidth: 1,
         },
       ],
@@ -219,45 +128,19 @@ export const Dashboard: React.FC = () => {
     plugins: {
       legend: {
         labels: {
-          color: 'rgb(209, 213, 219)',
-          font: {
-            size: window.innerWidth < 640 ? 10 : 12,
-          },
-          padding: window.innerWidth < 640 ? 8 : 10,
+          color: 'rgba(255, 255, 255, 0.68)',
+          font: { size: 11 },
         },
       },
     },
     scales: {
       x: {
-        ticks: {
-          color: 'rgb(156, 163, 175)',
-          font: { size: window.innerWidth < 640 ? 9 : 11 },
-        },
-        grid: { color: 'rgba(75, 85, 99, 0.2)' },
+        ticks: { color: 'rgba(255, 255, 255, 0.48)', font: { size: 10 } },
+        grid: { color: 'rgba(255, 255, 255, 0.05)' },
       },
       y: {
-        ticks: {
-          color: 'rgb(156, 163, 175)',
-          font: { size: window.innerWidth < 640 ? 9 : 11 },
-        },
-        grid: { color: 'rgba(75, 85, 99, 0.2)' },
-      },
-    },
-  };
-
-  const doughnutOptions = {
-    responsive: true,
-    maintainAspectRatio: false,
-    plugins: {
-      legend: {
-        position: 'bottom' as const,
-        labels: {
-          color: 'rgb(209, 213, 219)',
-          font: {
-            size: window.innerWidth < 640 ? 10 : 12,
-          },
-          padding: window.innerWidth < 640 ? 6 : 8,
-        },
+        ticks: { color: 'rgba(255, 255, 255, 0.48)', font: { size: 10 } },
+        grid: { color: 'rgba(255, 255, 255, 0.05)' },
       },
     },
   };
@@ -267,168 +150,256 @@ export const Dashboard: React.FC = () => {
     setAlerts(getAlerts(selectedProvince));
   };
 
+  const topCategory = Object.entries(stats.queriesByCategory)
+    .sort(([, a], [, b]) => b - a)[0];
+  const topCategoryName = topCategory ? topCategory[0] : 'N/A';
+  const topCategoryCount = topCategory ? topCategory[1] : 0;
+
   return (
-    <div className="flex-1 flex flex-col min-h-0">
-      <div className="p-6 sm:p-8 border-b border-gray-800">
-        <h1 className="text-xl sm:text-2xl font-bold text-gray-100 flex items-center gap-2">
-          <ChartBarIcon />
-          <span className="hidden sm:inline">Dashboard de Estadísticas</span>
-          <span className="sm:hidden">Estadísticas</span>
-        </h1>
-        <p className="text-xs sm:text-sm text-gray-400 mt-1">
-          Análisis de consultas, tendencias y alertas territoriales
-        </p>
-      </div>
-
-      {/* Filters */}
-      <div className="p-6 sm:p-8 border-b border-gray-800">
-        <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
-          <div className="flex-1">
-            <label className="block text-xs font-medium text-gray-400 mb-1.5">Provincia</label>
-            <select
-              value={selectedProvince}
-              onChange={(e) => setSelectedProvince(e.target.value)}
-              className="w-full p-2.5 text-sm bg-[#121316] text-white border border-[#2a2d33] rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none transition-all duration-200"
-            >
-              <option value="all">Todas las provincias</option>
-              {PROVINCES.map(province => (
-                <option key={province} value={province}>{province}</option>
-              ))}
-            </select>
-          </div>
-
-          <div className="flex-1">
-            <label className="block text-xs font-medium text-gray-400 mb-1.5">Categoría</label>
-            <select
-              value={selectedCategory}
-              onChange={(e) => setSelectedCategory(e.target.value)}
-              className="w-full p-2.5 text-sm bg-[#121316] text-white border border-[#2a2d33] rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none transition-all duration-200"
-            >
-              <option value="all">Todas las categorías</option>
-              <option value="Estimulante">Estimulante</option>
-              <option value="Depresor">Depresor</option>
-              <option value="Psicodélico">Psicodélico</option>
-              <option value="Disociativo">Disociativo</option>
-              <option value="Empatógeno">Empatógeno</option>
-              <option value="Otro">Otro</option>
-            </select>
-          </div>
-
-          <div className="flex-1">
-            <label className="block text-xs font-medium text-gray-400 mb-1.5">Período</label>
-            <select
-              value={timeRange}
-              onChange={(e) => setTimeRange(Number(e.target.value))}
-              className="w-full p-2.5 text-sm bg-[#121316] text-white border border-[#2a2d33] rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none transition-all duration-200"
-            >
-              <option value={7}>Última semana</option>
-              <option value={30}>Último mes</option>
-              <option value={90}>Últimos 3 meses</option>
-              <option value={180}>Últimos 6 meses</option>
-            </select>
-          </div>
+    <div className="flex-1 flex flex-col min-h-0 overflow-y-auto">
+      <div className="max-w-3xl mx-auto w-full p-6 sm:p-8 lg:p-10 space-y-8">
+        {/* Header */}
+        <div>
+          <h1
+            className="text-2xl sm:text-3xl font-semibold"
+            style={{
+              color: 'var(--text)',
+              lineHeight: 'var(--line-height-heading)'
+            }}
+          >
+            Resumen Diario
+          </h1>
+          <p className="editorial text-sm mt-2" style={{ color: 'var(--muted)' }}>
+            Tu actividad de reducción de daños y señales relevantes
+          </p>
         </div>
-      </div>
 
-      <div className="flex-1 overflow-y-auto p-6 sm:p-8 md:p-10 lg:p-12">
-        <div className="max-w-6xl mx-auto space-y-6 sm:space-y-8 lg:space-y-10">
-          {/* Alerts Section */}
-          <div>
-            <h2 className="text-lg font-semibold text-gray-200 mb-4 sm:mb-5 flex items-center gap-2">
-              <ExclamationTriangleIcon />
-              Alertas Territoriales ({alerts.length})
-            </h2>
+        {/* Quick filters */}
+        <div className="flex flex-wrap gap-2">
+          <select
+            value={timeRange}
+            onChange={(e) => setTimeRange(Number(e.target.value))}
+            className="px-3 py-2 text-sm rounded-[var(--radius-sm)] border"
+            style={{
+              background: 'var(--surface-1)',
+              color: 'var(--text)',
+              borderColor: 'var(--border)'
+            }}
+          >
+            <option value={7}>Última semana</option>
+            <option value={30}>Último mes</option>
+            <option value={90}>Últimos 3 meses</option>
+          </select>
+          <select
+            value={selectedProvince}
+            onChange={(e) => setSelectedProvince(e.target.value)}
+            className="px-3 py-2 text-sm rounded-[var(--radius-sm)] border"
+            style={{
+              background: 'var(--surface-1)',
+              color: 'var(--text)',
+              borderColor: 'var(--border)'
+            }}
+          >
+            <option value="all">Todas las provincias</option>
+            {PROVINCES.map(province => (
+              <option key={province} value={province}>{province}</option>
+            ))}
+          </select>
+        </div>
 
-            {alerts.length === 0 ? (
-              <div className="bg-gray-800/40 border border-gray-700 rounded-lg p-10 sm:p-12 text-center">
-                <p className="text-gray-400">No hay alertas activas para esta provincia.</p>
-              </div>
-            ) : (
-              <div className="grid gap-5 sm:gap-6">
-                {alerts.map(alert => (
-                  <AlertCard
-                    key={alert.id}
-                    alert={alert}
-                    onDelete={() => handleDeleteAlert(alert.id)}
-                  />
-                ))}
-              </div>
+        {/* 1. Today Summary */}
+        <Section title="Hoy">
+          <div className="editorial leading-relaxed space-y-4" style={{ color: 'var(--muted)' }}>
+            <p>
+              En los últimos <strong style={{ color: 'var(--text)' }}>{timeRange} días</strong>, se registraron{' '}
+              <strong style={{ color: 'var(--text)' }}>{stats.totalQueries} consultas</strong> sobre{' '}
+              <strong style={{ color: 'var(--text)' }}>{stats.topSubstances.length} sustancias</strong> diferentes.
+            </p>
+            {topCategory && (
+              <p>
+                La categoría más consultada fue{' '}
+                <strong style={{ color: 'var(--text)' }}>{topCategoryName}</strong> con{' '}
+                <strong style={{ color: 'var(--text)' }}>{topCategoryCount} consultas</strong>.
+                {stats.topSubstances.length > 0 && (
+                  <>
+                    {' '}Las sustancias más buscadas incluyen{' '}
+                    <strong style={{ color: 'var(--text)' }}>
+                      {stats.topSubstances.slice(0, 3).map(s => s.name).join(', ')}
+                    </strong>.
+                  </>
+                )}
+              </p>
             )}
           </div>
+        </Section>
 
-          {/* Stats Summary */}
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-5 sm:gap-6 lg:gap-8">
-            <div
-              className="hover-glow rounded-[var(--radius-md)] p-6 sm:p-8"
-              style={{
-                background: 'var(--surface-1)',
-                border: '1px solid var(--border)',
-                borderLeft: '3px solid rgba(59, 130, 246, 0.5)',
-                animation: 'scaleIn 0.4s ease-out 0.1s both'
-              }}
-            >
-              <h3 className="text-sm font-medium mb-2" style={{ color: 'var(--muted)' }}>Total de Consultas</h3>
-              <p className="text-4xl font-semibold" style={{ color: 'var(--text)' }}>{stats.totalQueries}</p>
-            </div>
+        <Divider />
 
-            <div
-              className="hover-glow rounded-[var(--radius-md)] p-6 sm:p-8"
-              style={{
-                background: 'var(--surface-1)',
-                border: '1px solid var(--border)',
-                borderLeft: '3px solid rgba(16, 185, 129, 0.5)',
-                animation: 'scaleIn 0.4s ease-out 0.2s both'
-              }}
-            >
-              <h3 className="text-sm font-medium mb-2" style={{ color: 'var(--muted)' }}>Sustancias Únicas</h3>
-              <p className="text-4xl font-semibold" style={{ color: 'var(--text)' }}>{stats.topSubstances.length}</p>
-            </div>
-
-            <div
-              className="hover-glow rounded-[var(--radius-md)] p-6 sm:p-8"
-              style={{
-                background: 'var(--surface-1)',
-                border: '1px solid var(--border)',
-                borderLeft: '3px solid rgba(139, 92, 246, 0.5)',
-                animation: 'scaleIn 0.4s ease-out 0.3s both'
-              }}
-            >
-              <h3 className="text-sm font-medium mb-2" style={{ color: 'var(--muted)' }}>Categorías Activas</h3>
-              <p className="text-4xl font-semibold" style={{ color: 'var(--text)' }}>{Object.keys(stats.queriesByCategory).length}</p>
-            </div>
+        {/* 2. You Can Do */}
+        <Section title="Podés hacer ahora" meta="Accesos rápidos">
+          <div className="space-y-3">
+            {[
+              { label: 'Consultar sustancias en la Biblioteca', tab: 'library' },
+              { label: 'Aprender sobre testeo de sustancias', tab: 'testing' },
+              { label: 'Encontrar recursos y líneas de ayuda', tab: 'resources' },
+              { label: 'Configurar recordatorios de cuidado', tab: 'reminders' }
+            ].map((action, idx) => (
+              <button
+                key={idx}
+                onClick={() => {
+                  // This would typically trigger tab navigation
+                  // For now, just a visual button
+                }}
+                className="w-full flex items-center justify-between p-4 rounded-lg border-l-2 active:scale-[0.99]"
+                style={{
+                  background: 'var(--surface-1)',
+                  borderColor: 'var(--border)',
+                  borderLeftColor: 'var(--accent)',
+                  transition: `all var(--t-fast) var(--ease)`,
+                  animation: `fadeIn 0.2s ease-out ${idx * 0.05}s both`
+                }}
+              >
+                <span className="text-sm font-medium" style={{ color: 'var(--text)' }}>
+                  {action.label}
+                </span>
+                <ArrowRightIcon />
+              </button>
+            ))}
           </div>
+        </Section>
 
-          {/* Trend Chart */}
-          <div className="bg-gray-800/40 border border-gray-700 rounded-lg p-5 sm:p-6 lg:p-8">
-            <h3 className="text-sm sm:text-base font-semibold text-gray-200 mb-4 sm:mb-5 lg:mb-6">Tendencia de Consultas</h3>
-            <div className="h-48 sm:h-64">
-              <Line data={trendData} options={chartOptions} />
+        <Divider />
+
+        {/* 3. Signals Preview */}
+        <Section
+          title="Señales"
+          meta={alerts.length > 0 ? `${alerts.length} alerta${alerts.length !== 1 ? 's' : ''} activa${alerts.length !== 1 ? 's' : ''}` : 'Sin alertas'}
+        >
+          {alerts.length === 0 ? (
+            <div className="text-center py-8">
+              <p className="editorial text-sm" style={{ color: 'var(--muted)' }}>
+                No hay alertas activas para esta provincia.
+              </p>
             </div>
-          </div>
+          ) : (
+            <div className="space-y-3">
+              {alerts.slice(0, 3).map((alert, idx) => {
+                const severityStyle = getSeverityStyle(alert.severity);
+                return (
+                  <div
+                    key={alert.id}
+                    className="p-4 rounded-lg border-l-2"
+                    style={{
+                      background: 'var(--surface-1)',
+                      borderColor: 'var(--border)',
+                      borderLeftColor: severityStyle.color,
+                      animation: `fadeIn 0.2s ease-out ${idx * 0.05}s both`
+                    }}
+                  >
+                    <div className="flex items-start justify-between gap-3 mb-2">
+                      <div className="flex items-center gap-2">
+                        <span
+                          className="px-2 py-0.5 rounded-full text-xs font-medium"
+                          style={{
+                            background: severityStyle.bg,
+                            color: severityStyle.color
+                          }}
+                        >
+                          {severityStyle.label}
+                        </span>
+                        <span className="text-xs" style={{ color: 'var(--muted)' }}>
+                          {alert.province}
+                        </span>
+                      </div>
+                      <button
+                        onClick={() => handleDeleteAlert(alert.id)}
+                        className="text-xs"
+                        style={{ color: 'var(--faint)' }}
+                      >
+                        ✕
+                      </button>
+                    </div>
+                    <h3 className="text-sm font-semibold mb-1" style={{ color: 'var(--text)' }}>
+                      {alert.title}
+                    </h3>
+                    <p className="editorial text-sm" style={{ color: 'var(--muted)' }}>
+                      {alert.message}
+                    </p>
+                    <div className="flex items-center justify-between mt-2 text-xs" style={{ color: 'var(--faint)' }}>
+                      {alert.source && <span>Fuente: {alert.source}</span>}
+                      <span>{getTimeAgo(alert.timestamp)}</span>
+                    </div>
+                  </div>
+                );
+              })}
+              {alerts.length > 3 && (
+                <p className="text-sm text-center" style={{ color: 'var(--muted)' }}>
+                  +{alerts.length - 3} alerta{alerts.length - 3 !== 1 ? 's' : ''} más
+                </p>
+              )}
+            </div>
+          )}
+        </Section>
 
-          {/* Category & Top Substances Charts */}
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-5 sm:gap-6 lg:gap-8">
-            <div className="bg-gray-800/40 border border-gray-700 rounded-lg p-5 sm:p-6 lg:p-8">
-              <h3 className="text-sm sm:text-base font-semibold text-gray-200 mb-4 sm:mb-5 lg:mb-6">Por Categoría</h3>
-              <div className="h-48 sm:h-64">
-                <Doughnut data={categoryData} options={doughnutOptions} />
+        <Divider />
+
+        {/* Supporting Data - Expandable */}
+        <Section title="Datos de soporte" meta="Gráficos y análisis detallados">
+          <button
+            onClick={() => setShowCharts(!showCharts)}
+            className="px-4 py-2 rounded-[var(--radius-sm)] border text-sm font-medium active:scale-95"
+            style={{
+              background: 'var(--surface-2)',
+              color: 'var(--text)',
+              borderColor: 'var(--border)',
+              transition: `all var(--t-fast) var(--ease)`
+            }}
+          >
+            {showCharts ? 'Ocultar gráficos' : 'Ver gráficos'}
+          </button>
+
+          {showCharts && (
+            <div className="mt-6 space-y-6" style={{ animation: 'fadeIn 0.3s ease-out' }}>
+              {/* Trend Chart */}
+              <div
+                className="p-5 rounded-lg border"
+                style={{
+                  background: 'var(--surface-1)',
+                  borderColor: 'var(--border)'
+                }}
+              >
+                <h3 className="text-sm font-semibold mb-4" style={{ color: 'var(--text)' }}>
+                  Tendencia de Consultas
+                </h3>
+                <div className="h-64">
+                  <Line data={trendData} options={chartOptions} />
+                </div>
+              </div>
+
+              {/* Top Substances Chart */}
+              <div
+                className="p-5 rounded-lg border"
+                style={{
+                  background: 'var(--surface-1)',
+                  borderColor: 'var(--border)'
+                }}
+              >
+                <h3 className="text-sm font-semibold mb-4" style={{ color: 'var(--text)' }}>
+                  Sustancias Más Consultadas
+                </h3>
+                <div className="h-64">
+                  <Bar data={topSubstancesData} options={chartOptions} />
+                </div>
               </div>
             </div>
+          )}
+        </Section>
 
-            <div className="bg-gray-800/40 border border-gray-700 rounded-lg p-5 sm:p-6 lg:p-8">
-              <h3 className="text-sm sm:text-base font-semibold text-gray-200 mb-4 sm:mb-5 lg:mb-6">Sustancias Más Consultadas</h3>
-              <div className="h-48 sm:h-64">
-                <Bar data={topSubstancesData} options={chartOptions} />
-              </div>
-            </div>
-          </div>
-
-          {/* Privacy Notice */}
-          <div className="border-t border-gray-700 pt-4">
-            <p className="text-xs text-gray-500 text-center">
-              📊 Todos los datos son anónimos y almacenados localmente en tu dispositivo. No se comparte información personal.
-            </p>
-          </div>
+        {/* Privacy notice */}
+        <div className="text-center pt-4 border-t" style={{ borderColor: 'var(--border)' }}>
+          <p className="editorial text-xs" style={{ color: 'var(--faint)' }}>
+            Todos los datos son anónimos y almacenados localmente. No se comparte información personal.
+          </p>
         </div>
       </div>
     </div>
