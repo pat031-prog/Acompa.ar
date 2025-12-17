@@ -60,7 +60,13 @@ const getTypeColor = (type: LocalResource['type']) => {
 
 const ResourceCard: React.FC<{ resource: LocalResource }> = ({ resource }) => {
   return (
-    <div className="bg-gray-800/40 border border-gray-700 rounded-lg p-5 sm:p-6 hover:border-gray-600 transition-colors">
+    <div
+      className="hover-glow rounded-[var(--radius-md)] p-5 sm:p-6"
+      style={{
+        background: 'var(--surface-1)',
+        border: '1px solid var(--border)'
+      }}
+    >
       <div className="flex items-start gap-3 sm:gap-4">
         <div className={`flex-shrink-0 w-10 h-10 sm:w-12 sm:h-12 rounded-lg flex items-center justify-center text-xl sm:text-2xl border ${getTypeColor(resource.type)}`}>
           {getTypeIcon(resource.type)}

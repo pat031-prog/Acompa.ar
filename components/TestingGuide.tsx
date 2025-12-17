@@ -112,16 +112,28 @@ export const TestingGuide: React.FC = () => {
 };
 
 const GuideSection: React.FC = () => (
-  <div className="max-w-4xl mx-auto space-y-6">
-    <div className="bg-white/[0.02] border border-white/[0.06] border-l-2 border-l-blue-500/40 rounded-lg p-5 sm:p-6">
-      <p className="text-gray-200 leading-relaxed">{TESTING_GUIDE.intro}</p>
+  <div className="max-w-4xl mx-auto space-y-8">
+    <div
+      className="bg-[var(--surface-1)] border border-[var(--border)] rounded-[var(--radius-lg)] p-6 transition-all duration-300 hover:shadow-[var(--shadow-2)]"
+      style={{ borderLeft: '3px solid var(--accent)' }}
+    >
+      <p className="editorial text-[var(--text)] leading-relaxed text-base">{TESTING_GUIDE.intro}</p>
     </div>
 
-    <section>
-      <h2 className="text-xl font-bold text-gray-100 mb-3">¿Por qué testear?</h2>
-      <ul className="space-y-2">
+    <section className="space-y-4">
+      <h2 className="text-2xl font-semibold text-[var(--text)] mb-4">¿Por qué testear?</h2>
+      <ul className="space-y-3">
         {TESTING_GUIDE.whyTest.map((reason, idx) => (
-          <li key={idx} className="text-gray-300 text-sm leading-relaxed" dangerouslySetInnerHTML={{ __html: reason.replace(/\*\*(.*?)\*\*/g, '<strong class="font-semibold text-blue-300">$1</strong>') }} />
+          <li
+            key={idx}
+            className="editorial text-[var(--muted)] leading-relaxed pl-6 relative"
+            style={{
+              animation: `fadeIn 0.4s ease-out ${idx * 0.1}s both`,
+            }}
+            dangerouslySetInnerHTML={{
+              __html: `<span class="absolute left-0 text-[var(--accent)]">•</span>${reason.replace(/\*\*(.*?)\*\*/g, '<strong class="font-semibold text-[var(--text)]">$1</strong>')}`
+            }}
+          />
         ))}
       </ul>
     </section>

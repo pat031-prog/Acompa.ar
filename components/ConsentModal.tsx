@@ -19,17 +19,25 @@ export const ConsentModal: React.FC<ConsentModalProps> = ({ onConsent }) => {
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-80 flex items-center justify-center z-50 p-4" role="dialog" aria-modal="true">
-      <div className="bg-[#15171a] border border-[#2a2d33] rounded-xl p-6 max-w-lg w-full shadow-2xl animate-fade-in">
-        <h2 className="text-xl font-bold text-gray-100">Antes de empezar</h2>
-        <p className="text-sm text-gray-400 mt-2">
+      <div
+        className="border rounded-[var(--radius-lg)] p-6 max-w-lg w-full"
+        style={{
+          background: 'var(--surface-1)',
+          borderColor: 'var(--border-strong)',
+          boxShadow: 'var(--shadow-2)',
+          animation: 'scaleIn 0.3s ease-out'
+        }}
+      >
+        <h2 className="text-xl font-bold" style={{ color: 'var(--text)' }}>Antes de empezar</h2>
+        <p className="editorial text-sm mt-2" style={{ color: 'var(--muted)' }}>
           Este chat brinda acompañamiento con enfoque de reducción de daños. No es un servicio de emergencia.
         </p>
-        <p className="text-sm text-gray-400 mt-4">
-          Con tu consentimiento, registramos <b>solo</b> categoría de consulta y provincia para un mapa agregado. No guardamos datos personales.
+        <p className="editorial text-sm mt-4" style={{ color: 'var(--muted)' }}>
+          Con tu consentimiento, registramos <b style={{ color: 'var(--text)' }}>solo</b> categoría de consulta y provincia para un mapa agregado. No guardamos datos personales.
         </p>
         
         <div className="mt-4">
-          <label htmlFor="province" className="block text-sm font-medium text-gray-300">
+          <label htmlFor="province" className="block text-sm font-medium" style={{ color: 'var(--muted)' }}>
             Provincia (opcional)
           </label>
           <select
@@ -37,7 +45,13 @@ export const ConsentModal: React.FC<ConsentModalProps> = ({ onConsent }) => {
             name="province"
             value={province}
             onChange={(e) => setProvince(e.target.value)}
-            className="mt-1 block w-full pl-3 pr-10 py-2 text-base bg-[#121316] border border-[#2a2d33] focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm rounded-md text-white"
+            className="mt-1 block w-full pl-3 pr-10 py-2 text-base border focus:outline-none sm:text-sm rounded-[var(--radius-sm)]"
+            style={{
+              background: 'var(--surface-2)',
+              borderColor: 'var(--border)',
+              color: 'var(--text)',
+              transition: `all var(--t-med) var(--ease)`
+            }}
           >
             <option value="">Prefiero no decir</option>
             {PROVINCES.map(p => <option key={p} value={p}>{p}</option>)}
@@ -47,25 +61,31 @@ export const ConsentModal: React.FC<ConsentModalProps> = ({ onConsent }) => {
         <div className="mt-6 flex flex-col sm:flex-row gap-3">
           <button
             onClick={handleAccept}
-            className="flex-1 px-4 py-2 bg-blue-700 text-white text-sm font-medium rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-blue-500 transition-colors"
+            className="flex-1 px-4 py-2 text-white text-sm font-medium rounded-[var(--radius-md)] active:scale-95"
+            style={{
+              background: 'var(--accent)',
+              transition: `all var(--t-fast) var(--ease)`
+            }}
+            onMouseEnter={(e) => e.currentTarget.style.opacity = '0.9'}
+            onMouseLeave={(e) => e.currentTarget.style.opacity = '1'}
           >
             Acepto y continúo
           </button>
           <button
             onClick={handleSkip}
-            className="flex-1 px-4 py-2 bg-gray-600 text-white text-sm font-medium rounded-md hover:bg-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-gray-500 transition-colors"
+            className="flex-1 px-4 py-2 text-sm font-medium rounded-[var(--radius-md)] active:scale-95"
+            style={{
+              background: 'var(--surface-3)',
+              color: 'var(--muted)',
+              transition: `all var(--t-fast) var(--ease)`
+            }}
+            onMouseEnter={(e) => e.currentTarget.style.opacity = '0.8'}
+            onMouseLeave={(e) => e.currentTarget.style.opacity = '1'}
           >
             Usar sin compartir
           </button>
         </div>
       </div>
-      <style>{`
-        @keyframes fade-in {
-          from { opacity: 0; transform: scale(0.95); }
-          to { opacity: 1; transform: scale(1); }
-        }
-        .animate-fade-in { animation: fade-in 0.3s ease-out forwards; }
-      `}</style>
     </div>
   );
 };

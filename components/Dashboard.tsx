@@ -358,19 +358,43 @@ export const Dashboard: React.FC = () => {
 
           {/* Stats Summary */}
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-5 sm:gap-6 lg:gap-8">
-            <div className="bg-white/[0.02] border border-white/[0.06] border-l-2 border-l-blue-500/40 rounded-lg p-6 sm:p-8">
-              <h3 className="text-sm font-medium text-white/60 mb-1">Total de Consultas</h3>
-              <p className="text-3xl font-bold text-white">{stats.totalQueries}</p>
+            <div
+              className="hover-glow rounded-[var(--radius-md)] p-6 sm:p-8"
+              style={{
+                background: 'var(--surface-1)',
+                border: '1px solid var(--border)',
+                borderLeft: '3px solid rgba(59, 130, 246, 0.5)',
+                animation: 'scaleIn 0.4s ease-out 0.1s both'
+              }}
+            >
+              <h3 className="text-sm font-medium mb-2" style={{ color: 'var(--muted)' }}>Total de Consultas</h3>
+              <p className="text-4xl font-semibold" style={{ color: 'var(--text)' }}>{stats.totalQueries}</p>
             </div>
 
-            <div className="bg-white/[0.02] border border-white/[0.06] border-l-2 border-l-green-500/40 rounded-lg p-6 sm:p-8">
-              <h3 className="text-sm font-medium text-white/60 mb-1">Sustancias Únicas</h3>
-              <p className="text-3xl font-bold text-white">{stats.topSubstances.length}</p>
+            <div
+              className="hover-glow rounded-[var(--radius-md)] p-6 sm:p-8"
+              style={{
+                background: 'var(--surface-1)',
+                border: '1px solid var(--border)',
+                borderLeft: '3px solid rgba(16, 185, 129, 0.5)',
+                animation: 'scaleIn 0.4s ease-out 0.2s both'
+              }}
+            >
+              <h3 className="text-sm font-medium mb-2" style={{ color: 'var(--muted)' }}>Sustancias Únicas</h3>
+              <p className="text-4xl font-semibold" style={{ color: 'var(--text)' }}>{stats.topSubstances.length}</p>
             </div>
 
-            <div className="bg-white/[0.02] border border-white/[0.06] border-l-2 border-l-purple-500/40 rounded-lg p-6 sm:p-8">
-              <h3 className="text-sm font-medium text-white/60 mb-1">Categorías Activas</h3>
-              <p className="text-3xl font-bold text-white">{Object.keys(stats.queriesByCategory).length}</p>
+            <div
+              className="hover-glow rounded-[var(--radius-md)] p-6 sm:p-8"
+              style={{
+                background: 'var(--surface-1)',
+                border: '1px solid var(--border)',
+                borderLeft: '3px solid rgba(139, 92, 246, 0.5)',
+                animation: 'scaleIn 0.4s ease-out 0.3s both'
+              }}
+            >
+              <h3 className="text-sm font-medium mb-2" style={{ color: 'var(--muted)' }}>Categorías Activas</h3>
+              <p className="text-4xl font-semibold" style={{ color: 'var(--text)' }}>{Object.keys(stats.queriesByCategory).length}</p>
             </div>
           </div>
 

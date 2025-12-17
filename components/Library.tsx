@@ -57,11 +57,11 @@ const CalculatorIcon: React.FC = () => (
 
 const InfoSection: React.FC<{ title: string; icon: React.ReactNode; children: React.ReactNode; }> = ({ title, icon, children }) => (
   <div className="mt-8 lg:mt-10">
-    <h3 className="flex items-center gap-2 font-semibold text-gray-200">
+    <h3 className="flex items-center gap-2 font-semibold" style={{ color: 'var(--text)' }}>
       {icon}
       {title}
     </h3>
-    <div className="mt-3 pl-7 text-sm text-gray-300/90 leading-relaxed space-y-3">
+    <div className="editorial mt-3 pl-7 text-sm leading-relaxed space-y-3" style={{ color: 'var(--muted)' }}>
       {children}
     </div>
   </div>
@@ -85,11 +85,11 @@ const LibraryDetailView: React.FC<{ item: LibraryEntry; onFavoriteToggle: () => 
   };
 
   return (
-    <div className="p-6 sm:p-8 lg:p-10 xl:p-12">
+    <div className="p-6 sm:p-8 lg:p-10 xl:p-12" style={{ animation: 'fadeIn 0.4s ease-out' }}>
       <div className="flex items-start justify-between gap-4 sm:gap-6">
         <div className="flex-1 min-w-0">
-          <h2 className="text-xl sm:text-2xl font-bold text-gray-100">{item.title}</h2>
-          <p className="text-xs sm:text-sm text-gray-400 mt-1">
+          <h2 className="text-2xl sm:text-3xl font-semibold" style={{ color: 'var(--text)' }}>{item.title}</h2>
+          <p className="text-sm mt-2 editorial" style={{ color: 'var(--muted)' }}>
             También conocido como: {item.aliases.join(', ')}.
           </p>
         </div>
@@ -122,7 +122,7 @@ const LibraryDetailView: React.FC<{ item: LibraryEntry; onFavoriteToggle: () => 
         </div>
       )}
 
-      <p className="mt-6 text-sm text-gray-300 leading-relaxed">{item.content.description}</p>
+      <p className="editorial mt-6 text-sm leading-relaxed" style={{ color: 'var(--muted)' }}>{item.content.description}</p>
       
       <InfoSection title="Efectos" icon={<HeartIcon />}>
         <div>
@@ -319,15 +319,23 @@ export const Library: React.FC = () => {
             </div>
             <nav className="overflow-y-auto p-5 sm:p-6 h-64 md:h-auto md:flex-1">
                 <ul className="space-y-2">
-                    {filteredLibraryData.map(item => (
-                        <li key={item.title}>
+                    {filteredLibraryData.map((item, idx) => (
+                        <li
+                          key={item.title}
+                          style={{
+                            animation: `fadeIn 0.3s ease-out ${idx * 0.05}s both`
+                          }}
+                        >
                             <button
                                 onClick={() => setSelectedItem(item)}
-                                className={`w-full text-left text-sm p-3.5 sm:p-4 rounded-md transition-all duration-200 active:scale-[0.98] ${
-                                    selectedItem?.title === item.title
-                                        ? 'bg-white/[0.06] text-white/95 font-medium'
-                                        : 'text-white/60 hover:bg-white/[0.03] hover:text-white/75'
-                                }`}
+                                className="w-full text-left text-sm p-3.5 sm:p-4 rounded-[var(--radius-sm)] active:scale-[0.98]"
+                                style={{
+                                  background: selectedItem?.title === item.title ? 'var(--surface-3)' : 'transparent',
+                                  color: selectedItem?.title === item.title ? 'var(--text)' : 'var(--muted)',
+                                  fontWeight: selectedItem?.title === item.title ? 500 : 400,
+                                  transition: `all var(--t-med) var(--ease)`,
+                                  borderLeft: selectedItem?.title === item.title ? '2px solid var(--accent)' : '2px solid transparent'
+                                }}
                             >
                                 {item.title}
                             </button>

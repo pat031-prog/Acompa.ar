@@ -90,7 +90,10 @@ const ReminderCard: React.FC<{
   };
 
   return (
-    <div className={`border rounded-lg border-l-2 p-5 sm:p-6 ${getTypeColor(reminder.type)} ${getTypeBorderColor(reminder.type)}`}>
+    <div
+      className={`hover-glow border rounded-[var(--radius-md)] border-l-2 p-5 sm:p-6 ${getTypeColor(reminder.type)} ${getTypeBorderColor(reminder.type)}`}
+      style={{ transition: `all var(--t-med) var(--ease)` }}
+    >
       <div className="flex items-start justify-between gap-4">
         <div className="flex items-start gap-3 flex-1">
           <div className="flex-shrink-0 text-3xl">
@@ -253,19 +256,28 @@ export const CareReminders: React.FC = () => {
         <div className="max-w-3xl mx-auto space-y-8 lg:space-y-10">
           {/* Notification Permission Banner */}
           {notificationPermission !== 'granted' && (
-            <div className="bg-white/[0.02] border border-white/[0.06] border-l-2 border-l-blue-500/40 rounded-lg p-5 sm:p-6">
+            <div
+              className="border border-l-2 border-l-blue-500/40 rounded-[var(--radius-md)] p-5 sm:p-6"
+              style={{ background: 'var(--surface-1)', borderColor: 'var(--border)', animation: 'fadeIn 0.4s ease-out' }}
+            >
               <div className="flex items-start gap-3">
                 <div className="flex-shrink-0 text-2xl">🔔</div>
                 <div className="flex-1">
-                  <h3 className="font-semibold text-white/90 mb-1">
+                  <h3 className="font-semibold mb-1" style={{ color: 'var(--text)' }}>
                     Activá las notificaciones
                   </h3>
-                  <p className="text-sm text-white/60 mb-3">
+                  <p className="editorial text-sm mb-3" style={{ color: 'var(--muted)' }}>
                     Para recibir recordatorios cuando estés en otra pestaña o app, necesitamos tu permiso para enviar notificaciones.
                   </p>
                   <button
                     onClick={requestNotificationPermission}
-                    className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-sm font-medium transition-colors"
+                    className="px-4 py-2 text-white rounded-[var(--radius-sm)] text-sm font-medium"
+                    style={{
+                      background: 'var(--accent)',
+                      transition: `all var(--t-fast) var(--ease)`
+                    }}
+                    onMouseEnter={(e) => e.currentTarget.style.opacity = '0.9'}
+                    onMouseLeave={(e) => e.currentTarget.style.opacity = '1'}
                   >
                     Permitir Notificaciones
                   </button>
@@ -293,40 +305,50 @@ export const CareReminders: React.FC = () => {
           </div>
 
           {/* Info Banner */}
-          <div className="bg-white/[0.02] border border-white/[0.06] border-l-2 border-l-yellow-500/40 rounded-lg p-5 sm:p-6">
-            <p className="text-sm text-white/70">
-              <strong className="text-white/90">💡 Consejo:</strong> Los recordatorios son especialmente útiles durante experiencias psicoactivas.
+          <div
+            className="border border-l-2 border-l-yellow-500/40 rounded-[var(--radius-md)] p-5 sm:p-6"
+            style={{ background: 'var(--surface-1)', borderColor: 'var(--border)' }}
+          >
+            <p className="editorial text-sm" style={{ color: 'var(--muted)' }}>
+              <strong style={{ color: 'var(--text)' }}>💡 Consejo:</strong> Los recordatorios son especialmente útiles durante experiencias psicoactivas.
               Hidratarse, descansar y alimentarse de forma regular reduce riesgos y mejora el bienestar.
             </p>
           </div>
 
           {/* Reminders List */}
           <div className="space-y-5">
-            <h2 className="text-lg font-semibold text-gray-200 mb-2">Tus Recordatorios</h2>
-            {reminders.map(reminder => (
-              <ReminderCard
+            <h2 className="text-lg font-semibold mb-2" style={{ color: 'var(--text)' }}>Tus Recordatorios</h2>
+            {reminders.map((reminder, idx) => (
+              <div
                 key={reminder.id}
-                reminder={reminder}
-                onToggle={() => handleToggle(reminder.id)}
-                onIntervalChange={(minutes) => handleIntervalChange(reminder.id, minutes)}
-              />
+                style={{ animation: `fadeIn 0.4s ease-out ${idx * 0.1}s both` }}
+              >
+                <ReminderCard
+                  reminder={reminder}
+                  onToggle={() => handleToggle(reminder.id)}
+                  onIntervalChange={(minutes) => handleIntervalChange(reminder.id, minutes)}
+                />
+              </div>
             ))}
           </div>
 
           {/* Usage Tips */}
-          <div className="bg-gray-800/40 border border-gray-700 rounded-lg p-5 sm:p-6">
-            <h3 className="text-sm font-semibold text-gray-300 mb-2">Cómo usar los recordatorios</h3>
-            <ul className="space-y-2 text-sm text-gray-400">
-              <li>• <strong className="text-gray-300">Activá/desactivá:</strong> Usa el interruptor para habilitar o deshabilitar cada recordatorio</li>
-              <li>• <strong className="text-gray-300">Ajustá intervalos:</strong> Hacé clic en "Cada X min" para cambiar la frecuencia</li>
-              <li>• <strong className="text-gray-300">Notificaciones:</strong> Deben estar habilitadas para recibir alertas fuera de la app</li>
-              <li>• <strong className="text-gray-300">Personalización:</strong> Ajustá los tiempos según tus necesidades individuales</li>
+          <div
+            className="border rounded-[var(--radius-md)] p-5 sm:p-6"
+            style={{ background: 'var(--surface-1)', borderColor: 'var(--border)' }}
+          >
+            <h3 className="text-sm font-semibold mb-2" style={{ color: 'var(--text)' }}>Cómo usar los recordatorios</h3>
+            <ul className="editorial space-y-2 text-sm" style={{ color: 'var(--muted)' }}>
+              <li>• <strong style={{ color: 'var(--text)' }}>Activá/desactivá:</strong> Usa el interruptor para habilitar o deshabilitar cada recordatorio</li>
+              <li>• <strong style={{ color: 'var(--text)' }}>Ajustá intervalos:</strong> Hacé clic en "Cada X min" para cambiar la frecuencia</li>
+              <li>• <strong style={{ color: 'var(--text)' }}>Notificaciones:</strong> Deben estar habilitadas para recibir alertas fuera de la app</li>
+              <li>• <strong style={{ color: 'var(--text)' }}>Personalización:</strong> Ajustá los tiempos según tus necesidades individuales</li>
             </ul>
           </div>
 
           {/* Safety Note */}
-          <div className="border-t border-gray-700 pt-4">
-            <p className="text-xs text-gray-500 text-center">
+          <div className="border-t pt-4" style={{ borderColor: 'var(--border)' }}>
+            <p className="editorial text-xs text-center" style={{ color: 'var(--faint)' }}>
               Los recordatorios son orientativos. Escuchá tu cuerpo y ajustá según tus necesidades.
               Si te sentís mal, buscá asistencia médica inmediatamente.
             </p>
