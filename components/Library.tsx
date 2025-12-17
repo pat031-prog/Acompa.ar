@@ -277,7 +277,7 @@ export const Library: React.FC = () => {
                 <div className="flex flex-wrap gap-2 mt-4">
                     <button
                         onClick={() => setSelectedCategory('All')}
-                        className={`px-2.5 py-1 text-xs rounded-full transition-colors ${selectedCategory === 'All' ? 'bg-blue-600 text-white font-semibold' : 'bg-gray-700/60 hover:bg-gray-600/80 text-gray-300'}`}
+                        className={`px-2.5 py-1 text-xs rounded-full transition-all duration-200 active:scale-95 ${selectedCategory === 'All' ? 'bg-blue-600 text-white font-semibold' : 'bg-gray-700/60 hover:bg-gray-600/80 text-gray-300'}`}
                     >
                         Todas
                     </button>
@@ -285,7 +285,7 @@ export const Library: React.FC = () => {
                          <button
                             key={category}
                             onClick={() => setSelectedCategory(category)}
-                            className={`px-2.5 py-1 text-xs rounded-full transition-colors ${selectedCategory === category ? 'bg-blue-600 text-white font-semibold' : 'bg-gray-700/60 hover:bg-gray-600/80 text-gray-300'}`}
+                            className={`px-2.5 py-1 text-xs rounded-full transition-all duration-200 active:scale-95 ${selectedCategory === category ? 'bg-blue-600 text-white font-semibold' : 'bg-gray-700/60 hover:bg-gray-600/80 text-gray-300'}`}
                         >
                             {category}
                         </button>
@@ -293,7 +293,7 @@ export const Library: React.FC = () => {
                 </div>
                 <button
                     onClick={() => setShowOnlyFavorites(!showOnlyFavorites)}
-                    className={`mt-4 w-full px-3 py-2.5 text-sm rounded-lg transition-all flex items-center justify-center gap-2 ${
+                    className={`mt-4 w-full px-3 py-2.5 text-sm rounded-lg transition-all duration-200 active:scale-[0.98] flex items-center justify-center gap-2 ${
                         showOnlyFavorites
                             ? 'bg-white/[0.06] text-white/90 border border-white/[0.12] font-semibold'
                             : 'bg-white/[0.02] text-white/60 border border-white/[0.06] hover:bg-white/[0.04]'
@@ -304,14 +304,14 @@ export const Library: React.FC = () => {
                 </button>
                 <button
                     onClick={() => setViewMode('compare')}
-                    className="mt-3 w-full px-3 py-2.5 text-sm rounded-lg transition-all flex items-center justify-center gap-2 bg-white/[0.02] text-white/70 border border-white/[0.06] hover:bg-white/[0.04]"
+                    className="mt-3 w-full px-3 py-2.5 text-sm rounded-lg transition-all duration-200 active:scale-[0.98] flex items-center justify-center gap-2 bg-white/[0.02] text-white/70 border border-white/[0.06] hover:bg-white/[0.04]"
                 >
                     <CompareIcon />
                     Comparar Sustancias
                 </button>
                 <button
                     onClick={() => setViewMode('calculator')}
-                    className="mt-3 w-full px-3 py-2.5 text-sm rounded-lg transition-all flex items-center justify-center gap-2 bg-white/[0.02] text-white/70 border border-white/[0.06] hover:bg-white/[0.04]"
+                    className="mt-3 w-full px-3 py-2.5 text-sm rounded-lg transition-all duration-200 active:scale-[0.98] flex items-center justify-center gap-2 bg-white/[0.02] text-white/70 border border-white/[0.06] hover:bg-white/[0.04]"
                 >
                     <CalculatorIcon />
                     Calculadora de Dosis
@@ -323,7 +323,7 @@ export const Library: React.FC = () => {
                         <li key={item.title}>
                             <button
                                 onClick={() => setSelectedItem(item)}
-                                className={`w-full text-left text-sm p-3.5 sm:p-4 rounded-md transition-colors duration-150 active:scale-[0.98] ${
+                                className={`w-full text-left text-sm p-3.5 sm:p-4 rounded-md transition-all duration-200 active:scale-[0.98] ${
                                     selectedItem?.title === item.title
                                         ? 'bg-white/[0.06] text-white/95 font-medium'
                                         : 'text-white/60 hover:bg-white/[0.03] hover:text-white/75'
