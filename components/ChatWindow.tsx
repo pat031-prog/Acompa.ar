@@ -33,7 +33,7 @@ const EmptyState: React.FC = () => (
           className="editorial text-base leading-relaxed"
           style={{ color: 'var(--muted)' }}
         >
-          Soy tu acompañante de reducción de daños. Preguntame lo que necesites para cuidarte o reducir riesgos.
+          Soy tu asistente informativo. Preguntame lo que necesites para reducir riesgos y mejorar tus estrategias de cuidado.
         </p>
       </div>
 
@@ -99,9 +99,8 @@ const EmptyState: React.FC = () => (
         className="text-xs"
         style={{ color: 'var(--faint)' }}
       >
-        <strong style={{ color: 'var(--text)' }}>Emergencia:</strong> Si necesitás atención urgente, llamá al SAME{' '}
-        <a href="tel:107" style={{ color: 'var(--accent)' }} className="underline">107</a> o{' '}
-        <a href="tel:911" style={{ color: 'var(--accent)' }} className="underline">911</a>
+        <strong style={{ color: 'var(--text)' }}>Emergencia médica:</strong> Si necesitás atención urgente, llamá al{' '}
+        <a href="tel:107" style={{ color: 'var(--accent)' }} className="underline font-semibold">SAME 107</a>
       </p>
     </div>
   </div>

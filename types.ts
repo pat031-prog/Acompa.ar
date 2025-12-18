@@ -66,7 +66,7 @@ export interface MapDataset {
   }[];
 }
 
-export type Tab = 'chat' | 'library' | 'testing' | 'resources' | 'observatory' | 'reminders' | 'dashboard';
+export type Tab = 'home' | 'chat' | 'library' | 'testing' | 'resources' | 'observatory' | 'reminders' | 'dashboard';
 
 // Reagent testing types
 export interface ReagentTest {

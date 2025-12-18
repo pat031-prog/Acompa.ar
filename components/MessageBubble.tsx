@@ -37,7 +37,7 @@ export const MessageBubble: React.FC<MessageBubbleProps> = ({ message }) => {
       <div className={`max-w-[90%] ${isUser ? 'max-w-xl' : 'max-w-2xl'}`}>
         {/* Label */}
         <div className={`text-xs font-medium mb-2 ${isUser ? 'text-right' : 'text-left'}`} style={{ color: 'var(--faint)' }}>
-          {isUser ? 'Vos' : 'Acompañante'}
+          {isUser ? 'Vos' : 'Asistente'}
         </div>
 
         {/* Message content */}

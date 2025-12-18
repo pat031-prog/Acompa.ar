@@ -6,6 +6,7 @@ import { ChatInput } from './components/ChatInput';
 import { ConsentModal } from './components/ConsentModal';
 import { getChatbotResponse } from './services/geminiService';
 import { Tabs } from './components/Tabs';
+import { Home } from './components/Home';
 import { Library } from './components/Library';
 import { TestingGuide } from './components/TestingGuide';
 import { ResourcesDirectory } from './components/ResourcesDirectory';
@@ -19,7 +20,7 @@ const App: React.FC = () => {
   const [messages, setMessages] = useState<Message[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [consent, setConsent] = useState<ConsentData | null>(null);
-  const [activeTab, setActiveTab] = useState<Tab>('chat');
+  const [activeTab, setActiveTab] = useState<Tab>('home');
 
   useEffect(() => {
     if (consent && messages.length === 0) { // Only add initial message once
@@ -109,7 +110,7 @@ const App: React.FC = () => {
         {/* Mobile Tabs */}
         <div className="overflow-x-auto scrollbar-hide px-4 pb-3">
           <div className="flex gap-2">
-            {['chat', 'library', 'testing', 'resources', 'observatory', 'reminders', 'dashboard'].map((tab) => (
+            {['home', 'chat', 'library', 'testing', 'resources', 'observatory', 'reminders', 'dashboard'].map((tab) => (
               <button
                 key={tab}
                 onClick={() => setActiveTab(tab as Tab)}
@@ -125,6 +126,7 @@ const App: React.FC = () => {
                   transition: `all var(--t-fast) var(--ease)`
                 }}
               >
+                {tab === 'home' && 'Inicio'}
                 {tab === 'chat' && 'Chat'}
                 {tab === 'library' && 'Biblioteca'}
                 {tab === 'testing' && 'Testeo'}
@@ -141,6 +143,7 @@ const App: React.FC = () => {
       {/* Main Content */}
       <main className="flex-1 flex flex-col min-w-0 overflow-hidden lg:mt-0 mt-[140px]">
         <div className="flex-1 flex flex-col h-full overflow-hidden">
+          {activeTab === 'home' && <Home onNavigate={(tab) => setActiveTab(tab as Tab)} />}
           {activeTab === 'chat' && (
             <div className="flex flex-col flex-1 h-full overflow-hidden">
               <ChatWindow messages={messages} isLoading={isLoading} />
