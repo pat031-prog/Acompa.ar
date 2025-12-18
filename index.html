@@ -3,82 +3,108 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes" />
-    <meta name="theme-color" content="#0e0f11" />
+    <meta name="theme-color" content="#FBF9F6" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
     <title>ACompañ.Ar — Chatbot & Observatorio de Consumos</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600;700&family=Newsreader:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400;1,6..72,500&display=swap" rel="stylesheet">
     <style>
-      /* ===== Design Tokens (Claude-style) ===== */
+      /* ===== DIGITAL HUMANISM DESIGN SYSTEM ===== */
+      /* High-fidelity Anthropic/Claude aesthetic: Warm, Intellectual, Printed */
       :root {
-        /* ===== Background & Surfaces ===== */
-        --bg: #0b0d10;
-        --surface-1: #0f1217;
-        --surface-2: #121721;
-        --surface-3: #151b27;
+        /* ===== Canvas & Surfaces (Paper & Cream) ===== */
+        --bg-paper-100: #FBF9F6;  /* Main background - "Warm offset printing" */
+        --bg-paper-200: #F3F0E9;  /* Sidebar/Secondary surfaces */
+        --bg-surface: #FFFFFF;    /* Cards/Inputs - Pure white to pop */
 
-        /* ===== Text ===== */
-        --text: rgba(255, 255, 255, 0.92);
-        --muted: rgba(255, 255, 255, 0.68);
-        --faint: rgba(255, 255, 255, 0.48);
+        /* ===== Ink (Typography) ===== */
+        --text-ink-900: #1C1C1A;  /* Primary text - Soft black, never pure black */
+        --text-ink-600: #5F5E5B;  /* Secondary text - Earthy grey */
+        --text-ink-400: #969591;  /* Placeholder/Disabled - Light grey */
 
-        /* ===== Borders (1px max, very subtle) ===== */
-        --border: rgba(255, 255, 255, 0.08);
-        --border-strong: rgba(255, 255, 255, 0.12);
+        /* ===== Maple Accent (Brand) ===== */
+        --accent-primary: #D97757;   /* Terracotta/Burnt orange - The Claude accent */
+        --accent-hover: #C56A4C;     /* Hover state - Darker terracotta */
+        --accent-surface: #FBECE8;   /* Very light wash for backgrounds */
+        --accent-weak: rgba(217, 119, 87, 0.12); /* Subtle accent overlay */
 
-        /* ===== Accent (warm sand) ===== */
-        --accent: #d1995b;
-        --accent-weak: rgba(209, 153, 91, 0.18);
+        /* ===== Borders (Etched lines) ===== */
+        --border-subtle: #E6E4DD;    /* Key for "etched" printed look */
+        --border-medium: #D1CEC4;    /* Slightly stronger */
+        --border-strong: #B8B5AA;    /* Strongest border */
 
-        /* ===== Shadows (subtle, not cardy) ===== */
-        --shadow-1: 0 1px 0 rgba(255, 255, 255, 0.04) inset;
-        --shadow-2: 0 12px 28px rgba(0, 0, 0, 0.45);
+        /* ===== Shadows (Ambient Occlusion, not drop shadows) ===== */
+        --shadow-ambient: 0 1px 2px 0 rgba(0, 0, 0, 0.05), 0 4px 12px 0 rgba(0, 0, 0, 0.02);
+        --shadow-lifted: 0 2px 4px 0 rgba(0, 0, 0, 0.06), 0 8px 20px 0 rgba(0, 0, 0, 0.04);
+        --shadow-focus: 0 0 0 2px #FFFFFF, 0 0 0 4px var(--accent-primary);
 
-        /* ===== Radii ===== */
-        --radius-sm: 10px;
-        --radius-md: 14px;
-        --radius-lg: 18px;
+        /* ===== Super-Ellipse Radii ===== */
+        --radius-sm: 6px;    /* Buttons */
+        --radius-md: 8px;    /* Small cards */
+        --radius-lg: 12px;   /* Inputs */
+        --radius-xl: 16px;   /* Large cards */
+        --radius-2xl: 20px;  /* Containers */
 
-        /* ===== Spacing (4px grid) ===== */
+        /* ===== Spacing (Fluid system, 4px grid) ===== */
         --space-1: 4px;
         --space-2: 8px;
         --space-3: 12px;
         --space-4: 16px;
+        --space-5: 20px;
         --space-6: 24px;
         --space-8: 32px;
+        --space-10: 40px;
+        --space-12: 48px;
+        --space-16: 64px;
 
-        /* ===== Typography ===== */
-        /* UI Sans for navigation, labels, buttons, inputs */
-        --font-ui: "Instrument Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
-        /* Editorial Serif for long-form content, assistant responses */
-        --font-editorial: "Newsreader", ui-serif, Georgia, serif;
+        /* ===== Typography (Dual System) ===== */
+        /* UI Sans: Inter - for navigation, labels, buttons, inputs */
+        --font-ui: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+        /* Editorial Serif: Newsreader - for headings, long-form, assistant responses */
+        --font-editorial: "Newsreader", ui-serif, Georgia, "Times New Roman", serif;
 
-        /* Type scale */
-        --font-size-xs: 13px;
+        /* Type scale (Refined) */
+        --font-size-xs: 12px;
         --font-size-sm: 14px;
-        --font-size-base: 16.5px; /* desktop */
-        --font-size-md: 17px;
-        --font-size-lg: 19px;
-        --font-size-xl: 21px;
-        --font-size-2xl: 26px;
-        --font-size-3xl: 32px;
+        --font-size-base: 16px;
+        --font-size-md: 18px;
+        --font-size-lg: 20px;
+        --font-size-xl: 24px;
+        --font-size-2xl: 30px;
+        --font-size-3xl: 36px;
+        --font-size-4xl: 48px;
 
-        /* Line height */
-        --line-height-heading: 1.25;
-        --line-height-body: 1.55;
+        /* Line heights */
+        --line-height-tight: 1.25;   /* Headings */
+        --line-height-base: 1.5;     /* UI */
+        --line-height-relaxed: 1.6;  /* Body text */
+        --line-height-loose: 1.75;   /* Editorial */
 
-        /* ===== Motion ===== */
-        --t-fast: 140ms;
-        --t-med: 200ms;
-        --ease: cubic-bezier(0.2, 0.8, 0.2, 1);
+        /* Letter spacing (Key for "Editorial" look) */
+        --letter-spacing-tight: -0.025em;  /* Serif headings */
+        --letter-spacing-normal: -0.01em;  /* Sans UI */
+        --letter-spacing-wide: 0.025em;    /* All caps */
+
+        /* ===== Motion (Expensive animations) ===== */
+        --t-fast: 150ms;
+        --t-medium: 300ms;
+        --t-slow: 400ms;
+        --ease-out-strong: cubic-bezier(0.2, 0.0, 0.0, 1.0);  /* Strong ease-out */
+        --ease-standard: cubic-bezier(0.4, 0.0, 0.2, 1.0);    /* Standard easing */
+
+        /* ===== Layout ===== */
+        --sidebar-width: 280px;
+        --content-max-width: 768px;  /* 48rem - Optimal reading length */
       }
 
-      /* Mobile font size adjustment */
+      /* Mobile adjustments */
       @media (max-width: 768px) {
         :root {
-          --font-size-base: 16px;
+          --font-size-base: 15px;
+          --font-size-2xl: 26px;
+          --font-size-3xl: 32px;
         }
       }
       /* Reset box sizing and margins */
@@ -88,7 +114,7 @@
         padding: 0;
       }
 
-      /* Base styles */
+      /* Base styles - "Printed Matter" aesthetic */
       html, body {
         width: 100%;
         height: 100%;
@@ -98,11 +124,13 @@
         font-family: var(--font-ui);
         font-weight: 400;
         font-size: var(--font-size-base);
-        line-height: var(--line-height-body);
+        line-height: var(--line-height-relaxed);
+        letter-spacing: var(--letter-spacing-normal);
         -webkit-font-smoothing: antialiased;
         -moz-osx-font-smoothing: grayscale;
-        background: var(--bg);
-        color: var(--text);
+        text-rendering: optimizeLegibility;
+        background: var(--bg-paper-100);
+        color: var(--text-ink-900);
       }
 
       #root {
@@ -111,17 +139,19 @@
         overflow: hidden;
       }
 
-      /* Subtle ambient glow - warm accent */
+      /* Subtle warm ambient diffusion (like daylight through a window) */
       body::before {
         content: '';
         position: fixed;
-        top: 0;
-        left: 0;
-        right: 0;
-        height: 500px;
-        background: radial-gradient(ellipse 100% 60% at 50% -30%, var(--accent-weak), transparent);
+        top: -200px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 1200px;
+        height: 600px;
+        background: radial-gradient(ellipse at center, var(--accent-surface), transparent 70%);
         pointer-events: none;
         z-index: 0;
+        opacity: 0.4;
       }
 
       /* Hide scrollbar for Chrome, Safari and Opera */
@@ -135,20 +165,20 @@
         scrollbar-width: none;
       }
 
-      /* Minimal scrollbars */
+      /* Refined scrollbars */
       ::-webkit-scrollbar {
-        width: 4px;
-        height: 4px;
+        width: 6px;
+        height: 6px;
       }
 
       ::-webkit-scrollbar-track {
-        background: transparent;
+        background: var(--bg-paper-200);
       }
 
       ::-webkit-scrollbar-thumb {
-        background: var(--border);
-        border-radius: 2px;
-        transition: background var(--t-med) var(--ease);
+        background: var(--border-medium);
+        border-radius: 3px;
+        transition: background var(--t-fast) var(--ease-standard);
       }
 
       ::-webkit-scrollbar-thumb:hover {
@@ -158,7 +188,7 @@
       /* Firefox scrollbar */
       * {
         scrollbar-width: thin;
-        scrollbar-color: var(--border) transparent;
+        scrollbar-color: var(--border-medium) var(--bg-paper-200);
       }
 
       /* Prevent horizontal overflow */
@@ -166,67 +196,74 @@
         overflow-x: hidden;
       }
 
-      /* Typography System */
-      h1, h2, h3, h4, h5, h6 {
-        font-family: var(--font-ui);
+      /* Typography System - Dual Typeface */
+      h1, h2, h3 {
+        font-family: var(--font-editorial);  /* Serif for major headings */
+        letter-spacing: var(--letter-spacing-tight);
+      }
+
+      h4, h5, h6 {
+        font-family: var(--font-ui);  /* Sans for minor headings */
       }
 
       h1 {
         font-size: var(--font-size-3xl);
         font-weight: 600;
-        line-height: var(--line-height-heading);
-        color: var(--text);
+        line-height: var(--line-height-tight);
+        color: var(--text-ink-900);
       }
 
       h2 {
         font-size: var(--font-size-2xl);
         font-weight: 600;
-        line-height: var(--line-height-heading);
-        color: var(--text);
+        line-height: var(--line-height-tight);
+        color: var(--text-ink-900);
       }
 
       h3 {
         font-size: var(--font-size-xl);
         font-weight: 600;
-        line-height: var(--line-height-heading);
-        color: var(--text);
+        line-height: var(--line-height-tight);
+        color: var(--text-ink-900);
       }
 
       h4, h5, h6 {
         font-size: var(--font-size-lg);
-        font-weight: 500;
-        line-height: var(--line-height-heading);
-        color: var(--muted);
+        font-weight: 600;
+        line-height: var(--line-height-base);
+        color: var(--text-ink-600);
       }
 
       p {
         font-size: var(--font-size-base);
-        line-height: var(--line-height-body);
+        line-height: var(--line-height-relaxed);
+        color: var(--text-ink-900);
       }
 
       small {
         font-size: var(--font-size-sm);
-        color: var(--faint);
+        color: var(--text-ink-400);
       }
 
       /* Editorial serif for long-form content */
       .editorial {
         font-family: var(--font-editorial);
-        line-height: var(--line-height-body);
+        line-height: var(--line-height-loose);
+        color: var(--text-ink-600);
       }
 
-      /* Focus states - warm ring for accessibility */
+      /* Focus states - Double ring for accessibility */
       *:focus-visible {
         outline: none;
-        box-shadow: 0 0 0 3px var(--accent-weak);
+        box-shadow: var(--shadow-focus);
         border-radius: var(--radius-sm);
       }
 
-      /* ===== Animations & Effects ===== */
+      /* ===== Animations & Effects (Expensive feel) ===== */
       @keyframes fadeIn {
         from {
           opacity: 0;
-          transform: translateY(10px);
+          transform: translateY(8px);
         }
         to {
           opacity: 1;
@@ -237,11 +274,22 @@
       @keyframes scaleIn {
         from {
           opacity: 0;
-          transform: scale(0.96);
+          transform: scale(0.97);
         }
         to {
           opacity: 1;
           transform: scale(1);
+        }
+      }
+
+      @keyframes slideIn {
+        from {
+          opacity: 0;
+          transform: translateX(-16px);
+        }
+        to {
+          opacity: 1;
+          transform: translateX(0);
         }
       }
 
@@ -250,31 +298,15 @@
         100% { background-position: 200% center; }
       }
 
-      /* Hover glow effect utility */
-      .hover-glow {
+      /* Hover lift effect (Ambient Occlusion) */
+      .hover-lift {
         position: relative;
-        transition: all var(--t-med) var(--ease);
+        transition: all var(--t-medium) var(--ease-out-strong);
       }
 
-      .hover-glow::before {
-        content: '';
-        position: absolute;
-        inset: -1px;
-        border-radius: inherit;
-        background: linear-gradient(135deg, var(--accent-weak), transparent);
-        opacity: 0;
-        transition: opacity var(--t-med) var(--ease);
-        pointer-events: none;
-        z-index: -1;
-      }
-
-      .hover-glow:hover::before {
-        opacity: 0.6;
-      }
-
-      .hover-glow:hover {
-        transform: translateY(-2px);
-        box-shadow: var(--shadow-2);
+      .hover-lift:hover {
+        transform: translateY(-1px);
+        box-shadow: var(--shadow-lifted);
       }
 
       /* Reduced motion support */
@@ -283,9 +315,32 @@
           transition: none !important;
           animation: none !important;
         }
-        .hover-glow:hover {
+        .hover-lift:hover {
           transform: none;
         }
+      }
+
+      /* ===== Backwards Compatibility Aliases ===== */
+      /* Map old tokens to new system for existing components */
+      :root {
+        --bg: var(--bg-paper-100);
+        --surface-1: var(--bg-surface);
+        --surface-2: var(--bg-paper-200);
+        --surface-3: var(--accent-surface);
+        --text: var(--text-ink-900);
+        --muted: var(--text-ink-600);
+        --faint: var(--text-ink-400);
+        --border: var(--border-subtle);
+        --border-strong: var(--border-medium);
+        --accent: var(--accent-primary);
+        --accent-weak: var(--accent-weak);
+        --shadow-1: var(--shadow-ambient);
+        --shadow-2: var(--shadow-lifted);
+        --line-height-heading: var(--line-height-tight);
+        --line-height-body: var(--line-height-relaxed);
+        --t-fast: var(--t-fast);
+        --t-med: var(--t-medium);
+        --ease: var(--ease-standard);
       }
     </style>
     <script src="https://cdn.tailwindcss.com"></script>
@@ -300,7 +355,7 @@
 }
 </script>
 </head>
-  <body class="bg-[#0e0f11]">
+  <body>
     <div id="root"></div>
     <script type="module" src="/index.tsx"></script>
   </body>

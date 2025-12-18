@@ -33,63 +33,175 @@ const getSeverityStyle = (severity: 'high' | 'medium' | 'low') => {
 };
 
 const SATAlertCard: React.FC<{ alert: SATAlert; index: number }> = ({ alert, index }) => {
-  const getSATSeverityStyle = (severity: 'critical' | 'high' | 'medium') => {
+  const [isExpanded, setIsExpanded] = useState(false);
+
+  const getRiskStyle = (risk: 'critical' | 'high' | 'medium') => {
     const styles = {
-      critical: { bg: 'rgba(239, 68, 68, 0.15)', border: '#ef4444', label: 'Crítico' },
-      high: { bg: 'rgba(251, 146, 60, 0.15)', border: '#fb923c', label: 'Alto' },
-      medium: { bg: 'rgba(251, 191, 36, 0.15)', border: '#fbbf24', label: 'Medio' }
+      critical: {
+        bg: 'rgba(220, 38, 38, 0.08)',
+        border: '#dc2626',
+        badge: '#dc2626',
+        label: 'Riesgo Crítico'
+      },
+      high: {
+        bg: 'rgba(234, 88, 12, 0.08)',
+        border: '#ea580c',
+        badge: '#ea580c',
+        label: 'Riesgo Alto'
+      },
+      medium: {
+        bg: 'rgba(202, 138, 4, 0.08)',
+        border: '#ca8a04',
+        badge: '#ca8a04',
+        label: 'Riesgo Medio'
+      }
     };
-    return styles[severity];
+    return styles[risk];
   };
 
-  const severityStyle = getSATSeverityStyle(alert.severity);
+  const riskStyle = getRiskStyle(alert.riskLevel);
   const formattedDate = new Date(alert.date).toLocaleDateString('es-AR', {
-    day: 'numeric',
-    month: 'long',
+    day: '2-digit',
+    month: 'short',
     year: 'numeric'
   });
 
   return (
     <div
-      className="rounded-lg border-l-4 p-5"
+      className="border rounded-xl overflow-hidden"
       style={{
-        background: severityStyle.bg,
-        borderColor: severityStyle.border,
-        animation: `fadeIn 0.3s ease-out ${index * 0.1}s both`
+        background: 'var(--bg-surface)',
+        borderColor: 'var(--border-subtle)',
+        borderLeft: `4px solid ${riskStyle.border}`,
+        boxShadow: 'var(--shadow-ambient)',
+        animation: `fadeIn 0.4s var(--ease-out-strong) ${index * 0.08}s both`
       }}
     >
-      <div className="flex items-start justify-between gap-4 mb-3">
-        <div className="flex-1">
-          <div className="flex items-center gap-2 mb-1">
-            <span
-              className="px-2.5 py-1 rounded-full text-xs font-semibold uppercase"
+      {/* Header */}
+      <div className="px-6 pt-5 pb-4 border-b" style={{ borderColor: 'var(--border-subtle)' }}>
+        <div className="flex items-start justify-between gap-4 mb-3">
+          <div className="flex-1">
+            <div className="flex items-center gap-2 mb-2">
+              <span
+                className="text-xs font-semibold px-2.5 py-1 rounded-md"
+                style={{
+                  background: riskStyle.badge,
+                  color: 'white',
+                  letterSpacing: '0.025em'
+                }}
+              >
+                {riskStyle.label.toUpperCase()}
+              </span>
+              <span className="text-xs font-medium" style={{ color: 'var(--text-ink-400)' }}>
+                {formattedDate}
+              </span>
+            </div>
+            <h3
+              className="text-lg font-semibold mb-1"
               style={{
-                background: severityStyle.border,
-                color: 'white'
+                color: 'var(--text-ink-900)',
+                fontFamily: 'var(--font-ui)',
+                letterSpacing: 'var(--letter-spacing-normal)'
               }}
             >
-              {severityStyle.label}
-            </span>
-            <span className="text-xs font-medium" style={{ color: 'var(--faint)' }}>
-              {formattedDate}
-            </span>
-          </div>
-          <h3 className="text-base font-semibold mb-1" style={{ color: 'var(--text)' }}>
-            {alert.title}
-          </h3>
-          <div className="flex items-center gap-3 text-xs mb-2" style={{ color: 'var(--muted)' }}>
-            <span className="font-medium">
-              🧪 {alert.substance}
-            </span>
-            <span>
-              📍 {alert.location}
-            </span>
+              {alert.alertNumber} — {alert.substance}
+            </h3>
+            <p className="text-sm" style={{ color: 'var(--text-ink-600)' }}>
+              {alert.classification} · {alert.location}
+            </p>
           </div>
         </div>
       </div>
-      <p className="editorial text-sm leading-relaxed" style={{ color: 'var(--text)' }}>
-        {alert.description}
-      </p>
+
+      {/* Body */}
+      <div className="px-6 py-4">
+        <div className="mb-4">
+          <h4 className="text-sm font-semibold mb-2" style={{ color: 'var(--text-ink-900)' }}>
+            Descripción
+          </h4>
+          <p
+            className="editorial text-sm leading-relaxed"
+            style={{ color: 'var(--text-ink-600)' }}
+          >
+            {alert.description}
+          </p>
+        </div>
+
+        {/* Expandable Details */}
+        {isExpanded && (
+          <div className="space-y-4 mt-4 pt-4 border-t" style={{ borderColor: 'var(--border-subtle)' }}>
+            {/* Health Effects */}
+            <div>
+              <h4 className="text-sm font-semibold mb-2 flex items-center gap-2" style={{ color: 'var(--text-ink-900)' }}>
+                <span style={{ color: riskStyle.border }}>⚠️</span>
+                Efectos en la salud
+              </h4>
+              <ul className="space-y-1.5 ml-6">
+                {alert.healthEffects.map((effect, idx) => (
+                  <li
+                    key={idx}
+                    className="text-sm leading-relaxed list-disc"
+                    style={{ color: 'var(--text-ink-600)' }}
+                  >
+                    {effect}
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            {/* Recommendations */}
+            <div>
+              <h4 className="text-sm font-semibold mb-2 flex items-center gap-2" style={{ color: 'var(--text-ink-900)' }}>
+                <span style={{ color: 'var(--accent-primary)' }}>🛡️</span>
+                Recomendaciones
+              </h4>
+              <ul className="space-y-1.5 ml-6">
+                {alert.recommendations.map((rec, idx) => (
+                  <li
+                    key={idx}
+                    className="text-sm leading-relaxed list-disc"
+                    style={{ color: 'var(--text-ink-600)' }}
+                  >
+                    {rec}
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            {/* Source */}
+            <div
+              className="pt-3 text-xs"
+              style={{
+                color: 'var(--text-ink-400)',
+                borderTop: `1px solid var(--border-subtle)`
+              }}
+            >
+              <strong style={{ color: 'var(--text-ink-600)' }}>Fuente:</strong> {alert.source}
+            </div>
+          </div>
+        )}
+
+        {/* Expand/Collapse Button */}
+        <button
+          onClick={() => setIsExpanded(!isExpanded)}
+          className="mt-4 w-full py-2 px-4 text-sm font-medium rounded-lg transition-all"
+          style={{
+            background: 'var(--bg-paper-200)',
+            color: 'var(--accent-primary)',
+            border: `1px solid var(--border-subtle)`
+          }}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.background = 'var(--accent-surface)';
+            e.currentTarget.style.borderColor = 'var(--accent-primary)';
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.background = 'var(--bg-paper-200)';
+            e.currentTarget.style.borderColor = 'var(--border-subtle)';
+          }}
+        >
+          {isExpanded ? '↑ Ver menos' : '↓ Ver detalles completos (efectos y recomendaciones)'}
+        </button>
+      </div>
     </div>
   );
 };
@@ -169,34 +281,84 @@ const SignalRow: React.FC<{ signal: Signal; index: number }> = ({ signal, index 
 };
 
 interface SATAlert {
-  id: string;
-  title: string;
-  substance: string;
-  description: string;
-  location: string;
-  date: string;
-  severity: 'critical' | 'high' | 'medium';
+  alertNumber: string;         // Official SAT number (e.g., "SAT N° 3/2025")
+  substance: string;            // Substance name
+  classification: string;       // Type of substance
+  riskLevel: 'critical' | 'high' | 'medium';
+  description: string;          // Risk description
+  healthEffects: string[];      // Health effects
+  recommendations: string[];    // Safety recommendations
+  location: string;             // Territorial scope
+  date: string;                 // Alert date
+  source: string;               // Coordinating institution
 }
 
-// Mock SAT alerts - In production, these would come from argentina.gob.ar/sat/alertas API
+// Mock SAT alerts based on SEDRONAR official structure
+// In production, these would sync from argentina.gob.ar/sat/alertas API
 const MOCK_SAT_ALERTS: SATAlert[] = [
   {
-    id: '1',
-    title: 'Alerta por MDMA adulterado',
-    substance: 'MDMA/Éxtasis',
-    description: 'Se detectó MDMA con alta concentración de adulterantes peligrosos (PMA/PMMA). Riesgo de hipertermia severa.',
-    location: 'Buenos Aires (AMBA)',
-    date: '2025-12-15',
-    severity: 'critical'
+    alertNumber: 'SAT N° 3/2025',
+    substance: 'Hexahidrocannabinol (HHC)',
+    classification: 'Cannabinoide sintético',
+    riskLevel: 'high',
+    description: 'Se detectó la circulación de productos que contienen Hexahidrocannabinol (HHC), un cannabinoide sintético no regulado que se comercializa falsamente como "legal" o "natural".',
+    healthEffects: [
+      'Efectos psicoactivos impredecibles',
+      'Posible toxicidad hepática',
+      'Riesgo de ansiedad y crisis de pánico',
+      'Interacciones desconocidas con otros fármacos'
+    ],
+    recommendations: [
+      'Evitar el consumo de productos etiquetados como HHC o "cannabinoides legales"',
+      'Ante síntomas adversos, comunicarse inmediatamente al SAME 107',
+      'No combinar con alcohol u otras sustancias'
+    ],
+    location: 'Nacional (AMBA, Córdoba, Rosario)',
+    date: '2025-12-16',
+    source: 'SEDRONAR - Observatorio Argentino de Drogas'
   },
   {
-    id: '2',
-    title: 'Cocaína con levamisol',
-    substance: 'Cocaína',
-    description: 'Muestras analizadas contienen levamisol, un antiparasitario que puede causar inmunosupresión y necrosis cutánea.',
-    location: 'Córdoba',
+    alertNumber: 'SAT N° 2/2025',
+    substance: 'MDMA con alta concentración de PMA/PMMA',
+    classification: 'Estimulante adulterado',
+    riskLevel: 'critical',
+    description: 'Muestras de pastillas vendidas como "éxtasis" o "MDMA" presentan adulteración con PMA (parametoxianfetamina) y PMMA (parametoximetanfetamina), sustancias altamente tóxicas con efectos retardados.',
+    healthEffects: [
+      'Hipertermia severa (temperatura corporal extremadamente alta)',
+      'Convulsiones',
+      'Falla multiorgánica',
+      'Riesgo de muerte incluso con dosis bajas'
+    ],
+    recommendations: [
+      'URGENTE: Testear antes de consumir con reactivos específicos para PMA/PMMA',
+      'NO consumir pastillas sin testeo previo',
+      'Ante hipertermia o convulsiones: SAME 107 inmediatamente',
+      'Mantenerse hidratado pero NO exceder 500ml de agua por hora'
+    ],
+    location: 'Buenos Aires (AMBA), La Plata',
     date: '2025-12-10',
-    severity: 'high'
+    source: 'SEDRONAR - Observatorio Argentino de Drogas'
+  },
+  {
+    alertNumber: 'SAT N° 1/2025',
+    substance: 'Cocaína con levamisol',
+    classification: 'Estimulante adulterado',
+    riskLevel: 'high',
+    description: 'Se identificó cocaína adulterada con levamisol (antiparasitario veterinario) en concentraciones del 60-80%. El levamisol es un adulterante frecuente que potencia efectos pero genera toxicidad significativa.',
+    healthEffects: [
+      'Inmunosupresión (reducción de glóbulos blancos)',
+      'Necrosis cutánea (muerte de tejido en orejas, nariz, extremidades)',
+      'Vasculitis (inflamación de vasos sanguíneos)',
+      'Mayor riesgo de infecciones'
+    ],
+    recommendations: [
+      'Realizar análisis con reactivos que detecten levamisol',
+      'Ante lesiones cutáneas o moretones inexplicables, consultar médico',
+      'Reducir frecuencia de consumo para minimizar exposición acumulativa'
+    ],
+    location: 'Nacional',
+    date: '2025-12-05',
+    source: 'SEDRONAR - Observatorio Argentino de Drogas'
   }
 ];
 
