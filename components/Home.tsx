@@ -130,39 +130,118 @@ export const Home: React.FC<HomeProps> = ({ onNavigate }) => {
           </div>
         </Section>
 
-        {/* Tipología de Usos */}
-        <Section title="No todo consumo es igual" meta="Tipología de usos">
-          <div className="editorial text-sm leading-relaxed space-y-3" style={{ color: 'var(--muted)' }}>
-            <p>
-              Es importante entender que <strong style={{ color: 'var(--text)' }}>no todo consumo es consumo problemático</strong>. Existen diferentes patrones de uso:
-            </p>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-4">
-              {[
-                { title: 'Experimental', desc: 'Primer contacto, curiosidad, contextos específicos' },
-                { title: 'Ocasional', desc: 'Uso esporádico, eventos puntuales' },
-                { title: 'Regular', desc: 'Patrón establecido, uso frecuente' },
-                { title: 'Dependiente', desc: 'Dificultad para controlar, no necesariamente problemático*' }
-              ].map((type, idx) => (
-                <div
-                  key={idx}
-                  className="p-4 rounded-lg border"
-                  style={{
-                    background: 'var(--surface-1)',
-                    borderColor: 'var(--border)'
-                  }}
-                >
-                  <h4 className="text-sm font-semibold mb-1" style={{ color: 'var(--text)' }}>
-                    {type.title}
-                  </h4>
-                  <p className="text-xs" style={{ color: 'var(--muted)' }}>
-                    {type.desc}
-                  </p>
-                </div>
-              ))}
+        {/* Tipología de Usos - Expandida */}
+        <Section title="No todo consumo es igual" meta="Tipología de usos y patrones">
+          <div className="editorial text-sm leading-relaxed space-y-4" style={{ color: 'var(--muted)' }}>
+            <div>
+              <p className="mb-3">
+                Es fundamental entender que <strong style={{ color: 'var(--text)' }}>no todo consumo es consumo problemático</strong>. Los patrones de uso forman un continuo, no categorías rígidas.
+              </p>
+              <p className="text-xs" style={{ color: 'var(--faint)' }}>
+                Esta tipología es descriptiva, no prescriptiva. Sirve para comprender mejor los propios hábitos sin juicios morales.
+              </p>
             </div>
-            <p className="text-xs" style={{ color: 'var(--faint)' }}>
-              * La dependencia no siempre implica problemas en otras áreas de la vida. Cada situación es única y requiere evaluación contextual.
-            </p>
+
+            <div className="space-y-3">
+              {/* Experimental */}
+              <div
+                className="rounded-lg p-4 border-l-2"
+                style={{
+                  background: 'var(--surface-1)',
+                  borderColor: 'var(--border)',
+                  borderLeftColor: 'rgba(59, 130, 246, 0.6)'
+                }}
+              >
+                <h4 className="text-sm font-semibold mb-1.5 flex items-center gap-2" style={{ color: 'var(--text)' }}>
+                  <span>🌱</span> Consumo Experimental
+                </h4>
+                <p className="text-xs leading-relaxed mb-2" style={{ color: 'var(--muted)' }}>
+                  Primer contacto motivado por curiosidad o exploración. Contextos específicos, frecuencia muy baja.
+                </p>
+                <p className="text-xs italic" style={{ color: 'var(--faint)' }}>
+                  Ejemplo: Probar MDMA por primera vez en un evento.
+                </p>
+              </div>
+
+              {/* Ocasional */}
+              <div
+                className="rounded-lg p-4 border-l-2"
+                style={{
+                  background: 'var(--surface-1)',
+                  borderColor: 'var(--border)',
+                  borderLeftColor: 'rgba(34, 197, 94, 0.6)'
+                }}
+              >
+                <h4 className="text-sm font-semibold mb-1.5 flex items-center gap-2" style={{ color: 'var(--text)' }}>
+                  <span>🎉</span> Consumo Ocasional
+                </h4>
+                <p className="text-xs leading-relaxed mb-2" style={{ color: 'var(--muted)' }}>
+                  Uso esporádico vinculado a ocasiones específicas. Control sobre cuándo y cuánto. No interfiere con responsabilidades.
+                </p>
+                <p className="text-xs italic" style={{ color: 'var(--faint)' }}>
+                  Ejemplo: Consumir cannabis 1-2 veces al mes en reuniones.
+                </p>
+              </div>
+
+              {/* Regular */}
+              <div
+                className="rounded-lg p-4 border-l-2"
+                style={{
+                  background: 'var(--surface-1)',
+                  borderColor: 'var(--border)',
+                  borderLeftColor: 'rgba(251, 146, 60, 0.6)'
+                }}
+              >
+                <h4 className="text-sm font-semibold mb-1.5 flex items-center gap-2" style={{ color: 'var(--text)' }}>
+                  <span>📅</span> Consumo Regular
+                </h4>
+                <p className="text-xs leading-relaxed mb-2" style={{ color: 'var(--muted)' }}>
+                  Patrón establecido con mayor frecuencia. Requiere atención a riesgos acumulativos (tolerancia, salud).
+                </p>
+                <p className="text-xs italic" style={{ color: 'var(--faint)' }}>
+                  Ejemplo: Fumar cannabis diariamente o beber varias veces por semana.
+                </p>
+              </div>
+
+              {/* Dependiente */}
+              <div
+                className="rounded-lg p-4 border-l-2"
+                style={{
+                  background: 'var(--surface-1)',
+                  borderColor: 'var(--border)',
+                  borderLeftColor: 'rgba(239, 68, 68, 0.6)'
+                }}
+              >
+                <h4 className="text-sm font-semibold mb-1.5 flex items-center gap-2" style={{ color: 'var(--text)' }}>
+                  <span>⚠️</span> Consumo Dependiente
+                </h4>
+                <p className="text-xs leading-relaxed mb-2" style={{ color: 'var(--muted)' }}>
+                  Dificultad para controlar frecuencia/cantidad. Puede incluir abstinencia o tolerancia. <strong style={{ color: 'var(--text)' }}>No siempre es sinónimo de "problemático"</strong> en todas las áreas.
+                </p>
+                <p className="text-xs italic" style={{ color: 'var(--faint)' }}>
+                  Ejemplo: Necesitar consumir para funcionar o malestar al no hacerlo.
+                </p>
+              </div>
+            </div>
+
+            {/* Key Points */}
+            <div
+              className="rounded-lg p-4 border"
+              style={{
+                background: 'var(--surface-2)',
+                borderColor: 'var(--border)'
+              }}
+            >
+              <p className="text-xs font-semibold mb-2" style={{ color: 'var(--text)' }}>
+                💡 Puntos clave:
+              </p>
+              <ul className="list-disc pl-5 space-y-1 text-xs">
+                <li>Estos patrones son un <strong>continuo</strong>, no categorías fijas</li>
+                <li>Podés moverte entre tipos según contexto y momento vital</li>
+                <li>El consumo dependiente no siempre genera problemas globales</li>
+                <li>Si tu consumo te genera malestar, buscar apoyo es válido y valiente</li>
+              </ul>
+            </div>
           </div>
         </Section>
 

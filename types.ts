@@ -14,6 +14,7 @@ export interface Message {
 export interface ConsentData {
   share: boolean;
   province: string;
+  consultingFor?: 'self' | 'family' | 'friend' | 'other';
 }
 
 // Type for simplified chat history passed to Gemini

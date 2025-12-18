@@ -401,6 +401,115 @@ export const TestingGuide: React.FC = () => {
             </div>
           </Section>
 
+          {/* Testing Organizations Reference */}
+          <Section
+            title="Organizaciones de Referencia"
+            meta="Instituciones especializadas en análisis y reducción de daños"
+            spacing="loose"
+          >
+            <div className="space-y-4">
+              <Callout variant="info" icon="🔬">
+                <strong>Análisis de laboratorio:</strong> Para análisis más precisos y exhaustivos, existen instituciones especializadas que ofrecen servicios de testeo profesional.
+              </Callout>
+
+              <div className="grid gap-4">
+                {/* UNMdP */}
+                <div
+                  className="border rounded-lg p-5"
+                  style={{
+                    background: 'var(--surface-1)',
+                    borderColor: 'var(--border)',
+                    borderLeft: '3px solid var(--accent)'
+                  }}
+                >
+                  <div className="flex items-start gap-3">
+                    <span className="text-2xl">🎓</span>
+                    <div className="flex-1">
+                      <h4
+                        className="font-semibold text-base mb-2"
+                        style={{ color: 'var(--text)' }}
+                      >
+                        Universidad Nacional de Mar del Plata (UNMdP)
+                      </h4>
+                      <p
+                        className="editorial text-sm leading-relaxed mb-3"
+                        style={{ color: 'var(--muted)' }}
+                      >
+                        Referencia nacional en análisis de sustancias psicoactivas. Ofrece servicios de testeo de laboratorio con tecnología avanzada para identificación de composición y adulterantes.
+                      </p>
+                      <div className="space-y-1 text-xs" style={{ color: 'var(--muted)' }}>
+                        <p>📍 Mar del Plata, Buenos Aires</p>
+                        <p>🔬 Análisis por cromatografía y espectrometría</p>
+                        <p>📊 Informes detallados de composición</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Usar y Controlar */}
+                <div
+                  className="border rounded-lg p-5"
+                  style={{
+                    background: 'var(--surface-1)',
+                    borderColor: 'var(--border)',
+                    borderLeft: '3px solid var(--accent)'
+                  }}
+                >
+                  <div className="flex items-start gap-3">
+                    <span className="text-2xl">🤝</span>
+                    <div className="flex-1">
+                      <h4
+                        className="font-semibold text-base mb-2"
+                        style={{ color: 'var(--text)' }}
+                      >
+                        Usar y Controlar
+                      </h4>
+                      <p
+                        className="editorial text-sm leading-relaxed mb-3"
+                        style={{ color: 'var(--muted)' }}
+                      >
+                        Organización de la sociedad civil especializada en reducción de daños. Ofrecen servicios de testeo con reactivos colorimétricos, capacitaciones y acompañamiento en contextos recreativos.
+                      </p>
+                      <div className="space-y-1 text-xs" style={{ color: 'var(--muted)' }}>
+                        <p>📍 Buenos Aires y eventos en todo el país</p>
+                        <p>🧪 Testeo in situ con reactivos</p>
+                        <p>📚 Talleres y capacitaciones</p>
+                        <p>💬 Acompañamiento y consejería</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Community Data Upload Note */}
+              <div
+                className="border rounded-lg p-4"
+                style={{
+                  background: 'var(--surface-2)',
+                  borderColor: 'var(--border)'
+                }}
+              >
+                <div className="flex items-start gap-3">
+                  <span className="text-xl">📊</span>
+                  <div className="flex-1">
+                    <h5
+                      className="text-sm font-semibold mb-2"
+                      style={{ color: 'var(--text)' }}
+                    >
+                      Sistema de Datos Comunitarios
+                    </h5>
+                    <p
+                      className="editorial text-xs leading-relaxed"
+                      style={{ color: 'var(--muted)' }}
+                    >
+                      Estamos trabajando en un sistema para que la comunidad pueda compartir de forma anónima resultados de testeos, contribuyendo a un mapa colaborativo de alertas tempranas. <strong style={{ color: 'var(--text)' }}>Próximamente disponible.</strong>
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </Section>
+
           {/* Adulterants */}
           <Section
             title="Adulterantes comunes"

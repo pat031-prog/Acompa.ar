@@ -8,13 +8,14 @@ interface ConsentModalProps {
 
 export const ConsentModal: React.FC<ConsentModalProps> = ({ onConsent }) => {
   const [province, setProvince] = useState<string>('');
+  const [consultingFor, setConsultingFor] = useState<'self' | 'family' | 'friend' | 'other' | undefined>(undefined);
 
   const handleAccept = () => {
-    onConsent({ share: true, province: province || '' });
+    onConsent({ share: true, province: province || '', consultingFor });
   };
 
   const handleSkip = () => {
-    onConsent({ share: false, province: '' });
+    onConsent({ share: false, province: '', consultingFor: undefined });
   };
 
   return (
@@ -56,6 +57,52 @@ export const ConsentModal: React.FC<ConsentModalProps> = ({ onConsent }) => {
             <option value="">Prefiero no decir</option>
             {PROVINCES.map(p => <option key={p} value={p}>{p}</option>)}
           </select>
+        </div>
+
+        <div className="mt-4">
+          <label className="block text-sm font-medium mb-2" style={{ color: 'var(--muted)' }}>
+            ¿Consultás para vos o para otra persona? (opcional)
+          </label>
+          <div className="space-y-2">
+            {[
+              { value: 'self', label: 'Para mí' },
+              { value: 'family', label: 'Para un familiar' },
+              { value: 'friend', label: 'Para un amigo/a' },
+              { value: 'other', label: 'Otro' }
+            ].map((option) => (
+              <label
+                key={option.value}
+                className="flex items-center gap-2 p-2 rounded-[var(--radius-sm)] cursor-pointer"
+                style={{
+                  background: consultingFor === option.value ? 'var(--surface-3)' : 'transparent',
+                  transition: `all var(--t-fast) var(--ease)`
+                }}
+                onMouseEnter={(e) => {
+                  if (consultingFor !== option.value) {
+                    e.currentTarget.style.background = 'var(--surface-2)';
+                  }
+                }}
+                onMouseLeave={(e) => {
+                  if (consultingFor !== option.value) {
+                    e.currentTarget.style.background = 'transparent';
+                  }
+                }}
+              >
+                <input
+                  type="radio"
+                  name="consultingFor"
+                  value={option.value}
+                  checked={consultingFor === option.value}
+                  onChange={(e) => setConsultingFor(e.target.value as 'self' | 'family' | 'friend' | 'other')}
+                  className="w-4 h-4"
+                  style={{ accentColor: 'var(--accent)' }}
+                />
+                <span className="text-sm" style={{ color: 'var(--text)' }}>
+                  {option.label}
+                </span>
+              </label>
+            ))}
+          </div>
         </div>
 
         <div className="mt-6 flex flex-col sm:flex-row gap-3">
