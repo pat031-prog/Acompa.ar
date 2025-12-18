@@ -32,6 +32,68 @@ const getSeverityStyle = (severity: 'high' | 'medium' | 'low') => {
   return styles[severity];
 };
 
+const SATAlertCard: React.FC<{ alert: SATAlert; index: number }> = ({ alert, index }) => {
+  const getSATSeverityStyle = (severity: 'critical' | 'high' | 'medium') => {
+    const styles = {
+      critical: { bg: 'rgba(239, 68, 68, 0.15)', border: '#ef4444', label: 'Crítico' },
+      high: { bg: 'rgba(251, 146, 60, 0.15)', border: '#fb923c', label: 'Alto' },
+      medium: { bg: 'rgba(251, 191, 36, 0.15)', border: '#fbbf24', label: 'Medio' }
+    };
+    return styles[severity];
+  };
+
+  const severityStyle = getSATSeverityStyle(alert.severity);
+  const formattedDate = new Date(alert.date).toLocaleDateString('es-AR', {
+    day: 'numeric',
+    month: 'long',
+    year: 'numeric'
+  });
+
+  return (
+    <div
+      className="rounded-lg border-l-4 p-5"
+      style={{
+        background: severityStyle.bg,
+        borderColor: severityStyle.border,
+        animation: `fadeIn 0.3s ease-out ${index * 0.1}s both`
+      }}
+    >
+      <div className="flex items-start justify-between gap-4 mb-3">
+        <div className="flex-1">
+          <div className="flex items-center gap-2 mb-1">
+            <span
+              className="px-2.5 py-1 rounded-full text-xs font-semibold uppercase"
+              style={{
+                background: severityStyle.border,
+                color: 'white'
+              }}
+            >
+              {severityStyle.label}
+            </span>
+            <span className="text-xs font-medium" style={{ color: 'var(--faint)' }}>
+              {formattedDate}
+            </span>
+          </div>
+          <h3 className="text-base font-semibold mb-1" style={{ color: 'var(--text)' }}>
+            {alert.title}
+          </h3>
+          <div className="flex items-center gap-3 text-xs mb-2" style={{ color: 'var(--muted)' }}>
+            <span className="font-medium">
+              🧪 {alert.substance}
+            </span>
+            <span>
+              📍 {alert.location}
+            </span>
+          </div>
+        </div>
+      </div>
+      <p className="editorial text-sm leading-relaxed" style={{ color: 'var(--text)' }}>
+        {alert.description}
+      </p>
+    </div>
+  );
+};
+
 const SignalRow: React.FC<{ signal: Signal; index: number }> = ({ signal, index }) => {
   const severityStyle = getSeverityStyle(signal.severity);
 
@@ -106,8 +168,41 @@ const SignalRow: React.FC<{ signal: Signal; index: number }> = ({ signal, index 
   );
 };
 
+interface SATAlert {
+  id: string;
+  title: string;
+  substance: string;
+  description: string;
+  location: string;
+  date: string;
+  severity: 'critical' | 'high' | 'medium';
+}
+
+// Mock SAT alerts - In production, these would come from argentina.gob.ar/sat/alertas API
+const MOCK_SAT_ALERTS: SATAlert[] = [
+  {
+    id: '1',
+    title: 'Alerta por MDMA adulterado',
+    substance: 'MDMA/Éxtasis',
+    description: 'Se detectó MDMA con alta concentración de adulterantes peligrosos (PMA/PMMA). Riesgo de hipertermia severa.',
+    location: 'Buenos Aires (AMBA)',
+    date: '2025-12-15',
+    severity: 'critical'
+  },
+  {
+    id: '2',
+    title: 'Cocaína con levamisol',
+    substance: 'Cocaína',
+    description: 'Muestras analizadas contienen levamisol, un antiparasitario que puede causar inmunosupresión y necrosis cutánea.',
+    location: 'Córdoba',
+    date: '2025-12-10',
+    severity: 'high'
+  }
+];
+
 export const Observatory: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState('');
+  const [satAlerts] = useState<SATAlert[]>(MOCK_SAT_ALERTS);
 
   const signals = useMemo((): Signal[] => {
     const signalsArray = Object.entries(MAP_DATA)
@@ -147,6 +242,44 @@ export const Observatory: React.FC = () => {
             Señales agregadas y anónimas de consultas por provincia
           </p>
         </div>
+
+        {/* SAT Alerts Section */}
+        {satAlerts.length > 0 && (
+          <Section
+            title="Alertas SAT - Sistema de Alerta Temprana"
+            meta={`${satAlerts.length} alerta${satAlerts.length !== 1 ? 's' : ''} activa${satAlerts.length !== 1 ? 's' : ''}`}
+          >
+            <Callout variant="warning" icon="⚠️">
+              <p className="editorial text-sm" style={{ color: 'var(--muted)' }}>
+                <strong style={{ color: 'var(--text)' }}>Alertas oficiales de argentina.gob.ar/sat:</strong> Estos avisos provienen del Sistema de Alerta Temprana nacional y reportan sustancias adulteradas o de alto riesgo circulando en el territorio. Si tenés o consumiste alguna de estas sustancias, extremá las precauciones y considerá testear antes de usar.
+              </p>
+            </Callout>
+
+            <div className="space-y-4 mt-4">
+              {satAlerts.map((alert, idx) => (
+                <SATAlertCard key={alert.id} alert={alert} index={idx} />
+              ))}
+            </div>
+
+            <div className="mt-4 p-4 rounded-lg border" style={{ background: 'var(--surface-2)', borderColor: 'var(--border)' }}>
+              <p className="text-xs" style={{ color: 'var(--muted)' }}>
+                <strong style={{ color: 'var(--text)' }}>Fuente:</strong> Las alertas mostradas son obtenidas del Sistema de Alerta Temprana del gobierno argentino (
+                <a
+                  href="https://www.argentina.gob.ar/sat/alertas"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{ color: 'var(--accent)' }}
+                  className="underline"
+                >
+                  argentina.gob.ar/sat/alertas
+                </a>
+                ). En esta versión de demostración se muestran alertas de ejemplo. En producción, se sincronizarían automáticamente con la fuente oficial.
+              </p>
+            </div>
+          </Section>
+        )}
+
+        <Divider />
 
         {/* Search */}
         <div className="relative">

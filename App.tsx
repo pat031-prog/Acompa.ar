@@ -95,9 +95,24 @@ const App: React.FC = () => {
       <div className="lg:hidden fixed top-0 left-0 right-0 z-50 backdrop-blur-md border-b" style={{ background: 'var(--surface-1)', borderColor: 'var(--border)' }}>
         <div className="px-4 py-3">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl flex items-center justify-center" style={{ background: 'var(--accent)' }}>
-              <span className="text-lg font-semibold text-white">A</span>
-            </div>
+            <svg width="40" height="40" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <rect width="48" height="48" rx="14" fill="var(--accent)" />
+              <path
+                d="M24 12C24 12 17 14 17 18V26C17 30 20 34 24 36C28 34 31 30 31 26V18C31 14 24 12 24 12Z"
+                stroke="white"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                fill="none"
+              />
+              <path
+                d="M24 20L27 28M21 28L24 20M21.5 26H26.5"
+                stroke="white"
+                strokeWidth="2.5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+            </svg>
             <div>
               <h1 className="text-lg font-semibold" style={{ color: 'var(--text)' }}>
                 ACompañ.Ar

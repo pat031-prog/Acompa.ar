@@ -185,6 +185,24 @@ export const ResourcesDirectory: React.FC = () => {
   const [selectedProvince, setSelectedProvince] = useState<string>('all');
   const [selectedType, setSelectedType] = useState<string>('all');
   const [searchTerm, setSearchTerm] = useState('');
+  const [showReportForm, setShowReportForm] = useState(false);
+  const [reportType, setReportType] = useState<string>('');
+  const [reportDescription, setReportDescription] = useState('');
+  const [reportLocation, setReportLocation] = useState('');
+  const [reportSubmitted, setReportSubmitted] = useState(false);
+
+  const handleSubmitReport = () => {
+    // In production, this would send to a backend
+    console.log('Report submitted:', { reportType, reportDescription, reportLocation });
+    setReportSubmitted(true);
+    setTimeout(() => {
+      setShowReportForm(false);
+      setReportSubmitted(false);
+      setReportType('');
+      setReportDescription('');
+      setReportLocation('');
+    }, 3000);
+  };
 
   const filteredResources = useMemo(() => {
     let filtered = LOCAL_RESOURCES;
@@ -227,6 +245,160 @@ export const ResourcesDirectory: React.FC = () => {
             Centros de atención, líneas de ayuda y organizaciones en Argentina
           </p>
         </div>
+
+        {/* Report System */}
+        <Section title="Sistema de Reportes" meta="Denunciá vulneraciones de derechos o discriminación">
+          <Callout variant="info" icon="🛡️">
+            <div>
+              <strong style={{ color: 'var(--text)' }}>Tu voz importa.</strong>{' '}
+              <span className="editorial text-sm" style={{ color: 'var(--muted)' }}>
+                Si sufriste o presenciaste vulneración de derechos, discriminación, falta de respuesta institucional o problemas en boliches/eventos, podés reportarlo de forma <strong style={{ color: 'var(--text)' }}>anónima</strong>. Estos datos nos ayudan a visibilizar patrones y mejorar las políticas públicas.
+              </span>
+            </div>
+          </Callout>
+
+          {!showReportForm ? (
+            <button
+              onClick={() => setShowReportForm(true)}
+              className="w-full sm:w-auto px-6 py-3 rounded-[var(--radius-md)] text-sm font-medium active:scale-95"
+              style={{
+                background: 'var(--accent)',
+                color: 'white',
+                transition: `all var(--t-fast) var(--ease)`
+              }}
+              onMouseEnter={(e) => e.currentTarget.style.opacity = '0.9'}
+              onMouseLeave={(e) => e.currentTarget.style.opacity = '1'}
+            >
+              📝 Hacer un reporte
+            </button>
+          ) : (
+            <div
+              className="border rounded-[var(--radius-lg)] p-6 space-y-4"
+              style={{
+                background: 'var(--surface-1)',
+                borderColor: 'var(--border)',
+                animation: 'fadeIn 0.3s ease-out'
+              }}
+            >
+              {reportSubmitted ? (
+                <div className="text-center py-8">
+                  <div className="text-4xl mb-3">✅</div>
+                  <h3 className="text-lg font-semibold mb-2" style={{ color: 'var(--text)' }}>
+                    Reporte enviado
+                  </h3>
+                  <p className="editorial text-sm" style={{ color: 'var(--muted)' }}>
+                    Gracias por tu aporte. Tu reporte anónimo ayuda a visibilizar estas situaciones.
+                  </p>
+                </div>
+              ) : (
+                <>
+                  <div>
+                    <label className="block text-sm font-medium mb-2" style={{ color: 'var(--text)' }}>
+                      Tipo de situación <span style={{ color: 'var(--accent)' }}>*</span>
+                    </label>
+                    <select
+                      value={reportType}
+                      onChange={(e) => setReportType(e.target.value)}
+                      className="w-full p-3 text-sm border rounded-[var(--radius-sm)] focus:outline-none"
+                      style={{
+                        background: 'var(--surface-2)',
+                        borderColor: 'var(--border)',
+                        color: 'var(--text)',
+                        transition: `all var(--t-med) var(--ease)`
+                      }}
+                    >
+                      <option value="">Seleccioná una opción</option>
+                      <option value="derechos">Vulneración de derechos</option>
+                      <option value="discriminacion">Discriminación</option>
+                      <option value="institucional">Falta de respuesta institucional pública</option>
+                      <option value="boliche">Problemas en boliches/eventos</option>
+                      <option value="otro">Otro</option>
+                    </select>
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium mb-2" style={{ color: 'var(--text)' }}>
+                      Ubicación aproximada (opcional)
+                    </label>
+                    <input
+                      type="text"
+                      value={reportLocation}
+                      onChange={(e) => setReportLocation(e.target.value)}
+                      placeholder="Ciudad o provincia"
+                      className="w-full p-3 text-sm border rounded-[var(--radius-sm)] focus:outline-none"
+                      style={{
+                        background: 'var(--surface-2)',
+                        borderColor: 'var(--border)',
+                        color: 'var(--text)',
+                        transition: `all var(--t-med) var(--ease)`
+                      }}
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium mb-2" style={{ color: 'var(--text)' }}>
+                      Descripción <span style={{ color: 'var(--accent)' }}>*</span>
+                    </label>
+                    <textarea
+                      value={reportDescription}
+                      onChange={(e) => setReportDescription(e.target.value)}
+                      placeholder="Contanos qué pasó. No incluyas datos personales identificables."
+                      rows={5}
+                      className="w-full p-3 text-sm border rounded-[var(--radius-sm)] focus:outline-none resize-y"
+                      style={{
+                        background: 'var(--surface-2)',
+                        borderColor: 'var(--border)',
+                        color: 'var(--text)',
+                        transition: `all var(--t-med) var(--ease)`
+                      }}
+                    />
+                  </div>
+
+                  <div className="flex gap-3">
+                    <button
+                      onClick={handleSubmitReport}
+                      disabled={!reportType || !reportDescription}
+                      className="flex-1 px-4 py-2 rounded-[var(--radius-md)] text-sm font-medium active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed"
+                      style={{
+                        background: 'var(--accent)',
+                        color: 'white',
+                        transition: `all var(--t-fast) var(--ease)`
+                      }}
+                      onMouseEnter={(e) => {
+                        if (!e.currentTarget.disabled) e.currentTarget.style.opacity = '0.9';
+                      }}
+                      onMouseLeave={(e) => {
+                        if (!e.currentTarget.disabled) e.currentTarget.style.opacity = '1';
+                      }}
+                    >
+                      Enviar reporte
+                    </button>
+                    <button
+                      onClick={() => {
+                        setShowReportForm(false);
+                        setReportType('');
+                        setReportDescription('');
+                        setReportLocation('');
+                      }}
+                      className="px-4 py-2 rounded-[var(--radius-md)] text-sm font-medium active:scale-95"
+                      style={{
+                        background: 'var(--surface-3)',
+                        color: 'var(--muted)',
+                        transition: `all var(--t-fast) var(--ease)`
+                      }}
+                    >
+                      Cancelar
+                    </button>
+                  </div>
+
+                  <p className="text-xs" style={{ color: 'var(--faint)' }}>
+                    Este reporte es completamente anónimo. No se recopilan IPs ni datos identificables.
+                  </p>
+                </>
+              )}
+            </div>
+          )}
+        </Section>
 
         {/* Search */}
         <div className="relative">
