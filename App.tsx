@@ -21,6 +21,7 @@ const App: React.FC = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [consent, setConsent] = useState<ConsentData | null>(null);
   const [activeTab, setActiveTab] = useState<Tab>('home');
+  const [sidebarCollapsed, setSidebarCollapsed] = useState<boolean>(false);
 
   useEffect(() => {
     if (consent && messages.length === 0) { // Only add initial message once
@@ -83,11 +84,46 @@ const App: React.FC = () => {
     <div className="flex h-full w-full overflow-hidden relative z-10" style={{ color: 'var(--text)', fontFamily: 'var(--font-ui)' }}>
       {!consent && <ConsentModal onConsent={handleConsent} />}
 
-      {/* Sidebar - quiet frame */}
-      <aside className="hidden lg:flex flex-col w-72 xl:w-80 border-r flex-shrink-0" style={{ borderColor: 'var(--border)', background: 'var(--bg)' }}>
+      {/* Sidebar - Collapsible */}
+      <aside
+        className="hidden lg:flex flex-col border-r flex-shrink-0 relative"
+        style={{
+          width: sidebarCollapsed ? '80px' : '280px',
+          borderColor: 'var(--border-subtle)',
+          background: 'var(--bg-paper-200)',
+          transition: 'width 300ms var(--ease-standard)'
+        }}
+      >
+        {/* Toggle Button */}
+        <button
+          onClick={() => setSidebarCollapsed(!sidebarCollapsed)}
+          className="absolute -right-3 top-6 z-10 w-6 h-6 rounded-full flex items-center justify-center"
+          style={{
+            background: 'var(--bg-surface)',
+            border: '1px solid var(--border-medium)',
+            boxShadow: 'var(--shadow-ambient)',
+            color: 'var(--text-ink-600)',
+            transition: 'all var(--t-fast) var(--ease-standard)',
+            fontSize: '10px'
+          }}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.background = 'var(--accent-primary)';
+            e.currentTarget.style.color = '#fff';
+            e.currentTarget.style.transform = 'scale(1.1)';
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.background = 'var(--bg-surface)';
+            e.currentTarget.style.color = 'var(--text-ink-600)';
+            e.currentTarget.style.transform = 'scale(1)';
+          }}
+          title={sidebarCollapsed ? 'Expandir sidebar' : 'Contraer sidebar'}
+        >
+          {sidebarCollapsed ? '→' : '←'}
+        </button>
+
         <Header />
-        <div className="flex-1 overflow-y-auto px-3">
-          <Tabs activeTab={activeTab} setActiveTab={setActiveTab} />
+        <div className="flex-1 overflow-y-auto" style={{ padding: sidebarCollapsed ? '8px' : '12px' }}>
+          <Tabs activeTab={activeTab} setActiveTab={setActiveTab} collapsed={sidebarCollapsed} />
         </div>
       </aside>
 

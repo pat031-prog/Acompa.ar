@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { Section, Callout, Chip, Divider } from './ui/Section';
 import { getAlerts, type TerritorialAlert } from '../services/analyticsService';
+import { LOCAL_RESOURCES } from '../constants';
 
 const ArrowRightIcon: React.FC = () => (
   <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-4 h-4">
@@ -36,84 +36,85 @@ interface HomeProps {
 
 export const Home: React.FC<HomeProps> = ({ onNavigate }) => {
   const [alerts, setAlerts] = useState<TerritorialAlert[]>([]);
-  const [hoveredCard, setHoveredCard] = useState<number | null>(null);
+  const [currentTime, setCurrentTime] = useState(new Date());
 
   useEffect(() => {
     setAlerts(getAlerts('all'));
+    const timer = setInterval(() => setCurrentTime(new Date()), 60000);
+    return () => clearInterval(timer);
   }, []);
 
-  const tools = [
+  const urgentAlerts = alerts.filter(a => a.severity === 'high');
+  const totalResources = LOCAL_RESOURCES.length;
+  const freeResources = LOCAL_RESOURCES.filter(r => r.free).length;
+
+  const quickActions = [
     {
       icon: '💬',
-      title: 'Chat',
-      subtitle: 'Asistente IA',
-      desc: 'Consultá sobre sustancias, efectos e interacciones',
+      title: 'Consultar',
+      subtitle: 'Chat IA',
+      desc: 'Preguntá sobre sustancias, efectos e interacciones',
       tab: 'chat',
-      gradient: 'linear-gradient(135deg, rgba(217, 119, 87, 0.08) 0%, rgba(217, 119, 87, 0.02) 100%)',
-      accentColor: 'var(--accent-primary)'
-    },
-    {
-      icon: '🗺️',
-      title: 'Observatorio',
-      subtitle: 'Alertas SAT',
-      desc: 'Señales territoriales y estadísticas en tiempo real',
-      tab: 'observatory',
-      gradient: 'linear-gradient(135deg, rgba(239, 68, 68, 0.08) 0%, rgba(239, 68, 68, 0.02) 100%)',
-      accentColor: '#ef4444'
-    },
-    {
-      icon: '📚',
-      title: 'Biblioteca',
-      subtitle: 'Base de datos',
-      desc: 'Información detallada sobre sustancias',
-      tab: 'library',
-      gradient: 'linear-gradient(135deg, rgba(59, 130, 246, 0.08) 0%, rgba(59, 130, 246, 0.02) 100%)',
-      accentColor: '#3b82f6'
+      color: 'var(--accent-primary)'
     },
     {
       icon: '🧪',
-      title: 'Testeo',
-      subtitle: 'Guía práctica',
-      desc: 'Aprendé a testear con reactivos',
+      title: 'Testear',
+      subtitle: 'Guía',
+      desc: 'Aprendé a usar reactivos de forma segura',
       tab: 'testing',
-      gradient: 'linear-gradient(135deg, rgba(139, 92, 246, 0.08) 0%, rgba(139, 92, 246, 0.02) 100%)',
-      accentColor: '#8b5cf6'
+      color: '#8b5cf6'
     },
     {
       icon: '📍',
-      title: 'Recursos',
-      subtitle: 'Red de ayuda',
-      desc: 'Centros y líneas de atención',
+      title: 'Buscar ayuda',
+      subtitle: 'Recursos',
+      desc: 'Centros de atención y líneas telefónicas',
       tab: 'resources',
-      gradient: 'linear-gradient(135deg, rgba(34, 197, 94, 0.08) 0%, rgba(34, 197, 94, 0.02) 100%)',
-      accentColor: '#22c55e'
+      color: '#22c55e'
     },
     {
-      icon: '🔔',
-      title: 'Recordatorios',
-      subtitle: 'Cuidado personal',
-      desc: 'Configurá alertas de reducción de riesgos',
-      tab: 'reminders',
-      gradient: 'linear-gradient(135deg, rgba(251, 146, 60, 0.08) 0%, rgba(251, 146, 60, 0.02) 100%)',
-      accentColor: '#fb923c'
+      icon: '🗺️',
+      title: 'Ver alertas',
+      subtitle: 'Observatorio',
+      desc: 'Señales territoriales y estadísticas SAT',
+      tab: 'observatory',
+      color: '#ef4444'
+    }
+  ];
+
+  const featuredInfo = [
+    {
+      icon: '🛡️',
+      title: 'Reducción de Riesgos',
+      desc: 'Estrategias basadas en evidencia científica para minimizar daños asociados al consumo de sustancias'
+    },
+    {
+      icon: '🔬',
+      title: 'Información Verificada',
+      desc: 'Datos de PsychonautWiki, Energy Control, y organismos oficiales como SEDRONAR'
+    },
+    {
+      icon: '📊',
+      title: 'Sistema de Alertas',
+      desc: 'Monitoreo territorial de sustancias adulteradas y alertas tempranas (SAT)'
     }
   ];
 
   return (
     <div className="flex-1 flex flex-col min-h-0 overflow-y-auto" style={{ background: 'var(--bg-paper-100)' }}>
-      <div className="max-w-7xl mx-auto w-full p-4 sm:p-6 lg:p-8">
-        {/* Compact Hero Section */}
-        <div className="grid lg:grid-cols-[1fr,400px] gap-6 lg:gap-8 mb-8">
-          {/* Left: Hero Content */}
-          <div className="space-y-6">
-            <header
-              className="space-y-3"
-              style={{
-                animation: 'fadeInUp 0.6s var(--ease-out-strong) both'
-              }}
-            >
+      <div className="max-w-7xl mx-auto w-full p-4 sm:p-6 lg:p-8 space-y-6">
+        {/* Header Section */}
+        <div
+          className="space-y-2"
+          style={{
+            animation: 'fadeInUp 0.5s var(--ease-out-strong) both'
+          }}
+        >
+          <div className="flex items-center justify-between">
+            <div>
               <h1
-                className="text-3xl sm:text-4xl lg:text-5xl font-semibold"
+                className="text-2xl sm:text-3xl font-semibold"
                 style={{
                   fontFamily: 'var(--font-editorial)',
                   color: 'var(--text-ink-900)',
@@ -121,60 +122,396 @@ export const Home: React.FC<HomeProps> = ({ onNavigate }) => {
                   letterSpacing: 'var(--letter-spacing-tight)'
                 }}
               >
-                Reducción de riesgos
-                <br />
-                basada en evidencia
+                Dashboard
               </h1>
               <p
-                className="text-base sm:text-lg max-w-xl"
+                className="text-sm mt-1"
+                style={{
+                  fontFamily: 'var(--font-ui)',
+                  color: 'var(--text-ink-600)'
+                }}
+              >
+                {currentTime.toLocaleDateString('es-AR', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}
+              </p>
+            </div>
+            <div
+              className="hidden sm:flex items-center gap-2 px-4 py-2"
+              style={{
+                background: urgentAlerts.length > 0 ? 'rgba(239, 68, 68, 0.08)' : 'var(--bg-surface)',
+                borderRadius: 'var(--radius-lg)',
+                border: `1px solid ${urgentAlerts.length > 0 ? '#ef4444' : 'var(--border-subtle)'}`
+              }}
+            >
+              <span className="text-lg">{urgentAlerts.length > 0 ? '⚠️' : '✓'}</span>
+              <span
+                className="text-xs font-semibold"
+                style={{
+                  fontFamily: 'var(--font-ui)',
+                  color: urgentAlerts.length > 0 ? '#ef4444' : 'var(--text-ink-600)'
+                }}
+              >
+                {urgentAlerts.length > 0 ? `${urgentAlerts.length} Alerta${urgentAlerts.length > 1 ? 's' : ''} Urgente${urgentAlerts.length > 1 ? 's' : ''}` : 'Sistema Operativo'}
+              </span>
+            </div>
+          </div>
+        </div>
+
+        {/* Stats Grid */}
+        <div
+          className="grid grid-cols-2 lg:grid-cols-4 gap-4"
+          style={{
+            animation: 'fadeInUp 0.5s var(--ease-out-strong) 0.1s both'
+          }}
+        >
+          <div
+            className="p-4"
+            style={{
+              background: 'var(--bg-surface)',
+              borderRadius: 'var(--radius-xl)',
+              border: '1px solid var(--border-subtle)',
+              boxShadow: 'var(--shadow-ambient)'
+            }}
+          >
+            <div className="text-2xl mb-2">📊</div>
+            <div
+              className="text-2xl font-bold mb-1"
+              style={{
+                fontFamily: 'var(--font-editorial)',
+                color: 'var(--text-ink-900)'
+              }}
+            >
+              {alerts.length}
+            </div>
+            <div
+              className="text-xs"
+              style={{
+                fontFamily: 'var(--font-ui)',
+                color: 'var(--text-ink-600)'
+              }}
+            >
+              Alertas activas
+            </div>
+          </div>
+
+          <div
+            className="p-4"
+            style={{
+              background: 'var(--bg-surface)',
+              borderRadius: 'var(--radius-xl)',
+              border: '1px solid var(--border-subtle)',
+              boxShadow: 'var(--shadow-ambient)'
+            }}
+          >
+            <div className="text-2xl mb-2">📍</div>
+            <div
+              className="text-2xl font-bold mb-1"
+              style={{
+                fontFamily: 'var(--font-editorial)',
+                color: 'var(--text-ink-900)'
+              }}
+            >
+              {totalResources}
+            </div>
+            <div
+              className="text-xs"
+              style={{
+                fontFamily: 'var(--font-ui)',
+                color: 'var(--text-ink-600)'
+              }}
+            >
+              Recursos disponibles
+            </div>
+          </div>
+
+          <div
+            className="p-4"
+            style={{
+              background: 'var(--bg-surface)',
+              borderRadius: 'var(--radius-xl)',
+              border: '1px solid var(--border-subtle)',
+              boxShadow: 'var(--shadow-ambient)'
+            }}
+          >
+            <div className="text-2xl mb-2">🆓</div>
+            <div
+              className="text-2xl font-bold mb-1"
+              style={{
+                fontFamily: 'var(--font-editorial)',
+                color: 'var(--text-ink-900)'
+              }}
+            >
+              {freeResources}
+            </div>
+            <div
+              className="text-xs"
+              style={{
+                fontFamily: 'var(--font-ui)',
+                color: 'var(--text-ink-600)'
+              }}
+            >
+              Gratuitos
+            </div>
+          </div>
+
+          <div
+            className="p-4"
+            style={{
+              background: 'var(--bg-surface)',
+              borderRadius: 'var(--radius-xl)',
+              border: '1px solid var(--border-subtle)',
+              boxShadow: 'var(--shadow-ambient)'
+            }}
+          >
+            <div className="text-2xl mb-2">📚</div>
+            <div
+              className="text-2xl font-bold mb-1"
+              style={{
+                fontFamily: 'var(--font-editorial)',
+                color: 'var(--text-ink-900)'
+              }}
+            >
+              500+
+            </div>
+            <div
+              className="text-xs"
+              style={{
+                fontFamily: 'var(--font-ui)',
+                color: 'var(--text-ink-600)'
+              }}
+            >
+              Sustancias en base
+            </div>
+          </div>
+        </div>
+
+        {/* Two Column Layout */}
+        <div className="grid lg:grid-cols-[1fr,400px] gap-6">
+          {/* Left Column */}
+          <div className="space-y-6">
+            {/* Quick Actions */}
+            <div
+              style={{
+                animation: 'fadeInUp 0.5s var(--ease-out-strong) 0.2s both'
+              }}
+            >
+              <h2
+                className="text-lg font-semibold mb-4"
                 style={{
                   fontFamily: 'var(--font-editorial)',
-                  color: 'var(--text-ink-600)',
-                  lineHeight: 'var(--line-height-relaxed)',
+                  color: 'var(--text-ink-900)',
                   letterSpacing: 'var(--letter-spacing-tight)'
                 }}
               >
-                Información, asistencia y recursos para estrategias de cuidado en contextos de consumo
-              </p>
-            </header>
+                Acciones rápidas
+              </h2>
+              <div className="grid sm:grid-cols-2 gap-3">
+                {quickActions.map((action, idx) => (
+                  <button
+                    key={idx}
+                    onClick={() => onNavigate?.(action.tab)}
+                    className="text-left p-4 group"
+                    style={{
+                      background: 'var(--bg-surface)',
+                      borderRadius: 'var(--radius-xl)',
+                      border: '1px solid var(--border-subtle)',
+                      boxShadow: 'var(--shadow-ambient)',
+                      transition: 'all var(--t-medium) var(--ease-standard)',
+                      cursor: 'pointer'
+                    }}
+                    onMouseEnter={(e) => {
+                      e.currentTarget.style.boxShadow = 'var(--shadow-lifted)';
+                      e.currentTarget.style.transform = 'translateY(-2px)';
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.boxShadow = 'var(--shadow-ambient)';
+                      e.currentTarget.style.transform = 'translateY(0)';
+                    }}
+                  >
+                    <div className="flex items-start justify-between mb-3">
+                      <div
+                        className="text-3xl"
+                        style={{
+                          transition: 'transform var(--t-medium) var(--ease-out-strong)'
+                        }}
+                      >
+                        {action.icon}
+                      </div>
+                      <div
+                        style={{
+                          color: action.color,
+                          opacity: 0,
+                          transition: 'opacity var(--t-fast) var(--ease-standard)'
+                        }}
+                        className="group-hover:opacity-100"
+                      >
+                        <ArrowRightIcon />
+                      </div>
+                    </div>
+                    <h3
+                      className="text-base font-semibold mb-1"
+                      style={{
+                        fontFamily: 'var(--font-ui)',
+                        color: 'var(--text-ink-900)'
+                      }}
+                    >
+                      {action.title}
+                    </h3>
+                    <p
+                      className="text-xs font-medium mb-2"
+                      style={{
+                        fontFamily: 'var(--font-ui)',
+                        color: action.color,
+                        opacity: 0.8
+                      }}
+                    >
+                      {action.subtitle}
+                    </p>
+                    <p
+                      className="text-xs"
+                      style={{
+                        fontFamily: 'var(--font-editorial)',
+                        color: 'var(--text-ink-600)',
+                        lineHeight: 'var(--line-height-relaxed)'
+                      }}
+                    >
+                      {action.desc}
+                    </p>
+                  </button>
+                ))}
+              </div>
+            </div>
 
-            {/* Emergency CTA - Compact */}
+            {/* Featured Info */}
             <div
-              className="p-5 border-l-4 flex items-center gap-4"
+              style={{
+                animation: 'fadeInUp 0.5s var(--ease-out-strong) 0.3s both'
+              }}
+            >
+              <h2
+                className="text-lg font-semibold mb-4"
+                style={{
+                  fontFamily: 'var(--font-editorial)',
+                  color: 'var(--text-ink-900)',
+                  letterSpacing: 'var(--letter-spacing-tight)'
+                }}
+              >
+                Sobre la plataforma
+              </h2>
+              <div className="space-y-3">
+                {featuredInfo.map((info, idx) => (
+                  <div
+                    key={idx}
+                    className="p-4 flex gap-4"
+                    style={{
+                      background: 'var(--bg-surface)',
+                      borderRadius: 'var(--radius-lg)',
+                      border: '1px solid var(--border-subtle)'
+                    }}
+                  >
+                    <div className="text-2xl flex-shrink-0">{info.icon}</div>
+                    <div>
+                      <h3
+                        className="text-sm font-semibold mb-1"
+                        style={{
+                          fontFamily: 'var(--font-ui)',
+                          color: 'var(--text-ink-900)'
+                        }}
+                      >
+                        {info.title}
+                      </h3>
+                      <p
+                        className="text-xs"
+                        style={{
+                          fontFamily: 'var(--font-editorial)',
+                          color: 'var(--text-ink-600)',
+                          lineHeight: 'var(--line-height-relaxed)'
+                        }}
+                      >
+                        {info.desc}
+                      </p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          {/* Right Column - Alerts */}
+          <div
+            className="space-y-4"
+            style={{
+              animation: 'fadeInUp 0.5s var(--ease-out-strong) 0.4s both'
+            }}
+          >
+            <div className="flex items-center justify-between">
+              <h2
+                className="text-lg font-semibold"
+                style={{
+                  fontFamily: 'var(--font-editorial)',
+                  color: 'var(--text-ink-900)',
+                  letterSpacing: 'var(--letter-spacing-tight)'
+                }}
+              >
+                Alertas SAT
+              </h2>
+              <button
+                onClick={() => onNavigate?.('observatory')}
+                className="text-xs font-medium flex items-center gap-1"
+                style={{
+                  color: 'var(--accent-primary)',
+                  fontFamily: 'var(--font-ui)',
+                  transition: 'gap var(--t-fast) var(--ease-standard)'
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.gap = '6px';
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.gap = '4px';
+                }}
+              >
+                Ver todas
+                <ArrowRightIcon />
+              </button>
+            </div>
+
+            {/* Emergency CTA */}
+            <div
+              className="p-4 border-l-4"
               style={{
                 background: 'var(--bg-surface)',
                 borderColor: '#ef4444',
                 borderRadius: 'var(--radius-xl)',
                 boxShadow: 'var(--shadow-ambient)',
                 borderTopLeftRadius: 0,
-                borderBottomLeftRadius: 0,
-                animation: 'fadeInUp 0.6s var(--ease-out-strong) 0.1s both'
+                borderBottomLeftRadius: 0
               }}
             >
-              <span className="text-3xl">🚨</span>
-              <div className="flex-1 min-w-0">
-                <p
-                  className="text-sm font-semibold mb-1"
-                  style={{
-                    fontFamily: 'var(--font-ui)',
-                    color: 'var(--text-ink-900)'
-                  }}
-                >
-                  Emergencias médicas
-                </p>
-                <p
-                  className="text-xs"
-                  style={{
-                    fontFamily: 'var(--font-ui)',
-                    color: 'var(--text-ink-600)'
-                  }}
-                >
-                  SAME 107 — Disponible 24/7 en todo el país
-                </p>
+              <div className="flex items-center gap-3 mb-3">
+                <span className="text-2xl">🚨</span>
+                <div className="flex-1">
+                  <p
+                    className="text-sm font-semibold"
+                    style={{
+                      fontFamily: 'var(--font-ui)',
+                      color: 'var(--text-ink-900)'
+                    }}
+                  >
+                    Emergencias
+                  </p>
+                  <p
+                    className="text-xs"
+                    style={{
+                      fontFamily: 'var(--font-ui)',
+                      color: 'var(--text-ink-600)'
+                    }}
+                  >
+                    SAME 107 — 24/7
+                  </p>
+                </div>
               </div>
               <a
                 href="tel:107"
-                className="flex-shrink-0 px-4 py-2 font-semibold text-sm"
+                className="w-full flex items-center justify-center gap-2 px-4 py-2.5 font-semibold text-sm"
                 style={{
                   background: '#ef4444',
                   color: '#fff',
@@ -184,286 +521,136 @@ export const Home: React.FC<HomeProps> = ({ onNavigate }) => {
                   boxShadow: '0 2px 8px rgba(239, 68, 68, 0.25)'
                 }}
                 onMouseEnter={(e) => {
-                  e.currentTarget.style.transform = 'scale(1.05)';
+                  e.currentTarget.style.transform = 'scale(1.02)';
                 }}
                 onMouseLeave={(e) => {
                   e.currentTarget.style.transform = 'scale(1)';
                 }}
               >
-                Llamar
+                📞 Llamar ahora
               </a>
             </div>
-          </div>
 
-          {/* Right: Latest Alert Preview */}
-          {alerts.length > 0 && (
-            <div
-              className="lg:sticky lg:top-6"
-              style={{
-                animation: 'fadeInUp 0.6s var(--ease-out-strong) 0.2s both',
-                alignSelf: 'start'
-              }}
-            >
-              <div
-                className="p-5 border-l-4"
-                style={{
-                  background: 'var(--bg-surface)',
-                  borderColor: getSeverityStyle(alerts[0].severity).color,
-                  borderRadius: 'var(--radius-xl)',
-                  boxShadow: 'var(--shadow-lifted)',
-                  borderTopLeftRadius: 0,
-                  borderBottomLeftRadius: 0
-                }}
-              >
-                <div className="flex items-center gap-2 mb-3">
-                  <span
-                    className="px-2.5 py-1 text-xs font-semibold"
+            {/* Alert Cards */}
+            <div className="space-y-3">
+              {alerts.slice(0, 3).map((alert, idx) => {
+                const severityStyle = getSeverityStyle(alert.severity);
+                return (
+                  <div
+                    key={alert.id}
+                    className="p-4 border-l-4"
                     style={{
-                      background: getSeverityStyle(alerts[0].severity).bg,
-                      color: getSeverityStyle(alerts[0].severity).color,
-                      borderRadius: 'var(--radius-sm)',
-                      fontFamily: 'var(--font-ui)'
+                      background: 'var(--bg-surface)',
+                      borderColor: severityStyle.color,
+                      borderRadius: 'var(--radius-lg)',
+                      borderTopLeftRadius: 0,
+                      borderBottomLeftRadius: 0,
+                      boxShadow: 'var(--shadow-ambient)'
                     }}
                   >
-                    {getSeverityStyle(alerts[0].severity).label}
-                  </span>
-                  <span
-                    className="text-xs"
-                    style={{
-                      fontFamily: 'var(--font-ui)',
-                      color: 'var(--text-ink-400)'
-                    }}
-                  >
-                    {getTimeAgo(alerts[0].timestamp)}
-                  </span>
-                </div>
-                <h3
-                  className="text-base font-semibold mb-2"
-                  style={{
-                    fontFamily: 'var(--font-ui)',
-                    color: 'var(--text-ink-900)'
-                  }}
-                >
-                  {alerts[0].title}
-                </h3>
-                <p
-                  className="text-sm mb-3"
-                  style={{
-                    fontFamily: 'var(--font-editorial)',
-                    color: 'var(--text-ink-600)',
-                    lineHeight: 'var(--line-height-relaxed)'
-                  }}
-                >
-                  {alerts[0].message}
-                </p>
-                <button
-                  onClick={() => onNavigate?.('observatory')}
-                  className="text-sm font-medium flex items-center gap-1"
-                  style={{
-                    color: getSeverityStyle(alerts[0].severity).color,
-                    fontFamily: 'var(--font-ui)',
-                    transition: 'gap var(--t-fast) var(--ease-standard)'
-                  }}
-                  onMouseEnter={(e) => {
-                    e.currentTarget.style.gap = '6px';
-                  }}
-                  onMouseLeave={(e) => {
-                    e.currentTarget.style.gap = '4px';
-                  }}
-                >
-                  Ver todas las alertas
-                  <ArrowRightIcon />
-                </button>
-              </div>
-            </div>
-          )}
-        </div>
-
-        {/* Modern Tool Grid */}
-        <div className="mb-8">
-          <h2
-            className="text-xl sm:text-2xl font-semibold mb-6"
-            style={{
-              fontFamily: 'var(--font-editorial)',
-              color: 'var(--text-ink-900)',
-              lineHeight: 'var(--line-height-tight)',
-              letterSpacing: 'var(--letter-spacing-tight)',
-              animation: 'fadeInUp 0.6s var(--ease-out-strong) 0.3s both'
-            }}
-          >
-            Explorá las herramientas
-          </h2>
-
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
-            {tools.map((tool, idx) => (
-              <button
-                key={idx}
-                onClick={() => onNavigate?.(tool.tab)}
-                onMouseEnter={() => setHoveredCard(idx)}
-                onMouseLeave={() => setHoveredCard(null)}
-                className="group relative overflow-hidden text-left"
-                style={{
-                  background: hoveredCard === idx ? tool.gradient : 'var(--bg-surface)',
-                  borderRadius: 'var(--radius-xl)',
-                  border: `1px solid ${hoveredCard === idx ? 'transparent' : 'var(--border-subtle)'}`,
-                  boxShadow: hoveredCard === idx ? 'var(--shadow-lifted)' : 'var(--shadow-ambient)',
-                  transition: `all var(--t-medium) var(--ease-standard)`,
-                  transform: hoveredCard === idx ? 'translateY(-4px)' : 'translateY(0)',
-                  animation: `fadeInUp 0.5s var(--ease-out-strong) ${0.4 + idx * 0.05}s both`,
-                  cursor: 'pointer'
-                }}
-              >
-                {/* Accent bar */}
-                <div
-                  style={{
-                    position: 'absolute',
-                    top: 0,
-                    left: 0,
-                    right: 0,
-                    height: '3px',
-                    background: tool.accentColor,
-                    opacity: hoveredCard === idx ? 1 : 0,
-                    transition: `opacity var(--t-medium) var(--ease-standard)`
-                  }}
-                />
-
-                {/* Content */}
-                <div className="p-6">
-                  <div className="flex items-start justify-between mb-4">
-                    <div
-                      className="text-4xl"
-                      style={{
-                        transform: hoveredCard === idx ? 'scale(1.1) rotate(5deg)' : 'scale(1) rotate(0deg)',
-                        transition: `transform var(--t-medium) var(--ease-out-strong)`
-                      }}
-                    >
-                      {tool.icon}
+                    <div className="flex items-center gap-2 mb-2">
+                      <span
+                        className="px-2 py-0.5 text-xs font-semibold"
+                        style={{
+                          background: severityStyle.bg,
+                          color: severityStyle.color,
+                          borderRadius: 'var(--radius-sm)',
+                          fontFamily: 'var(--font-ui)'
+                        }}
+                      >
+                        {severityStyle.label}
+                      </span>
+                      <span
+                        className="text-xs"
+                        style={{
+                          fontFamily: 'var(--font-ui)',
+                          color: 'var(--text-ink-400)'
+                        }}
+                      >
+                        {getTimeAgo(alert.timestamp)}
+                      </span>
                     </div>
-                    <div
-                      style={{
-                        opacity: hoveredCard === idx ? 1 : 0,
-                        transform: hoveredCard === idx ? 'translateX(0)' : 'translateX(-8px)',
-                        transition: `all var(--t-fast) var(--ease-standard)`,
-                        color: tool.accentColor
-                      }}
-                    >
-                      <ArrowRightIcon />
-                    </div>
-                  </div>
-
-                  <div className="space-y-1 mb-2">
                     <h3
-                      className="text-lg font-semibold"
+                      className="text-sm font-semibold mb-1"
                       style={{
                         fontFamily: 'var(--font-ui)',
                         color: 'var(--text-ink-900)'
                       }}
                     >
-                      {tool.title}
+                      {alert.title}
                     </h3>
                     <p
-                      className="text-xs font-medium"
+                      className="text-xs line-clamp-2"
                       style={{
-                        fontFamily: 'var(--font-ui)',
-                        color: tool.accentColor,
-                        opacity: 0.8
+                        fontFamily: 'var(--font-editorial)',
+                        color: 'var(--text-ink-600)',
+                        lineHeight: 'var(--line-height-relaxed)'
                       }}
                     >
-                      {tool.subtitle}
+                      {alert.message}
+                    </p>
+                    <p
+                      className="text-xs mt-2"
+                      style={{
+                        fontFamily: 'var(--font-ui)',
+                        color: 'var(--text-ink-400)'
+                      }}
+                    >
+                      📍 {alert.province}
                     </p>
                   </div>
+                );
+              })}
+            </div>
 
-                  <p
-                    className="text-sm"
-                    style={{
-                      fontFamily: 'var(--font-editorial)',
-                      color: 'var(--text-ink-600)',
-                      lineHeight: 'var(--line-height-relaxed)'
-                    }}
-                  >
-                    {tool.desc}
-                  </p>
-                </div>
+            {alerts.length > 3 && (
+              <button
+                onClick={() => onNavigate?.('observatory')}
+                className="w-full p-3 text-sm font-medium"
+                style={{
+                  background: 'transparent',
+                  border: '1px dashed var(--border-medium)',
+                  borderRadius: 'var(--radius-lg)',
+                  color: 'var(--text-ink-600)',
+                  fontFamily: 'var(--font-ui)',
+                  transition: 'all var(--t-fast) var(--ease-standard)'
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.background = 'var(--bg-surface)';
+                  e.currentTarget.style.borderStyle = 'solid';
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.background = 'transparent';
+                  e.currentTarget.style.borderStyle = 'dashed';
+                }}
+              >
+                Ver {alerts.length - 3} alerta{alerts.length - 3 !== 1 ? 's' : ''} más
               </button>
-            ))}
+            )}
           </div>
         </div>
 
-        {/* Compact About Section */}
-        <details
-          className="group"
+        {/* Disclaimer */}
+        <div
+          className="p-4 text-center"
           style={{
-            animation: 'fadeInUp 0.6s var(--ease-out-strong) 0.7s both'
+            background: 'var(--bg-surface)',
+            borderRadius: 'var(--radius-lg)',
+            border: '1px solid var(--border-subtle)',
+            animation: 'fadeInUp 0.5s var(--ease-out-strong) 0.5s both'
           }}
         >
-          <summary
-            className="cursor-pointer list-none p-5"
+          <p
+            className="text-xs"
             style={{
-              background: 'var(--bg-surface)',
-              borderRadius: 'var(--radius-xl)',
-              border: '1px solid var(--border-subtle)',
-              boxShadow: 'var(--shadow-ambient)',
-              fontFamily: 'var(--font-ui)',
-              color: 'var(--text-ink-900)',
-              fontWeight: 600,
-              fontSize: '14px',
-              transition: `all var(--t-fast) var(--ease-standard)`
-            }}
-          >
-            <div className="flex items-center justify-between">
-              <span>Sobre esta plataforma</span>
-              <span
-                style={{
-                  transition: 'transform var(--t-medium) var(--ease-standard)',
-                  transform: 'rotate(0deg)',
-                  display: 'inline-block'
-                }}
-                className="group-open:rotate-180"
-              >
-                ▼
-              </span>
-            </div>
-          </summary>
-
-          <div
-            className="mt-4 p-6 space-y-4"
-            style={{
-              background: 'var(--bg-surface)',
-              borderRadius: 'var(--radius-xl)',
-              border: '1px solid var(--border-subtle)',
-              boxShadow: 'var(--shadow-ambient)',
               fontFamily: 'var(--font-editorial)',
               color: 'var(--text-ink-600)',
-              fontSize: '14px',
               lineHeight: 'var(--line-height-relaxed)'
             }}
           >
-            <div>
-              <p className="mb-2">
-                <strong style={{ color: 'var(--text-ink-900)', fontFamily: 'var(--font-ui)' }}>
-                  Esta plataforma NO promueve ni hace apología del consumo de sustancias.
-                </strong>
-              </p>
-              <p>
-                Nuestro propósito es brindar información basada en evidencia para reducir riesgos y daños asociados al consumo. Operamos sin fines de lucro y sin conflictos de interés.
-              </p>
-            </div>
-
-            <div
-              className="text-xs"
-              style={{
-                fontFamily: 'var(--font-ui)',
-                color: 'var(--text-ink-400)',
-                paddingTop: '12px',
-                borderTop: '1px solid var(--border-subtle)'
-              }}
-            >
-              <p>
-                La información proporcionada tiene fines educativos y no sustituye el consejo médico profesional. Los datos son anónimos y se almacenan localmente en tu dispositivo.
-              </p>
-            </div>
-          </div>
-        </details>
+            <strong style={{ color: 'var(--text-ink-900)' }}>Esta plataforma NO promueve el consumo de sustancias.</strong> Brindamos información basada en evidencia para reducción de riesgos y daños. La información es educativa y no sustituye el consejo médico profesional.
+          </p>
+        </div>
       </div>
     </div>
   );

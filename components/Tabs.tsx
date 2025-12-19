@@ -5,6 +5,7 @@ import type { Tab } from '../types';
 interface TabsProps {
   activeTab: Tab;
   setActiveTab: (tab: Tab) => void;
+  collapsed?: boolean;
 }
 
 // Icons for navigation
@@ -74,9 +75,9 @@ const navItems: NavItem[] = [
   { id: 'dashboard', label: 'Estadísticas', icon: <DashboardIcon /> },
 ];
 
-export const Tabs: React.FC<TabsProps> = ({ activeTab, setActiveTab }) => {
+export const Tabs: React.FC<TabsProps> = ({ activeTab, setActiveTab, collapsed = false }) => {
   return (
-    <nav className="flex flex-col gap-1 py-4 px-2">
+    <nav className="flex flex-col gap-1 py-4" style={{ padding: collapsed ? '16px 4px' : '16px 8px' }}>
       {navItems.map((item) => {
         const isActive = activeTab === item.id;
         return (
@@ -85,29 +86,51 @@ export const Tabs: React.FC<TabsProps> = ({ activeTab, setActiveTab }) => {
             id={`tab-${item.id}`}
             onClick={() => setActiveTab(item.id)}
             aria-pressed={isActive}
-            className="group relative flex items-center gap-3 px-3 py-2.5 text-left text-sm font-medium rounded-[var(--radius-sm)]"
+            title={collapsed ? item.label : undefined}
+            className="group relative flex items-center text-left text-sm font-medium"
             style={{
-              background: isActive ? 'var(--surface-3)' : 'transparent',
-              color: isActive ? 'var(--text)' : 'var(--muted)',
-              transition: `all var(--t-med) var(--ease)`,
-              WebkitTapHighlightColor: 'transparent'
+              background: isActive ? 'var(--bg-surface)' : 'transparent',
+              color: isActive ? 'var(--text-ink-900)' : 'var(--text-ink-600)',
+              transition: `all var(--t-medium) var(--ease-standard)`,
+              borderRadius: 'var(--radius-md)',
+              padding: collapsed ? '12px' : '10px 12px',
+              gap: collapsed ? '0' : '12px',
+              justifyContent: collapsed ? 'center' : 'flex-start',
+              WebkitTapHighlightColor: 'transparent',
+              boxShadow: isActive ? 'var(--shadow-ambient)' : 'none'
+            }}
+            onMouseEnter={(e) => {
+              if (!isActive) {
+                e.currentTarget.style.background = 'var(--bg-surface)';
+              }
+            }}
+            onMouseLeave={(e) => {
+              if (!isActive) {
+                e.currentTarget.style.background = 'transparent';
+              }
             }}
           >
             <span
               className="flex-shrink-0"
               style={{
-                color: isActive ? 'var(--text)' : 'var(--faint)',
-                transition: `color var(--t-med) var(--ease)`
+                color: isActive ? 'var(--accent-primary)' : 'inherit',
+                transition: `color var(--t-medium) var(--ease-standard)`
               }}
             >
               {item.icon}
             </span>
-            <span className="flex-1">{item.label}</span>
-            {isActive && (
-              <span
-                className="absolute right-0 top-1/2 -translate-y-1/2 w-0.5 h-4 rounded-l-full"
-                style={{ background: 'var(--accent)' }}
-              ></span>
+            {!collapsed && (
+              <>
+                <span className="flex-1" style={{ opacity: 1, transition: 'opacity 200ms ease-out' }}>
+                  {item.label}
+                </span>
+                {isActive && (
+                  <span
+                    className="w-1.5 h-1.5 rounded-full"
+                    style={{ background: 'var(--accent-primary)' }}
+                  ></span>
+                )}
+              </>
             )}
           </button>
         );
