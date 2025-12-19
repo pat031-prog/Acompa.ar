@@ -752,37 +752,28 @@ export const Home: React.FC<HomeProps> = ({ onNavigate }) => {
           </div>
         </section>
 
-        {/* Footer Disclaimer */}
-        <div
-          className="p-4 text-center"
-          style={{
-            background: 'var(--bg-surface)',
-            borderRadius: 'var(--radius-lg)',
-            border: '1px solid var(--border-subtle)',
-            animation: 'fadeInUp 0.5s var(--ease-out-strong) 0.4s both'
-          }}
-        >
-          <p
-            className="text-xs"
+        {/* Información Destacada */}
+        <section className="space-y-4">
+          <h2
+            className="text-lg font-semibold"
             style={{
               fontFamily: 'var(--font-editorial)',
-              color: 'var(--text-ink-600)',
-              lineHeight: 'var(--line-height-relaxed)'
+              color: 'var(--text-ink-900)',
+              letterSpacing: 'var(--letter-spacing-tight)',
+              animation: 'fadeInUp 0.5s var(--ease-out-strong) 0.1s both'
             }}
           >
-            <strong style={{ color: 'var(--text-ink-900)' }}>Esta plataforma NO promueve el consumo de sustancias.</strong> Brindamos información basada en evidencia para reducción de riesgos y daños. La información es educativa y no sustituye el consejo médico profesional.
-          </p>
-        </div>
-      </div>
-    </div>
-  );
-};
-            {/* Quick Actions */}
-            <div
-              style={{
-                animation: 'fadeInUp 0.5s var(--ease-out-strong) 0.2s both'
-              }}
-            >
+            Información Destacada
+          </h2>
+          <div className="grid lg:grid-cols-2 gap-6">
+            {/* Left Column - Quick Actions + Featured Info */}
+            <div className="space-y-6">
+              {/* Quick Actions */}
+              <div
+                style={{
+                  animation: 'fadeInUp 0.5s var(--ease-out-strong) 0.2s both'
+                }}
+              >
               <h2
                 className="text-lg font-semibold mb-4"
                 style={{
@@ -1118,6 +1109,7 @@ export const Home: React.FC<HomeProps> = ({ onNavigate }) => {
             )}
           </div>
         </div>
+        </section>
 
         {/* Disclaimer */}
         <div
