@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes" />
-    <meta name="theme-color" content="#F5F3EF" />
+    <meta name="theme-color" content="#ECEAE5" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="default" />
     <title>ACompañ.Ar — Chatbot & Observatorio de Consumos</title>
@@ -15,30 +15,31 @@
       /* High-fidelity Anthropic/Claude aesthetic: Warm, Intellectual, Printed */
       :root {
         /* ===== Canvas & Surfaces (Paper & Cream) ===== */
-        --bg-paper-100: #F5F3EF;  /* Main background - Slightly grayer warm paper */
-        --bg-paper-200: #EAE7E0;  /* Sidebar/Secondary - More contrast */
-        --bg-surface: #FDFCFA;    /* Cards/Inputs - Subtle off-white to pop */
+        --bg-paper-100: #ECEAE5;  /* Main background - Darker warm gray paper */
+        --bg-paper-200: #DDD9D1;  /* Sidebar/Secondary - Strong contrast */
+        --bg-surface: #F8F6F3;    /* Cards/Inputs - Off-white with character */
 
         /* ===== Ink (Typography) ===== */
-        --text-ink-900: #1A1816;  /* Primary text - Warmer soft black */
-        --text-ink-600: #5C5854;  /* Secondary text - Warm earthy grey */
-        --text-ink-400: #918D88;  /* Placeholder/Disabled - Medium grey */
+        --text-ink-900: #161412;  /* Primary text - Deep warm black */
+        --text-ink-600: #54504C;  /* Secondary text - Darker warm grey */
+        --text-ink-400: #83807B;  /* Placeholder/Disabled - Visible grey */
 
         /* ===== Maple Accent (Brand) ===== */
         --accent-primary: #D97757;   /* Terracotta/Burnt orange - The Claude accent */
         --accent-hover: #C56A4C;     /* Hover state - Darker terracotta */
-        --accent-surface: #F9E8E1;   /* Light terracotta wash */
-        --accent-weak: rgba(217, 119, 87, 0.15); /* Subtle accent overlay */
+        --accent-surface: #F5E4DD;   /* Light terracotta wash (darker) */
+        --accent-weak: rgba(217, 119, 87, 0.18); /* Subtle accent overlay */
 
         /* ===== Borders (Etched lines) ===== */
-        --border-subtle: #DDD9D3;    /* Subtle etched line */
-        --border-medium: #C7C3BC;    /* Medium border */
-        --border-strong: #ACA89F;    /* Strong border */
+        --border-subtle: #D0CCC4;    /* Subtle etched line (darker) */
+        --border-medium: #BAB6AE;    /* Medium border (darker) */
+        --border-strong: #9D9990;    /* Strong border (darker) */
 
         /* ===== Shadows (Ambient Occlusion, not drop shadows) ===== */
-        --shadow-ambient: 0 1px 2px 0 rgba(0, 0, 0, 0.05), 0 4px 12px 0 rgba(0, 0, 0, 0.02);
-        --shadow-lifted: 0 2px 4px 0 rgba(0, 0, 0, 0.06), 0 8px 20px 0 rgba(0, 0, 0, 0.04);
-        --shadow-focus: 0 0 0 2px #FFFFFF, 0 0 0 4px var(--accent-primary);
+        --shadow-ambient: 0 1px 2px 0 rgba(0, 0, 0, 0.06), 0 4px 16px 0 rgba(0, 0, 0, 0.04);
+        --shadow-lifted: 0 2px 6px 0 rgba(0, 0, 0, 0.08), 0 8px 24px 0 rgba(0, 0, 0, 0.06);
+        --shadow-focus: 0 0 0 2px var(--bg-surface), 0 0 0 4px var(--accent-primary);
+        --shadow-inset: inset 0 1px 3px 0 rgba(0, 0, 0, 0.08); /* Etched/pressed effect */
 
         /* ===== Super-Ellipse Radii ===== */
         --radius-sm: 6px;    /* Buttons */
