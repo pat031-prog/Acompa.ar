@@ -293,18 +293,36 @@ export const ResourcesDirectory: React.FC = () => {
               ) : (
                 <>
                   <div>
-                    <label className="block text-sm font-medium mb-2" style={{ color: 'var(--text)' }}>
-                      Tipo de situación <span style={{ color: 'var(--accent)' }}>*</span>
+                    <label
+                      className="block text-sm font-semibold mb-2"
+                      style={{
+                        fontFamily: 'var(--font-ui)',
+                        color: 'var(--text-ink-900)'
+                      }}
+                    >
+                      Tipo de situación <span style={{ color: 'var(--accent-primary)' }}>*</span>
                     </label>
                     <select
                       value={reportType}
                       onChange={(e) => setReportType(e.target.value)}
-                      className="w-full p-3 text-sm border rounded-[var(--radius-sm)] focus:outline-none"
+                      className="w-full p-3 text-sm focus:outline-none"
                       style={{
-                        background: 'var(--surface-2)',
-                        borderColor: 'var(--border)',
-                        color: 'var(--text)',
-                        transition: `all var(--t-med) var(--ease)`
+                        background: 'var(--bg-surface)',
+                        borderColor: 'var(--border-medium)',
+                        border: '1px solid var(--border-medium)',
+                        borderRadius: 'var(--radius-lg)',
+                        color: 'var(--text-ink-900)',
+                        fontFamily: 'var(--font-ui)',
+                        transition: `all var(--t-medium) var(--ease-standard)`,
+                        boxShadow: 'var(--shadow-inset)'
+                      }}
+                      onFocus={(e) => {
+                        e.currentTarget.style.borderColor = 'var(--accent-primary)';
+                        e.currentTarget.style.boxShadow = 'var(--shadow-focus)';
+                      }}
+                      onBlur={(e) => {
+                        e.currentTarget.style.borderColor = 'var(--border-medium)';
+                        e.currentTarget.style.boxShadow = 'var(--shadow-inset)';
                       }}
                     >
                       <option value="">Seleccioná una opción</option>
@@ -317,7 +335,13 @@ export const ResourcesDirectory: React.FC = () => {
                   </div>
 
                   <div>
-                    <label className="block text-sm font-medium mb-2" style={{ color: 'var(--text)' }}>
+                    <label
+                      className="block text-sm font-semibold mb-2"
+                      style={{
+                        fontFamily: 'var(--font-ui)',
+                        color: 'var(--text-ink-900)'
+                      }}
+                    >
                       Ubicación aproximada (opcional)
                     </label>
                     <input
@@ -325,31 +349,62 @@ export const ResourcesDirectory: React.FC = () => {
                       value={reportLocation}
                       onChange={(e) => setReportLocation(e.target.value)}
                       placeholder="Ciudad o provincia"
-                      className="w-full p-3 text-sm border rounded-[var(--radius-sm)] focus:outline-none"
+                      className="w-full p-3 text-sm focus:outline-none"
                       style={{
-                        background: 'var(--surface-2)',
-                        borderColor: 'var(--border)',
-                        color: 'var(--text)',
-                        transition: `all var(--t-med) var(--ease)`
+                        background: 'var(--bg-surface)',
+                        borderColor: 'var(--border-medium)',
+                        border: '1px solid var(--border-medium)',
+                        borderRadius: 'var(--radius-lg)',
+                        color: 'var(--text-ink-900)',
+                        fontFamily: 'var(--font-ui)',
+                        transition: `all var(--t-medium) var(--ease-standard)`,
+                        boxShadow: 'var(--shadow-inset)'
+                      }}
+                      onFocus={(e) => {
+                        e.currentTarget.style.borderColor = 'var(--accent-primary)';
+                        e.currentTarget.style.boxShadow = 'var(--shadow-focus)';
+                      }}
+                      onBlur={(e) => {
+                        e.currentTarget.style.borderColor = 'var(--border-medium)';
+                        e.currentTarget.style.boxShadow = 'var(--shadow-inset)';
                       }}
                     />
                   </div>
 
                   <div>
-                    <label className="block text-sm font-medium mb-2" style={{ color: 'var(--text)' }}>
-                      Descripción <span style={{ color: 'var(--accent)' }}>*</span>
+                    <label
+                      className="block text-sm font-semibold mb-2"
+                      style={{
+                        fontFamily: 'var(--font-ui)',
+                        color: 'var(--text-ink-900)'
+                      }}
+                    >
+                      Descripción <span style={{ color: 'var(--accent-primary)' }}>*</span>
                     </label>
                     <textarea
                       value={reportDescription}
                       onChange={(e) => setReportDescription(e.target.value)}
                       placeholder="Contanos qué pasó. No incluyas datos personales identificables."
                       rows={5}
-                      className="w-full p-3 text-sm border rounded-[var(--radius-sm)] focus:outline-none resize-y"
+                      className="w-full p-3 text-sm focus:outline-none resize-y"
                       style={{
-                        background: 'var(--surface-2)',
-                        borderColor: 'var(--border)',
-                        color: 'var(--text)',
-                        transition: `all var(--t-med) var(--ease)`
+                        background: 'var(--bg-surface)',
+                        borderColor: 'var(--border-medium)',
+                        border: '1px solid var(--border-medium)',
+                        borderRadius: 'var(--radius-lg)',
+                        color: 'var(--text-ink-900)',
+                        fontFamily: 'var(--font-ui)',
+                        lineHeight: 'var(--line-height-relaxed)',
+                        transition: `all var(--t-medium) var(--ease-standard)`,
+                        boxShadow: 'var(--shadow-inset)'
+                      }}
+                      onFocus={(e) => {
+                        e.currentTarget.style.borderColor = 'var(--accent-primary)';
+                        e.currentTarget.style.boxShadow = 'var(--shadow-focus)';
+                      }}
+                      onBlur={(e) => {
+                        e.currentTarget.style.borderColor = 'var(--border-medium)';
+                        e.currentTarget.style.boxShadow = 'var(--shadow-inset)';
                       }}
                     />
                   </div>
@@ -358,17 +413,20 @@ export const ResourcesDirectory: React.FC = () => {
                     <button
                       onClick={handleSubmitReport}
                       disabled={!reportType || !reportDescription}
-                      className="flex-1 px-4 py-2 rounded-[var(--radius-md)] text-sm font-medium active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed"
+                      className="flex-1 px-5 py-3 text-sm font-semibold active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed"
                       style={{
-                        background: 'var(--accent)',
+                        background: 'var(--accent-primary)',
                         color: 'white',
-                        transition: `all var(--t-fast) var(--ease)`
+                        borderRadius: 'var(--radius-sm)',
+                        fontFamily: 'var(--font-ui)',
+                        transition: `all var(--t-fast) var(--ease-standard)`,
+                        boxShadow: '0 2px 8px rgba(217, 119, 87, 0.25)'
                       }}
                       onMouseEnter={(e) => {
-                        if (!e.currentTarget.disabled) e.currentTarget.style.opacity = '0.9';
+                        if (!e.currentTarget.disabled) e.currentTarget.style.background = 'var(--accent-hover)';
                       }}
                       onMouseLeave={(e) => {
-                        if (!e.currentTarget.disabled) e.currentTarget.style.opacity = '1';
+                        if (!e.currentTarget.disabled) e.currentTarget.style.background = 'var(--accent-primary)';
                       }}
                     >
                       Enviar reporte
@@ -380,18 +438,34 @@ export const ResourcesDirectory: React.FC = () => {
                         setReportDescription('');
                         setReportLocation('');
                       }}
-                      className="px-4 py-2 rounded-[var(--radius-md)] text-sm font-medium active:scale-95"
+                      className="px-5 py-3 text-sm font-semibold active:scale-95"
                       style={{
-                        background: 'var(--surface-3)',
-                        color: 'var(--muted)',
-                        transition: `all var(--t-fast) var(--ease)`
+                        background: 'var(--bg-surface)',
+                        color: 'var(--text-ink-600)',
+                        borderRadius: 'var(--radius-sm)',
+                        fontFamily: 'var(--font-ui)',
+                        border: '1px solid var(--border-medium)',
+                        transition: `all var(--t-fast) var(--ease-standard)`,
+                        boxShadow: 'var(--shadow-inset)'
+                      }}
+                      onMouseEnter={(e) => {
+                        e.currentTarget.style.background = 'var(--bg-paper-200)';
+                      }}
+                      onMouseLeave={(e) => {
+                        e.currentTarget.style.background = 'var(--bg-surface)';
                       }}
                     >
                       Cancelar
                     </button>
                   </div>
 
-                  <p className="text-xs" style={{ color: 'var(--faint)' }}>
+                  <p
+                    className="text-xs"
+                    style={{
+                      fontFamily: 'var(--font-ui)',
+                      color: 'var(--text-ink-400)'
+                    }}
+                  >
                     Este reporte es completamente anónimo. No se recopilan IPs ni datos identificables.
                   </p>
                 </>
@@ -402,7 +476,10 @@ export const ResourcesDirectory: React.FC = () => {
 
         {/* Search */}
         <div className="relative">
-          <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3" style={{ color: 'var(--muted)' }}>
+          <div
+            className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-4"
+            style={{ color: 'var(--text-ink-400)' }}
+          >
             <SearchIcon />
           </div>
           <input
@@ -410,20 +487,24 @@ export const ResourcesDirectory: React.FC = () => {
             placeholder="Buscar por nombre o servicio..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="w-full p-3 pl-10 text-sm rounded-[var(--radius-md)] border focus:outline-none"
+            className="w-full p-3 pl-11 text-sm focus:outline-none"
             style={{
-              background: 'var(--surface-1)',
-              color: 'var(--text)',
-              borderColor: 'var(--border)',
-              transition: `all var(--t-fast) var(--ease)`
+              background: 'var(--bg-surface)',
+              color: 'var(--text-ink-900)',
+              borderColor: 'var(--border-medium)',
+              border: '1px solid var(--border-medium)',
+              borderRadius: 'var(--radius-lg)',
+              fontFamily: 'var(--font-ui)',
+              transition: `all var(--t-fast) var(--ease-standard)`,
+              boxShadow: 'var(--shadow-inset)'
             }}
             onFocus={(e) => {
-              e.currentTarget.style.borderColor = 'var(--accent)';
-              e.currentTarget.style.boxShadow = `0 0 0 3px var(--accent-weak)`;
+              e.currentTarget.style.borderColor = 'var(--accent-primary)';
+              e.currentTarget.style.boxShadow = 'var(--shadow-focus)';
             }}
             onBlur={(e) => {
-              e.currentTarget.style.borderColor = 'var(--border)';
-              e.currentTarget.style.boxShadow = 'none';
+              e.currentTarget.style.borderColor = 'var(--border-medium)';
+              e.currentTarget.style.boxShadow = 'var(--shadow-inset)';
             }}
           />
         </div>

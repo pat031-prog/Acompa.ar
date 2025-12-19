@@ -27,8 +27,8 @@ export const ChatInput: React.FC<ChatInputProps> = ({ onSendMessage, isLoading, 
     <div
       className="border-t p-6"
       style={{
-        background: 'var(--surface-1)',
-        borderColor: 'var(--border)'
+        background: 'var(--bg-paper-200)',
+        borderColor: 'var(--border-subtle)'
       }}
     >
       <form
@@ -52,23 +52,26 @@ export const ChatInput: React.FC<ChatInputProps> = ({ onSendMessage, isLoading, 
                   : 'Escribí tu pregunta... (Enter para enviar, Shift+Enter para nueva línea)'
               }
               rows={3}
-              className="w-full px-4 py-3 rounded-[var(--radius-md)] border resize-none focus:outline-none disabled:opacity-50"
+              className="w-full px-4 py-3 resize-none focus:outline-none disabled:opacity-50"
               style={{
-                background: 'var(--surface-2)',
-                color: 'var(--text)',
-                borderColor: 'var(--border)',
+                background: 'var(--bg-surface)',
+                color: 'var(--text-ink-900)',
+                borderColor: 'var(--border-medium)',
+                border: '1px solid var(--border-medium)',
+                borderRadius: 'var(--radius-lg)',
                 fontFamily: 'var(--font-ui)',
                 fontSize: '15px',
-                lineHeight: '1.5',
-                transition: `all var(--t-med) var(--ease)`
+                lineHeight: 'var(--line-height-base)',
+                transition: `all var(--t-medium) var(--ease-standard)`,
+                boxShadow: 'var(--shadow-inset)'
               }}
               onFocus={(e) => {
-                e.currentTarget.style.borderColor = 'var(--accent)';
-                e.currentTarget.style.boxShadow = `0 0 0 3px var(--accent-weak), 0 4px 12px rgba(0, 0, 0, 0.1)`;
+                e.currentTarget.style.borderColor = 'var(--accent-primary)';
+                e.currentTarget.style.boxShadow = 'var(--shadow-focus)';
               }}
               onBlur={(e) => {
-                e.currentTarget.style.borderColor = 'var(--border)';
-                e.currentTarget.style.boxShadow = 'none';
+                e.currentTarget.style.borderColor = 'var(--border-medium)';
+                e.currentTarget.style.boxShadow = 'var(--shadow-inset)';
               }}
               disabled={isLoading || disabled}
             />
@@ -77,20 +80,28 @@ export const ChatInput: React.FC<ChatInputProps> = ({ onSendMessage, isLoading, 
           <button
             type="submit"
             disabled={isLoading || disabled || !text.trim()}
-            className="flex-shrink-0 p-4 rounded-[var(--radius-md)] active:scale-95 disabled:cursor-not-allowed"
+            className="flex-shrink-0 p-4 active:scale-95 disabled:cursor-not-allowed"
             style={{
-              background: text.trim() && !disabled && !isLoading ? 'var(--accent)' : 'var(--surface-3)',
-              color: text.trim() && !disabled && !isLoading ? '#fff' : 'var(--faint)',
-              transition: `all var(--t-fast) var(--ease)`,
-              boxShadow: text.trim() && !disabled && !isLoading ? '0 2px 8px rgba(209, 153, 91, 0.25)' : 'none'
+              background: text.trim() && !disabled && !isLoading ? 'var(--accent-primary)' : 'var(--bg-surface)',
+              color: text.trim() && !disabled && !isLoading ? '#fff' : 'var(--text-ink-400)',
+              borderRadius: 'var(--radius-sm)',
+              transition: `all var(--t-fast) var(--ease-standard)`,
+              boxShadow: text.trim() && !disabled && !isLoading
+                ? '0 2px 8px rgba(217, 119, 87, 0.25)'
+                : 'var(--shadow-inset)',
+              border: text.trim() && !disabled && !isLoading
+                ? 'none'
+                : '1px solid var(--border-medium)'
             }}
             onMouseEnter={(e) => {
               if (text.trim() && !disabled && !isLoading) {
-                e.currentTarget.style.opacity = '0.9';
+                e.currentTarget.style.background = 'var(--accent-hover)';
               }
             }}
             onMouseLeave={(e) => {
-              e.currentTarget.style.opacity = '1';
+              if (text.trim() && !disabled && !isLoading) {
+                e.currentTarget.style.background = 'var(--accent-primary)';
+              }
             }}
             aria-label="Enviar mensaje"
           >
@@ -100,7 +111,10 @@ export const ChatInput: React.FC<ChatInputProps> = ({ onSendMessage, isLoading, 
 
         <p
           className="text-xs mt-2"
-          style={{ color: 'var(--faint)' }}
+          style={{
+            fontFamily: 'var(--font-ui)',
+            color: 'var(--text-ink-400)'
+          }}
         >
           Recordá que este es un asistente informativo. No es un reemplazo de atención médica profesional.
         </p>

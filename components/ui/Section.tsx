@@ -32,10 +32,12 @@ export const Section: React.FC<SectionProps> = ({
           <div className="flex-1">
             {title && (
               <h2
-                className="text-lg sm:text-xl font-semibold"
+                className="text-xl sm:text-2xl font-semibold"
                 style={{
-                  color: 'var(--text)',
-                  lineHeight: 'var(--line-height-heading)'
+                  fontFamily: 'var(--font-editorial)',
+                  color: 'var(--text-ink-900)',
+                  lineHeight: 'var(--line-height-tight)',
+                  letterSpacing: 'var(--letter-spacing-tight)'
                 }}
               >
                 {title}
@@ -43,8 +45,11 @@ export const Section: React.FC<SectionProps> = ({
             )}
             {meta && (
               <p
-                className="text-sm mt-1"
-                style={{ color: 'var(--muted)' }}
+                className="text-sm mt-2"
+                style={{
+                  fontFamily: 'var(--font-ui)',
+                  color: 'var(--text-ink-600)'
+                }}
               >
                 {meta}
               </p>

@@ -100,12 +100,50 @@
         --content-max-width: 768px;  /* 48rem - Optimal reading length */
       }
 
-      /* Mobile adjustments */
+      /* Mobile adjustments - Optimized spacing and typography */
       @media (max-width: 768px) {
         :root {
+          /* Smaller typography scale for mobile */
           --font-size-base: 15px;
+          --font-size-md: 17px;
+          --font-size-lg: 19px;
+          --font-size-xl: 22px;
           --font-size-2xl: 26px;
           --font-size-3xl: 32px;
+          --font-size-4xl: 40px;
+
+          /* Tighter spacing for small screens */
+          --space-6: 20px;
+          --space-8: 28px;
+          --space-10: 36px;
+          --space-12: 40px;
+          --space-16: 56px;
+
+          /* Reduce sidebar width on tablets */
+          --sidebar-width: 260px;
+        }
+
+        /* Ensure touch targets are at least 48px */
+        button, a, input, select, textarea {
+          min-height: 44px;
+        }
+
+        /* Better mobile padding */
+        .p-6, .px-6, .py-6 {
+          padding: var(--space-5) !important;
+        }
+
+        .p-8, .px-8, .py-8 {
+          padding: var(--space-6) !important;
+        }
+      }
+
+      /* Extra small mobile (iPhone SE, etc.) */
+      @media (max-width: 375px) {
+        :root {
+          --font-size-2xl: 24px;
+          --font-size-3xl: 28px;
+          --font-size-4xl: 36px;
         }
       }
       /* Reset box sizing and margins */

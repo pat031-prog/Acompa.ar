@@ -42,23 +42,33 @@ export const Home: React.FC<HomeProps> = ({ onNavigate }) => {
   }, []);
 
   return (
-    <div className="flex-1 flex flex-col min-h-0 overflow-y-auto">
-      <div className="max-w-4xl mx-auto w-full p-6 sm:p-8 lg:p-10 space-y-8">
-        {/* Header */}
-        <div className="text-center space-y-4">
+    <div className="flex-1 flex flex-col min-h-0 overflow-y-auto" style={{ background: 'var(--bg-paper-100)' }}>
+      <div className="max-w-4xl mx-auto w-full p-6 sm:p-8 lg:p-12 space-y-12">
+        {/* Editorial Masthead */}
+        <header className="text-center space-y-6 pt-4">
           <h1
-            className="text-3xl sm:text-4xl font-semibold"
+            className="text-4xl sm:text-5xl lg:text-6xl font-semibold"
             style={{
-              color: 'var(--text)',
-              lineHeight: 'var(--line-height-heading)'
+              fontFamily: 'var(--font-editorial)',
+              color: 'var(--text-ink-900)',
+              lineHeight: 'var(--line-height-tight)',
+              letterSpacing: 'var(--letter-spacing-tight)'
             }}
           >
             Bienvenido a Acompañ.Ar
           </h1>
-          <p className="editorial text-base sm:text-lg leading-relaxed max-w-2xl mx-auto" style={{ color: 'var(--muted)' }}>
+          <p
+            className="text-base sm:text-lg lg:text-xl max-w-2xl mx-auto"
+            style={{
+              fontFamily: 'var(--font-editorial)',
+              color: 'var(--text-ink-600)',
+              lineHeight: 'var(--line-height-loose)',
+              letterSpacing: 'var(--letter-spacing-tight)'
+            }}
+          >
             Plataforma de información y asistencia para la reducción de riesgos y mejora de estrategias de cuidado en contextos de consumo.
           </p>
-        </div>
+        </header>
 
         {/* Declaración de Principios */}
         <Callout variant="info" icon="ℹ️">
@@ -79,33 +89,59 @@ export const Home: React.FC<HomeProps> = ({ onNavigate }) => {
 
         {/* Emergency - PROMINENT */}
         <div
-          className="p-5 rounded-lg border-l-4"
+          className="p-6 border-l-4"
           style={{
-            background: 'rgba(239, 68, 68, 0.08)',
-            borderColor: '#ef4444'
+            background: 'var(--bg-surface)',
+            borderColor: '#ef4444',
+            borderRadius: 'var(--radius-xl)',
+            boxShadow: 'var(--shadow-lifted)',
+            borderTopLeftRadius: 0,
+            borderBottomLeftRadius: 0
           }}
         >
-          <div className="flex items-start gap-3">
-            <span className="text-2xl">🚨</span>
+          <div className="flex items-start gap-4">
+            <span className="text-3xl">🚨</span>
             <div className="flex-1">
-              <h3 className="text-base font-semibold mb-2" style={{ color: 'var(--text)' }}>
+              <h3
+                className="text-lg font-semibold mb-2"
+                style={{
+                  fontFamily: 'var(--font-ui)',
+                  color: 'var(--text-ink-900)'
+                }}
+              >
                 Emergencias
               </h3>
-              <p className="editorial text-sm mb-3" style={{ color: 'var(--muted)' }}>
+              <p
+                className="text-sm mb-4"
+                style={{
+                  fontFamily: 'var(--font-editorial)',
+                  color: 'var(--text-ink-600)',
+                  lineHeight: 'var(--line-height-relaxed)'
+                }}
+              >
                 Si estás experimentando una emergencia médica o necesitás atención urgente:
               </p>
               <a
                 href="tel:107"
-                className="inline-flex items-center gap-2 px-4 py-2.5 rounded-lg font-semibold text-base"
+                className="inline-flex items-center gap-2 px-5 py-3 font-semibold text-base"
                 style={{
                   background: '#ef4444',
                   color: '#fff',
-                  transition: `all var(--t-fast) var(--ease)`
+                  borderRadius: 'var(--radius-sm)',
+                  transition: `all var(--t-fast) var(--ease-standard)`,
+                  fontFamily: 'var(--font-ui)',
+                  boxShadow: '0 2px 8px rgba(239, 68, 68, 0.25)'
                 }}
               >
                 📞 Llamá al SAME 107
               </a>
-              <p className="editorial text-xs mt-3" style={{ color: 'var(--faint)' }}>
+              <p
+                className="text-xs mt-3"
+                style={{
+                  fontFamily: 'var(--font-ui)',
+                  color: 'var(--text-ink-400)'
+                }}
+              >
                 Servicio de Atención Médica de Emergencias - Disponible 24/7 en todo el país
               </p>
             </div>
@@ -142,83 +178,175 @@ export const Home: React.FC<HomeProps> = ({ onNavigate }) => {
               </p>
             </div>
 
-            <div className="space-y-3">
+            <div className="space-y-4">
               {/* Experimental */}
               <div
-                className="rounded-lg p-4 border-l-2"
+                className="p-5 border-l-4"
                 style={{
-                  background: 'var(--surface-1)',
-                  borderColor: 'var(--border)',
-                  borderLeftColor: 'rgba(59, 130, 246, 0.6)'
+                  background: 'var(--bg-surface)',
+                  borderColor: 'var(--border-subtle)',
+                  borderLeftColor: 'rgba(59, 130, 246, 0.6)',
+                  borderRadius: 'var(--radius-xl)',
+                  boxShadow: 'var(--shadow-ambient)',
+                  borderTopLeftRadius: 0,
+                  borderBottomLeftRadius: 0
                 }}
               >
-                <h4 className="text-sm font-semibold mb-1.5 flex items-center gap-2" style={{ color: 'var(--text)' }}>
+                <h4
+                  className="text-sm font-semibold mb-2 flex items-center gap-2"
+                  style={{
+                    fontFamily: 'var(--font-ui)',
+                    color: 'var(--text-ink-900)'
+                  }}
+                >
                   <span>🌱</span> Consumo Experimental
                 </h4>
-                <p className="text-xs leading-relaxed mb-2" style={{ color: 'var(--muted)' }}>
+                <p
+                  className="text-sm leading-relaxed mb-2"
+                  style={{
+                    fontFamily: 'var(--font-editorial)',
+                    color: 'var(--text-ink-600)',
+                    lineHeight: 'var(--line-height-relaxed)'
+                  }}
+                >
                   Primer contacto motivado por curiosidad o exploración. Contextos específicos, frecuencia muy baja.
                 </p>
-                <p className="text-xs italic" style={{ color: 'var(--faint)' }}>
+                <p
+                  className="text-xs italic"
+                  style={{
+                    fontFamily: 'var(--font-ui)',
+                    color: 'var(--text-ink-400)'
+                  }}
+                >
                   Ejemplo: Probar MDMA por primera vez en un evento.
                 </p>
               </div>
 
               {/* Ocasional */}
               <div
-                className="rounded-lg p-4 border-l-2"
+                className="p-5 border-l-4"
                 style={{
-                  background: 'var(--surface-1)',
-                  borderColor: 'var(--border)',
-                  borderLeftColor: 'rgba(34, 197, 94, 0.6)'
+                  background: 'var(--bg-surface)',
+                  borderColor: 'var(--border-subtle)',
+                  borderLeftColor: 'rgba(34, 197, 94, 0.6)',
+                  borderRadius: 'var(--radius-xl)',
+                  boxShadow: 'var(--shadow-ambient)',
+                  borderTopLeftRadius: 0,
+                  borderBottomLeftRadius: 0
                 }}
               >
-                <h4 className="text-sm font-semibold mb-1.5 flex items-center gap-2" style={{ color: 'var(--text)' }}>
+                <h4
+                  className="text-sm font-semibold mb-2 flex items-center gap-2"
+                  style={{
+                    fontFamily: 'var(--font-ui)',
+                    color: 'var(--text-ink-900)'
+                  }}
+                >
                   <span>🎉</span> Consumo Ocasional
                 </h4>
-                <p className="text-xs leading-relaxed mb-2" style={{ color: 'var(--muted)' }}>
+                <p
+                  className="text-sm leading-relaxed mb-2"
+                  style={{
+                    fontFamily: 'var(--font-editorial)',
+                    color: 'var(--text-ink-600)',
+                    lineHeight: 'var(--line-height-relaxed)'
+                  }}
+                >
                   Uso esporádico vinculado a ocasiones específicas. Control sobre cuándo y cuánto. No interfiere con responsabilidades.
                 </p>
-                <p className="text-xs italic" style={{ color: 'var(--faint)' }}>
+                <p
+                  className="text-xs italic"
+                  style={{
+                    fontFamily: 'var(--font-ui)',
+                    color: 'var(--text-ink-400)'
+                  }}
+                >
                   Ejemplo: Consumir cannabis 1-2 veces al mes en reuniones.
                 </p>
               </div>
 
               {/* Regular */}
               <div
-                className="rounded-lg p-4 border-l-2"
+                className="p-5 border-l-4"
                 style={{
-                  background: 'var(--surface-1)',
-                  borderColor: 'var(--border)',
-                  borderLeftColor: 'rgba(251, 146, 60, 0.6)'
+                  background: 'var(--bg-surface)',
+                  borderColor: 'var(--border-subtle)',
+                  borderLeftColor: 'rgba(251, 146, 60, 0.6)',
+                  borderRadius: 'var(--radius-xl)',
+                  boxShadow: 'var(--shadow-ambient)',
+                  borderTopLeftRadius: 0,
+                  borderBottomLeftRadius: 0
                 }}
               >
-                <h4 className="text-sm font-semibold mb-1.5 flex items-center gap-2" style={{ color: 'var(--text)' }}>
+                <h4
+                  className="text-sm font-semibold mb-2 flex items-center gap-2"
+                  style={{
+                    fontFamily: 'var(--font-ui)',
+                    color: 'var(--text-ink-900)'
+                  }}
+                >
                   <span>📅</span> Consumo Regular
                 </h4>
-                <p className="text-xs leading-relaxed mb-2" style={{ color: 'var(--muted)' }}>
+                <p
+                  className="text-sm leading-relaxed mb-2"
+                  style={{
+                    fontFamily: 'var(--font-editorial)',
+                    color: 'var(--text-ink-600)',
+                    lineHeight: 'var(--line-height-relaxed)'
+                  }}
+                >
                   Patrón establecido con mayor frecuencia. Requiere atención a riesgos acumulativos (tolerancia, salud).
                 </p>
-                <p className="text-xs italic" style={{ color: 'var(--faint)' }}>
+                <p
+                  className="text-xs italic"
+                  style={{
+                    fontFamily: 'var(--font-ui)',
+                    color: 'var(--text-ink-400)'
+                  }}
+                >
                   Ejemplo: Fumar cannabis diariamente o beber varias veces por semana.
                 </p>
               </div>
 
               {/* Dependiente */}
               <div
-                className="rounded-lg p-4 border-l-2"
+                className="p-5 border-l-4"
                 style={{
-                  background: 'var(--surface-1)',
-                  borderColor: 'var(--border)',
-                  borderLeftColor: 'rgba(239, 68, 68, 0.6)'
+                  background: 'var(--bg-surface)',
+                  borderColor: 'var(--border-subtle)',
+                  borderLeftColor: 'rgba(239, 68, 68, 0.6)',
+                  borderRadius: 'var(--radius-xl)',
+                  boxShadow: 'var(--shadow-ambient)',
+                  borderTopLeftRadius: 0,
+                  borderBottomLeftRadius: 0
                 }}
               >
-                <h4 className="text-sm font-semibold mb-1.5 flex items-center gap-2" style={{ color: 'var(--text)' }}>
+                <h4
+                  className="text-sm font-semibold mb-2 flex items-center gap-2"
+                  style={{
+                    fontFamily: 'var(--font-ui)',
+                    color: 'var(--text-ink-900)'
+                  }}
+                >
                   <span>⚠️</span> Consumo Dependiente
                 </h4>
-                <p className="text-xs leading-relaxed mb-2" style={{ color: 'var(--muted)' }}>
-                  Dificultad para controlar frecuencia/cantidad. Puede incluir abstinencia o tolerancia. <strong style={{ color: 'var(--text)' }}>No siempre es sinónimo de "problemático"</strong> en todas las áreas.
+                <p
+                  className="text-sm leading-relaxed mb-2"
+                  style={{
+                    fontFamily: 'var(--font-editorial)',
+                    color: 'var(--text-ink-600)',
+                    lineHeight: 'var(--line-height-relaxed)'
+                  }}
+                >
+                  Dificultad para controlar frecuencia/cantidad. Puede incluir abstinencia o tolerancia. <strong style={{ color: 'var(--text-ink-900)' }}>No siempre es sinónimo de "problemático"</strong> en todas las áreas.
                 </p>
-                <p className="text-xs italic" style={{ color: 'var(--faint)' }}>
+                <p
+                  className="text-xs italic"
+                  style={{
+                    fontFamily: 'var(--font-ui)',
+                    color: 'var(--text-ink-400)'
+                  }}
+                >
                   Ejemplo: Necesitar consumir para funcionar o malestar al no hacerlo.
                 </p>
               </div>
@@ -226,17 +354,33 @@ export const Home: React.FC<HomeProps> = ({ onNavigate }) => {
 
             {/* Key Points */}
             <div
-              className="rounded-lg p-4 border"
+              className="p-5"
               style={{
-                background: 'var(--surface-2)',
-                borderColor: 'var(--border)'
+                background: 'var(--bg-surface)',
+                borderColor: 'var(--border-subtle)',
+                borderRadius: 'var(--radius-xl)',
+                border: '1px solid var(--border-subtle)',
+                boxShadow: 'var(--shadow-ambient)'
               }}
             >
-              <p className="text-xs font-semibold mb-2" style={{ color: 'var(--text)' }}>
+              <p
+                className="text-sm font-semibold mb-3"
+                style={{
+                  fontFamily: 'var(--font-ui)',
+                  color: 'var(--text-ink-900)'
+                }}
+              >
                 💡 Puntos clave:
               </p>
-              <ul className="list-disc pl-5 space-y-1 text-xs">
-                <li>Estos patrones son un <strong>continuo</strong>, no categorías fijas</li>
+              <ul
+                className="list-disc pl-5 space-y-2 text-sm"
+                style={{
+                  fontFamily: 'var(--font-editorial)',
+                  color: 'var(--text-ink-600)',
+                  lineHeight: 'var(--line-height-relaxed)'
+                }}
+              >
+                <li>Estos patrones son un <strong style={{ color: 'var(--text-ink-900)' }}>continuo</strong>, no categorías fijas</li>
                 <li>Podés moverte entre tipos según contexto y momento vital</li>
                 <li>El consumo dependiente no siempre genera problemas globales</li>
                 <li>Si tu consumo te genera malestar, buscar apoyo es válido y valiente</li>
@@ -254,47 +398,84 @@ export const Home: React.FC<HomeProps> = ({ onNavigate }) => {
               title="Alertas Recientes"
               meta={`${alerts.length} alerta${alerts.length !== 1 ? 's' : ''} activa${alerts.length !== 1 ? 's' : ''}`}
             >
-              <div className="space-y-3">
+              <div className="space-y-4">
                 {alerts.slice(0, 3).map((alert, idx) => {
                   const severityStyle = getSeverityStyle(alert.severity);
                   return (
                     <div
                       key={alert.id}
-                      className="p-4 rounded-lg border-l-2"
+                      className="p-5 border-l-4"
                       style={{
-                        background: 'var(--surface-1)',
-                        borderColor: 'var(--border)',
+                        background: 'var(--bg-surface)',
+                        borderColor: 'var(--border-subtle)',
                         borderLeftColor: severityStyle.color,
-                        animation: `fadeIn 0.2s ease-out ${idx * 0.05}s both`
+                        borderRadius: 'var(--radius-xl)',
+                        boxShadow: 'var(--shadow-ambient)',
+                        borderTopLeftRadius: 0,
+                        borderBottomLeftRadius: 0,
+                        animation: `fadeIn 0.2s var(--ease-out-strong) ${idx * 0.05}s both`
                       }}
                     >
-                      <div className="flex items-start justify-between gap-3 mb-2">
+                      <div className="flex items-start justify-between gap-3 mb-3">
                         <div className="flex items-center gap-2">
                           <span
-                            className="px-2 py-0.5 rounded-full text-xs font-medium"
+                            className="px-2.5 py-1 text-xs font-semibold"
                             style={{
                               background: severityStyle.bg,
-                              color: severityStyle.color
+                              color: severityStyle.color,
+                              borderRadius: 'var(--radius-sm)',
+                              fontFamily: 'var(--font-ui)'
                             }}
                           >
                             {severityStyle.label}
                           </span>
-                          <span className="text-xs" style={{ color: 'var(--muted)' }}>
+                          <span
+                            className="text-xs"
+                            style={{
+                              fontFamily: 'var(--font-ui)',
+                              color: 'var(--text-ink-600)'
+                            }}
+                          >
                             {alert.province}
                           </span>
                         </div>
-                        <span className="text-xs" style={{ color: 'var(--faint)' }}>
+                        <span
+                          className="text-xs"
+                          style={{
+                            fontFamily: 'var(--font-ui)',
+                            color: 'var(--text-ink-400)'
+                          }}
+                        >
                           {getTimeAgo(alert.timestamp)}
                         </span>
                       </div>
-                      <h3 className="text-sm font-semibold mb-1" style={{ color: 'var(--text)' }}>
+                      <h3
+                        className="text-sm font-semibold mb-2"
+                        style={{
+                          fontFamily: 'var(--font-ui)',
+                          color: 'var(--text-ink-900)'
+                        }}
+                      >
                         {alert.title}
                       </h3>
-                      <p className="editorial text-sm" style={{ color: 'var(--muted)' }}>
+                      <p
+                        className="text-sm"
+                        style={{
+                          fontFamily: 'var(--font-editorial)',
+                          color: 'var(--text-ink-600)',
+                          lineHeight: 'var(--line-height-relaxed)'
+                        }}
+                      >
                         {alert.message}
                       </p>
                       {alert.source && (
-                        <p className="text-xs mt-2" style={{ color: 'var(--faint)' }}>
+                        <p
+                          className="text-xs mt-3"
+                          style={{
+                            fontFamily: 'var(--font-ui)',
+                            color: 'var(--text-ink-400)'
+                          }}
+                        >
                           Fuente: {alert.source}
                         </p>
                       )}
@@ -356,23 +537,48 @@ export const Home: React.FC<HomeProps> = ({ onNavigate }) => {
               <button
                 key={idx}
                 onClick={() => onNavigate?.(item.tab)}
-                className="flex items-start gap-3 p-4 rounded-lg border text-left active:scale-[0.99]"
+                className="flex items-start gap-4 p-5 text-left hover-lift"
                 style={{
-                  background: 'var(--surface-1)',
-                  borderColor: 'var(--border)',
-                  transition: `all var(--t-fast) var(--ease)`,
-                  animation: `fadeIn 0.2s ease-out ${idx * 0.03}s both`
+                  background: 'var(--bg-surface)',
+                  borderColor: 'var(--border-subtle)',
+                  border: '1px solid var(--border-subtle)',
+                  borderRadius: 'var(--radius-xl)',
+                  boxShadow: 'var(--shadow-ambient)',
+                  transition: `all var(--t-fast) var(--ease-standard)`,
+                  animation: `fadeIn 0.2s var(--ease-out-strong) ${idx * 0.03}s both`,
+                  cursor: 'pointer'
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.boxShadow = 'var(--shadow-lifted)';
+                  e.currentTarget.style.transform = 'translateY(-1px)';
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.boxShadow = 'var(--shadow-ambient)';
+                  e.currentTarget.style.transform = 'translateY(0)';
                 }}
               >
-                <span className="text-2xl flex-shrink-0">{item.icon}</span>
+                <span className="text-3xl flex-shrink-0">{item.icon}</span>
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center justify-between gap-2 mb-1">
-                    <h3 className="text-sm font-semibold" style={{ color: 'var(--text)' }}>
+                    <h3
+                      className="text-base font-semibold"
+                      style={{
+                        fontFamily: 'var(--font-ui)',
+                        color: 'var(--text-ink-900)'
+                      }}
+                    >
                       {item.title}
                     </h3>
                     <ArrowRightIcon />
                   </div>
-                  <p className="text-xs" style={{ color: 'var(--muted)' }}>
+                  <p
+                    className="text-sm"
+                    style={{
+                      fontFamily: 'var(--font-editorial)',
+                      color: 'var(--text-ink-600)',
+                      lineHeight: 'var(--line-height-relaxed)'
+                    }}
+                  >
                     {item.desc}
                   </p>
                 </div>
