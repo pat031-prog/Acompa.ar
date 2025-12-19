@@ -36,94 +36,145 @@ interface HomeProps {
 
 export const Home: React.FC<HomeProps> = ({ onNavigate }) => {
   const [alerts, setAlerts] = useState<TerritorialAlert[]>([]);
+  const [hoveredCard, setHoveredCard] = useState<number | null>(null);
 
   useEffect(() => {
     setAlerts(getAlerts('all'));
   }, []);
 
+  const tools = [
+    {
+      icon: '💬',
+      title: 'Chat',
+      subtitle: 'Asistente IA',
+      desc: 'Consultá sobre sustancias, efectos e interacciones',
+      tab: 'chat',
+      gradient: 'linear-gradient(135deg, rgba(217, 119, 87, 0.08) 0%, rgba(217, 119, 87, 0.02) 100%)',
+      accentColor: 'var(--accent-primary)'
+    },
+    {
+      icon: '🗺️',
+      title: 'Observatorio',
+      subtitle: 'Alertas SAT',
+      desc: 'Señales territoriales y estadísticas en tiempo real',
+      tab: 'observatory',
+      gradient: 'linear-gradient(135deg, rgba(239, 68, 68, 0.08) 0%, rgba(239, 68, 68, 0.02) 100%)',
+      accentColor: '#ef4444'
+    },
+    {
+      icon: '📚',
+      title: 'Biblioteca',
+      subtitle: 'Base de datos',
+      desc: 'Información detallada sobre sustancias',
+      tab: 'library',
+      gradient: 'linear-gradient(135deg, rgba(59, 130, 246, 0.08) 0%, rgba(59, 130, 246, 0.02) 100%)',
+      accentColor: '#3b82f6'
+    },
+    {
+      icon: '🧪',
+      title: 'Testeo',
+      subtitle: 'Guía práctica',
+      desc: 'Aprendé a testear con reactivos',
+      tab: 'testing',
+      gradient: 'linear-gradient(135deg, rgba(139, 92, 246, 0.08) 0%, rgba(139, 92, 246, 0.02) 100%)',
+      accentColor: '#8b5cf6'
+    },
+    {
+      icon: '📍',
+      title: 'Recursos',
+      subtitle: 'Red de ayuda',
+      desc: 'Centros y líneas de atención',
+      tab: 'resources',
+      gradient: 'linear-gradient(135deg, rgba(34, 197, 94, 0.08) 0%, rgba(34, 197, 94, 0.02) 100%)',
+      accentColor: '#22c55e'
+    },
+    {
+      icon: '🔔',
+      title: 'Recordatorios',
+      subtitle: 'Cuidado personal',
+      desc: 'Configurá alertas de reducción de riesgos',
+      tab: 'reminders',
+      gradient: 'linear-gradient(135deg, rgba(251, 146, 60, 0.08) 0%, rgba(251, 146, 60, 0.02) 100%)',
+      accentColor: '#fb923c'
+    }
+  ];
+
   return (
     <div className="flex-1 flex flex-col min-h-0 overflow-y-auto" style={{ background: 'var(--bg-paper-100)' }}>
-      <div className="max-w-4xl mx-auto w-full p-6 sm:p-8 lg:p-12 space-y-12">
-        {/* Editorial Masthead */}
-        <header className="text-center space-y-6 pt-4">
-          <h1
-            className="text-4xl sm:text-5xl lg:text-6xl font-semibold"
-            style={{
-              fontFamily: 'var(--font-editorial)',
-              color: 'var(--text-ink-900)',
-              lineHeight: 'var(--line-height-tight)',
-              letterSpacing: 'var(--letter-spacing-tight)'
-            }}
-          >
-            Bienvenido a Acompañ.Ar
-          </h1>
-          <p
-            className="text-base sm:text-lg lg:text-xl max-w-2xl mx-auto"
-            style={{
-              fontFamily: 'var(--font-editorial)',
-              color: 'var(--text-ink-600)',
-              lineHeight: 'var(--line-height-loose)',
-              letterSpacing: 'var(--letter-spacing-tight)'
-            }}
-          >
-            Plataforma de información y asistencia para la reducción de riesgos y mejora de estrategias de cuidado en contextos de consumo.
-          </p>
-        </header>
-
-        {/* Declaración de Principios */}
-        <Callout variant="info" icon="ℹ️">
-          <div className="space-y-3">
-            <h3 className="text-base font-semibold" style={{ color: 'var(--text)' }}>
-              Declaración de Principios
-            </h3>
-            <div className="editorial text-sm leading-relaxed space-y-2" style={{ color: 'var(--muted)' }}>
-              <p>
-                <strong style={{ color: 'var(--text)' }}>Esta plataforma NO promueve ni hace apología del consumo de sustancias.</strong> Nuestro propósito es brindar información basada en evidencia para reducir riesgos y daños asociados al consumo.
-              </p>
-              <p>
-                Operamos sin fines de lucro y sin conflictos de interés. La información proporcionada tiene fines educativos y no constituye consejo médico profesional.
-              </p>
-            </div>
-          </div>
-        </Callout>
-
-        {/* Emergency - PROMINENT */}
-        <div
-          className="p-6 border-l-4"
-          style={{
-            background: 'var(--bg-surface)',
-            borderColor: '#ef4444',
-            borderRadius: 'var(--radius-xl)',
-            boxShadow: 'var(--shadow-lifted)',
-            borderTopLeftRadius: 0,
-            borderBottomLeftRadius: 0
-          }}
-        >
-          <div className="flex items-start gap-4">
-            <span className="text-3xl">🚨</span>
-            <div className="flex-1">
-              <h3
-                className="text-lg font-semibold mb-2"
+      <div className="max-w-7xl mx-auto w-full p-4 sm:p-6 lg:p-8">
+        {/* Compact Hero Section */}
+        <div className="grid lg:grid-cols-[1fr,400px] gap-6 lg:gap-8 mb-8">
+          {/* Left: Hero Content */}
+          <div className="space-y-6">
+            <header
+              className="space-y-3"
+              style={{
+                animation: 'fadeInUp 0.6s var(--ease-out-strong) both'
+              }}
+            >
+              <h1
+                className="text-3xl sm:text-4xl lg:text-5xl font-semibold"
                 style={{
-                  fontFamily: 'var(--font-ui)',
-                  color: 'var(--text-ink-900)'
+                  fontFamily: 'var(--font-editorial)',
+                  color: 'var(--text-ink-900)',
+                  lineHeight: 'var(--line-height-tight)',
+                  letterSpacing: 'var(--letter-spacing-tight)'
                 }}
               >
-                Emergencias
-              </h3>
+                Reducción de riesgos
+                <br />
+                basada en evidencia
+              </h1>
               <p
-                className="text-sm mb-4"
+                className="text-base sm:text-lg max-w-xl"
                 style={{
                   fontFamily: 'var(--font-editorial)',
                   color: 'var(--text-ink-600)',
-                  lineHeight: 'var(--line-height-relaxed)'
+                  lineHeight: 'var(--line-height-relaxed)',
+                  letterSpacing: 'var(--letter-spacing-tight)'
                 }}
               >
-                Si estás experimentando una emergencia médica o necesitás atención urgente:
+                Información, asistencia y recursos para estrategias de cuidado en contextos de consumo
               </p>
+            </header>
+
+            {/* Emergency CTA - Compact */}
+            <div
+              className="p-5 border-l-4 flex items-center gap-4"
+              style={{
+                background: 'var(--bg-surface)',
+                borderColor: '#ef4444',
+                borderRadius: 'var(--radius-xl)',
+                boxShadow: 'var(--shadow-ambient)',
+                borderTopLeftRadius: 0,
+                borderBottomLeftRadius: 0,
+                animation: 'fadeInUp 0.6s var(--ease-out-strong) 0.1s both'
+              }}
+            >
+              <span className="text-3xl">🚨</span>
+              <div className="flex-1 min-w-0">
+                <p
+                  className="text-sm font-semibold mb-1"
+                  style={{
+                    fontFamily: 'var(--font-ui)',
+                    color: 'var(--text-ink-900)'
+                  }}
+                >
+                  Emergencias médicas
+                </p>
+                <p
+                  className="text-xs"
+                  style={{
+                    fontFamily: 'var(--font-ui)',
+                    color: 'var(--text-ink-600)'
+                  }}
+                >
+                  SAME 107 — Disponible 24/7 en todo el país
+                </p>
+              </div>
               <a
                 href="tel:107"
-                className="inline-flex items-center gap-2 px-5 py-3 font-semibold text-base"
+                className="flex-shrink-0 px-4 py-2 font-semibold text-sm"
                 style={{
                   background: '#ef4444',
                   color: '#fff',
@@ -132,445 +183,196 @@ export const Home: React.FC<HomeProps> = ({ onNavigate }) => {
                   fontFamily: 'var(--font-ui)',
                   boxShadow: '0 2px 8px rgba(239, 68, 68, 0.25)'
                 }}
-              >
-                📞 Llamá al SAME 107
-              </a>
-              <p
-                className="text-xs mt-3"
-                style={{
-                  fontFamily: 'var(--font-ui)',
-                  color: 'var(--text-ink-400)'
-                }}
-              >
-                Servicio de Atención Médica de Emergencias - Disponible 24/7 en todo el país
-              </p>
-            </div>
-          </div>
-        </div>
-
-        <Divider />
-
-        {/* What is Acompañ.Ar */}
-        <Section title="¿Qué encontrás acá?">
-          <div className="editorial leading-relaxed space-y-4" style={{ color: 'var(--muted)' }}>
-            <p>
-              <strong style={{ color: 'var(--text)' }}>Acompañ.Ar</strong> es un asistente informativo de reducción de riesgos que te proporciona:
-            </p>
-            <ul className="space-y-2 pl-5 list-disc">
-              <li>Información basada en evidencia sobre sustancias, efectos y riesgos</li>
-              <li>Guías de testeo y análisis de sustancias</li>
-              <li>Recursos locales de atención y apoyo</li>
-              <li>Estrategias de cuidado y reducción de daños</li>
-              <li>Alertas territoriales sobre sustancias adulteradas</li>
-            </ul>
-          </div>
-        </Section>
-
-        {/* Tipología de Usos - Expandida */}
-        <Section title="No todo consumo es igual" meta="Tipología de usos y patrones">
-          <div className="editorial text-sm leading-relaxed space-y-4" style={{ color: 'var(--muted)' }}>
-            <div>
-              <p className="mb-3">
-                Es fundamental entender que <strong style={{ color: 'var(--text)' }}>no todo consumo es consumo problemático</strong>. Los patrones de uso forman un continuo, no categorías rígidas.
-              </p>
-              <p className="text-xs" style={{ color: 'var(--faint)' }}>
-                Esta tipología es descriptiva, no prescriptiva. Sirve para comprender mejor los propios hábitos sin juicios morales.
-              </p>
-            </div>
-
-            <div className="space-y-4">
-              {/* Experimental */}
-              <div
-                className="p-5 border-l-4"
-                style={{
-                  background: 'var(--bg-surface)',
-                  borderColor: 'var(--border-subtle)',
-                  borderLeftColor: 'rgba(59, 130, 246, 0.6)',
-                  borderRadius: 'var(--radius-xl)',
-                  boxShadow: 'var(--shadow-ambient)',
-                  borderTopLeftRadius: 0,
-                  borderBottomLeftRadius: 0
-                }}
-              >
-                <h4
-                  className="text-sm font-semibold mb-2 flex items-center gap-2"
-                  style={{
-                    fontFamily: 'var(--font-ui)',
-                    color: 'var(--text-ink-900)'
-                  }}
-                >
-                  <span>🌱</span> Consumo Experimental
-                </h4>
-                <p
-                  className="text-sm leading-relaxed mb-2"
-                  style={{
-                    fontFamily: 'var(--font-editorial)',
-                    color: 'var(--text-ink-600)',
-                    lineHeight: 'var(--line-height-relaxed)'
-                  }}
-                >
-                  Primer contacto motivado por curiosidad o exploración. Contextos específicos, frecuencia muy baja.
-                </p>
-                <p
-                  className="text-xs italic"
-                  style={{
-                    fontFamily: 'var(--font-ui)',
-                    color: 'var(--text-ink-400)'
-                  }}
-                >
-                  Ejemplo: Probar MDMA por primera vez en un evento.
-                </p>
-              </div>
-
-              {/* Ocasional */}
-              <div
-                className="p-5 border-l-4"
-                style={{
-                  background: 'var(--bg-surface)',
-                  borderColor: 'var(--border-subtle)',
-                  borderLeftColor: 'rgba(34, 197, 94, 0.6)',
-                  borderRadius: 'var(--radius-xl)',
-                  boxShadow: 'var(--shadow-ambient)',
-                  borderTopLeftRadius: 0,
-                  borderBottomLeftRadius: 0
-                }}
-              >
-                <h4
-                  className="text-sm font-semibold mb-2 flex items-center gap-2"
-                  style={{
-                    fontFamily: 'var(--font-ui)',
-                    color: 'var(--text-ink-900)'
-                  }}
-                >
-                  <span>🎉</span> Consumo Ocasional
-                </h4>
-                <p
-                  className="text-sm leading-relaxed mb-2"
-                  style={{
-                    fontFamily: 'var(--font-editorial)',
-                    color: 'var(--text-ink-600)',
-                    lineHeight: 'var(--line-height-relaxed)'
-                  }}
-                >
-                  Uso esporádico vinculado a ocasiones específicas. Control sobre cuándo y cuánto. No interfiere con responsabilidades.
-                </p>
-                <p
-                  className="text-xs italic"
-                  style={{
-                    fontFamily: 'var(--font-ui)',
-                    color: 'var(--text-ink-400)'
-                  }}
-                >
-                  Ejemplo: Consumir cannabis 1-2 veces al mes en reuniones.
-                </p>
-              </div>
-
-              {/* Regular */}
-              <div
-                className="p-5 border-l-4"
-                style={{
-                  background: 'var(--bg-surface)',
-                  borderColor: 'var(--border-subtle)',
-                  borderLeftColor: 'rgba(251, 146, 60, 0.6)',
-                  borderRadius: 'var(--radius-xl)',
-                  boxShadow: 'var(--shadow-ambient)',
-                  borderTopLeftRadius: 0,
-                  borderBottomLeftRadius: 0
-                }}
-              >
-                <h4
-                  className="text-sm font-semibold mb-2 flex items-center gap-2"
-                  style={{
-                    fontFamily: 'var(--font-ui)',
-                    color: 'var(--text-ink-900)'
-                  }}
-                >
-                  <span>📅</span> Consumo Regular
-                </h4>
-                <p
-                  className="text-sm leading-relaxed mb-2"
-                  style={{
-                    fontFamily: 'var(--font-editorial)',
-                    color: 'var(--text-ink-600)',
-                    lineHeight: 'var(--line-height-relaxed)'
-                  }}
-                >
-                  Patrón establecido con mayor frecuencia. Requiere atención a riesgos acumulativos (tolerancia, salud).
-                </p>
-                <p
-                  className="text-xs italic"
-                  style={{
-                    fontFamily: 'var(--font-ui)',
-                    color: 'var(--text-ink-400)'
-                  }}
-                >
-                  Ejemplo: Fumar cannabis diariamente o beber varias veces por semana.
-                </p>
-              </div>
-
-              {/* Dependiente */}
-              <div
-                className="p-5 border-l-4"
-                style={{
-                  background: 'var(--bg-surface)',
-                  borderColor: 'var(--border-subtle)',
-                  borderLeftColor: 'rgba(239, 68, 68, 0.6)',
-                  borderRadius: 'var(--radius-xl)',
-                  boxShadow: 'var(--shadow-ambient)',
-                  borderTopLeftRadius: 0,
-                  borderBottomLeftRadius: 0
-                }}
-              >
-                <h4
-                  className="text-sm font-semibold mb-2 flex items-center gap-2"
-                  style={{
-                    fontFamily: 'var(--font-ui)',
-                    color: 'var(--text-ink-900)'
-                  }}
-                >
-                  <span>⚠️</span> Consumo Dependiente
-                </h4>
-                <p
-                  className="text-sm leading-relaxed mb-2"
-                  style={{
-                    fontFamily: 'var(--font-editorial)',
-                    color: 'var(--text-ink-600)',
-                    lineHeight: 'var(--line-height-relaxed)'
-                  }}
-                >
-                  Dificultad para controlar frecuencia/cantidad. Puede incluir abstinencia o tolerancia. <strong style={{ color: 'var(--text-ink-900)' }}>No siempre es sinónimo de "problemático"</strong> en todas las áreas.
-                </p>
-                <p
-                  className="text-xs italic"
-                  style={{
-                    fontFamily: 'var(--font-ui)',
-                    color: 'var(--text-ink-400)'
-                  }}
-                >
-                  Ejemplo: Necesitar consumir para funcionar o malestar al no hacerlo.
-                </p>
-              </div>
-            </div>
-
-            {/* Key Points */}
-            <div
-              className="p-5"
-              style={{
-                background: 'var(--bg-surface)',
-                borderColor: 'var(--border-subtle)',
-                borderRadius: 'var(--radius-xl)',
-                border: '1px solid var(--border-subtle)',
-                boxShadow: 'var(--shadow-ambient)'
-              }}
-            >
-              <p
-                className="text-sm font-semibold mb-3"
-                style={{
-                  fontFamily: 'var(--font-ui)',
-                  color: 'var(--text-ink-900)'
-                }}
-              >
-                💡 Puntos clave:
-              </p>
-              <ul
-                className="list-disc pl-5 space-y-2 text-sm"
-                style={{
-                  fontFamily: 'var(--font-editorial)',
-                  color: 'var(--text-ink-600)',
-                  lineHeight: 'var(--line-height-relaxed)'
-                }}
-              >
-                <li>Estos patrones son un <strong style={{ color: 'var(--text-ink-900)' }}>continuo</strong>, no categorías fijas</li>
-                <li>Podés moverte entre tipos según contexto y momento vital</li>
-                <li>El consumo dependiente no siempre genera problemas globales</li>
-                <li>Si tu consumo te genera malestar, buscar apoyo es válido y valiente</li>
-              </ul>
-            </div>
-          </div>
-        </Section>
-
-        <Divider />
-
-        {/* Latest Alerts */}
-        {alerts.length > 0 && (
-          <>
-            <Section
-              title="Alertas Recientes"
-              meta={`${alerts.length} alerta${alerts.length !== 1 ? 's' : ''} activa${alerts.length !== 1 ? 's' : ''}`}
-            >
-              <div className="space-y-4">
-                {alerts.slice(0, 3).map((alert, idx) => {
-                  const severityStyle = getSeverityStyle(alert.severity);
-                  return (
-                    <div
-                      key={alert.id}
-                      className="p-5 border-l-4"
-                      style={{
-                        background: 'var(--bg-surface)',
-                        borderColor: 'var(--border-subtle)',
-                        borderLeftColor: severityStyle.color,
-                        borderRadius: 'var(--radius-xl)',
-                        boxShadow: 'var(--shadow-ambient)',
-                        borderTopLeftRadius: 0,
-                        borderBottomLeftRadius: 0,
-                        animation: `fadeIn 0.2s var(--ease-out-strong) ${idx * 0.05}s both`
-                      }}
-                    >
-                      <div className="flex items-start justify-between gap-3 mb-3">
-                        <div className="flex items-center gap-2">
-                          <span
-                            className="px-2.5 py-1 text-xs font-semibold"
-                            style={{
-                              background: severityStyle.bg,
-                              color: severityStyle.color,
-                              borderRadius: 'var(--radius-sm)',
-                              fontFamily: 'var(--font-ui)'
-                            }}
-                          >
-                            {severityStyle.label}
-                          </span>
-                          <span
-                            className="text-xs"
-                            style={{
-                              fontFamily: 'var(--font-ui)',
-                              color: 'var(--text-ink-600)'
-                            }}
-                          >
-                            {alert.province}
-                          </span>
-                        </div>
-                        <span
-                          className="text-xs"
-                          style={{
-                            fontFamily: 'var(--font-ui)',
-                            color: 'var(--text-ink-400)'
-                          }}
-                        >
-                          {getTimeAgo(alert.timestamp)}
-                        </span>
-                      </div>
-                      <h3
-                        className="text-sm font-semibold mb-2"
-                        style={{
-                          fontFamily: 'var(--font-ui)',
-                          color: 'var(--text-ink-900)'
-                        }}
-                      >
-                        {alert.title}
-                      </h3>
-                      <p
-                        className="text-sm"
-                        style={{
-                          fontFamily: 'var(--font-editorial)',
-                          color: 'var(--text-ink-600)',
-                          lineHeight: 'var(--line-height-relaxed)'
-                        }}
-                      >
-                        {alert.message}
-                      </p>
-                      {alert.source && (
-                        <p
-                          className="text-xs mt-3"
-                          style={{
-                            fontFamily: 'var(--font-ui)',
-                            color: 'var(--text-ink-400)'
-                          }}
-                        >
-                          Fuente: {alert.source}
-                        </p>
-                      )}
-                    </div>
-                  );
-                })}
-                {alerts.length > 3 && (
-                  <p className="text-sm text-center" style={{ color: 'var(--muted)' }}>
-                    +{alerts.length - 3} alerta{alerts.length - 3 !== 1 ? 's' : ''} más en Observatorio
-                  </p>
-                )}
-              </div>
-            </Section>
-            <Divider />
-          </>
-        )}
-
-        {/* Quick Access */}
-        <Section title="Explorá las herramientas" meta="Accesos rápidos">
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-            {[
-              {
-                icon: '💬',
-                title: 'Chat Asistente',
-                desc: 'Consultá sobre sustancias, riesgos e interacciones',
-                tab: 'chat'
-              },
-              {
-                icon: '📚',
-                title: 'Biblioteca',
-                desc: 'Información detallada sobre sustancias',
-                tab: 'library'
-              },
-              {
-                icon: '🧪',
-                title: 'Guía de Testeo',
-                desc: 'Aprendé a testear sustancias con reactivos',
-                tab: 'testing'
-              },
-              {
-                icon: '📍',
-                title: 'Recursos',
-                desc: 'Centros de atención y líneas de ayuda',
-                tab: 'resources'
-              },
-              {
-                icon: '🔔',
-                title: 'Recordatorios',
-                desc: 'Configurá alertas de cuidado',
-                tab: 'reminders'
-              },
-              {
-                icon: '🗺️',
-                title: 'Observatorio',
-                desc: 'Señales territoriales y estadísticas',
-                tab: 'observatory'
-              }
-            ].map((item, idx) => (
-              <button
-                key={idx}
-                onClick={() => onNavigate?.(item.tab)}
-                className="flex items-start gap-4 p-5 text-left hover-lift"
-                style={{
-                  background: 'var(--bg-surface)',
-                  borderColor: 'var(--border-subtle)',
-                  border: '1px solid var(--border-subtle)',
-                  borderRadius: 'var(--radius-xl)',
-                  boxShadow: 'var(--shadow-ambient)',
-                  transition: `all var(--t-fast) var(--ease-standard)`,
-                  animation: `fadeIn 0.2s var(--ease-out-strong) ${idx * 0.03}s both`,
-                  cursor: 'pointer'
-                }}
                 onMouseEnter={(e) => {
-                  e.currentTarget.style.boxShadow = 'var(--shadow-lifted)';
-                  e.currentTarget.style.transform = 'translateY(-1px)';
+                  e.currentTarget.style.transform = 'scale(1.05)';
                 }}
                 onMouseLeave={(e) => {
-                  e.currentTarget.style.boxShadow = 'var(--shadow-ambient)';
-                  e.currentTarget.style.transform = 'translateY(0)';
+                  e.currentTarget.style.transform = 'scale(1)';
                 }}
               >
-                <span className="text-3xl flex-shrink-0">{item.icon}</span>
-                <div className="flex-1 min-w-0">
-                  <div className="flex items-center justify-between gap-2 mb-1">
+                Llamar
+              </a>
+            </div>
+          </div>
+
+          {/* Right: Latest Alert Preview */}
+          {alerts.length > 0 && (
+            <div
+              className="lg:sticky lg:top-6"
+              style={{
+                animation: 'fadeInUp 0.6s var(--ease-out-strong) 0.2s both',
+                alignSelf: 'start'
+              }}
+            >
+              <div
+                className="p-5 border-l-4"
+                style={{
+                  background: 'var(--bg-surface)',
+                  borderColor: getSeverityStyle(alerts[0].severity).color,
+                  borderRadius: 'var(--radius-xl)',
+                  boxShadow: 'var(--shadow-lifted)',
+                  borderTopLeftRadius: 0,
+                  borderBottomLeftRadius: 0
+                }}
+              >
+                <div className="flex items-center gap-2 mb-3">
+                  <span
+                    className="px-2.5 py-1 text-xs font-semibold"
+                    style={{
+                      background: getSeverityStyle(alerts[0].severity).bg,
+                      color: getSeverityStyle(alerts[0].severity).color,
+                      borderRadius: 'var(--radius-sm)',
+                      fontFamily: 'var(--font-ui)'
+                    }}
+                  >
+                    {getSeverityStyle(alerts[0].severity).label}
+                  </span>
+                  <span
+                    className="text-xs"
+                    style={{
+                      fontFamily: 'var(--font-ui)',
+                      color: 'var(--text-ink-400)'
+                    }}
+                  >
+                    {getTimeAgo(alerts[0].timestamp)}
+                  </span>
+                </div>
+                <h3
+                  className="text-base font-semibold mb-2"
+                  style={{
+                    fontFamily: 'var(--font-ui)',
+                    color: 'var(--text-ink-900)'
+                  }}
+                >
+                  {alerts[0].title}
+                </h3>
+                <p
+                  className="text-sm mb-3"
+                  style={{
+                    fontFamily: 'var(--font-editorial)',
+                    color: 'var(--text-ink-600)',
+                    lineHeight: 'var(--line-height-relaxed)'
+                  }}
+                >
+                  {alerts[0].message}
+                </p>
+                <button
+                  onClick={() => onNavigate?.('observatory')}
+                  className="text-sm font-medium flex items-center gap-1"
+                  style={{
+                    color: getSeverityStyle(alerts[0].severity).color,
+                    fontFamily: 'var(--font-ui)',
+                    transition: 'gap var(--t-fast) var(--ease-standard)'
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.gap = '6px';
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.gap = '4px';
+                  }}
+                >
+                  Ver todas las alertas
+                  <ArrowRightIcon />
+                </button>
+              </div>
+            </div>
+          )}
+        </div>
+
+        {/* Modern Tool Grid */}
+        <div className="mb-8">
+          <h2
+            className="text-xl sm:text-2xl font-semibold mb-6"
+            style={{
+              fontFamily: 'var(--font-editorial)',
+              color: 'var(--text-ink-900)',
+              lineHeight: 'var(--line-height-tight)',
+              letterSpacing: 'var(--letter-spacing-tight)',
+              animation: 'fadeInUp 0.6s var(--ease-out-strong) 0.3s both'
+            }}
+          >
+            Explorá las herramientas
+          </h2>
+
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            {tools.map((tool, idx) => (
+              <button
+                key={idx}
+                onClick={() => onNavigate?.(tool.tab)}
+                onMouseEnter={() => setHoveredCard(idx)}
+                onMouseLeave={() => setHoveredCard(null)}
+                className="group relative overflow-hidden text-left"
+                style={{
+                  background: hoveredCard === idx ? tool.gradient : 'var(--bg-surface)',
+                  borderRadius: 'var(--radius-xl)',
+                  border: `1px solid ${hoveredCard === idx ? 'transparent' : 'var(--border-subtle)'}`,
+                  boxShadow: hoveredCard === idx ? 'var(--shadow-lifted)' : 'var(--shadow-ambient)',
+                  transition: `all var(--t-medium) var(--ease-standard)`,
+                  transform: hoveredCard === idx ? 'translateY(-4px)' : 'translateY(0)',
+                  animation: `fadeInUp 0.5s var(--ease-out-strong) ${0.4 + idx * 0.05}s both`,
+                  cursor: 'pointer'
+                }}
+              >
+                {/* Accent bar */}
+                <div
+                  style={{
+                    position: 'absolute',
+                    top: 0,
+                    left: 0,
+                    right: 0,
+                    height: '3px',
+                    background: tool.accentColor,
+                    opacity: hoveredCard === idx ? 1 : 0,
+                    transition: `opacity var(--t-medium) var(--ease-standard)`
+                  }}
+                />
+
+                {/* Content */}
+                <div className="p-6">
+                  <div className="flex items-start justify-between mb-4">
+                    <div
+                      className="text-4xl"
+                      style={{
+                        transform: hoveredCard === idx ? 'scale(1.1) rotate(5deg)' : 'scale(1) rotate(0deg)',
+                        transition: `transform var(--t-medium) var(--ease-out-strong)`
+                      }}
+                    >
+                      {tool.icon}
+                    </div>
+                    <div
+                      style={{
+                        opacity: hoveredCard === idx ? 1 : 0,
+                        transform: hoveredCard === idx ? 'translateX(0)' : 'translateX(-8px)',
+                        transition: `all var(--t-fast) var(--ease-standard)`,
+                        color: tool.accentColor
+                      }}
+                    >
+                      <ArrowRightIcon />
+                    </div>
+                  </div>
+
+                  <div className="space-y-1 mb-2">
                     <h3
-                      className="text-base font-semibold"
+                      className="text-lg font-semibold"
                       style={{
                         fontFamily: 'var(--font-ui)',
                         color: 'var(--text-ink-900)'
                       }}
                     >
-                      {item.title}
+                      {tool.title}
                     </h3>
-                    <ArrowRightIcon />
+                    <p
+                      className="text-xs font-medium"
+                      style={{
+                        fontFamily: 'var(--font-ui)',
+                        color: tool.accentColor,
+                        opacity: 0.8
+                      }}
+                    >
+                      {tool.subtitle}
+                    </p>
                   </div>
+
                   <p
                     className="text-sm"
                     style={{
@@ -579,28 +381,89 @@ export const Home: React.FC<HomeProps> = ({ onNavigate }) => {
                       lineHeight: 'var(--line-height-relaxed)'
                     }}
                   >
-                    {item.desc}
+                    {tool.desc}
                   </p>
                 </div>
               </button>
             ))}
           </div>
-        </Section>
+        </div>
 
-        {/* Disclaimer Legal */}
-        <Callout variant="neutral">
-          <div className="editorial text-xs leading-relaxed space-y-2" style={{ color: 'var(--faint)' }}>
-            <p>
-              <strong style={{ color: 'var(--muted)' }}>Descargo de Responsabilidad:</strong> La información proporcionada en esta plataforma tiene fines educativos y de reducción de daños. No sustituye el consejo, diagnóstico o tratamiento médico profesional. Siempre consultá con profesionales de la salud calificados para decisiones relacionadas con tu salud.
-            </p>
-            <p>
-              El uso de sustancias psicoactivas conlleva riesgos. Esta plataforma no puede garantizar la seguridad en el consumo y no se responsabiliza por las decisiones individuales de los usuarios.
-            </p>
-            <p>
-              Todos los datos recopilados son anónimos y se almacenan localmente en tu dispositivo. No compartimos información personal con terceros.
-            </p>
+        {/* Compact About Section */}
+        <details
+          className="group"
+          style={{
+            animation: 'fadeInUp 0.6s var(--ease-out-strong) 0.7s both'
+          }}
+        >
+          <summary
+            className="cursor-pointer list-none p-5"
+            style={{
+              background: 'var(--bg-surface)',
+              borderRadius: 'var(--radius-xl)',
+              border: '1px solid var(--border-subtle)',
+              boxShadow: 'var(--shadow-ambient)',
+              fontFamily: 'var(--font-ui)',
+              color: 'var(--text-ink-900)',
+              fontWeight: 600,
+              fontSize: '14px',
+              transition: `all var(--t-fast) var(--ease-standard)`
+            }}
+          >
+            <div className="flex items-center justify-between">
+              <span>Sobre esta plataforma</span>
+              <span
+                style={{
+                  transition: 'transform var(--t-medium) var(--ease-standard)',
+                  transform: 'rotate(0deg)',
+                  display: 'inline-block'
+                }}
+                className="group-open:rotate-180"
+              >
+                ▼
+              </span>
+            </div>
+          </summary>
+
+          <div
+            className="mt-4 p-6 space-y-4"
+            style={{
+              background: 'var(--bg-surface)',
+              borderRadius: 'var(--radius-xl)',
+              border: '1px solid var(--border-subtle)',
+              boxShadow: 'var(--shadow-ambient)',
+              fontFamily: 'var(--font-editorial)',
+              color: 'var(--text-ink-600)',
+              fontSize: '14px',
+              lineHeight: 'var(--line-height-relaxed)'
+            }}
+          >
+            <div>
+              <p className="mb-2">
+                <strong style={{ color: 'var(--text-ink-900)', fontFamily: 'var(--font-ui)' }}>
+                  Esta plataforma NO promueve ni hace apología del consumo de sustancias.
+                </strong>
+              </p>
+              <p>
+                Nuestro propósito es brindar información basada en evidencia para reducir riesgos y daños asociados al consumo. Operamos sin fines de lucro y sin conflictos de interés.
+              </p>
+            </div>
+
+            <div
+              className="text-xs"
+              style={{
+                fontFamily: 'var(--font-ui)',
+                color: 'var(--text-ink-400)',
+                paddingTop: '12px',
+                borderTop: '1px solid var(--border-subtle)'
+              }}
+            >
+              <p>
+                La información proporcionada tiene fines educativos y no sustituye el consejo médico profesional. Los datos son anónimos y se almacenan localmente en tu dispositivo.
+              </p>
+            </div>
           </div>
-        </Callout>
+        </details>
       </div>
     </div>
   );
