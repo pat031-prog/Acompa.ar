@@ -147,7 +147,7 @@ export const Home: React.FC<HomeProps> = ({ onNavigate }) => {
               <button
                 key={idx}
                 onClick={() => onNavigate?.(item.tab)}
-                className="text-left p-6 sm:p-8 group transition-all duration-200 relative overflow-hidden"
+                className="text-left p-7 sm:p-10 group transition-all duration-200 relative overflow-hidden"
                 style={{
                   background: 'transparent',
                   borderRight: idx % 2 === 0 ? '1px solid rgba(255,255,255,0.08)' : 'none',
@@ -187,7 +187,7 @@ export const Home: React.FC<HomeProps> = ({ onNavigate }) => {
                 <p style={{
                   fontFamily: 'var(--font-editorial)',
                   fontStyle: 'italic',
-                  fontSize: '13px',
+                  fontSize: '15px',
                   lineHeight: 1.6,
                   color: 'var(--text-tertiary)',
                   marginBottom: '16px',
@@ -196,7 +196,7 @@ export const Home: React.FC<HomeProps> = ({ onNavigate }) => {
                   {item.desc}
                 </p>
                 <span className="flex items-center gap-2" style={{
-                  fontSize: '11px',
+                  fontSize: '12px',
                   fontWeight: 700,
                   letterSpacing: '0.08em',
                   textTransform: 'uppercase',
@@ -224,10 +224,10 @@ export const Home: React.FC<HomeProps> = ({ onNavigate }) => {
 
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-8 sm:gap-12">
             {[
-              { value: alerts.length.toString(), label: 'Alertas SAT', sub: 'activas', color: 'var(--accent-primary)' },
-              { value: totalResources.toString(), label: 'Recursos', sub: 'verificados', color: 'var(--text-primary)' },
-              { value: freeResources.toString(), label: 'Gratuitos', sub: 'acceso libre', color: '#34d399' },
-              { value: '500+', label: 'Sustancias', sub: 'documentadas', color: '#60a5fa' },
+              { value: '250+', label: 'Sustancias', sub: 'en catálogo', color: 'var(--text-primary)' },
+              { value: totalResources.toString(), label: 'Recursos', sub: 'en el mapa local', color: '#34d399' },
+              { value: '3+', label: 'Redes', sub: 'organizaciones aliadas', color: 'var(--accent-primary)' },
+              { value: '100%', label: 'Privacidad', sub: 'totalmente anónimo', color: '#60a5fa' },
             ].map((stat, idx) => (
               <div key={idx} className="relative">
                 <p style={{

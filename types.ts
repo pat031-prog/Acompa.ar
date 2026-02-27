@@ -18,11 +18,11 @@ export interface ConsentData {
 
 // Type for simplified chat history passed to Gemini
 export interface HistoryPart {
-    text: string;
+  text: string;
 }
 export interface HistoryContent {
-    role: 'user' | 'model';
-    parts: HistoryPart[];
+  role: 'user' | 'model';
+  parts: HistoryPart[];
 }
 
 export type SubstanceCategory = 'Estimulante' | 'Depresor' | 'Psicodélico' | 'Disociativo' | 'Empatógeno' | 'Otro';
@@ -66,7 +66,7 @@ export interface MapDataset {
   }[];
 }
 
-export type Tab = 'home' | 'chat' | 'library' | 'testing' | 'resources' | 'observatory' | 'reminders' | 'dashboard';
+export type Tab = 'home' | 'chat' | 'library' | 'testing' | 'resources' | 'observatory' | 'literature' | 'reminders' | 'dashboard';
 
 // Reagent testing types
 export interface ReagentTest {

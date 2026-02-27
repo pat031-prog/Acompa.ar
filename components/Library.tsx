@@ -5,7 +5,6 @@ import type { LibraryEntry, SubstanceCategory } from '../types';
 import { toggleFavorite, isFavorite, getFavorites } from '../services/favoritesService';
 import { CompareSubstances } from './CompareSubstances';
 import { PsychonautWikiInfo } from './PsychonautWikiInfo';
-import DoseCalculator from './DoseCalculator';
 
 // --- Icon Components ---
 const SearchIcon: React.FC = () => (
@@ -221,7 +220,7 @@ export const Library: React.FC = () => {
   const [selectedItem, setSelectedItem] = useState<LibraryEntry | null>(null);
   const [showOnlyFavorites, setShowOnlyFavorites] = useState(false);
   const [favoritesUpdateTrigger, setFavoritesUpdateTrigger] = useState(0);
-  const [viewMode, setViewMode] = useState<'browse' | 'compare' | 'calculator'>('browse');
+  const [viewMode, setViewMode] = useState<'browse' | 'compare'>('browse');
 
   const filteredLibraryData = useMemo(() => {
     let data = LIBRARY_DATA;
@@ -303,26 +302,6 @@ export const Library: React.FC = () => {
     );
   }
 
-  if (viewMode === 'calculator') {
-    return (
-      <div className="flex-1 flex flex-col min-h-0">
-        <div className="p-5 sm:p-6 flex items-center justify-between" style={{ borderBottom: '2px solid rgba(255,255,255,0.08)' }}>
-          <div className="flex items-center gap-3">
-            <span style={{ fontSize: '10px', fontWeight: 700, letterSpacing: '0.12em', textTransform: 'uppercase', color: 'var(--accent-primary)' }}>HERRAMIENTA</span>
-            <h2 style={{ fontFamily: 'var(--font-editorial)', fontSize: '18px', fontWeight: 700, color: 'var(--text-primary)' }}>Calculadora de Dosis</h2>
-          </div>
-          <button
-            onClick={() => setViewMode('browse')}
-            className="px-3 py-1.5 text-sm flex items-center gap-2 transition-colors"
-            style={{ background: 'var(--surface-2)', color: 'var(--text-secondary)', borderRadius: 'var(--radius-sm)', border: '1px solid var(--border-subtle)' }}
-          >
-            Volver a Biblioteca
-          </button>
-        </div>
-        <DoseCalculator />
-      </div>
-    );
-  }
 
   return (
     <div className="flex-1 flex flex-col md:flex-row min-h-0">
@@ -392,16 +371,6 @@ export const Library: React.FC = () => {
           >
             <CompareIcon />
             Comparar Sustancias
-          </button>
-          <button
-            onClick={() => setViewMode('calculator')}
-            className="mt-3 transition-all active:scale-[0.98]"
-            style={actionBtnStyle}
-            onMouseEnter={(e) => { e.currentTarget.style.borderColor = 'var(--color-blue)'; e.currentTarget.style.color = 'var(--color-blue)'; }}
-            onMouseLeave={(e) => { e.currentTarget.style.borderColor = 'var(--border-subtle)'; e.currentTarget.style.color = 'var(--text-secondary)'; }}
-          >
-            <CalculatorIcon />
-            Calculadora de Dosis
           </button>
         </div>
         <nav className="overflow-y-auto p-5 sm:p-6 h-64 md:h-auto md:flex-1">

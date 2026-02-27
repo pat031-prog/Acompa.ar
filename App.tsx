@@ -11,6 +11,7 @@ import { Library } from './components/Library';
 import { TestingGuide } from './components/TestingGuide';
 import { ResourcesDirectory } from './components/ResourcesDirectory';
 import { Observatory } from './components/Map';
+import { Literature } from './components/Literature';
 import { CareReminders } from './components/CareReminders';
 import { Dashboard } from './components/Dashboard';
 import type { Message, ConsentData, HistoryContent, Tab } from './types';
@@ -175,13 +176,14 @@ const App: React.FC = () => {
               { id: 'testing' as Tab, label: 'TESTEO' },
               { id: 'resources' as Tab, label: 'RECURSOS' },
               { id: 'observatory' as Tab, label: 'OBSERV.' },
+              { id: 'literature' as Tab, label: 'LECTURAS' },
               { id: 'reminders' as Tab, label: 'RECORD.' },
               { id: 'dashboard' as Tab, label: 'STATS' },
             ].map((tab) => (
               <button
                 key={tab.id}
                 onClick={() => setActiveTab(tab.id)}
-                className="px-3 py-1.5 text-xs whitespace-nowrap"
+                className="px-4 py-2 text-xs whitespace-nowrap transition-colors"
                 style={{
                   background: activeTab === tab.id ? 'var(--accent-primary)' : 'transparent',
                   color: activeTab === tab.id ? '#fff' : 'var(--text-tertiary)',
@@ -189,7 +191,7 @@ const App: React.FC = () => {
                   border: activeTab === tab.id ? '1.5px solid var(--accent-primary)' : '1.5px solid rgba(255,255,255,0.1)',
                   fontWeight: 700,
                   letterSpacing: '0.08em',
-                  fontSize: '10px',
+                  fontSize: '11px',
                 }}
               >
                 {tab.label}
@@ -213,6 +215,7 @@ const App: React.FC = () => {
           {activeTab === 'testing' && <TestingGuide />}
           {activeTab === 'resources' && <ResourcesDirectory />}
           {activeTab === 'observatory' && <Observatory />}
+          {activeTab === 'literature' && <Literature />}
           {activeTab === 'reminders' && <CareReminders />}
           {activeTab === 'dashboard' && <Dashboard />}
         </div>

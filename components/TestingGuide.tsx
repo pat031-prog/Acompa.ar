@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { REAGENT_TESTS, TESTING_RESOURCES, TESTING_GUIDE } from '../constants';
+import { REAGENT_TESTS, TESTING_RESOURCES, TESTING_GUIDE, INSTITUTIONAL_TESTING } from '../constants';
 
 const BeakerIcon: React.FC = () => (
   <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5">
@@ -23,14 +23,14 @@ const ExclamationTriangleIcon: React.FC = () => (
   </svg>
 );
 
-type Section = 'guide' | 'reagents' | 'resources' | 'adulterants';
+type Section = 'institutional' | 'guide' | 'reagents' | 'adulterants';
 
 const tabStyle = (active: boolean): React.CSSProperties => ({
   background: active ? 'var(--accent-primary)' : 'transparent',
   color: active ? '#fff' : 'var(--text-tertiary)',
   border: active ? '2px solid var(--accent-primary)' : '2px solid rgba(255,255,255,0.1)',
   borderRadius: '0',
-  padding: '8px 16px',
+  padding: '10px 18px',
   fontSize: '13px',
   fontWeight: 700,
   letterSpacing: '0.04em',
@@ -43,7 +43,7 @@ const tabStyle = (active: boolean): React.CSSProperties => ({
 });
 
 export const TestingGuide: React.FC = () => {
-  const [activeSection, setActiveSection] = useState<Section>('guide');
+  const [activeSection, setActiveSection] = useState<Section>('institutional');
 
   return (
     <div className="flex-1 flex flex-col min-h-0">
@@ -55,44 +55,45 @@ export const TestingGuide: React.FC = () => {
         </div>
         <h1 style={{
           fontFamily: 'var(--font-editorial)',
-          fontSize: 'clamp(1.4rem, 3vw, 1.8rem)',
+          fontSize: 'clamp(1.6rem, 5vw, 2.2rem)',
           fontWeight: 700, letterSpacing: '-0.02em',
           color: 'var(--text-primary)',
+          lineHeight: 1.2
         }}>
           Testeo de Sustancias
         </h1>
         <div style={{ width: '40px', height: '3px', background: 'var(--accent-primary)', margin: '10px 0 6px' }} />
         <p style={{
-          fontFamily: 'var(--font-editorial)', fontStyle: 'italic', fontSize: '13px',
-          color: 'var(--text-tertiary)', lineHeight: 1.5,
+          fontFamily: 'var(--font-editorial)', fontStyle: 'italic', fontSize: '15px',
+          color: 'var(--text-tertiary)', lineHeight: 1.6,
         }}>
           Información completa sobre reactivos, recursos y cómo testear sustancias en Argentina
         </p>
       </div>
 
       <div className="flex gap-2 p-5 sm:p-6 overflow-x-auto" style={{ borderBottom: '2px solid rgba(255,255,255,0.1)' }}>
-        <button onClick={() => setActiveSection('guide')} style={tabStyle(activeSection === 'guide')}><BookOpenIcon /> Guía de Testeo</button>
+        <button onClick={() => setActiveSection('institutional')} style={tabStyle(activeSection === 'institutional')}><MapPinIcon /> Centros Oficiales</button>
+        <button onClick={() => setActiveSection('guide')} style={tabStyle(activeSection === 'guide')}><BookOpenIcon /> Testeo Manual</button>
         <button onClick={() => setActiveSection('reagents')} style={tabStyle(activeSection === 'reagents')}><BeakerIcon /> Reactivos</button>
-        <button onClick={() => setActiveSection('resources')} style={tabStyle(activeSection === 'resources')}><MapPinIcon /> Dónde Conseguir</button>
         <button onClick={() => setActiveSection('adulterants')} style={tabStyle(activeSection === 'adulterants')}><ExclamationTriangleIcon /> Adulterantes</button>
       </div>
 
       <div className="flex-1 overflow-y-auto p-6 sm:p-8 md:p-10 lg:p-12">
+        {activeSection === 'institutional' && <InstitutionalSection />}
         {activeSection === 'guide' && <GuideSection />}
         {activeSection === 'reagents' && <ReagentsSection />}
-        {activeSection === 'resources' && <ResourcesSection />}
         {activeSection === 'adulterants' && <AdulterantsSection />}
       </div>
     </div>
   );
 };
 
-const GuideSection: React.FC = () => (
+const InstitutionalSection: React.FC = () => (
   <div className="max-w-4xl mx-auto space-y-6">
     <div className="editorial-pullquote">{TESTING_GUIDE.intro}</div>
 
     <section>
-      <h2 className="editorial-heading text-xl mb-3">¿Por qué testear?</h2>
+      <h2 className="editorial-heading text-xl mb-3">¿Por qué es clave testear?</h2>
       <hr className="editorial-divider-accent" style={{ marginTop: '0', marginBottom: '16px' }} />
       <ul className="space-y-2">
         {TESTING_GUIDE.whyTest.map((reason, idx) => (
@@ -102,6 +103,43 @@ const GuideSection: React.FC = () => (
     </section>
 
     <hr className="editorial-divider" />
+
+    <section>
+      <h2 className="editorial-heading text-xl mb-3">Centros Oficiales y Asociaciones Civiles</h2>
+      <p className="text-sm mb-4" style={{ color: 'var(--text-secondary)' }}>
+        Recomendamos acudir prioritariamente a centros de testeo universitarios, laboratorios oficiales o asociaciones civiles formales. Estos espacios cuentan con tecnología avanzada (cromatógrafos, espectrómetros) y personal capacitado para análisis de composición exactos y asesoramiento integral.
+      </p>
+      <hr className="editorial-divider-accent" style={{ marginTop: '0', marginBottom: '16px' }} />
+      <div className="grid gap-4">
+        {INSTITUTIONAL_TESTING.map((resource) => (
+          <div key={resource.name} className="p-4 sm:p-5 transition-colors" style={{ background: 'var(--surface-1)', border: '1px solid rgba(255,255,255,0.08)', borderRadius: '0' }}>
+            <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-4">
+              <div>
+                <h3 className="font-bold text-base mb-1" style={{ color: 'var(--text-primary)', fontFamily: 'var(--font-editorial)' }}>
+                  {resource.name}
+                </h3>
+                <span className="inline-block px-2 py-0.5 mb-2 text-[10px] uppercase tracking-wider font-bold" style={{ background: 'rgba(255,255,255,0.1)', color: 'var(--text-tertiary)' }}>
+                  {resource.type}
+                </span>
+                <p className="text-sm leading-relaxed mb-3" style={{ color: 'var(--text-secondary)' }}>
+                  {resource.description}
+                </p>
+                {resource.contact && (
+                  <div className="text-xs font-semibold" style={{ color: 'var(--accent-primary)' }}>
+                    Contacto: <span style={{ color: 'var(--text-primary)' }}>{resource.contact}</span>
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+    </section>
+  </div>
+);
+
+const GuideSection: React.FC = () => (
+  <div className="max-w-4xl mx-auto space-y-6">
 
     <section>
       <h2 className="editorial-heading text-xl mb-3">Cómo testear paso a paso</h2>

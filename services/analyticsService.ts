@@ -34,6 +34,7 @@ export interface TerritorialAlert {
   year?: number;
   substances?: string[];
   pdfUrl?: string;
+  sourceUrl?: string;
 }
 
 const QUERIES_KEY = 'acompanar_queries';
@@ -93,7 +94,7 @@ export const getAnalyticsStats = (
   if (province && province !== 'all') {
     queries = queries.filter(q => q.province === province);
   }
-  if (category && category !== 'all') {
+  if (category && (category as string) !== 'all') {
     queries = queries.filter(q => q.category === category);
   }
 
@@ -227,6 +228,7 @@ const getDefaultAlerts = (): TerritorialAlert[] => {
       year: 2025,
       substances: ['2-MMC', '2-Metilmetcatinona'],
       pdfUrl: 'https://www.argentina.gob.ar/sites/default/files/alerta-1-2-metilmetcatinona-sat-n-26.pdf',
+      sourceUrl: 'https://www.argentina.gob.ar/sat/alertas',
     },
     {
       id: 'sat-2025-4',
@@ -240,6 +242,7 @@ const getDefaultAlerts = (): TerritorialAlert[] => {
       year: 2025,
       substances: ['25E-NBOH'],
       pdfUrl: 'https://www.argentina.gob.ar/sites/default/files/2023/07/alerta-4-25e-nboh.pdf',
+      sourceUrl: 'https://www.argentina.gob.ar/sat/alertas',
     },
     {
       id: 'sat-2025-3',
@@ -253,6 +256,7 @@ const getDefaultAlerts = (): TerritorialAlert[] => {
       year: 2025,
       substances: ['Xilacina', 'Pregabalina', 'Carisoprodol', '25I-NBOH', 'Cocaína'],
       pdfUrl: 'https://www.argentina.gob.ar/sites/default/files/2023/07/informe-alerta-sat-n-3-2025.pdf',
+      sourceUrl: 'https://www.argentina.gob.ar/sat/alertas',
     },
     {
       id: 'sat-2025-2',
@@ -265,6 +269,7 @@ const getDefaultAlerts = (): TerritorialAlert[] => {
       alertNumber: 'SAT N°2/2025',
       year: 2025,
       substances: ['2C-B', '(4-bromo-2,5-dimetoxifenil)etilamina'],
+      sourceUrl: 'https://www.argentina.gob.ar/sat/alertas',
     },
     {
       id: 'sat-2025-1',
@@ -277,6 +282,7 @@ const getDefaultAlerts = (): TerritorialAlert[] => {
       alertNumber: 'SAT N°1/2025',
       year: 2025,
       substances: ['HHC', 'Hexahidrocannabinol'],
+      sourceUrl: 'https://www.argentina.gob.ar/sat/alertas',
     },
 
     // ═══ ALERTAS 2024 ═══
@@ -292,6 +298,7 @@ const getDefaultAlerts = (): TerritorialAlert[] => {
       year: 2024,
       substances: ['5-MeO-MiPT', 'Xilacina'],
       pdfUrl: 'https://www.argentina.gob.ar/sites/default/files/alerta_sat_n_7_2024_5-meo-mipt_en_combinacion_con_xilacina_con_autoridades.pdf',
+      sourceUrl: 'https://www.argentina.gob.ar/sat/alertas',
     },
     {
       id: 'sat-2024-6',
@@ -304,6 +311,7 @@ const getDefaultAlerts = (): TerritorialAlert[] => {
       alertNumber: 'SAT N°6/2024',
       year: 2024,
       substances: ['2C-B'],
+      sourceUrl: 'https://www.argentina.gob.ar/sat/alertas',
     },
     {
       id: 'sat-2024-5',
@@ -317,6 +325,7 @@ const getDefaultAlerts = (): TerritorialAlert[] => {
       year: 2024,
       substances: ['25I-NBOH'],
       pdfUrl: 'https://www.argentina.gob.ar/sites/default/files/2023/07/alerta_-25i-nboh-sat-n-5-24-con-autoridades.pdf',
+      sourceUrl: 'https://www.argentina.gob.ar/sat/alertas',
     },
     {
       id: 'sat-2024-4',
@@ -330,6 +339,7 @@ const getDefaultAlerts = (): TerritorialAlert[] => {
       year: 2024,
       substances: ['THC sintético', 'Tetrahidrocannabinol'],
       pdfUrl: 'https://www.argentina.gob.ar/sites/default/files/2023/07/alerta_tetrahidrocannabinol-sat_4_2024.pdf',
+      sourceUrl: 'https://www.argentina.gob.ar/sat/alertas',
     },
     {
       id: 'sat-2024-3',
@@ -343,6 +353,7 @@ const getDefaultAlerts = (): TerritorialAlert[] => {
       year: 2024,
       substances: ['DMT', 'Dimetiltriptamina'],
       pdfUrl: 'https://www.argentina.gob.ar/sites/default/files/2023/07/alerta_dimetiltriptamina-sat_3_2024.pdf',
+      sourceUrl: 'https://www.argentina.gob.ar/sat/alertas',
     },
     {
       id: 'sat-2024-2',
@@ -355,6 +366,7 @@ const getDefaultAlerts = (): TerritorialAlert[] => {
       alertNumber: 'SAT N°2/2024',
       year: 2024,
       substances: ['N,N-Dimetilpentilona'],
+      sourceUrl: 'https://www.argentina.gob.ar/sat/alertas',
     },
     {
       id: 'sat-2024-1',
@@ -368,6 +380,7 @@ const getDefaultAlerts = (): TerritorialAlert[] => {
       year: 2024,
       substances: ['Fentanilo'],
       pdfUrl: 'https://www.argentina.gob.ar/sites/default/files/sat_alerta_1_2024_fentanilo.pdf',
+      sourceUrl: 'https://www.argentina.gob.ar/sat/alertas',
     },
 
     // ═══ ALERTA 2022 ═══
@@ -383,6 +396,7 @@ const getDefaultAlerts = (): TerritorialAlert[] => {
       year: 2022,
       substances: ['Cocaína adulterada', 'Opioides'],
       pdfUrl: 'https://www.argentina.gob.ar/sat/alertas/cocaina-adulterada',
+      sourceUrl: 'https://www.argentina.gob.ar/sat/alertas',
     },
 
     // ═══ ALERTA TERRITORIAL RECIENTE ═══
@@ -396,6 +410,7 @@ const getDefaultAlerts = (): TerritorialAlert[] => {
       source: 'Ministerio de Salud de Neuquén',
       year: 2025,
       substances: ['Cocaína adulterada'],
+      sourceUrl: 'https://www.lmneuquen.com/policiales/que-paso-la-investigacion-el-secuestro-140-gramos-cocaina-presuntamente-adulterada-n1222701',
     },
   ];
 };

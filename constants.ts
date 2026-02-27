@@ -125,7 +125,7 @@ export const MAP_DATA: Record<string, MapDataset> = {
       { category: 'MDMA / Éxtasis', percentage: 15 },
     ],
   },
-    'Tucumán': {
+  'Tucumán': {
     totalQueries: 310,
     topCategories: [
       { category: 'Cocaína', percentage: 40 },
@@ -136,9 +136,9 @@ export const MAP_DATA: Record<string, MapDataset> = {
   'Salta': {
     totalQueries: 250,
     topCategories: [
-        { category: 'Cocaína', percentage: 45 },
-        { category: 'Alcohol', percentage: 25 },
-        { category: 'Cannabis', percentage: 15 },
+      { category: 'Cocaína', percentage: 45 },
+      { category: 'Alcohol', percentage: 25 },
+      { category: 'Cannabis', percentage: 15 },
     ],
   },
   'Catamarca': { totalQueries: 80, topCategories: [] },
@@ -268,7 +268,7 @@ export const LIBRARY_DATA: LibraryEntry[] = [
       alerts: "A veces, lo que se vende como LSD son otras sustancias, como los NBOMe, que son mucho más peligrosos y tienen riesgo de sobredosis. Los NBOMe tienen un sabor muy amargo y metálico, mientras que el LSD es insípido. 'If it's bitter, it's a spitter' (Si es amargo, escupilo)."
     }
   },
-   {
+  {
     title: "Cocaína",
     aliases: ["Mercadería", "Pala", "Alita de mosca"],
     category: ["Estimulante"],
@@ -884,46 +884,71 @@ export const REAGENT_TESTS: ReagentTest[] = [
 
 export const TESTING_RESOURCES: TestingResource[] = [
   {
+    name: "ARDA (Asociación de Reducción de Daños de Argentina)",
+    type: "organization",
+    website: "https://arda.org.ar",
+    description: "La primera ONG de Argentina dedicada a la reducción de daños. Realizan intervenciones y testeo colorimétrico de sustancias en espacios de ocio nocturno y fiestas.",
+    contact: "Instagram: @arda_arg"
+  },
+  {
+    name: "PAF! Un Puntapié al Fundamento (Intercambios A.C.)",
+    type: "organization",
+    website: "https://intercambios.org.ar",
+    description: "Proyecto de Intercambios Asociación Civil. Pioneros en Argentina con stands de reducción de daños y análisis de sustancias en fiestas electrónicas y festivales masivos.",
+    contact: "Instagram: @paf.oficial"
+  },
+  {
     name: "ArgenPills",
     type: "organization",
     website: "https://argenpills.org",
-    description: "Organización líder en reducción de daños en Argentina. Ofrece testeo de sustancias gratuito y anónimo, información sobre alertas y análisis de pastillas circulantes.",
-    contact: "Instagram: @argenpills"
+    description: "Comunidad online y foro referente sobre reducción de daños en el país. Comparten reportes y reviews sobre sustancias (pastillas, cristales) que circulan en Argentina y orientan sobre reactivos.",
+    contact: "Foro online / Instagram: @argenpills"
   },
   {
-    name: "Mamisepuede",
-    type: "organization",
-    website: "https://www.instagram.com/mamisepuede.ok/",
-    description: "Organización de reducción de daños con presencia en Buenos Aires. Realizan testeo en eventos y ofrecen información sobre consumo responsable.",
-    contact: "Instagram: @mamisepuede.ok"
-  },
-  {
-    name: "Energy Control Argentina",
-    type: "organization",
-    location: "Buenos Aires",
-    description: "Servicio de análisis de sustancias y asesoramiento. Presentes en festivales y eventos.",
-    contact: "Consultar redes sociales para ubicación y horarios"
-  },
-  {
-    name: "Test Kits Argentina (Online)",
+    name: "Test Kits (Compra Local e Internacional)",
     type: "online",
-    website: "https://www.mercadolibre.com.ar",
-    description: "Se pueden encontrar kits de testeo en MercadoLibre Argentina buscando 'reactivos marquis', 'reagent test kit' o 'test MDMA'. Vendedores confiables varían, verificar reputación.",
-    contact: "Buscar en MercadoLibre Argentina"
+    website: "MercadoLibre / TestKitPlus.com",
+    description: "Aunque no hay laboratorios públicos de acceso libre, se fomenta el autotesteo. Se consiguen reactivos (Marquis, Ehrlich, etc.) online en Argentina (ML) o importándolos (EZ Test, Bunk Police).",
+    contact: "Buscar 'Reactivos colorimétricos testeo' en ML"
+  }
+];
+
+export const INSTITUTIONAL_TESTING = [
+  {
+    name: "CENATOXA - Universidad de Buenos Aires (UBA)",
+    type: "Laboratorio Universitario",
+    description: "Centro de Asesoramiento Toxicológico Analítico (Facultad de Farmacia y Bioquímica). Disponen de cromatografía gaseosa y espectrometría de masas para análisis de composición precisos.",
+    contact: "consultas@ffyb.uba.ar | +54 11 5287-4000"
   },
   {
-    name: "Importación Internacional",
-    type: "online",
-    website: "https://www.testkitplus.com / https://www.eztest.com",
-    description: "Sitios internacionales que envían a Argentina (puede haber demoras aduaneras). TestKitPlus, EZ Test, y Bunk Police son marcas confiables.",
-    contact: "Verificar políticas de envío internacional"
+    name: "Universidad Nacional de Rosario (UNR) / CEADS",
+    type: "Laboratorio / Investigación",
+    description: "La Facultad de Ciencias Bioquímicas posee laboratorios capacitados (CG/EM) para perfilado de sustancias. El CEADS fomenta históricamente cruces con la reducción de daños.",
+    contact: "Facultad de Cs. Bioquímicas y Farmacéuticas - UNR"
   },
   {
-    name: "Puntos de Reducción de Daños",
-    type: "physical",
-    location: "Varias provincias",
-    description: "Algunas provincias tienen puntos fijos de reducción de daños que ofrecen testeo gratuito. Consultar con organizaciones locales de reducción de daños.",
-    contact: "Contactar a ArgenPills para referencias locales"
+    name: "CIM - UNLP / CONICET (La Plata)",
+    type: "Laboratorio Oficial",
+    description: "El Centro de Investigaciones del Medioambiente presta servicios de análisis de perfiles moleculares y cannabinoides mediante cromatografía (HPLC).",
+    contact: "cim@quimica.unlp.edu.ar"
+  },
+  {
+    name: "ARDA (Asociación de Reducción de Daños de Argentina)",
+    type: "Asociación Civil",
+    description: "Pioneros en reducción de daños. Asesoran a usuarios, militan por un cambio en la ley de drogas y promueven la instalación de laboratorios de testeo estatales de acceso público.",
+    contact: "Instagram: @arda_arg | Sitio: arda.org.ar"
+  },
+  {
+    name: "PAF! Un Puntapié al Fundamento (Intercambios)",
+    type: "Proyecto de Reducción de Daños",
+    description: "Comandos de intervención en fiestas electrónicas. Cuentan con stands de testeo colorimétrico in situ para descartar adulterantes peligrosos en el momento.",
+    contact: "Instagram: @paf.oficial"
+  },
+  {
+    name: "ArgenPills",
+    type: "Comunidad / Foro",
+    description: "Comunidad online de referencia en Argentina. Recopilan reportes de usuarios sobre reactivos y pastillas circulantes, democratizando la información de riesgos.",
+    contact: "Foro: argenpills.org"
   }
 ];
 

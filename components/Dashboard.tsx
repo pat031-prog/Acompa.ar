@@ -65,10 +65,28 @@ const AlertCard: React.FC<{ alert: TerritorialAlert; onDelete: () => void }> = (
         </div>
         <button onClick={onDelete} className="flex-shrink-0 w-6 h-6 flex items-center justify-center transition-opacity" style={{ color: 'var(--text-muted)', opacity: 0.5 }} title="Descartar alerta" aria-label="Descartar alerta">✕</button>
       </div>
-      <h3 className="font-semibold text-sm sm:text-base mb-1" style={{ color: 'var(--text-primary)' }}>{alert.title}</h3>
-      <p className="text-xs sm:text-sm mb-2" style={{ color: 'var(--text-secondary)' }}>{alert.message}</p>
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-1 sm:gap-0 text-xs" style={{ color: 'var(--text-muted)' }}>
-        <span className="truncate">{alert.source && `Fuente: ${alert.source}`}</span>
+      <h3 className="font-semibold text-sm sm:text-base mb-1" style={{ color: 'var(--text-primary)' }}>
+        {alert.sourceUrl || alert.pdfUrl ? (
+          <a href={alert.sourceUrl || alert.pdfUrl} target="_blank" rel="noopener noreferrer" className="hover:underline" style={{ color: 'var(--accent-primary)' }}>
+            {alert.title} <span className="inline-block ml-1 opacity-70">↗</span>
+          </a>
+        ) : (
+          alert.title
+        )}
+      </h3>
+      <p className="text-xs sm:text-sm mb-3" style={{ color: 'var(--text-secondary)' }}>{alert.message}</p>
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-1 sm:gap-0 text-[11px] font-semibold tracking-wide" style={{ color: 'var(--text-muted)' }}>
+        <span className="truncate uppercase">
+          {alert.source && (
+            alert.sourceUrl || alert.pdfUrl ? (
+              <a href={alert.sourceUrl || alert.pdfUrl} target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">
+                Fuente: {alert.source}
+              </a>
+            ) : (
+              `Fuente: ${alert.source}`
+            )
+          )}
+        </span>
         <span className="flex-shrink-0">{getTimeAgo(alert.timestamp)}</span>
       </div>
     </div>

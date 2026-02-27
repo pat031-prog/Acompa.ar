@@ -66,11 +66,17 @@ export const Observatory: React.FC = () => {
 
   return (
     <div className="flex-1 overflow-y-auto pb-4 flex flex-col p-4 sm:p-6">
-      <div className="mb-4">
+      <div className="mb-6">
         <h3 className="text-lg font-bold" style={{ color: 'var(--text-primary)', fontFamily: 'var(--font-editorial)' }}>Observatorio Territorial Anónimo</h3>
-        <p className="text-xs mt-1" style={{ color: 'var(--text-tertiary)' }}>
-          Datos agregados y anónimos de consultas por provincia, ordenados por cantidad.
+        <p className="text-xs mt-2 leading-relaxed" style={{ color: 'var(--text-tertiary)' }}>
+          Datos agregados y anónimos de consultas por provincia.
         </p>
+        <div className="mt-3 p-3 rounded text-xs flex gap-2" style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.1)' }}>
+          <span style={{ fontSize: '14px' }}>⚠️</span>
+          <p style={{ color: 'var(--text-secondary)', fontFamily: 'var(--font-editorial)', fontStyle: 'italic' }}>
+            <strong>Nota:</strong> Los datos mostrados en este observatorio son actualmente figurativos e inventados. Representan la visión a futuro de lo que Acompañ.Ar aspira a ser: una herramienta para el mapeo epidemiológico anónimo y en tiempo real del consumo, con el fin de informar políticas públicas de salud preventiva.
+          </p>
+        </div>
       </div>
 
       <div className="relative mb-4">
