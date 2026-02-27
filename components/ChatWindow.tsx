@@ -10,9 +10,9 @@ interface ChatWindowProps {
 
 const TypingIndicator: React.FC = () => (
   <div className="flex items-center space-x-2 p-3">
-    <div className="w-2 h-2 bg-white/40 rounded-full animate-pulse [animation-delay:-0.3s]"></div>
-    <div className="w-2 h-2 bg-white/40 rounded-full animate-pulse [animation-delay:-0.15s]"></div>
-    <div className="w-2 h-2 bg-white/40 rounded-full animate-pulse"></div>
+    <div className="w-2 h-2 rounded-full" style={{ background: 'var(--accent-primary)', animation: 'pulse 1.4s ease-in-out infinite', animationDelay: '-0.3s' }}></div>
+    <div className="w-2 h-2 rounded-full" style={{ background: 'var(--accent-primary)', animation: 'pulse 1.4s ease-in-out infinite', animationDelay: '-0.15s' }}></div>
+    <div className="w-2 h-2 rounded-full" style={{ background: 'var(--accent-primary)', animation: 'pulse 1.4s ease-in-out infinite' }}></div>
   </div>
 );
 
@@ -37,7 +37,7 @@ export const ChatWindow: React.FC<ChatWindowProps> = ({ messages, isLoading }) =
       {messages.map((msg) => (
         <MessageBubble key={msg.id} message={msg} />
       ))}
-      {isLoading && <div className="flex justify-start"><TypingIndicator/></div>}
+      {isLoading && <div className="flex justify-start"><TypingIndicator /></div>}
     </div>
   );
 };

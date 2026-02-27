@@ -28,50 +28,101 @@ export const ConsentModal: React.FC<ConsentModalProps> = ({ onConsent }) => {
   };
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-80 flex items-center justify-center z-50 p-4 overflow-y-auto" role="dialog" aria-modal="true">
-      <div className="bg-[#15171a] border border-[#2a2d33] rounded-xl p-6 max-w-lg w-full shadow-2xl animate-fade-in my-8">
-        <h2 className="text-xl font-bold text-gray-100">Antes de empezar</h2>
-        <p className="text-sm text-gray-400 mt-2">
+    <div
+      className="fixed inset-0 flex items-center justify-center z-50 p-4 overflow-y-auto"
+      style={{ background: 'rgba(0, 0, 0, 0.7)', backdropFilter: 'blur(8px)' }}
+      role="dialog"
+      aria-modal="true"
+    >
+      <div
+        className="max-w-lg w-full my-8"
+        style={{
+          background: 'var(--glass-bg)',
+          backdropFilter: 'var(--glass-blur)',
+          border: '1px solid var(--glass-border)',
+          borderRadius: 'var(--radius-lg)',
+          padding: '28px',
+          boxShadow: 'var(--shadow-lg), var(--shadow-glow-accent)',
+          animation: 'scaleIn 0.3s var(--ease-out-strong) both',
+        }}
+      >
+        {/* Header */}
+        <div className="flex items-center gap-3 mb-1">
+          <div
+            className="w-10 h-10 flex items-center justify-center flex-shrink-0"
+            style={{ background: 'var(--accent-primary)', borderRadius: 'var(--radius-sm)' }}
+          >
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+              <path d="M12 2L4 6v5c0 5.55 3.84 10.74 8 12 4.16-1.26 8-6.45 8-12V6L12 2Z" fill="rgba(255,255,255,0.15)" stroke="white" strokeWidth="1.5" />
+              <path d="M12 17.5s-4.5-3-4.5-5.5a2.5 2.5 0 0 1 4.5-1.5 2.5 2.5 0 0 1 4.5 1.5c0 2.5-4.5 5.5-4.5 5.5Z" fill="white" opacity="0.95" />
+            </svg>
+          </div>
+          <div>
+            <h2 className="editorial-heading text-xl sm:text-2xl">
+              Antes de empezar
+            </h2>
+          </div>
+        </div>
+        <p className="text-sm mt-2" style={{ color: 'var(--text-secondary)', lineHeight: '1.6' }}>
           Este chat brinda acompañamiento con enfoque de reducción de daños. No es un servicio de emergencia.
         </p>
 
         {/* DeepInfra API Key Section */}
-        <div className="mt-5 p-4 bg-[#1a1c21] border border-[#2a2d33] rounded-lg">
+        <div
+          className="mt-5 p-4"
+          style={{
+            background: 'var(--surface-1)',
+            border: '1px solid var(--border-subtle)',
+            borderRadius: 'var(--radius-md)',
+          }}
+        >
           <div className="flex items-start justify-between">
             <div className="flex-1">
-              <h3 className="text-sm font-semibold text-gray-200 flex items-center gap-2">
-                <svg className="w-4 h-4 text-[var(--accent-primary)]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <h3 className="text-sm font-semibold flex items-center gap-2" style={{ color: 'var(--text-primary)' }}>
+                <svg className="w-4 h-4" style={{ color: 'var(--color-amber)' }} fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
                 </svg>
                 Configuración de IA
               </h3>
-              <p className="text-xs text-gray-400 mt-1">
-                Este chatbot usa <b>DeepInfra</b> para respuestas de IA. Necesitas una API key gratuita.
+              <p className="text-xs mt-1" style={{ color: 'var(--text-tertiary)' }}>
+                Este chatbot usa <b style={{ color: 'var(--text-secondary)' }}>DeepInfra</b> para respuestas de IA. Necesitas una API key gratuita.
               </p>
             </div>
             <button
               onClick={() => setShowInfo(!showInfo)}
-              className="text-xs text-[var(--accent-primary)] hover:text-[var(--accent-hover)] ml-2"
+              className="text-xs font-medium ml-2"
+              style={{ color: 'var(--accent-primary)' }}
+              onMouseEnter={(e) => e.currentTarget.style.color = 'var(--accent-hover)'}
+              onMouseLeave={(e) => e.currentTarget.style.color = 'var(--accent-primary)'}
             >
               {showInfo ? 'Ocultar' : '¿Cómo?'}
             </button>
           </div>
 
           {showInfo && (
-            <div className="mt-3 p-3 bg-[#0e0f12] rounded text-xs text-gray-300 space-y-2">
-              <p><strong>1.</strong> Ve a <a href="https://deepinfra.com" target="_blank" rel="noopener noreferrer" className="text-[var(--accent-primary)] hover:underline">deepinfra.com</a></p>
-              <p><strong>2.</strong> Crea una cuenta gratuita (incluye $5 de crédito)</p>
-              <p><strong>3.</strong> Ve a tu dashboard y copia tu API key</p>
-              <p><strong>4.</strong> Pégala aquí abajo</p>
-              <p className="text-gray-500 text-[11px] mt-2">
+            <div
+              className="mt-3 p-3 text-xs space-y-2"
+              style={{
+                background: 'var(--bg-primary)',
+                borderRadius: 'var(--radius-sm)',
+                color: 'var(--text-secondary)',
+                border: '1px solid var(--border-subtle)',
+                animation: 'fadeInUp 0.2s var(--ease-out-strong) both',
+              }}
+            >
+              <p><strong style={{ color: 'var(--text-primary)' }}>1.</strong> Ve a <a href="https://deepinfra.com" target="_blank" rel="noopener noreferrer" style={{ color: 'var(--accent-primary)', textDecoration: 'underline' }}>deepinfra.com</a></p>
+              <p><strong style={{ color: 'var(--text-primary)' }}>2.</strong> Crea una cuenta gratuita (incluye $5 de crédito)</p>
+              <p><strong style={{ color: 'var(--text-primary)' }}>3.</strong> Ve a tu dashboard y copia tu API key</p>
+              <p><strong style={{ color: 'var(--text-primary)' }}>4.</strong> Pégala aquí abajo</p>
+              <p className="text-[11px] mt-2" style={{ color: 'var(--text-muted)' }}>
                 Tu API key se almacena solo en tu navegador, no en nuestros servidores.
               </p>
             </div>
           )}
 
           <div className="mt-3">
-            <label htmlFor="apiKey" className="block text-xs font-medium text-gray-300 mb-1">
-              API Key de DeepInfra <span className="text-red-400">*</span>
+            <label htmlFor="apiKey" className="block text-xs font-medium mb-1" style={{ color: 'var(--text-secondary)' }}>
+              API Key de DeepInfra <span style={{ color: 'var(--color-red)' }}>*</span>
             </label>
             <input
               id="apiKey"
@@ -79,20 +130,30 @@ export const ConsentModal: React.FC<ConsentModalProps> = ({ onConsent }) => {
               value={apiKey}
               onChange={(e) => setApiKey(e.target.value)}
               placeholder="Ej: sk-xxxxxxxxxxxxxxxx"
-              className="block w-full px-3 py-2 text-sm bg-[#121316] border border-[#2a2d33] focus:outline-none focus:ring-[var(--accent-primary)] focus:border-[var(--accent-primary)] rounded-md text-white placeholder-gray-600"
+              className="block w-full px-3 py-2.5 text-sm"
+              style={{
+                background: 'var(--bg-primary)',
+                border: '1px solid var(--border-medium)',
+                borderRadius: 'var(--radius-sm)',
+                color: 'var(--text-primary)',
+                outline: 'none',
+                transition: 'border-color var(--transition-fast)',
+              }}
+              onFocus={(e) => e.currentTarget.style.borderColor = 'var(--accent-primary)'}
+              onBlur={(e) => e.currentTarget.style.borderColor = 'var(--border-medium)'}
             />
           </div>
         </div>
 
         {/* Privacy Section */}
         <div className="mt-5">
-          <p className="text-sm text-gray-400">
-            Con tu consentimiento, registramos <b>solo</b> categoría de consulta y provincia para un mapa agregado. No guardamos datos personales.
+          <p className="text-sm" style={{ color: 'var(--text-tertiary)', lineHeight: '1.6' }}>
+            Con tu consentimiento, registramos <b style={{ color: 'var(--text-secondary)' }}>solo</b> categoría de consulta y provincia para un mapa agregado. No guardamos datos personales.
           </p>
         </div>
 
         <div className="mt-4">
-          <label htmlFor="province" className="block text-sm font-medium text-gray-300">
+          <label htmlFor="province" className="block text-sm font-medium" style={{ color: 'var(--text-secondary)' }}>
             Provincia (opcional)
           </label>
           <select
@@ -100,7 +161,14 @@ export const ConsentModal: React.FC<ConsentModalProps> = ({ onConsent }) => {
             name="province"
             value={province}
             onChange={(e) => setProvince(e.target.value)}
-            className="mt-1 block w-full pl-3 pr-10 py-2 text-base bg-[#121316] border border-[#2a2d33] focus:outline-none focus:ring-[var(--accent-primary)] focus:border-[var(--accent-primary)] sm:text-sm rounded-md text-white"
+            className="mt-1 block w-full pl-3 pr-10 py-2.5 text-sm"
+            style={{
+              background: 'var(--bg-primary)',
+              border: '1px solid var(--border-medium)',
+              borderRadius: 'var(--radius-sm)',
+              color: 'var(--text-primary)',
+              outline: 'none',
+            }}
           >
             <option value="">Prefiero no decir</option>
             {PROVINCES.map(p => <option key={p} value={p}>{p}</option>)}
@@ -110,31 +178,49 @@ export const ConsentModal: React.FC<ConsentModalProps> = ({ onConsent }) => {
         <div className="mt-6 flex flex-col sm:flex-row gap-3">
           <button
             onClick={handleAccept}
-            className="flex-1 px-4 py-2.5 text-white text-sm font-medium rounded-lg focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 transition-all"
+            className="flex-1 px-4 py-2.5 text-sm font-medium transition-all duration-200"
             style={{
               background: 'var(--accent-primary)',
-              boxShadow: '0 2px 8px rgba(199, 112, 92, 0.25)'
+              color: '#fff',
+              borderRadius: 'var(--radius-sm)',
+              border: 'none',
+              boxShadow: '0 2px 8px rgba(199, 112, 92, 0.25)',
             }}
-            onMouseEnter={(e) => e.currentTarget.style.background = 'var(--accent-hover)'}
-            onMouseLeave={(e) => e.currentTarget.style.background = 'var(--accent-primary)'}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.background = 'var(--accent-hover)';
+              e.currentTarget.style.transform = 'translateY(-1px)';
+              e.currentTarget.style.boxShadow = '0 4px 12px rgba(199, 112, 92, 0.35)';
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.background = 'var(--accent-primary)';
+              e.currentTarget.style.transform = 'translateY(0)';
+              e.currentTarget.style.boxShadow = '0 2px 8px rgba(199, 112, 92, 0.25)';
+            }}
           >
             Acepto y continúo
           </button>
           <button
             onClick={handleSkip}
-            className="flex-1 px-4 py-2.5 bg-gray-600 text-white text-sm font-medium rounded-lg hover:bg-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-gray-500 transition-colors"
+            className="flex-1 px-4 py-2.5 text-sm font-medium transition-all duration-200"
+            style={{
+              background: 'var(--surface-2)',
+              color: 'var(--text-secondary)',
+              borderRadius: 'var(--radius-sm)',
+              border: '1px solid var(--border-medium)',
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.background = 'var(--surface-3)';
+              e.currentTarget.style.color = 'var(--text-primary)';
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.background = 'var(--surface-2)';
+              e.currentTarget.style.color = 'var(--text-secondary)';
+            }}
           >
             Usar sin compartir
           </button>
         </div>
       </div>
-      <style>{`
-        @keyframes fade-in {
-          from { opacity: 0; transform: scale(0.95); }
-          to { opacity: 1; transform: scale(1); }
-        }
-        .animate-fade-in { animation: fade-in 0.3s ease-out forwards; }
-      `}</style>
     </div>
   );
 };

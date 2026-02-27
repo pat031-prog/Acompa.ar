@@ -8,155 +8,59 @@ import {
   type Reminder,
 } from '../services/remindersService';
 
-// Icons
 const BellIcon: React.FC = () => (
-  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
-    <path strokeLinecap="round" strokeLinejoin="round" d="M14.857 17.082a23.848 23.848 0 0 0 5.454-1.31A8.967 8.967 0 0 1 18 9.75V9A6 6 0 0 0 6 9v.75a8.967 8.967 0 0 1-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 0 1-5.714 0m5.714 0a3 3 0 1 1-5.714 0" />
-  </svg>
+  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6"><path strokeLinecap="round" strokeLinejoin="round" d="M14.857 17.082a23.848 23.848 0 0 0 5.454-1.31A8.967 8.967 0 0 1 18 9.75V9A6 6 0 0 0 6 9v.75a8.967 8.967 0 0 1-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 0 1-5.714 0m5.714 0a3 3 0 1 1-5.714 0" /></svg>
 );
-
 const ClockIcon: React.FC = () => (
-  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5">
-    <path strokeLinecap="round" strokeLinejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
-  </svg>
+  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5"><path strokeLinecap="round" strokeLinejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" /></svg>
 );
 
-const getTypeIcon = (type: Reminder['type']) => {
-  const iconMap = {
-    hydration: '💧',
-    rest: '🛋️',
-    nutrition: '🍎',
-    break: '⏸️',
-    custom: '📝',
-  };
-  return iconMap[type] || '🔔';
-};
+const getTypeIcon = (type: Reminder['type']) => ({ hydration: '💧', rest: '🛋️', nutrition: '🍎', break: '⏸️', custom: '📝' }[type] || '🔔');
 
-const getTypeColor = (type: Reminder['type']) => {
-  const colorMap = {
-    hydration: 'bg-white/[0.02] text-white/90 border-white/[0.06]',
-    rest: 'bg-white/[0.02] text-white/90 border-white/[0.06]',
-    nutrition: 'bg-white/[0.02] text-white/90 border-white/[0.06]',
-    break: 'bg-white/[0.02] text-white/90 border-white/[0.06]',
-    custom: 'bg-white/[0.02] text-white/90 border-white/[0.06]',
-  };
-  return colorMap[type] || 'bg-white/[0.02] text-white/90 border-white/[0.06]';
-};
+const getTypeBorderColor = (type: Reminder['type']): string => ({ hydration: 'var(--color-blue)', rest: 'var(--color-violet)', nutrition: 'var(--color-green)', break: 'var(--color-amber)', custom: 'var(--text-muted)' }[type] || 'var(--text-muted)');
 
-const getTypeBorderColor = (type: Reminder['type']) => {
-  const colorMap = {
-    hydration: 'border-l-blue-500/40',
-    rest: 'border-l-purple-500/40',
-    nutrition: 'border-l-green-500/40',
-    break: 'border-l-yellow-500/40',
-    custom: 'border-l-gray-500/40',
-  };
-  return colorMap[type] || 'border-l-gray-500/40';
-};
-
-const ReminderCard: React.FC<{
-  reminder: Reminder;
-  onToggle: () => void;
-  onIntervalChange: (minutes: number) => void;
-}> = ({ reminder, onToggle, onIntervalChange }) => {
+const ReminderCard: React.FC<{ reminder: Reminder; onToggle: () => void; onIntervalChange: (minutes: number) => void }> = ({ reminder, onToggle, onIntervalChange }) => {
   const [customInterval, setCustomInterval] = useState(reminder.intervalMinutes.toString());
   const [isEditing, setIsEditing] = useState(false);
-
-  const handleSave = () => {
-    const newInterval = parseInt(customInterval);
-    if (newInterval > 0 && newInterval <= 1440) {
-      onIntervalChange(newInterval);
-      setIsEditing(false);
-    }
-  };
-
+  const handleSave = () => { const n = parseInt(customInterval); if (n > 0 && n <= 1440) { onIntervalChange(n); setIsEditing(false); } };
   const getTimeUntilNext = (): string => {
     if (!reminder.enabled || !reminder.lastTriggered) return 'Desactivado';
-
-    const now = Date.now();
-    const nextTrigger = reminder.lastTriggered + (reminder.intervalMinutes * 60 * 1000);
-    const diff = nextTrigger - now;
-
+    const diff = (reminder.lastTriggered + reminder.intervalMinutes * 60000) - Date.now();
     if (diff <= 0) return 'Listo para activar';
-
-    const minutes = Math.floor(diff / 60000);
-    const hours = Math.floor(minutes / 60);
-    const mins = minutes % 60;
-
-    if (hours > 0) {
-      return `En ${hours}h ${mins}m`;
-    }
-    return `En ${mins}m`;
+    const minutes = Math.floor(diff / 60000); const hours = Math.floor(minutes / 60);
+    return hours > 0 ? `En ${hours}h ${minutes % 60}m` : `En ${minutes}m`;
   };
 
   return (
-    <div className={`border rounded-lg border-l-2 p-5 sm:p-6 ${getTypeColor(reminder.type)} ${getTypeBorderColor(reminder.type)}`}>
+    <div className="p-5 sm:p-6" style={{ background: 'var(--surface-1)', border: '2px solid rgba(255,255,255,0.1)', borderLeft: `4px solid ${getTypeBorderColor(reminder.type)}`, borderRadius: '0' }}>
       <div className="flex items-start justify-between gap-4">
         <div className="flex items-start gap-3 flex-1">
-          <div className="flex-shrink-0 text-3xl">
-            {getTypeIcon(reminder.type)}
-          </div>
+          <div className="flex-shrink-0 text-3xl">{getTypeIcon(reminder.type)}</div>
           <div className="flex-1">
-            <h3 className="font-semibold text-base mb-1">{reminder.title}</h3>
-            <p className="text-sm opacity-90 mb-2">{reminder.message}</p>
-
-            <div className="flex flex-wrap items-center gap-3 text-xs">
-              <div className="flex items-center gap-1.5 opacity-75">
-                <ClockIcon />
+            <h3 className="font-semibold text-base mb-1" style={{ color: 'var(--text-primary)' }}>{reminder.title}</h3>
+            <p className="text-sm mb-2" style={{ color: 'var(--text-secondary)' }}>{reminder.message}</p>
+            <div className="flex flex-wrap items-center gap-3 text-xs" style={{ color: 'var(--text-tertiary)' }}>
+              <div className="flex items-center gap-1.5"><ClockIcon />
                 {isEditing ? (
                   <div className="flex items-center gap-1">
-                    <input
-                      type="number"
-                      value={customInterval}
-                      onChange={(e) => setCustomInterval(e.target.value)}
-                      min="1"
-                      max="1440"
-                      className="w-16 px-1.5 py-0.5 bg-gray-900/50 border border-gray-600 rounded text-white"
-                    />
+                    <input type="number" value={customInterval} onChange={(e) => setCustomInterval(e.target.value)} min="1" max="1440" className="w-16 px-1.5 py-0.5" style={{ background: 'var(--bg-primary)', border: '1px solid var(--border-medium)', borderRadius: '4px', color: 'var(--text-primary)', fontSize: '12px' }} />
                     <span>min</span>
-                    <button
-                      onClick={handleSave}
-                      className="ml-1 px-2 py-0.5 bg-blue-600 hover:bg-blue-700 rounded text-white"
-                    >
-                      ✓
-                    </button>
-                    <button
-                      onClick={() => {
-                        setCustomInterval(reminder.intervalMinutes.toString());
-                        setIsEditing(false);
-                      }}
-                      className="px-2 py-0.5 bg-gray-600 hover:bg-gray-700 rounded text-white"
-                    >
-                      ✕
-                    </button>
+                    <button onClick={handleSave} className="ml-1 px-2 py-0.5" style={{ background: 'var(--accent-primary)', borderRadius: '4px', color: '#fff', fontSize: '12px' }}>✓</button>
+                    <button onClick={() => { setCustomInterval(reminder.intervalMinutes.toString()); setIsEditing(false); }} className="px-2 py-0.5" style={{ background: 'var(--surface-3)', borderRadius: '4px', color: 'var(--text-secondary)', fontSize: '12px' }}>✕</button>
                   </div>
                 ) : (
-                  <button
-                    onClick={() => setIsEditing(true)}
-                    className="hover:underline"
-                  >
-                    Cada {reminder.intervalMinutes} min
-                  </button>
+                  <button onClick={() => setIsEditing(true)} style={{ color: 'var(--accent-primary)' }}>Cada {reminder.intervalMinutes} min</button>
                 )}
               </div>
-
-              {reminder.enabled && (
-                <div className="text-xs opacity-75">
-                  {getTimeUntilNext()}
-                </div>
-              )}
+              {reminder.enabled && <div className="text-xs" style={{ color: 'var(--text-muted)' }}>{getTimeUntilNext()}</div>}
             </div>
           </div>
         </div>
-
         <label className="flex-shrink-0 relative inline-block w-12 h-6 cursor-pointer">
-          <input
-            type="checkbox"
-            checked={reminder.enabled}
-            onChange={onToggle}
-            className="sr-only peer"
-          />
-          <div className="w-12 h-6 bg-gray-700 peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-blue-500 rounded-full peer peer-checked:after:translate-x-6 after:content-[''] after:absolute after:top-0.5 after:left-0.5 after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
+          <input type="checkbox" checked={reminder.enabled} onChange={onToggle} className="sr-only peer" />
+          <div style={{ background: reminder.enabled ? 'var(--accent-primary)' : 'var(--surface-3)', borderRadius: '0', width: '48px', height: '24px', position: 'relative', transition: 'background var(--transition-fast)' }}>
+            <div style={{ position: 'absolute', top: '2px', left: reminder.enabled ? '26px' : '2px', width: '20px', height: '20px', background: '#fff', borderRadius: '0', transition: 'left var(--transition-fast)' }} />
+          </div>
         </label>
       </div>
     </div>
@@ -170,166 +74,108 @@ export const CareReminders: React.FC = () => {
 
   useEffect(() => {
     setReminders(getReminders());
-    if ('Notification' in window) {
-      setNotificationPermission(Notification.permission);
-      setNotificationsEnabled(Notification.permission === 'granted');
-    }
+    if ('Notification' in window) { setNotificationPermission(Notification.permission); setNotificationsEnabled(Notification.permission === 'granted'); }
   }, []);
 
-  // Check reminders periodically
   useEffect(() => {
     if (!notificationsEnabled) return;
-
     const interval = setInterval(() => {
       const due = checkReminders();
-      due.forEach(reminder => {
-        // Show browser notification
-        if ('Notification' in window && Notification.permission === 'granted') {
-          new Notification(reminder.title, {
-            body: reminder.message,
-            icon: '/icon.png',
-            badge: '/icon.png',
-            tag: reminder.id,
-          });
-        }
-        // Mark as triggered
-        markReminderTriggered(reminder.id);
-        // Refresh state
+      due.forEach(r => {
+        if ('Notification' in window && Notification.permission === 'granted') new Notification(r.title, { body: r.message, icon: '/icon.png', badge: '/icon.png', tag: r.id });
+        markReminderTriggered(r.id);
         setReminders(getReminders());
       });
-    }, 30000); // Check every 30 seconds
-
+    }, 30000);
     return () => clearInterval(interval);
   }, [notificationsEnabled]);
 
-  const handleToggle = (id: string) => {
-    toggleReminder(id);
-    setReminders(getReminders());
-  };
-
-  const handleIntervalChange = (id: string, minutes: number) => {
-    updateReminderInterval(id, minutes);
-    setReminders(getReminders());
-  };
-
+  const handleToggle = (id: string) => { toggleReminder(id); setReminders(getReminders()); };
+  const handleIntervalChange = (id: string, minutes: number) => { updateReminderInterval(id, minutes); setReminders(getReminders()); };
   const requestNotificationPermission = async () => {
-    if (!('Notification' in window)) {
-      alert('Tu navegador no soporta notificaciones.');
-      return;
-    }
-
-    try {
-      const permission = await Notification.requestPermission();
-      setNotificationPermission(permission);
-      setNotificationsEnabled(permission === 'granted');
-
-      if (permission === 'granted') {
-        new Notification('Recordatorios Activados', {
-          body: '¡Listo! Recibirás recordatorios de cuidado.',
-          icon: '/icon.png',
-        });
-      }
-    } catch (error) {
-      console.error('Error requesting notification permission:', error);
-    }
+    if (!('Notification' in window)) { alert('Tu navegador no soporta notificaciones.'); return; }
+    try { const p = await Notification.requestPermission(); setNotificationPermission(p); setNotificationsEnabled(p === 'granted'); if (p === 'granted') new Notification('Recordatorios Activados', { body: '¡Listo! Recibirás recordatorios de cuidado.', icon: '/icon.png' }); } catch (e) { console.error('Error requesting notification permission:', e); }
   };
 
   const activeReminders = reminders.filter(r => r.enabled);
 
   return (
     <div className="flex-1 flex flex-col min-h-0">
-      <div className="p-6 sm:p-8 border-b border-gray-800">
-        <h1 className="text-xl sm:text-2xl font-bold text-gray-100 flex items-center gap-2">
-          <BellIcon />
-          <span className="hidden sm:inline">Recordatorios de Cuidado</span>
-          <span className="sm:hidden">Recordatorios</span>
+      <div className="p-6 sm:p-8" style={{ borderBottom: '2.5px solid rgba(255,255,255,0.12)' }}>
+        <div className="flex items-center gap-3 mb-3">
+          <span style={{ color: 'var(--color-amber)' }}><BellIcon /></span>
+          <span style={{ fontSize: '10px', fontWeight: 700, letterSpacing: '0.12em', textTransform: 'uppercase', color: 'var(--accent-primary)' }}>CUIDADO</span>
+          <div style={{ flex: 1, height: '1px', background: 'rgba(255,255,255,0.06)' }} />
+        </div>
+        <h1 style={{
+          fontFamily: 'var(--font-editorial)',
+          fontSize: 'clamp(1.4rem, 3vw, 1.8rem)',
+          fontWeight: 700, letterSpacing: '-0.02em',
+          color: 'var(--text-primary)',
+        }}>
+          Recordatorios
         </h1>
-        <p className="text-xs sm:text-sm text-gray-400 mt-1">
+        <div style={{ width: '40px', height: '3px', background: 'var(--accent-primary)', margin: '10px 0 6px' }} />
+        <p style={{
+          fontFamily: 'var(--font-editorial)', fontStyle: 'italic', fontSize: '13px',
+          color: 'var(--text-tertiary)', lineHeight: 1.5,
+        }}>
           Configurá recordatorios automáticos para hidratación, descanso y alimentación
         </p>
       </div>
 
       <div className="flex-1 overflow-y-auto p-6 sm:p-8 md:p-10 lg:p-12">
         <div className="max-w-3xl mx-auto space-y-8 lg:space-y-10">
-          {/* Notification Permission Banner */}
           {notificationPermission !== 'granted' && (
-            <div className="bg-white/[0.02] border border-white/[0.06] border-l-2 border-l-blue-500/40 rounded-lg p-5 sm:p-6">
+            <div className="p-5 sm:p-6" style={{ background: 'var(--color-blue-subtle)', border: '2px solid var(--color-blue-medium)', borderLeft: '4px solid var(--color-blue)', borderRadius: '0' }}>
               <div className="flex items-start gap-3">
                 <div className="flex-shrink-0 text-2xl">🔔</div>
                 <div className="flex-1">
-                  <h3 className="font-semibold text-white/90 mb-1">
-                    Activá las notificaciones
-                  </h3>
-                  <p className="text-sm text-white/60 mb-3">
-                    Para recibir recordatorios cuando estés en otra pestaña o app, necesitamos tu permiso para enviar notificaciones.
-                  </p>
-                  <button
-                    onClick={requestNotificationPermission}
-                    className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-sm font-medium transition-colors"
-                  >
-                    Permitir Notificaciones
-                  </button>
+                  <h3 className="font-semibold mb-1" style={{ color: 'var(--text-primary)' }}>Activá las notificaciones</h3>
+                  <p className="text-sm mb-3" style={{ color: 'var(--text-secondary)' }}>Para recibir recordatorios cuando estés en otra pestaña o app, necesitamos tu permiso para enviar notificaciones.</p>
+                  <button onClick={requestNotificationPermission} className="px-4 py-2 text-xs font-bold transition-all duration-200" style={{ background: 'var(--accent-primary)', color: '#fff', borderRadius: '0', border: '2px solid var(--accent-primary)', letterSpacing: '0.06em', textTransform: 'uppercase' as const }}>PERMITIR NOTIFICACIONES</button>
                 </div>
               </div>
             </div>
           )}
 
-          {/* Status Summary */}
-          <div className="bg-gray-800/40 border border-gray-700 rounded-lg p-5 sm:p-6">
+          <div className="p-5 sm:p-6" style={{ background: 'var(--surface-1)', border: '2px solid rgba(255,255,255,0.1)', borderRadius: '0' }}>
             <div className="flex items-center justify-between">
               <div>
-                <h3 className="text-sm font-medium text-gray-300">Estado</h3>
-                <p className="text-2xl font-bold text-white mt-1">
-                  {activeReminders.length} {activeReminders.length === 1 ? 'activo' : 'activos'}
-                </p>
+                <h3 className="text-sm font-medium" style={{ color: 'var(--text-secondary)' }}>Estado</h3>
+                <p className="text-2xl font-bold mt-1" style={{ color: 'var(--text-primary)' }}>{activeReminders.length} {activeReminders.length === 1 ? 'activo' : 'activos'}</p>
               </div>
               <div className="text-right">
-                <h3 className="text-sm font-medium text-gray-300">Notificaciones</h3>
-                <p className={`text-sm font-semibold mt-1 ${notificationsEnabled ? 'text-green-400' : 'text-gray-500'}`}>
-                  {notificationsEnabled ? '✓ Habilitadas' : '✕ Deshabilitadas'}
-                </p>
+                <h3 className="text-sm font-medium" style={{ color: 'var(--text-secondary)' }}>Notificaciones</h3>
+                <p className="text-sm font-semibold mt-1" style={{ color: notificationsEnabled ? 'var(--color-green)' : 'var(--text-muted)' }}>{notificationsEnabled ? '✓ Habilitadas' : '✕ Deshabilitadas'}</p>
               </div>
             </div>
           </div>
 
-          {/* Info Banner */}
-          <div className="bg-white/[0.02] border border-white/[0.06] border-l-2 border-l-yellow-500/40 rounded-lg p-5 sm:p-6">
-            <p className="text-sm text-white/70">
-              <strong className="text-white/90">💡 Consejo:</strong> Los recordatorios son especialmente útiles durante experiencias psicoactivas.
-              Hidratarse, descansar y alimentarse de forma regular reduce riesgos y mejora el bienestar.
+          <div className="p-5 sm:p-6" style={{ background: 'var(--color-amber-subtle)', border: '2px solid var(--color-amber-medium)', borderLeft: '4px solid var(--color-amber)', borderRadius: '0' }}>
+            <p className="text-sm" style={{ color: 'var(--text-primary)' }}>
+              <strong style={{ color: 'var(--color-amber)' }}>💡 Consejo:</strong> Los recordatorios son especialmente útiles durante experiencias psicoactivas. Hidratarse, descansar y alimentarse de forma regular reduce riesgos y mejora el bienestar.
             </p>
           </div>
 
-          {/* Reminders List */}
           <div className="space-y-5">
-            <h2 className="text-lg font-semibold text-gray-200 mb-2">Tus Recordatorios</h2>
-            {reminders.map(reminder => (
-              <ReminderCard
-                key={reminder.id}
-                reminder={reminder}
-                onToggle={() => handleToggle(reminder.id)}
-                onIntervalChange={(minutes) => handleIntervalChange(reminder.id, minutes)}
-              />
-            ))}
+            <h2 className="editorial-heading text-lg mb-2">Tus Recordatorios</h2>
+            <hr className="editorial-divider-accent" style={{ marginTop: '0', marginBottom: '20px' }} />
+            {reminders.map(r => <ReminderCard key={r.id} reminder={r} onToggle={() => handleToggle(r.id)} onIntervalChange={(m) => handleIntervalChange(r.id, m)} />)}
           </div>
 
-          {/* Usage Tips */}
-          <div className="bg-gray-800/40 border border-gray-700 rounded-lg p-5 sm:p-6">
-            <h3 className="text-sm font-semibold text-gray-300 mb-2">Cómo usar los recordatorios</h3>
-            <ul className="space-y-2 text-sm text-gray-400">
-              <li>• <strong className="text-gray-300">Activá/desactivá:</strong> Usa el interruptor para habilitar o deshabilitar cada recordatorio</li>
-              <li>• <strong className="text-gray-300">Ajustá intervalos:</strong> Hacé clic en "Cada X min" para cambiar la frecuencia</li>
-              <li>• <strong className="text-gray-300">Notificaciones:</strong> Deben estar habilitadas para recibir alertas fuera de la app</li>
-              <li>• <strong className="text-gray-300">Personalización:</strong> Ajustá los tiempos según tus necesidades individuales</li>
+          <div className="p-5 sm:p-6" style={{ background: 'var(--surface-1)', border: '2px solid rgba(255,255,255,0.1)', borderRadius: '0' }}>
+            <h3 className="text-sm font-semibold mb-2" style={{ color: 'var(--text-primary)' }}>Cómo usar los recordatorios</h3>
+            <ul className="space-y-2 text-sm" style={{ color: 'var(--text-tertiary)' }}>
+              <li>• <strong style={{ color: 'var(--text-secondary)' }}>Activá/desactivá:</strong> Usa el interruptor para habilitar o deshabilitar cada recordatorio</li>
+              <li>• <strong style={{ color: 'var(--text-secondary)' }}>Ajustá intervalos:</strong> Hacé clic en "Cada X min" para cambiar la frecuencia</li>
+              <li>• <strong style={{ color: 'var(--text-secondary)' }}>Notificaciones:</strong> Deben estar habilitadas para recibir alertas fuera de la app</li>
+              <li>• <strong style={{ color: 'var(--text-secondary)' }}>Personalización:</strong> Ajustá los tiempos según tus necesidades individuales</li>
             </ul>
           </div>
 
-          {/* Safety Note */}
-          <div className="border-t border-gray-700 pt-4">
-            <p className="text-xs text-gray-500 text-center">
-              Los recordatorios son orientativos. Escuchá tu cuerpo y ajustá según tus necesidades.
-              Si te sentís mal, buscá asistencia médica inmediatamente.
-            </p>
+          <div className="pt-4" style={{ borderTop: '2px solid rgba(255,255,255,0.08)' }}>
+            <p className="text-xs text-center" style={{ color: 'var(--text-muted)' }}>Los recordatorios son orientativos. Escuchá tu cuerpo y ajustá según tus necesidades. Si te sentís mal, buscá asistencia médica inmediatamente.</p>
           </div>
         </div>
       </div>

@@ -8,14 +8,43 @@ const ArrowRightIcon: React.FC = () => (
   </svg>
 );
 
-const getSeverityStyle = (severity: TerritorialAlert['severity']) => {
-  const styles = {
-    high: { bg: 'rgba(239, 68, 68, 0.10)', border: 'rgba(239, 68, 68, 0.25)', color: '#f87171', label: 'URGENTE' },
-    medium: { bg: 'rgba(251, 191, 36, 0.08)', border: 'rgba(251, 191, 36, 0.20)', color: '#fbbf24', label: 'IMPORTANTE' },
-    low: { bg: 'rgba(96, 165, 250, 0.08)', border: 'rgba(96, 165, 250, 0.20)', color: '#60a5fa', label: 'INFO' }
-  };
-  return styles[severity];
-};
+/* ── Decorative circle (reference aesthetic) ── */
+const GeoCircle: React.FC<{ size?: number; top?: string; right?: string; left?: string; bottom?: string; opacity?: number }> = ({ size = 120, top, right, left, bottom, opacity = 0.06 }) => (
+  <div
+    style={{
+      position: 'absolute',
+      width: size,
+      height: size,
+      borderRadius: '50%',
+      border: '2px solid var(--accent-primary)',
+      opacity,
+      top, right, left, bottom,
+      pointerEvents: 'none',
+      background: `radial-gradient(circle, rgba(199,112,92,0.08) 30%, transparent 70%)`,
+    }}
+  />
+);
+
+/* ── Halftone pattern circle ── */
+const HalftoneCircle: React.FC<{ size?: number; top?: string; right?: string; left?: string; bottom?: string; opacity?: number }> = ({ size = 100, top, right, left, bottom, opacity = 0.1 }) => (
+  <div
+    style={{
+      position: 'absolute',
+      width: size,
+      height: size,
+      borderRadius: '50%',
+      opacity,
+      top, right, left, bottom,
+      pointerEvents: 'none',
+      background: `radial-gradient(circle at 30% 30%, var(--accent-primary) 1px, transparent 1px),
+                    radial-gradient(circle at 70% 30%, var(--accent-primary) 1px, transparent 1px),
+                    radial-gradient(circle at 30% 70%, var(--accent-primary) 1px, transparent 1px),
+                    radial-gradient(circle at 70% 70%, var(--accent-primary) 1px, transparent 1px),
+                    radial-gradient(circle at 50% 50%, var(--accent-primary) 1px, transparent 1px)`,
+      backgroundSize: '12px 12px',
+    }}
+  />
+);
 
 const getTimeAgo = (timestamp: number): string => {
   const now = Date.now();
@@ -23,7 +52,6 @@ const getTimeAgo = (timestamp: number): string => {
   const days = Math.floor(diff / (24 * 60 * 60 * 1000));
   const months = Math.floor(days / 30);
   const years = Math.floor(days / 365);
-
   if (years > 0) return `Hace ${years} año${years > 1 ? 's' : ''}`;
   if (months > 0) return `Hace ${months} mes${months > 1 ? 'es' : ''}`;
   if (days > 0) return `Hace ${days}d`;
@@ -36,8 +64,6 @@ interface HomeProps {
 
 export const Home: React.FC<HomeProps> = ({ onNavigate }) => {
   const [alerts, setAlerts] = useState<TerritorialAlert[]>([]);
-  const [showTour, setShowTour] = useState(false);
-  const [alertFilter, setAlertFilter] = useState<'all' | '2025' | '2024'>('all');
 
   useEffect(() => {
     setAlerts(getAlerts('all'));
@@ -47,347 +73,326 @@ export const Home: React.FC<HomeProps> = ({ onNavigate }) => {
   const totalResources = LOCAL_RESOURCES.length;
   const freeResources = LOCAL_RESOURCES.filter(r => r.free).length;
 
-  const filteredAlerts = alertFilter === 'all'
-    ? alerts
-    : alerts.filter(a => a.year === parseInt(alertFilter));
-
-  const tourSteps = [
-    { icon: '💬', title: 'Chat Asistente', desc: 'Hacé preguntas sobre sustancias, efectos, interacciones y riesgos. IA entrenada con información científica.', action: 'Ir al Chat', tab: 'chat' },
-    { icon: '📚', title: 'Biblioteca', desc: 'Explorá información detallada de más de 500 sustancias con datos de PsychonautWiki y fuentes científicas.', action: 'Ver Biblioteca', tab: 'library' },
-    { icon: '🧪', title: 'Guía de Testeo', desc: 'Aprendé a usar reactivos para verificar la composición de sustancias y detectar adulteraciones.', action: 'Aprender a Testear', tab: 'testing' },
-    { icon: '🗺️', title: 'Observatorio', desc: 'Consultá alertas territoriales SAT sobre sustancias adulteradas y estadísticas de consumo.', action: 'Ver Alertas', tab: 'observatory' }
-  ];
-
   return (
     <div className="flex-1 flex flex-col min-h-0 overflow-y-auto" style={{ background: 'var(--bg-primary)' }}>
-      <div className="max-w-5xl mx-auto w-full p-4 sm:p-6 lg:p-8 space-y-8">
 
-        {/* ── Welcome ── */}
-        <section style={{ animation: 'fadeInUp 0.4s var(--ease-out-strong) both' }}>
-          <div className="flex items-start justify-between gap-4 flex-wrap">
-            <div className="flex-1 min-w-[260px]">
-              <h1
-                className="text-2xl sm:text-3xl font-bold mb-2"
-                style={{ fontFamily: 'var(--font-editorial)', color: 'var(--text-primary)', letterSpacing: '-0.025em' }}
-              >
-                Bienvenido a Acompañ<span style={{ color: 'var(--accent-primary)' }}>.</span>Ar
-              </h1>
-              <p className="text-sm sm:text-base mb-4" style={{ fontFamily: 'var(--font-editorial)', color: 'var(--text-secondary)', lineHeight: '1.6' }}>
-                Plataforma de información basada en evidencia para la <strong style={{ color: 'var(--text-primary)' }}>reducción de riesgos y daños</strong> en contextos de consumo de sustancias.
-              </p>
-              <button
-                onClick={() => setShowTour(!showTour)}
-                className="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium transition-all duration-200"
-                style={{
-                  background: showTour ? 'var(--surface-active)' : 'var(--accent-primary)',
-                  color: showTour ? 'var(--text-secondary)' : '#fff',
-                  borderRadius: 'var(--radius-sm)',
-                  border: showTour ? '1px solid var(--border-medium)' : 'none',
-                  boxShadow: showTour ? 'none' : '0 2px 8px rgba(199, 112, 92, 0.25)'
-                }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.transform = 'translateY(-1px)';
-                  if (!showTour) e.currentTarget.style.boxShadow = '0 4px 12px rgba(199, 112, 92, 0.35)';
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.transform = 'translateY(0)';
-                  if (!showTour) e.currentTarget.style.boxShadow = '0 2px 8px rgba(199, 112, 92, 0.25)';
-                }}
-              >
-                {showTour ? 'Cerrar tour' : 'Recorrer la plataforma'}
-              </button>
-            </div>
-            {urgentAlerts.length > 0 && (
-              <div
-                className="flex items-center gap-2 px-3 py-2 text-xs font-semibold transition-all duration-300"
-                style={{
-                  background: 'rgba(239, 68, 68, 0.08)',
-                  borderRadius: 'var(--radius-sm)',
-                  border: '1px solid rgba(239, 68, 68, 0.2)',
-                  color: '#f87171',
-                  animation: 'fadeInUp 0.4s var(--ease-out-strong) 0.1s both'
-                }}
-              >
-                <span className="w-2 h-2 rounded-full bg-red-500" style={{ animation: 'pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite' }}></span>
-                {urgentAlerts.length} Alerta{urgentAlerts.length > 1 ? 's' : ''} Urgente{urgentAlerts.length > 1 ? 's' : ''}
-              </div>
-            )}
+      {/* ═══════ HERO — editorial magazine cover ═══════ */}
+      <section className="relative overflow-hidden" style={{ borderBottom: '2px solid rgba(255,255,255,0.08)', minHeight: '340px' }}>
+        {/* Decorative circles */}
+        <GeoCircle size={200} top="-60px" right="-40px" opacity={0.07} />
+        <HalftoneCircle size={140} top="40px" right="60px" opacity={0.12} />
+        <GeoCircle size={80} bottom="20px" left="40px" opacity={0.05} />
+
+        <div className="relative z-10 max-w-4xl mx-auto px-6 sm:px-10 py-12 sm:py-16">
+          {/* Issue number / date — editorial mark */}
+          <div className="flex items-center gap-4 mb-8">
+            <span style={{
+              fontSize: '10px', fontWeight: 700, letterSpacing: '0.14em', textTransform: 'uppercase',
+              color: 'var(--accent-primary)', borderBottom: '2px solid var(--accent-primary)', paddingBottom: '4px'
+            }}>
+              PLATAFORMA
+            </span>
+            <span style={{ fontSize: '10px', color: 'var(--text-muted)', letterSpacing: '0.06em' }}>
+              REDUCCIÓN DE RIESGOS Y DAÑOS
+            </span>
           </div>
 
-          {/* Tour */}
-          {showTour && (
-            <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-3 mt-5">
-              {tourSteps.map((step, idx) => (
-                <button
-                  key={idx}
-                  onClick={() => { onNavigate?.(step.tab); setShowTour(false); }}
-                  className="text-left p-4 group transition-all duration-300"
-                  style={{
-                    background: 'var(--surface-1)',
-                    borderRadius: 'var(--radius-md)',
-                    border: '1px solid var(--border-subtle)',
-                    animation: `fadeInUp 0.3s var(--ease-out-strong) ${idx * 0.05}s both`,
-                  }}
-                  onMouseEnter={(e) => {
-                    e.currentTarget.style.transform = 'translateY(-4px)';
-                    e.currentTarget.style.boxShadow = 'var(--shadow-lifted)';
-                    e.currentTarget.style.borderColor = 'var(--accent-primary)';
-                  }}
-                  onMouseLeave={(e) => {
-                    e.currentTarget.style.transform = 'translateY(0)';
-                    e.currentTarget.style.boxShadow = 'none';
-                    e.currentTarget.style.borderColor = 'var(--border-subtle)';
-                  }}
-                >
-                  <div className="text-2xl mb-2" style={{ display: 'inline-block', transition: 'transform 0.2s' }}>{step.icon}</div>
-                  <h3 className="text-sm font-semibold mb-1" style={{ color: 'var(--text-primary)' }}>{step.title}</h3>
-                  <p className="text-xs mb-3" style={{ color: 'var(--text-tertiary)', lineHeight: '1.5' }}>{step.desc}</p>
-                  <span className="text-xs font-medium flex items-center gap-1 transition-all" style={{ color: 'var(--accent-primary)' }}>
-                    {step.action} <ArrowRightIcon />
-                  </span>
-                </button>
-              ))}
-            </div>
-          )}
-        </section>
+          <h1 style={{
+            fontFamily: 'var(--font-editorial)',
+            fontSize: 'clamp(2rem, 5vw, 3.2rem)',
+            fontWeight: 700,
+            lineHeight: 1.1,
+            letterSpacing: '-0.03em',
+            color: 'var(--text-primary)',
+            maxWidth: '520px',
+          }}>
+            Información basada en evidencia
+          </h1>
 
-        {/* ── Stats ── */}
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
-          {[
-            { label: 'Alertas SAT activas', value: alerts.length.toString(), sub: `${urgentAlerts.length} urgentes`, color: '#f87171' },
-            { label: 'Recursos verificados', value: totalResources.toString(), sub: 'centros de atención', color: 'var(--accent-primary)' },
-            { label: 'Gratuitos', value: freeResources.toString(), sub: 'acceso libre', color: '#34d399' },
-            { label: 'Sustancias', value: '500+', sub: 'en biblioteca', color: '#60a5fa' },
-          ].map((stat, idx) => (
-            <div
-              key={idx}
-              className="p-4 transition-all duration-300"
-              style={{
-                background: 'var(--surface-1)',
-                borderRadius: 'var(--radius-md)',
-                border: '1px solid var(--border-subtle)',
-                animation: `fadeInUp 0.3s var(--ease-out-strong) ${0.08 + idx * 0.04}s both`,
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.transform = 'translateY(-2px)';
-                e.currentTarget.style.boxShadow = 'var(--shadow-ambient)';
-                e.currentTarget.style.borderColor = stat.color;
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.transform = 'translateY(0)';
-                e.currentTarget.style.boxShadow = 'none';
-                e.currentTarget.style.borderColor = 'var(--border-subtle)';
-              }}
-            >
-              <p className="text-2xl font-bold transition-transform duration-200" style={{ color: stat.color, fontVariantNumeric: 'tabular-nums' }}>{stat.value}</p>
-              <p className="text-xs font-medium mt-1" style={{ color: 'var(--text-primary)' }}>{stat.label}</p>
-              <p className="text-xs mt-0.5" style={{ color: 'var(--text-muted)' }}>{stat.sub}</p>
-            </div>
-          ))}
+          <div style={{ width: '48px', height: '3px', background: 'var(--accent-primary)', margin: '20px 0' }} />
+
+          <p style={{
+            fontFamily: 'var(--font-editorial)',
+            fontStyle: 'italic',
+            fontSize: '15px',
+            lineHeight: 1.7,
+            color: 'var(--text-secondary)',
+            maxWidth: '400px',
+          }}>
+            Explorá información sobre sustancias, testeo, centros de atención y alertas sanitarias en Argentina.
+          </p>
         </div>
+      </section>
 
-        {/* ── Alertas SAT Reales ── */}
-        <section style={{ animation: 'fadeInUp 0.4s var(--ease-out-strong) 0.1s both' }}>
-          <div className="flex items-center justify-between mb-4 flex-wrap gap-2">
-            <div>
-              <h2 className="text-lg font-bold" style={{ color: 'var(--text-primary)', letterSpacing: '-0.02em' }}>
-                Alertas SAT
-              </h2>
-              <p className="text-xs mt-0.5" style={{ color: 'var(--text-muted)' }}>
-                Fuente: <a href="https://www.argentina.gob.ar/sat/alertas" target="_blank" rel="noopener noreferrer" style={{ color: 'var(--accent-primary)', textDecoration: 'underline' }}>argentina.gob.ar/sat</a>
-              </p>
-            </div>
-            <div className="flex gap-1">
-              {(['all', '2025', '2024'] as const).map(filter => (
-                <button
-                  key={filter}
-                  onClick={() => setAlertFilter(filter)}
-                  className="px-3 py-1.5 text-xs font-medium"
-                  style={{
-                    background: alertFilter === filter ? 'var(--accent-subtle)' : 'var(--surface)',
-                    color: alertFilter === filter ? 'var(--accent-primary)' : 'var(--text-tertiary)',
-                    borderRadius: 'var(--radius-sm)',
-                    border: `1px solid ${alertFilter === filter ? 'var(--accent-medium)' : 'var(--border-subtle)'}`
-                  }}
-                >
-                  {filter === 'all' ? 'Todas' : filter}
-                </button>
-              ))}
-            </div>
+      {/* ═══════ NAVIGATION CARDS — e-reader style ═══════ */}
+      <section className="relative" style={{ borderBottom: '2px solid rgba(255,255,255,0.08)' }}>
+        <div className="max-w-4xl mx-auto px-6 sm:px-10 py-10">
+
+          {/* Section label */}
+          <div className="flex items-center gap-3 mb-6">
+            <span style={{ fontSize: '10px', fontWeight: 700, letterSpacing: '0.12em', textTransform: 'uppercase', color: 'var(--text-muted)' }}>
+              EXPLORAR
+            </span>
+            <div style={{ flex: 1, height: '1px', background: 'rgba(255,255,255,0.08)' }} />
           </div>
 
-          {/* Emergency Banner */}
-          <div
-            className="p-4 mb-4 flex items-center gap-3"
-            style={{ background: 'rgba(239, 68, 68, 0.06)', borderRadius: 'var(--radius-md)', border: '1px solid rgba(239, 68, 68, 0.15)' }}
-          >
-            <span className="text-xl flex-shrink-0">🚨</span>
-            <div className="flex-1 min-w-0">
-              <p className="text-sm font-semibold" style={{ color: 'var(--text-primary)' }}>Emergencias: SAME 107 — 24/7</p>
-              <p className="text-xs" style={{ color: 'var(--text-tertiary)' }}>Ante sospecha de intoxicación, llamá inmediatamente</p>
-            </div>
-            <a
-              href="tel:107"
-              className="flex-shrink-0 px-4 py-2 text-xs font-bold"
-              style={{ background: '#ef4444', color: '#fff', borderRadius: 'var(--radius-sm)' }}
-            >
-              Llamar 107
-            </a>
-          </div>
-
-          {/* Alert Cards */}
-          <div className="space-y-2">
-            {filteredAlerts.slice(0, 8).map((alert, idx) => {
-              const style = getSeverityStyle(alert.severity);
-              return (
-                <div
-                  key={alert.id}
-                  className="p-4 transition-all duration-300"
-                  style={{
-                    background: style.bg,
-                    borderRadius: 'var(--radius-md)',
-                    borderLeft: `3px solid ${style.color}`,
-                    border: `1px solid ${style.border}`,
-                    borderLeftWidth: '3px',
-                    borderLeftColor: style.color,
-                    animation: `fadeInUp 0.3s var(--ease-out-strong) ${0.15 + idx * 0.03}s both`,
-                  }}
-                  onMouseEnter={(e) => {
-                    e.currentTarget.style.transform = 'translateX(4px)';
-                    e.currentTarget.style.boxShadow = 'var(--shadow-ambient)';
-                  }}
-                  onMouseLeave={(e) => {
-                    e.currentTarget.style.transform = 'translateX(0)';
-                    e.currentTarget.style.boxShadow = 'none';
-                  }}
-                >
-                  <div className="flex items-start justify-between gap-3 mb-2">
-                    <div className="flex-1 min-w-0">
-                      <div className="flex items-center gap-2 mb-1 flex-wrap">
-                        <span
-                          className="px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider"
-                          style={{ background: `${style.color}22`, color: style.color, borderRadius: '4px' }}
-                        >
-                          {style.label}
-                        </span>
-                        {alert.alertNumber && (
-                          <span className="text-[10px] font-mono" style={{ color: 'var(--text-muted)' }}>
-                            {alert.alertNumber}
-                          </span>
-                        )}
-                        <span className="text-[10px]" style={{ color: 'var(--text-muted)' }}>
-                          {getTimeAgo(alert.timestamp)}
-                        </span>
-                      </div>
-                      <h3 className="text-sm font-semibold leading-snug" style={{ color: 'var(--text-primary)' }}>
-                        {alert.title}
-                      </h3>
-                    </div>
-                  </div>
-                  <p className="text-xs leading-relaxed mb-2" style={{ color: 'var(--text-secondary)' }}>
-                    {alert.message}
-                  </p>
-                  <div className="flex items-center justify-between flex-wrap gap-2">
-                    <div className="flex items-center gap-2 flex-wrap">
-                      {alert.substances?.slice(0, 3).map((sub, i) => (
-                        <span key={i} className="px-2 py-0.5 text-[10px] font-medium" style={{ background: 'var(--surface-active)', color: 'var(--text-secondary)', borderRadius: '4px' }}>
-                          {sub}
-                        </span>
-                      ))}
-                      <span className="text-[10px]" style={{ color: 'var(--text-muted)' }}>
-                        {alert.province}
-                      </span>
-                    </div>
-                    {alert.pdfUrl && (
-                      <a
-                        href={alert.pdfUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="text-[10px] font-medium flex items-center gap-1"
-                        style={{ color: 'var(--accent-primary)' }}
-                      >
-                        Ver informe PDF <ArrowRightIcon />
-                      </a>
-                    )}
-                  </div>
-                  {alert.source && (
-                    <p className="text-[10px] mt-2 pt-2" style={{ color: 'var(--text-muted)', borderTop: '1px solid var(--border-subtle)' }}>
-                      Fuente: {alert.source}
-                    </p>
-                  )}
-                </div>
-              );
-            })}
-          </div>
-
-          {filteredAlerts.length > 8 && (
-            <button
-              onClick={() => onNavigate?.('observatory')}
-              className="w-full mt-3 p-3 text-xs font-medium text-center"
-              style={{ background: 'var(--surface)', border: '1px dashed var(--border-medium)', borderRadius: 'var(--radius-md)', color: 'var(--text-tertiary)' }}
-            >
-              Ver {filteredAlerts.length - 8} alerta{filteredAlerts.length - 8 !== 1 ? 's' : ''} más en el Observatorio
-            </button>
-          )}
-        </section>
-
-        {/* ── Herramientas ── */}
-        <section style={{ animation: 'fadeInUp 0.4s var(--ease-out-strong) 0.15s both' }}>
-          <h2 className="text-lg font-bold mb-4" style={{ color: 'var(--text-primary)', letterSpacing: '-0.02em' }}>
-            Herramientas
-          </h2>
-          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-3">
+          {/* Two column editorial cards */}
+          <div className="grid sm:grid-cols-2 gap-0" style={{ border: '2px solid rgba(255,255,255,0.1)' }}>
             {[
-              { icon: '💬', title: 'Chat IA', desc: 'Consultá al asistente sobre sustancias', tab: 'chat', accent: 'var(--accent-primary)' },
-              { icon: '📚', title: 'Biblioteca', desc: '500+ sustancias documentadas', tab: 'library', accent: '#60a5fa' },
-              { icon: '🧪', title: 'Guía de Testeo', desc: 'Reactivos y verificación', tab: 'testing', accent: '#a78bfa' },
-              { icon: '📍', title: 'Recursos', desc: 'Centros de atención cercanos', tab: 'resources', accent: '#34d399' },
-            ].map((tool, idx) => (
+              { num: '01', title: 'Chat IA', desc: 'Consultá al asistente sobre sustancias, efectos e interacciones.', tab: 'chat', action: 'Comenzar' },
+              { num: '02', title: 'Biblioteca', desc: '500+ sustancias documentadas con datos de PsychonautWiki.', tab: 'library', action: 'Explorar' },
+              { num: '03', title: 'Guía de Testeo', desc: 'Aprendé a usar reactivos para verificar composición.', tab: 'testing', action: 'Aprender' },
+              { num: '04', title: 'Recursos', desc: 'Centros de atención, organizaciones y servicios cercanos.', tab: 'resources', action: 'Ver Mapa' },
+            ].map((item, idx) => (
               <button
                 key={idx}
-                onClick={() => onNavigate?.(tool.tab)}
-                className="text-left p-4 group transition-all duration-300"
+                onClick={() => onNavigate?.(item.tab)}
+                className="text-left p-6 sm:p-8 group transition-all duration-200 relative overflow-hidden"
                 style={{
-                  background: 'var(--surface-1)',
-                  borderRadius: 'var(--radius-md)',
-                  border: '1px solid var(--border-subtle)',
-                  cursor: 'pointer',
-                  animation: `fadeInUp 0.3s var(--ease-out-strong) ${0.2 + idx * 0.05}s both`,
+                  background: 'transparent',
+                  borderRight: idx % 2 === 0 ? '1px solid rgba(255,255,255,0.08)' : 'none',
+                  borderBottom: idx < 2 ? '1px solid rgba(255,255,255,0.08)' : 'none',
                 }}
                 onMouseEnter={(e) => {
-                  e.currentTarget.style.borderColor = tool.accent;
-                  e.currentTarget.style.background = 'var(--surface-2)';
-                  e.currentTarget.style.transform = 'translateY(-2px) scale(1.02)';
-                  e.currentTarget.style.boxShadow = 'var(--shadow-md)';
-                  const icon = e.currentTarget.querySelector('.tool-icon') as HTMLElement;
-                  if (icon) icon.style.transform = 'scale(1.1) rotate(5deg)';
+                  e.currentTarget.style.background = 'rgba(199,112,92,0.04)';
                 }}
                 onMouseLeave={(e) => {
-                  e.currentTarget.style.borderColor = 'var(--border-subtle)';
-                  e.currentTarget.style.background = 'var(--surface-1)';
-                  e.currentTarget.style.transform = 'translateY(0) scale(1)';
-                  e.currentTarget.style.boxShadow = 'none';
-                  const icon = e.currentTarget.querySelector('.tool-icon') as HTMLElement;
-                  if (icon) icon.style.transform = 'scale(1) rotate(0deg)';
+                  e.currentTarget.style.background = 'transparent';
                 }}
               >
-                <div className="tool-icon text-2xl mb-2 transition-transform duration-200">{tool.icon}</div>
-                <h3 className="text-sm font-semibold mb-0.5" style={{ color: 'var(--text-primary)' }}>{tool.title}</h3>
-                <p className="text-xs" style={{ color: 'var(--text-tertiary)' }}>{tool.desc}</p>
+                {/* Large number */}
+                <span style={{
+                  fontFamily: 'var(--font-editorial)',
+                  fontSize: '3rem',
+                  fontWeight: 300,
+                  lineHeight: 1,
+                  color: 'rgba(255,255,255,0.06)',
+                  position: 'absolute',
+                  top: '12px',
+                  right: '16px',
+                }}>
+                  {item.num}
+                </span>
+
+                <h3 style={{
+                  fontFamily: 'var(--font-editorial)',
+                  fontSize: '18px',
+                  fontWeight: 700,
+                  color: 'var(--text-primary)',
+                  marginBottom: '8px',
+                  letterSpacing: '-0.01em',
+                }}>
+                  {item.title}
+                </h3>
+                <p style={{
+                  fontFamily: 'var(--font-editorial)',
+                  fontStyle: 'italic',
+                  fontSize: '13px',
+                  lineHeight: 1.6,
+                  color: 'var(--text-tertiary)',
+                  marginBottom: '16px',
+                  maxWidth: '280px',
+                }}>
+                  {item.desc}
+                </p>
+                <span className="flex items-center gap-2" style={{
+                  fontSize: '11px',
+                  fontWeight: 700,
+                  letterSpacing: '0.08em',
+                  textTransform: 'uppercase',
+                  color: 'var(--accent-primary)',
+                }}>
+                  {item.action} <ArrowRightIcon />
+                </span>
               </button>
             ))}
           </div>
-        </section>
-
-        {/* ── Disclaimer ── */}
-        <div
-          className="p-4 text-center"
-          style={{ background: 'var(--surface)', borderRadius: 'var(--radius-md)', border: '1px solid var(--border-subtle)', animation: 'fadeInUp 0.4s var(--ease-out-strong) 0.2s both' }}
-        >
-          <p className="text-xs" style={{ fontFamily: 'var(--font-editorial)', color: 'var(--text-tertiary)', lineHeight: '1.6' }}>
-            <strong style={{ color: 'var(--text-secondary)' }}>Esta plataforma NO promueve el consumo de sustancias.</strong> Brindamos información basada en evidencia para reducción de riesgos y daños. La información es educativa y no sustituye el consejo médico profesional.
-          </p>
         </div>
+      </section>
+
+      {/* ═══════ STATS — large editorial numbers ═══════ */}
+      <section className="relative" style={{ borderBottom: '2px solid rgba(255,255,255,0.08)' }}>
+        <GeoCircle size={100} top="-30px" left="-30px" opacity={0.04} />
+
+        <div className="max-w-4xl mx-auto px-6 sm:px-10 py-10">
+          <div className="flex items-center gap-3 mb-8">
+            <span style={{ fontSize: '10px', fontWeight: 700, letterSpacing: '0.12em', textTransform: 'uppercase', color: 'var(--text-muted)' }}>
+              EN NÚMEROS
+            </span>
+            <div style={{ flex: 1, height: '1px', background: 'rgba(255,255,255,0.08)' }} />
+          </div>
+
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-8 sm:gap-12">
+            {[
+              { value: alerts.length.toString(), label: 'Alertas SAT', sub: 'activas', color: 'var(--accent-primary)' },
+              { value: totalResources.toString(), label: 'Recursos', sub: 'verificados', color: 'var(--text-primary)' },
+              { value: freeResources.toString(), label: 'Gratuitos', sub: 'acceso libre', color: '#34d399' },
+              { value: '500+', label: 'Sustancias', sub: 'documentadas', color: '#60a5fa' },
+            ].map((stat, idx) => (
+              <div key={idx} className="relative">
+                <p style={{
+                  fontFamily: 'var(--font-editorial)',
+                  fontSize: 'clamp(2.5rem, 4vw, 3.5rem)',
+                  fontWeight: 700,
+                  lineHeight: 1,
+                  color: stat.color,
+                  letterSpacing: '-0.03em',
+                }}>
+                  {stat.value}
+                </p>
+                <p style={{
+                  fontSize: '11px',
+                  fontWeight: 700,
+                  letterSpacing: '0.08em',
+                  textTransform: 'uppercase',
+                  color: 'var(--text-tertiary)',
+                  marginTop: '8px',
+                }}>
+                  {stat.label}
+                </p>
+                <p style={{ fontSize: '12px', color: 'var(--text-muted)', marginTop: '2px', fontFamily: 'var(--font-editorial)', fontStyle: 'italic' }}>
+                  {stat.sub}
+                </p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ═══════ ALERTAS — compact, low emphasis ═══════ */}
+      <section className="relative" style={{ borderBottom: '2px solid rgba(255,255,255,0.08)' }}>
+        <div className="max-w-4xl mx-auto px-6 sm:px-10 py-10">
+
+          <div className="flex items-center justify-between mb-6">
+            <div className="flex items-center gap-3">
+              <span style={{ fontSize: '10px', fontWeight: 700, letterSpacing: '0.12em', textTransform: 'uppercase', color: 'var(--text-muted)' }}>
+                ALERTAS SAT
+              </span>
+              <div style={{ width: '40px', height: '1px', background: 'rgba(255,255,255,0.08)' }} />
+              <span style={{ fontSize: '10px', color: 'var(--text-muted)', fontFamily: 'var(--font-editorial)', fontStyle: 'italic' }}>
+                <a href="https://www.argentina.gob.ar/sat/alertas" target="_blank" rel="noopener noreferrer" style={{ color: 'var(--accent-primary)', textDecoration: 'none' }}>
+                  argentina.gob.ar/sat
+                </a>
+              </span>
+            </div>
+            <button
+              onClick={() => onNavigate?.('observatory')}
+              className="flex items-center gap-1"
+              style={{ fontSize: '11px', fontWeight: 700, letterSpacing: '0.06em', textTransform: 'uppercase', color: 'var(--accent-primary)' }}
+            >
+              VER TODAS <ArrowRightIcon />
+            </button>
+          </div>
+
+          {/* Emergency — subtle inline */}
+          <div className="flex items-center gap-3 mb-5 py-3 px-4" style={{ background: 'rgba(239, 68, 68, 0.04)', borderLeft: '3px solid rgba(239,68,68,0.3)' }}>
+            <span style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>
+              <strong style={{ color: '#f87171' }}>Emergencias:</strong> SAME 107 — disponible 24/7
+            </span>
+            <a href="tel:107" style={{ fontSize: '11px', fontWeight: 700, color: '#f87171', letterSpacing: '0.04em', marginLeft: 'auto' }}>
+              107 →
+            </a>
+          </div>
+
+          {/* Compact alert list */}
+          <div className="space-y-0">
+            {alerts.slice(0, 4).map((alert, idx) => (
+              <div
+                key={alert.id}
+                className="flex items-start gap-4 py-4 transition-colors duration-150"
+                style={{
+                  borderBottom: idx < 3 ? '1px solid rgba(255,255,255,0.05)' : 'none',
+                }}
+                onMouseEnter={(e) => { e.currentTarget.style.background = 'rgba(255,255,255,0.02)'; }}
+                onMouseLeave={(e) => { e.currentTarget.style.background = 'transparent'; }}
+              >
+                {/* Severity dot */}
+                <div className="flex-shrink-0 mt-1.5">
+                  <div style={{
+                    width: '8px', height: '8px',
+                    background: alert.severity === 'high' ? '#f87171' : alert.severity === 'medium' ? '#fbbf24' : '#60a5fa',
+                    borderRadius: '50%',
+                  }} />
+                </div>
+
+                {/* Content */}
+                <div className="flex-1 min-w-0">
+                  <p style={{ fontSize: '14px', fontWeight: 600, color: 'var(--text-primary)', fontFamily: 'var(--font-editorial)', lineHeight: 1.4 }}>
+                    {alert.title}
+                  </p>
+                  <div className="flex items-center gap-3 mt-1" style={{ fontSize: '11px', color: 'var(--text-muted)' }}>
+                    <span>{getTimeAgo(alert.timestamp)}</span>
+                    {alert.province && <span>· {alert.province}</span>}
+                    {alert.substances?.[0] && <span style={{ color: 'var(--text-tertiary)' }}>· {alert.substances[0]}</span>}
+                  </div>
+                </div>
+
+                {/* Arrow */}
+                {alert.pdfUrl && (
+                  <a href={alert.pdfUrl} target="_blank" rel="noopener noreferrer" className="flex-shrink-0 mt-1" style={{ color: 'var(--text-muted)' }}>
+                    <ArrowRightIcon />
+                  </a>
+                )}
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ═══════ ADDITIONAL TOOLS — simple list ═══════ */}
+      <section className="relative">
+        <HalftoneCircle size={80} bottom="-20px" right="20px" opacity={0.06} />
+
+        <div className="max-w-4xl mx-auto px-6 sm:px-10 py-10">
+          <div className="flex items-center gap-3 mb-6">
+            <span style={{ fontSize: '10px', fontWeight: 700, letterSpacing: '0.12em', textTransform: 'uppercase', color: 'var(--text-muted)' }}>
+              TAMBIÉN
+            </span>
+            <div style={{ flex: 1, height: '1px', background: 'rgba(255,255,255,0.08)' }} />
+          </div>
+
+          <div className="space-y-0" style={{ border: '2px solid rgba(255,255,255,0.08)' }}>
+            {[
+              { icon: '🗺️', title: 'Observatorio', desc: 'Alertas territoriales y estadísticas de consumo', tab: 'observatory' },
+              { icon: '🔔', title: 'Recordatorios', desc: 'Hidratación, descanso y alimentación automáticos', tab: 'reminders' },
+              { icon: '📊', title: 'Estadísticas', desc: 'Dashboard de gestión y uso', tab: 'dashboard' },
+            ].map((item, idx) => (
+              <button
+                key={idx}
+                onClick={() => onNavigate?.(item.tab)}
+                className="w-full flex items-center gap-4 px-6 py-4 text-left transition-colors duration-150"
+                style={{
+                  borderBottom: idx < 2 ? '1px solid rgba(255,255,255,0.06)' : 'none',
+                }}
+                onMouseEnter={(e) => { e.currentTarget.style.background = 'rgba(199,112,92,0.03)'; }}
+                onMouseLeave={(e) => { e.currentTarget.style.background = 'transparent'; }}
+              >
+                <span style={{ fontSize: '20px' }}>{item.icon}</span>
+                <div className="flex-1 min-w-0">
+                  <p style={{ fontSize: '14px', fontWeight: 600, color: 'var(--text-primary)', fontFamily: 'var(--font-editorial)' }}>{item.title}</p>
+                  <p style={{ fontSize: '12px', color: 'var(--text-muted)', fontFamily: 'var(--font-editorial)', fontStyle: 'italic', marginTop: '2px' }}>{item.desc}</p>
+                </div>
+                <span style={{ color: 'var(--text-muted)' }}><ArrowRightIcon /></span>
+              </button>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ═══════ FOOTER DISCLAIMER ═══════ */}
+      <div className="max-w-4xl mx-auto px-6 sm:px-10 py-8">
+        <p style={{
+          fontSize: '11px',
+          lineHeight: 1.7,
+          color: 'var(--text-muted)',
+          fontFamily: 'var(--font-editorial)',
+          fontStyle: 'italic',
+          textAlign: 'center',
+          maxWidth: '500px',
+          margin: '0 auto',
+        }}>
+          Esta plataforma no promueve el consumo de sustancias. Brindamos información basada en evidencia para reducción de riesgos y daños. No sustituye el consejo médico profesional.
+        </p>
       </div>
     </div>
   );

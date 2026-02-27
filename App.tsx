@@ -114,10 +114,10 @@ const App: React.FC = () => {
 
       {/* ── Sidebar — Collapsible ── */}
       <aside
-        className="hidden lg:flex flex-col border-r flex-shrink-0 relative"
+        className="hidden lg:flex flex-col flex-shrink-0 relative"
         style={{
           width: sidebarCollapsed ? '72px' : '264px',
-          borderColor: 'var(--border-subtle)',
+          borderRight: '2.5px solid rgba(255,255,255,0.12)',
           background: 'var(--bg-secondary)',
           transition: 'width 250ms var(--ease-standard)'
         }}
@@ -125,13 +125,13 @@ const App: React.FC = () => {
         {/* Collapse Toggle */}
         <button
           onClick={() => setSidebarCollapsed(!sidebarCollapsed)}
-          className="absolute -right-3 top-7 z-10 w-6 h-6 rounded-full flex items-center justify-center"
+          className="absolute -right-3 top-7 z-10 w-6 h-6 flex items-center justify-center"
           style={{
             background: 'var(--bg-tertiary)',
-            border: '1px solid var(--border-medium)',
+            border: '2px solid rgba(255,255,255,0.12)',
             color: 'var(--text-muted)',
             fontSize: '10px',
-            boxShadow: 'var(--shadow-sm)'
+            borderRadius: '0',
           }}
           title={sidebarCollapsed ? 'Expandir' : 'Contraer'}
         >
@@ -145,12 +145,12 @@ const App: React.FC = () => {
       </aside>
 
       {/* ── Mobile Header ── */}
-      <div className="lg:hidden fixed top-0 left-0 right-0 z-50 border-b" style={{ background: 'var(--bg-secondary)', borderColor: 'var(--border-subtle)', backdropFilter: 'blur(12px)' }}>
+      <div className="lg:hidden fixed top-0 left-0 right-0 z-50" style={{ background: 'var(--bg-secondary)', borderBottom: '2.5px solid rgba(255,255,255,0.12)' }}>
         <div className="px-4 py-3">
           <div className="flex items-center gap-3">
             <div
               className="w-8 h-8 flex items-center justify-center"
-              style={{ background: 'var(--accent-primary)', borderRadius: '8px' }}
+              style={{ background: 'var(--accent-primary)', borderRadius: '0' }}
             >
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
                 <path d="M12 2L4 6v5c0 5.55 3.84 10.74 8 12 4.16-1.26 8-6.45 8-12V6L12 2Z" fill="rgba(255,255,255,0.15)" stroke="white" strokeWidth="1.5" />
@@ -158,35 +158,38 @@ const App: React.FC = () => {
               </svg>
             </div>
             <div>
-              <h1 className="text-base font-bold" style={{ color: 'var(--text-primary)' }}>
+              <h1 className="text-base font-bold" style={{ color: 'var(--text-primary)', fontFamily: 'var(--font-editorial)' }}>
                 Acompañ<span style={{ color: 'var(--accent-primary)' }}>.</span>Ar
               </h1>
             </div>
           </div>
         </div>
 
-        {/* Mobile Tabs */}
+        {/* Mobile Tabs — Editorial */}
         <div className="overflow-x-auto scrollbar-hide px-4 pb-2.5">
           <div className="flex gap-1.5">
             {[
-              { id: 'home' as Tab, label: 'Inicio' },
-              { id: 'chat' as Tab, label: 'Chat' },
-              { id: 'library' as Tab, label: 'Biblioteca' },
-              { id: 'testing' as Tab, label: 'Testeo' },
-              { id: 'resources' as Tab, label: 'Recursos' },
-              { id: 'observatory' as Tab, label: 'Observ.' },
-              { id: 'reminders' as Tab, label: 'Record.' },
-              { id: 'dashboard' as Tab, label: 'Stats' },
+              { id: 'home' as Tab, label: 'INICIO' },
+              { id: 'chat' as Tab, label: 'CHAT' },
+              { id: 'library' as Tab, label: 'BIBLIO' },
+              { id: 'testing' as Tab, label: 'TESTEO' },
+              { id: 'resources' as Tab, label: 'RECURSOS' },
+              { id: 'observatory' as Tab, label: 'OBSERV.' },
+              { id: 'reminders' as Tab, label: 'RECORD.' },
+              { id: 'dashboard' as Tab, label: 'STATS' },
             ].map((tab) => (
               <button
                 key={tab.id}
                 onClick={() => setActiveTab(tab.id)}
-                className="px-3 py-1.5 text-xs font-medium whitespace-nowrap"
+                className="px-3 py-1.5 text-xs whitespace-nowrap"
                 style={{
-                  background: activeTab === tab.id ? 'var(--accent-subtle)' : 'var(--surface)',
-                  color: activeTab === tab.id ? 'var(--accent-primary)' : 'var(--text-tertiary)',
-                  borderRadius: 'var(--radius-sm)',
-                  border: `1px solid ${activeTab === tab.id ? 'var(--accent-medium)' : 'var(--border-subtle)'}`
+                  background: activeTab === tab.id ? 'var(--accent-primary)' : 'transparent',
+                  color: activeTab === tab.id ? '#fff' : 'var(--text-tertiary)',
+                  borderRadius: '0',
+                  border: activeTab === tab.id ? '1.5px solid var(--accent-primary)' : '1.5px solid rgba(255,255,255,0.1)',
+                  fontWeight: 700,
+                  letterSpacing: '0.08em',
+                  fontSize: '10px',
                 }}
               >
                 {tab.label}

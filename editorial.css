@@ -1,0 +1,194 @@
+/* ══════════════════════════════════════════════════
+   EDITORIAL DESIGN SYSTEM — Acompañ.Ar
+   Bordes gruesos, tipografía serif, corners rectos
+   ══════════════════════════════════════════════════ */
+
+:root {
+  /* — Colors (override for editorial light mode, not used yet) — */
+  --ed-bg: #f5f0e8;
+  --ed-bg-card: #faf8f3;
+  --ed-bg-inset: #eee9df;
+  --ed-ink: #1a1a1a;
+  --ed-ink-soft: #3d3d3d;
+  --ed-ink-muted: #6b6b6b;
+  --ed-accent: #2d2d2d;
+  --ed-border: #1a1a1a;
+  --ed-user-bg: #2d2d2d;
+  --ed-user-text: #f5f0e8;
+  --ed-positive: #2e6b3a;
+  --ed-warning: #8a6914;
+  --ed-danger: #8a2c2c;
+
+  /* — Typography — */
+  --font-display: 'Playfair Display', 'Georgia', serif;
+  --font-body: 'Lora', 'Georgia', serif;
+  --font-ui: 'Inter', system-ui, sans-serif;
+
+  /* — Borders (editorial) — */
+  --border-thick: 2.5px solid rgba(255, 255, 255, 0.18);
+  --border-thin: 1.5px solid rgba(255, 255, 255, 0.12);
+  --border-hair: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+/* ── Drop Cap ────────────────────────────── */
+.drop-cap::first-letter {
+  float: left;
+  font-family: var(--font-display);
+  font-size: 3.4em;
+  font-weight: 900;
+  line-height: 0.8;
+  margin-right: 0.08em;
+  margin-top: 0.05em;
+  color: var(--accent-primary, var(--ed-ink));
+}
+
+/* ── Editorial Divider ───────────────────── */
+.editorial-divider {
+  border: none;
+  border-top: 2px solid rgba(255, 255, 255, 0.15);
+  margin: 0;
+}
+
+.editorial-divider-thin {
+  border: none;
+  border-top: 1px solid rgba(255, 255, 255, 0.10);
+  margin: 0;
+}
+
+/* ── Editorial Card ──────────────────────── */
+.editorial-card {
+  background: var(--surface-1, var(--ed-bg-card));
+  border: 2px solid rgba(255, 255, 255, 0.14);
+  border-radius: 0;
+}
+
+.editorial-card:hover {
+  border-color: var(--accent-primary, var(--ed-accent));
+}
+
+/* ── Scrollbar ───────────────────────────── */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 0;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.25);
+}
+
+/* ── Animations ──────────────────────────── */
+@keyframes fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-editorial-in {
+  animation: fade-in 0.4s ease-out forwards;
+}
+
+@keyframes pulse-dot {
+
+  0%,
+  100% {
+    opacity: 0.3;
+  }
+
+  50% {
+    opacity: 1;
+  }
+}
+
+/* ── Selection ───────────────────────────── */
+::selection {
+  background: rgba(199, 112, 92, 0.25);
+  color: var(--text-primary, var(--ed-ink));
+}
+
+/* ── Focus states ────────────────────────── */
+input:focus,
+select:focus,
+textarea:focus,
+button:focus-visible {
+  outline: 2px solid var(--accent-primary, var(--ed-ink)) !important;
+  outline-offset: 2px;
+  box-shadow: none !important;
+}
+
+/* ── Category pills ──────────────────────── */
+.ed-pill {
+  border: 2px solid rgba(255, 255, 255, 0.16);
+  background: transparent;
+  color: var(--text-secondary, var(--ed-ink));
+  font-family: var(--font-ui);
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 0.3rem 0.8rem;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s, border-color 0.2s;
+  border-radius: 0;
+}
+
+.ed-pill:hover {
+  border-color: var(--accent-primary, var(--ed-accent));
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.ed-pill-active {
+  background: var(--accent-primary, var(--ed-ink)) !important;
+  color: #fff !important;
+  border-color: var(--accent-primary, var(--ed-ink)) !important;
+}
+
+/* ── Progress bars ───────────────────────── */
+.ed-progress-track {
+  background: rgba(255, 255, 255, 0.08);
+  height: 6px;
+  border-radius: 0;
+}
+
+.ed-progress-bar {
+  background: var(--accent-primary, var(--ed-ink));
+  height: 6px;
+  transition: width 0.4s ease;
+  border-radius: 0;
+}
+
+/* ── Editorial geometric decorations ─────── */
+.ed-geo-dot {
+  width: 6px;
+  height: 6px;
+  background: var(--accent-primary);
+  display: inline-block;
+}
+
+.ed-geo-line {
+  height: 3px;
+  background: var(--accent-primary);
+  width: 48px;
+}
+
+/* ── Editorial number display ────────────── */
+.ed-stat-number {
+  font-family: var(--font-editorial, 'Newsreader', serif);
+  font-weight: 700;
+  font-size: 2rem;
+  line-height: 1;
+  letter-spacing: -0.02em;
+}

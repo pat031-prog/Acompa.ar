@@ -3,15 +3,15 @@ import React from 'react';
 
 export const Header: React.FC = () => {
   return (
-    <header className="px-5 py-5 border-b" style={{ borderColor: 'var(--border-subtle)' }}>
+    <header className="px-5 py-5" style={{ borderBottom: '2.5px solid rgba(255,255,255,0.15)' }}>
       <div className="flex items-center gap-3.5">
-        {/* Logo Mark — Shield + Heart */}
+        {/* Logo Mark — Editorial square */}
         <div
           className="w-10 h-10 flex-shrink-0 flex items-center justify-center"
           style={{
             background: 'var(--accent-primary)',
-            borderRadius: '10px',
-            boxShadow: '0 2px 8px rgba(199, 112, 92, 0.3), 0 0 0 1px rgba(199, 112, 92, 0.1)',
+            borderRadius: '0',
+            border: '2px solid var(--accent-primary)',
           }}
         >
           <svg width="22" height="22" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -36,14 +36,14 @@ export const Header: React.FC = () => {
         {/* Brand Name */}
         <div className="min-w-0">
           <h1
-            className="text-base font-semibold leading-tight tracking-tight"
-            style={{ color: 'var(--text-primary)', letterSpacing: '-0.02em' }}
+            className="text-base font-bold leading-tight"
+            style={{ color: 'var(--text-primary)', letterSpacing: '-0.02em', fontFamily: 'var(--font-editorial)' }}
           >
             Acompañ<span style={{ color: 'var(--accent-primary)' }}>.</span>Ar
           </h1>
           <p
             className="text-xs mt-0.5"
-            style={{ color: 'var(--text-tertiary)', letterSpacing: '0.04em', textTransform: 'uppercase', fontWeight: 500 }}
+            style={{ color: 'var(--text-tertiary)', letterSpacing: '0.1em', textTransform: 'uppercase', fontWeight: 700, fontSize: '9px' }}
           >
             Reducción de daños
           </p>

@@ -30,27 +30,20 @@ export const PsychonautWikiInfo: React.FC<PsychonautWikiInfoProps> = ({ substanc
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    // Reset state when substance changes
     setData(null);
     setError(null);
     setIsExpanded(false);
   }, [substanceName]);
 
   const loadData = async () => {
-    if (data || isLoading) return; // Already loaded or loading
-
+    if (data || isLoading) return;
     setIsLoading(true);
     setError(null);
-
     try {
       const alias = getSubstanceAlias(substanceName);
       const result = await fetchPsychonautData(alias);
-
-      if (result) {
-        setData(result);
-      } else {
-        setError('No se encontró información adicional');
-      }
+      if (result) setData(result);
+      else setError('No se encontró información adicional');
     } catch (err) {
       console.error('Error loading PsychonautWiki data:', err);
       setError('Error al cargar información');
@@ -60,38 +53,39 @@ export const PsychonautWikiInfo: React.FC<PsychonautWikiInfoProps> = ({ substanc
   };
 
   const handleToggle = () => {
-    if (!isExpanded && !data && !error) {
-      loadData();
-    }
+    if (!isExpanded && !data && !error) loadData();
     setIsExpanded(!isExpanded);
   };
 
   return (
-    <div className="mt-6 border border-gray-700 rounded-lg overflow-hidden bg-gray-800/20">
+    <div className="mt-6 overflow-hidden" style={{ border: '1px solid var(--border-subtle)', borderRadius: 'var(--radius-md)', background: 'var(--surface-1)' }}>
       <button
         onClick={handleToggle}
-        className="w-full p-4 flex items-center justify-between hover:bg-gray-700/30 transition-colors"
+        className="w-full p-4 flex items-center justify-between transition-colors"
+        style={{ background: 'transparent' }}
+        onMouseEnter={(e) => e.currentTarget.style.background = 'var(--surface-hover)'}
+        onMouseLeave={(e) => e.currentTarget.style.background = 'transparent'}
       >
         <div className="flex items-center gap-2">
-          <span className="font-semibold text-gray-200">Información Adicional (PsychonautWiki)</span>
+          <span className="font-semibold text-sm" style={{ color: 'var(--text-primary)' }}>Información Adicional (PsychonautWiki)</span>
           {isLoading && (
-            <span className="text-xs text-gray-400 animate-pulse">Cargando...</span>
+            <span className="text-xs" style={{ color: 'var(--text-muted)', animation: 'pulse 1.5s ease-in-out infinite' }}>Cargando...</span>
           )}
         </div>
         <ChevronDownIcon
-          className={`w-5 h-5 text-gray-400 transition-transform ${isExpanded ? 'rotate-180' : ''}`}
+          className={`w-5 h-5 transition-transform duration-200 ${isExpanded ? 'rotate-180' : ''}`}
         />
       </button>
 
       {isExpanded && (
-        <div className="p-4 border-t border-gray-700 bg-gray-900/30">
+        <div className="p-4" style={{ borderTop: '1px solid var(--border-subtle)', background: 'var(--bg-secondary)', animation: 'fadeInUp 0.2s var(--ease-out-strong) both' }}>
           {isLoading && (
-            <p className="text-sm text-gray-400 text-center py-4">Cargando información...</p>
+            <p className="text-sm text-center py-4" style={{ color: 'var(--text-muted)' }}>Cargando información...</p>
           )}
 
           {error && !isLoading && (
-            <div className="bg-yellow-500/10 border border-yellow-500/30 rounded-lg p-3">
-              <p className="text-sm text-yellow-300">{error}</p>
+            <div className="p-3" style={{ background: 'var(--color-amber-subtle)', border: '1px solid var(--color-amber-medium)', borderRadius: 'var(--radius-sm)' }}>
+              <p className="text-sm" style={{ color: 'var(--color-amber)' }}>{error}</p>
             </div>
           )}
 
@@ -99,24 +93,24 @@ export const PsychonautWikiInfo: React.FC<PsychonautWikiInfoProps> = ({ substanc
             <div className="space-y-4">
               {data.summary && (
                 <div>
-                  <h4 className="font-semibold text-gray-200 text-sm mb-2">Resumen</h4>
-                  <p className="text-sm text-gray-300 leading-relaxed">{data.summary}</p>
+                  <h4 className="font-semibold text-sm mb-2" style={{ color: 'var(--text-primary)' }}>Resumen</h4>
+                  <p className="text-sm leading-relaxed" style={{ color: 'var(--text-secondary)' }}>{data.summary}</p>
                 </div>
               )}
 
               {data.addictionPotential && (
                 <div>
-                  <h4 className="font-semibold text-gray-200 text-sm mb-2">Potencial de Adicción</h4>
-                  <p className="text-sm text-gray-300">{data.addictionPotential}</p>
+                  <h4 className="font-semibold text-sm mb-2" style={{ color: 'var(--text-primary)' }}>Potencial de Adicción</h4>
+                  <p className="text-sm" style={{ color: 'var(--text-secondary)' }}>{data.addictionPotential}</p>
                 </div>
               )}
 
               {data.toxicity && data.toxicity.length > 0 && (
                 <div>
-                  <h4 className="font-semibold text-gray-200 text-sm mb-2">Toxicidad</h4>
+                  <h4 className="font-semibold text-sm mb-2" style={{ color: 'var(--color-red)' }}>Toxicidad</h4>
                   <ul className="list-disc pl-5 space-y-1">
                     {data.toxicity.map((item, idx) => (
-                      <li key={idx} className="text-sm text-gray-300">{item}</li>
+                      <li key={idx} className="text-sm" style={{ color: 'var(--text-secondary)' }}>{item}</li>
                     ))}
                   </ul>
                 </div>
@@ -124,28 +118,28 @@ export const PsychonautWikiInfo: React.FC<PsychonautWikiInfoProps> = ({ substanc
 
               {data.crossTolerances && data.crossTolerances.length > 0 && (
                 <div>
-                  <h4 className="font-semibold text-gray-200 text-sm mb-2">Tolerancia Cruzada Con</h4>
-                  <p className="text-sm text-gray-300">{data.crossTolerances.join(', ')}</p>
+                  <h4 className="font-semibold text-sm mb-2" style={{ color: 'var(--text-primary)' }}>Tolerancia Cruzada Con</h4>
+                  <p className="text-sm" style={{ color: 'var(--text-secondary)' }}>{data.crossTolerances.join(', ')}</p>
                 </div>
               )}
 
               {data.roas && data.roas.length > 0 && (
                 <div>
-                  <h4 className="font-semibold text-gray-200 text-sm mb-3">Vías de Administración (ROAs)</h4>
+                  <h4 className="font-semibold text-sm mb-3" style={{ color: 'var(--text-primary)' }}>Vías de Administración (ROAs)</h4>
                   <div className="space-y-3">
                     {data.roas.map((roa, idx) => (
-                      <div key={idx} className="bg-gray-800/40 rounded-lg p-3">
-                        <h5 className="font-semibold text-blue-300 text-sm mb-2 capitalize">{roa.name}</h5>
+                      <div key={idx} className="p-3" style={{ background: 'var(--surface-1)', borderRadius: 'var(--radius-sm)', border: '1px solid var(--border-subtle)' }}>
+                        <h5 className="font-semibold text-sm mb-2 capitalize" style={{ color: 'var(--color-blue)' }}>{roa.name}</h5>
                         {roa.dose && (
                           <div className="mb-2">
-                            <span className="text-xs text-gray-400">Dosificación: </span>
-                            <span className="text-xs text-gray-300">{formatDoseInfo(roa)}</span>
+                            <span className="text-xs" style={{ color: 'var(--text-muted)' }}>Dosificación: </span>
+                            <span className="text-xs" style={{ color: 'var(--text-secondary)' }}>{formatDoseInfo(roa)}</span>
                           </div>
                         )}
                         {roa.duration && (
                           <div>
-                            <span className="text-xs text-gray-400">Duración: </span>
-                            <span className="text-xs text-gray-300">{formatDurationInfo(roa)}</span>
+                            <span className="text-xs" style={{ color: 'var(--text-muted)' }}>Duración: </span>
+                            <span className="text-xs" style={{ color: 'var(--text-secondary)' }}>{formatDurationInfo(roa)}</span>
                           </div>
                         )}
                       </div>
@@ -160,7 +154,10 @@ export const PsychonautWikiInfo: React.FC<PsychonautWikiInfoProps> = ({ substanc
                     href={data.url}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-sm text-blue-400 hover:text-blue-300 inline-flex items-center gap-1"
+                    className="text-sm inline-flex items-center gap-1"
+                    style={{ color: 'var(--color-blue)' }}
+                    onMouseEnter={(e) => e.currentTarget.style.textDecoration = 'underline'}
+                    onMouseLeave={(e) => e.currentTarget.style.textDecoration = 'none'}
                   >
                     Ver más en PsychonautWiki
                     <ExternalLinkIcon />
@@ -168,8 +165,8 @@ export const PsychonautWikiInfo: React.FC<PsychonautWikiInfoProps> = ({ substanc
                 </div>
               )}
 
-              <div className="pt-2 border-t border-gray-700">
-                <p className="text-xs text-gray-500">
+              <div className="pt-2" style={{ borderTop: '1px solid var(--border-subtle)' }}>
+                <p className="text-xs" style={{ color: 'var(--text-muted)' }}>
                   Fuente: PsychonautWiki - Información complementaria. Siempre consultar con profesionales de la salud.
                 </p>
               </div>

@@ -87,14 +87,18 @@ export const Tabs: React.FC<TabsProps> = ({ activeTab, setActiveTab, collapsed =
             onClick={() => setActiveTab(item.id)}
             aria-pressed={isActive}
             title={collapsed ? item.label : undefined}
-            className="group relative flex items-center text-left text-sm font-medium"
+            className="group relative flex items-center text-left text-sm"
             style={{
               gap: collapsed ? '0' : '10px',
-              padding: collapsed ? '10px' : '8px 10px',
+              padding: collapsed ? '10px' : '8px 12px',
               justifyContent: collapsed ? 'center' : 'flex-start',
-              borderRadius: 'var(--radius-sm)',
+              borderRadius: '0',
               background: isActive ? 'var(--surface-active)' : 'transparent',
               color: isActive ? 'var(--text-primary)' : 'var(--text-tertiary)',
+              borderLeft: isActive ? '3px solid var(--accent-primary)' : '3px solid transparent',
+              fontWeight: isActive ? 700 : 500,
+              letterSpacing: '0.02em',
+              fontFamily: 'var(--font-ui)',
               WebkitTapHighlightColor: 'transparent',
               transition: 'all 150ms var(--ease)'
             }}
@@ -102,12 +106,14 @@ export const Tabs: React.FC<TabsProps> = ({ activeTab, setActiveTab, collapsed =
               if (!isActive) {
                 e.currentTarget.style.background = 'var(--surface-hover)';
                 e.currentTarget.style.color = 'var(--text-secondary)';
+                e.currentTarget.style.borderLeftColor = 'rgba(255,255,255,0.1)';
               }
             }}
             onMouseLeave={(e) => {
               if (!isActive) {
                 e.currentTarget.style.background = 'transparent';
                 e.currentTarget.style.color = 'var(--text-tertiary)';
+                e.currentTarget.style.borderLeftColor = 'transparent';
               }
             }}
           >
@@ -118,15 +124,7 @@ export const Tabs: React.FC<TabsProps> = ({ activeTab, setActiveTab, collapsed =
               {item.icon}
             </span>
             {!collapsed && (
-              <>
-                <span className="flex-1 tracking-tight">{item.label}</span>
-                {isActive && (
-                  <span
-                    className="w-1.5 h-1.5 rounded-full"
-                    style={{ background: 'var(--accent-primary)' }}
-                  ></span>
-                )}
-              </>
+              <span className="flex-1" style={{ letterSpacing: '0.01em' }}>{item.label}</span>
             )}
           </button>
         );

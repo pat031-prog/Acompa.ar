@@ -1,272 +1,537 @@
 <!DOCTYPE html>
 <html lang="es">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes" />
-    <meta name="theme-color" content="#0e0f11" />
-    <meta name="apple-mobile-web-app-capable" content="yes" />
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-    <title>Acompañ.Ar — Reducción de Daños</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&display=swap" rel="stylesheet">
-    <script src="https://cdn.tailwindcss.com"></script>
-    <style>
-      /* ═══════════════════════════════════════
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes" />
+  <meta name="theme-color" content="#0e0f11" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <title>Acompañ.Ar — Reducción de Daños</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&display=swap"
+    rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    /* ═══════════════════════════════════════
          Acompañ.Ar — Design System v2
          Professional dark theme + terracotta accent
          ═══════════════════════════════════════ */
-      :root {
-        /* ── Core Palette ── */
-        --bg-primary: #0a0a0f;
-        --bg-secondary: #0e0f14;
-        --bg-tertiary: #131419;
-        --surface: rgba(255, 255, 255, 0.02);
-        --surface-hover: rgba(255, 255, 255, 0.04);
-        --surface-active: rgba(255, 255, 255, 0.06);
-        --surface-1: rgba(255, 255, 255, 0.03);
-        --surface-2: rgba(255, 255, 255, 0.05);
-        --surface-3: rgba(255, 255, 255, 0.07);
+    :root {
+      /* ── Core Palette ── */
+      --bg-primary: #0a0a0f;
+      --bg-secondary: #0e0f14;
+      --bg-tertiary: #131419;
+      --surface: rgba(255, 255, 255, 0.04);
+      --surface-hover: rgba(255, 255, 255, 0.07);
+      --surface-active: rgba(255, 255, 255, 0.10);
+      --surface-1: rgba(255, 255, 255, 0.05);
+      --surface-2: rgba(255, 255, 255, 0.08);
+      --surface-3: rgba(255, 255, 255, 0.11);
 
-        /* ── Digital Humanism aliases (warm paper mapped to dark) ── */
-        --bg-paper-100: var(--bg-primary);
-        --bg-paper-200: var(--bg-secondary);
-        --bg-surface: var(--bg-tertiary);
-        --bg: var(--bg-primary);
+      /* ── Digital Humanism aliases (warm paper mapped to dark) ── */
+      --bg-paper-100: var(--bg-primary);
+      --bg-paper-200: var(--bg-secondary);
+      --bg-surface: var(--bg-tertiary);
+      --bg: var(--bg-primary);
 
-        /* ── Text Hierarchy ── */
-        --text-primary: rgba(255, 255, 255, 0.92);
-        --text-secondary: rgba(255, 255, 255, 0.64);
-        --text-tertiary: rgba(255, 255, 255, 0.48);
-        --text-muted: rgba(255, 255, 255, 0.32);
-        --text: var(--text-primary);
-        --muted: var(--text-secondary);
+      /* ── Text Hierarchy ── */
+      --text-primary: rgba(255, 255, 255, 0.92);
+      --text-secondary: rgba(255, 255, 255, 0.64);
+      --text-tertiary: rgba(255, 255, 255, 0.48);
+      --text-muted: rgba(255, 255, 255, 0.32);
+      --text: var(--text-primary);
+      --muted: var(--text-secondary);
 
-        /* Text ink aliases (for Home/Dashboard) */
-        --text-ink-900: rgba(255, 255, 255, 0.92);
-        --text-ink-600: rgba(255, 255, 255, 0.56);
-        --text-ink-400: rgba(255, 255, 255, 0.38);
+      /* Text ink aliases (for Home/Dashboard) */
+      --text-ink-900: rgba(255, 255, 255, 0.92);
+      --text-ink-600: rgba(255, 255, 255, 0.56);
+      --text-ink-400: rgba(255, 255, 255, 0.38);
 
-        /* ── Borders ── */
-        --border-subtle: rgba(255, 255, 255, 0.06);
-        --border-medium: rgba(255, 255, 255, 0.10);
-        --border: var(--border-subtle);
+      /* ── Borders ── */
+      --border-subtle: rgba(255, 255, 255, 0.12);
+      --border-medium: rgba(255, 255, 255, 0.20);
+      --border: var(--border-subtle);
+      --border-thick: 2.5px solid rgba(255, 255, 255, 0.18);
+      --border-editorial: 1.5px solid rgba(255, 255, 255, 0.14);
 
-        /* ── Accent — Terracotta ── */
-        --accent-primary: #C7705C;
-        --accent-hover: #d4826f;
-        --accent-subtle: rgba(199, 112, 92, 0.12);
-        --accent-medium: rgba(199, 112, 92, 0.20);
-        --accent-weak: rgba(199, 112, 92, 0.08);
-        --accent: var(--accent-primary);
+      /* ── Accent — Terracotta ── */
+      --accent-primary: #C7705C;
+      --accent-hover: #d4826f;
+      --accent-subtle: rgba(199, 112, 92, 0.12);
+      --accent-medium: rgba(199, 112, 92, 0.20);
+      --accent-weak: rgba(199, 112, 92, 0.08);
+      --accent: var(--accent-primary);
 
-        /* ── Shadows ── */
-        --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.3);
-        --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.3);
-        --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.4);
-        --shadow-ambient: 0 1px 3px rgba(0, 0, 0, 0.25), 0 1px 2px rgba(0, 0, 0, 0.15);
-        --shadow-lifted: 0 8px 24px rgba(0, 0, 0, 0.35), 0 2px 6px rgba(0, 0, 0, 0.2);
+      /* ── Semantic Colors — Vibrant ── */
+      --color-blue: #60A5FA;
+      --color-blue-subtle: rgba(96, 165, 250, 0.10);
+      --color-blue-medium: rgba(96, 165, 250, 0.20);
+      --color-green: #34D399;
+      --color-green-subtle: rgba(52, 211, 153, 0.10);
+      --color-green-medium: rgba(52, 211, 153, 0.20);
+      --color-amber: #FBBF24;
+      --color-amber-subtle: rgba(251, 191, 36, 0.10);
+      --color-amber-medium: rgba(251, 191, 36, 0.20);
+      --color-red: #F87171;
+      --color-red-subtle: rgba(248, 113, 113, 0.10);
+      --color-red-medium: rgba(248, 113, 113, 0.20);
+      --color-violet: #A78BFA;
+      --color-violet-subtle: rgba(167, 139, 250, 0.10);
+      --color-violet-medium: rgba(167, 139, 250, 0.20);
 
-        /* ── Radius ── */
-        --radius-sm: 8px;
-        --radius-md: 12px;
-        --radius-lg: 16px;
-        --radius-xl: 20px;
+      /* ── Shadows (minimal for editorial) ── */
+      --shadow-sm: none;
+      --shadow-md: 0 2px 4px rgba(0, 0, 0, 0.15);
+      --shadow-lg: 0 4px 8px rgba(0, 0, 0, 0.2);
+      --shadow-ambient: none;
+      --shadow-lifted: 0 4px 12px rgba(0, 0, 0, 0.2);
+      --shadow-glow-accent: none;
 
-        /* ── Spacing ── */
-        --space-1: 4px;
-        --space-2: 8px;
-        --space-3: 12px;
-        --space-4: 16px;
-        --space-5: 20px;
-        --space-6: 24px;
-        --space-8: 32px;
-        --space-10: 40px;
-        --space-12: 48px;
-        --space-16: 64px;
+      /* ── Radius (editorial: sharp corners) ── */
+      --radius-sm: 2px;
+      --radius-md: 3px;
+      --radius-lg: 4px;
+      --radius-xl: 4px;
 
-        /* ── Typography ── */
-        --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-        --font-ui: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-        --font-editorial: 'Newsreader', Georgia, 'Times New Roman', serif;
+      /* ── Spacing ── */
+      --space-1: 4px;
+      --space-2: 8px;
+      --space-3: 12px;
+      --space-4: 16px;
+      --space-5: 20px;
+      --space-6: 24px;
+      --space-8: 32px;
+      --space-10: 40px;
+      --space-12: 48px;
+      --space-16: 64px;
 
-        --font-size-xs: 13px;
-        --font-size-sm: 14px;
-        --font-size-base: 15px;
-        --font-size-md: 16px;
-        --font-size-lg: 18px;
-        --font-size-xl: 20px;
-        --font-size-2xl: 24px;
-        --font-size-3xl: 30px;
+      /* ── Typography ── */
+      --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      --font-ui: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      --font-editorial: 'Newsreader', Georgia, 'Times New Roman', serif;
+      --font-mono: 'SF Mono', 'Fira Code', 'Consolas', monospace;
 
-        --line-height-tight: 1.25;
-        --line-height-snug: 1.375;
-        --line-height-normal: 1.5;
-        --line-height-relaxed: 1.625;
+      --font-size-xs: 13px;
+      --font-size-sm: 14px;
+      --font-size-base: 15px;
+      --font-size-md: 16px;
+      --font-size-lg: 18px;
+      --font-size-xl: 20px;
+      --font-size-2xl: 24px;
+      --font-size-3xl: 30px;
 
-        --letter-spacing-tight: -0.02em;
+      --line-height-tight: 1.25;
+      --line-height-snug: 1.375;
+      --line-height-normal: 1.5;
+      --line-height-relaxed: 1.625;
 
-        /* ── Transitions & Easing ── */
-        --transition-fast: 150ms cubic-bezier(0.4, 0, 0.2, 1);
-        --transition-base: 200ms cubic-bezier(0.4, 0, 0.2, 1);
-        --transition-slow: 300ms cubic-bezier(0.4, 0, 0.2, 1);
+      --letter-spacing-tight: -0.02em;
 
-        --t-fast: 150ms;
-        --t-medium: 250ms;
-        --ease: cubic-bezier(0.4, 0, 0.2, 1);
-        --ease-standard: cubic-bezier(0.4, 0, 0.2, 1);
-        --ease-out-strong: cubic-bezier(0.16, 1, 0.3, 1);
+      /* ── Transitions & Easing ── */
+      --transition-fast: 150ms cubic-bezier(0.4, 0, 0.2, 1);
+      --transition-base: 200ms cubic-bezier(0.4, 0, 0.2, 1);
+      --transition-slow: 300ms cubic-bezier(0.4, 0, 0.2, 1);
+
+      --t-fast: 150ms;
+      --t-medium: 250ms;
+      --ease: cubic-bezier(0.4, 0, 0.2, 1);
+      --ease-standard: cubic-bezier(0.4, 0, 0.2, 1);
+      --ease-out-strong: cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    /* ── Reset ── */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    /* ── Base ── */
+    html,
+    body {
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      -webkit-text-size-adjust: 100%;
+      -webkit-overflow-scrolling: touch;
+      font-family: var(--font-sans) !important;
+      font-weight: 400;
+      font-size: var(--font-size-base);
+      line-height: var(--line-height-normal);
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      background: var(--bg-primary) !important;
+      color: var(--text-primary) !important;
+      letter-spacing: -0.011em;
+    }
+
+    #root {
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      background: var(--bg-primary) !important;
+    }
+
+    /* ── Ambient Glow removed for editorial cleanness ── */
+    body::before {
+      display: none;
+    }
+
+    /* ── Scrollbar — Minimal ── */
+    .scrollbar-hide::-webkit-scrollbar {
+      display: none;
+    }
+
+    .scrollbar-hide {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+
+    ::-webkit-scrollbar {
+      width: 4px;
+      height: 4px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: var(--border-medium);
+      border-radius: 2px;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+      background: rgba(255, 255, 255, 0.14);
+    }
+
+    * {
+      scrollbar-width: thin;
+      scrollbar-color: var(--border-medium) transparent;
+    }
+
+    body {
+      overflow-x: hidden;
+    }
+
+    /* ── Typography Hierarchy ── */
+    h1 {
+      font-size: var(--font-size-3xl);
+      font-weight: 700;
+      line-height: var(--line-height-tight);
+      letter-spacing: -0.022em;
+      color: var(--text-primary);
+    }
+
+    h2 {
+      font-size: var(--font-size-2xl);
+      font-weight: 600;
+      line-height: var(--line-height-tight);
+      letter-spacing: -0.019em;
+      color: var(--text-primary);
+    }
+
+    h3 {
+      font-size: var(--font-size-xl);
+      font-weight: 600;
+      line-height: var(--line-height-snug);
+      letter-spacing: -0.016em;
+      color: var(--text-primary);
+    }
+
+    h4,
+    h5,
+    h6 {
+      font-size: var(--font-size-lg);
+      font-weight: 500;
+      line-height: var(--line-height-snug);
+      letter-spacing: -0.013em;
+      color: var(--text-secondary);
+    }
+
+    p {
+      font-size: var(--font-size-base);
+      line-height: var(--line-height-relaxed);
+    }
+
+    small {
+      font-size: var(--font-size-sm);
+      color: var(--text-tertiary);
+    }
+
+    /* ── Editorial text class ── */
+    .editorial {
+      font-family: var(--font-editorial);
+    }
+
+    /* ── Editorial Typography System ── */
+
+    /* Drop cap — large initial letter for article content */
+    .drop-cap::first-letter {
+      float: left;
+      font-family: var(--font-editorial);
+      font-size: 3.2em;
+      line-height: 0.82;
+      font-weight: 700;
+      margin-right: 8px;
+      margin-top: 4px;
+      color: var(--accent-primary);
+    }
+
+    /* Section heading — editorial serif with decorative accent line */
+    .editorial-heading {
+      font-family: var(--font-editorial);
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      line-height: 1.15;
+      color: var(--text-primary);
+    }
+
+    /* Subheading — lighter weight, editorial italic */
+    .editorial-subtitle {
+      font-family: var(--font-editorial);
+      font-style: italic;
+      font-weight: 400;
+      color: var(--text-secondary);
+      line-height: 1.5;
+      letter-spacing: -0.005em;
+    }
+
+    /* Section divider — thick editorial rule */
+    .editorial-divider {
+      border: none;
+      height: 2px;
+      background: rgba(255, 255, 255, 0.15);
+      margin: 28px 0;
+    }
+
+    /* Thick accent divider */
+    .editorial-divider-accent {
+      border: none;
+      height: 3px;
+      background: var(--accent-primary);
+      margin: 28px 0;
+      width: 48px;
+    }
+
+    /* Editorial body text — refined reading */
+    .editorial-body {
+      font-family: var(--font-editorial);
+      font-size: 15px;
+      line-height: 1.75;
+      color: var(--text-secondary);
+      letter-spacing: 0.003em;
+      font-weight: 400;
+      text-rendering: optimizeLegibility;
+    }
+
+    .editorial-body strong {
+      font-weight: 600;
+      color: var(--text-primary);
+    }
+
+    /* Caption / meta — small editorial label */
+    .editorial-caption {
+      font-family: var(--font-sans);
+      font-size: 11px;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--text-muted);
+    }
+
+    /* Date stamp — editorial style */
+    .editorial-date {
+      font-family: var(--font-editorial);
+      font-style: italic;
+      font-size: 13px;
+      color: var(--text-tertiary);
+      letter-spacing: 0.01em;
+    }
+
+    /* Pull quote — editorial callout */
+    .editorial-pullquote {
+      font-family: var(--font-editorial);
+      font-size: 20px;
+      font-style: italic;
+      font-weight: 500;
+      line-height: 1.45;
+      color: var(--text-primary);
+      padding: 24px 28px;
+      border-left: 4px solid var(--accent-primary);
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      background: transparent;
+      margin: 28px 0;
+    }
+
+    /* Category label — editorial tag */
+    .editorial-tag {
+      font-family: var(--font-sans);
+      font-size: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      padding: 3px 10px;
+      border-radius: 0;
+      border: 1.5px solid rgba(255, 255, 255, 0.2);
+      color: var(--text-tertiary);
+      display: inline-block;
+    }
+
+    /* Card with editorial thick border */
+    .editorial-card {
+      background: var(--surface-1);
+      border: 2px solid rgba(255, 255, 255, 0.14);
+      border-radius: 0;
+      transition: border-color 0.2s ease;
+    }
+
+    .editorial-card:hover {
+      border-color: var(--accent-primary);
+    }
+
+    /* Numbered list — editorial ordered list with accent numbers */
+    .editorial-list {
+      list-style: none;
+      counter-reset: editorial-counter;
+      padding: 0;
+    }
+
+    .editorial-list>li {
+      counter-increment: editorial-counter;
+      padding-left: 36px;
+      position: relative;
+      margin-bottom: 16px;
+      font-family: var(--font-editorial);
+      line-height: 1.6;
+      color: var(--text-secondary);
+    }
+
+    .editorial-list>li::before {
+      content: counter(editorial-counter, decimal-leading-zero);
+      position: absolute;
+      left: 0;
+      top: 0;
+      font-family: var(--font-sans);
+      font-weight: 700;
+      font-size: 13px;
+      color: var(--accent-primary);
+      letter-spacing: 0.02em;
+    }
+
+    /* Inline accent highlight */
+    .accent-text {
+      color: var(--accent-primary);
+      font-weight: 600;
+    }
+
+    /* ── Editorial utility classes ── */
+    .ed-border-thick {
+      border: 2.5px solid rgba(255, 255, 255, 0.18);
+    }
+
+    .ed-uppercase {
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      font-weight: 700;
+      font-size: 10px;
+    }
+
+    .ed-number-big {
+      font-family: var(--font-editorial);
+      font-size: 2.5rem;
+      font-weight: 700;
+      line-height: 1;
+      letter-spacing: -0.03em;
+    }
+
+    .ed-geo-circle {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      border: 2px solid rgba(255, 255, 255, 0.1);
+      background: repeating-conic-gradient(rgba(255, 255, 255, 0.03) 0% 25%,
+          transparent 25% 50%);
+      position: absolute;
+      pointer-events: none;
+    }
+
+    /* ── Transitions ── */
+    * {
+      transition: background-color var(--transition-base),
+        border-color var(--transition-base),
+        color var(--transition-fast),
+        opacity var(--transition-fast);
+    }
+
+    button,
+    a {
+      transition: all var(--transition-base);
+    }
+
+    /* ── Focus States ── */
+    *:focus-visible {
+      outline: 2px solid var(--accent-primary);
+      outline-offset: 2px;
+      border-radius: var(--radius-sm);
+    }
+
+    /* ── Animations ── */
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
       }
 
-      /* ── Reset ── */
-      * {
-        box-sizing: border-box;
-        margin: 0;
-        padding: 0;
+      to {
+        opacity: 1;
+      }
+    }
+
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(12px);
       }
 
-      /* ── Base ── */
-      html, body {
-        width: 100%;
-        height: 100%;
-        overflow: hidden;
-        -webkit-text-size-adjust: 100%;
-        -webkit-overflow-scrolling: touch;
-        font-family: var(--font-sans) !important;
-        font-weight: 400;
-        font-size: var(--font-size-base);
-        line-height: var(--line-height-normal);
-        -webkit-font-smoothing: antialiased;
-        -moz-osx-font-smoothing: grayscale;
-        background: var(--bg-primary) !important;
-        color: var(--text-primary) !important;
-        letter-spacing: -0.011em;
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes scaleIn {
+      from {
+        opacity: 0;
+        transform: scale(0.96);
       }
 
-      #root {
-        width: 100%;
-        height: 100%;
-        overflow: hidden;
-        background: var(--bg-primary) !important;
+      to {
+        opacity: 1;
+        transform: scale(1);
+      }
+    }
+
+    @keyframes pulse {
+
+      0%,
+      100% {
+        opacity: 1;
       }
 
-      /* ── Ambient Glow — Warm Terracotta ── */
-      body::before {
-        content: '';
-        position: fixed;
-        top: 0;
-        left: 0;
-        right: 0;
-        height: 600px;
-        background: radial-gradient(ellipse 80% 50% at 50% -20%, rgba(199, 112, 92, 0.04), transparent);
-        pointer-events: none;
-        z-index: 0;
+      50% {
+        opacity: 0.5;
       }
+    }
 
-      /* ── Scrollbar — Minimal ── */
-      .scrollbar-hide::-webkit-scrollbar { display: none; }
-      .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
-
-      ::-webkit-scrollbar { width: 4px; height: 4px; }
-      ::-webkit-scrollbar-track { background: transparent; }
-      ::-webkit-scrollbar-thumb { background: var(--border-medium); border-radius: 2px; }
-      ::-webkit-scrollbar-thumb:hover { background: rgba(255, 255, 255, 0.14); }
-
-      * { scrollbar-width: thin; scrollbar-color: var(--border-medium) transparent; }
-
-      body { overflow-x: hidden; }
-
-      /* ── Typography Hierarchy ── */
-      h1 {
-        font-size: var(--font-size-3xl);
-        font-weight: 700;
-        line-height: var(--line-height-tight);
-        letter-spacing: -0.022em;
-        color: var(--text-primary);
-      }
-
-      h2 {
-        font-size: var(--font-size-2xl);
-        font-weight: 600;
-        line-height: var(--line-height-tight);
-        letter-spacing: -0.019em;
-        color: var(--text-primary);
-      }
-
-      h3 {
-        font-size: var(--font-size-xl);
-        font-weight: 600;
-        line-height: var(--line-height-snug);
-        letter-spacing: -0.016em;
-        color: var(--text-primary);
-      }
-
-      h4, h5, h6 {
-        font-size: var(--font-size-lg);
-        font-weight: 500;
-        line-height: var(--line-height-snug);
-        letter-spacing: -0.013em;
-        color: var(--text-secondary);
-      }
-
-      p {
-        font-size: var(--font-size-base);
-        line-height: var(--line-height-relaxed);
-      }
-
-      small {
-        font-size: var(--font-size-sm);
-        color: var(--text-tertiary);
-      }
-
-      /* ── Editorial text class ── */
-      .editorial {
-        font-family: var(--font-editorial);
-      }
-
-      /* ── Transitions ── */
-      * {
-        transition: background-color var(--transition-base),
-                    border-color var(--transition-base),
-                    color var(--transition-fast),
-                    opacity var(--transition-fast);
-      }
-
-      button, a { transition: all var(--transition-base); }
-
-      /* ── Focus States ── */
-      *:focus-visible {
-        outline: 2px solid var(--accent-primary);
-        outline-offset: 2px;
-        border-radius: var(--radius-sm);
-      }
-
-      /* ── Animations ── */
-      @keyframes fadeIn {
-        from { opacity: 0; }
-        to { opacity: 1; }
-      }
-
-      @keyframes fadeInUp {
-        from { opacity: 0; transform: translateY(12px); }
-        to { opacity: 1; transform: translateY(0); }
-      }
-
-      @keyframes scaleIn {
-        from { opacity: 0; transform: scale(0.96); }
-        to { opacity: 1; transform: scale(1); }
-      }
-
-      @keyframes pulse {
-        0%, 100% { opacity: 1; }
-        50% { opacity: 0.5; }
-      }
-
-      /* ── Tailwind Override Layer ── */
-      body {
-        background-color: var(--bg-primary) !important;
-      }
-    </style>
+    /* ── Tailwind Override Layer ── */
+    body {
+      background-color: var(--bg-primary) !important;
+    }
+  </style>
   <script type="importmap">
 {
   "imports": {
@@ -278,8 +543,10 @@
 }
 </script>
 </head>
-  <body style="background-color: #0a0a0f !important;">
-    <div id="root" style="background-color: #0a0a0f !important;"></div>
-    <script type="module" src="/index.tsx"></script>
-  </body>
+
+<body style="background-color: #0a0a0f !important;">
+  <div id="root" style="background-color: #0a0a0f !important;"></div>
+  <script type="module" src="/index.tsx"></script>
+</body>
+
 </html>
