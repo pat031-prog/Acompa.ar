@@ -5,9 +5,16 @@ import type { Tab } from '../types';
 interface TabsProps {
   activeTab: Tab;
   setActiveTab: (tab: Tab) => void;
+  collapsed?: boolean;
 }
 
-// Icons for navigation
+// Icons
+const HomeIcon = () => (
+  <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor">
+    <path strokeLinecap="round" strokeLinejoin="round" d="m2.25 12 8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25" />
+  </svg>
+);
+
 const ChatIcon = () => (
   <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor">
     <path strokeLinecap="round" strokeLinejoin="round" d="M8.625 12a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0 0H8.25m4.125 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0 0H12m4.125 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0 0h-.375M21 12c0 4.556-4.03 8.25-9 8.25a9.764 9.764 0 0 1-2.555-.337A5.972 5.972 0 0 1 5.41 20.97a5.969 5.969 0 0 1-.474-.065 4.48 4.48 0 0 0 .978-2.025c.09-.457-.133-.901-.467-1.226C3.93 16.178 3 14.189 3 12c0-4.556 4.03-8.25 9-8.25s9 3.694 9 8.25Z" />
@@ -58,6 +65,7 @@ interface NavItem {
 }
 
 const navItems: NavItem[] = [
+  { id: 'home', label: 'Inicio', icon: <HomeIcon /> },
   { id: 'chat', label: 'Chat', icon: <ChatIcon /> },
   { id: 'library', label: 'Biblioteca', icon: <LibraryIcon /> },
   { id: 'testing', label: 'Testeo', icon: <TestIcon /> },
@@ -67,9 +75,9 @@ const navItems: NavItem[] = [
   { id: 'dashboard', label: 'Estadísticas', icon: <DashboardIcon /> },
 ];
 
-export const Tabs: React.FC<TabsProps> = ({ activeTab, setActiveTab }) => {
+export const Tabs: React.FC<TabsProps> = ({ activeTab, setActiveTab, collapsed = false }) => {
   return (
-    <nav className="flex flex-col gap-0.5 py-3 px-2">
+    <nav className="flex flex-col gap-0.5 py-3" style={{ padding: collapsed ? '12px 4px' : '12px 8px' }}>
       {navItems.map((item) => {
         const isActive = activeTab === item.id;
         return (
@@ -78,25 +86,47 @@ export const Tabs: React.FC<TabsProps> = ({ activeTab, setActiveTab }) => {
             id={`tab-${item.id}`}
             onClick={() => setActiveTab(item.id)}
             aria-pressed={isActive}
-            className={`
-              group relative flex items-center gap-3 px-3 py-2.5 rounded-lg
-              text-left text-sm font-medium
-              transition-all duration-200
-              ${isActive
-                ? 'bg-white/[0.06] text-white/95'
-                : 'text-white/55 hover:text-white/75 hover:bg-white/[0.03]'
-              }
-            `}
+            title={collapsed ? item.label : undefined}
+            className="group relative flex items-center text-left text-sm font-medium"
             style={{
-              WebkitTapHighlightColor: 'transparent'
+              gap: collapsed ? '0' : '10px',
+              padding: collapsed ? '10px' : '8px 10px',
+              justifyContent: collapsed ? 'center' : 'flex-start',
+              borderRadius: 'var(--radius-sm)',
+              background: isActive ? 'var(--surface-active)' : 'transparent',
+              color: isActive ? 'var(--text-primary)' : 'var(--text-tertiary)',
+              WebkitTapHighlightColor: 'transparent',
+              transition: 'all 150ms var(--ease)'
+            }}
+            onMouseEnter={(e) => {
+              if (!isActive) {
+                e.currentTarget.style.background = 'var(--surface-hover)';
+                e.currentTarget.style.color = 'var(--text-secondary)';
+              }
+            }}
+            onMouseLeave={(e) => {
+              if (!isActive) {
+                e.currentTarget.style.background = 'transparent';
+                e.currentTarget.style.color = 'var(--text-tertiary)';
+              }
             }}
           >
-            <span className={`flex-shrink-0 transition-all duration-200 ${isActive ? 'text-white/80' : 'text-white/40 group-hover:text-white/60'}`}>
+            <span
+              className="flex-shrink-0"
+              style={{ color: isActive ? 'var(--accent-primary)' : 'inherit', opacity: isActive ? 1 : 0.7 }}
+            >
               {item.icon}
             </span>
-            <span className="flex-1 tracking-tight">{item.label}</span>
-            {isActive && (
-              <span className="absolute right-0 top-1/2 -translate-y-1/2 w-0.5 h-4 bg-blue-500/80 rounded-l-full"></span>
+            {!collapsed && (
+              <>
+                <span className="flex-1 tracking-tight">{item.label}</span>
+                {isActive && (
+                  <span
+                    className="w-1.5 h-1.5 rounded-full"
+                    style={{ background: 'var(--accent-primary)' }}
+                  ></span>
+                )}
+              </>
             )}
           </button>
         );
