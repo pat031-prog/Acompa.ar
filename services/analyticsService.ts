@@ -216,6 +216,19 @@ const getDefaultAlerts = (): TerritorialAlert[] => {
   return [
     // ═══ ALERTAS 2025 ═══
     {
+      id: 'sat-2025-26',
+      province: 'Nacional',
+      title: 'SAT N°26 — 2-Metilmetcatinona (2-MMC)',
+      message: 'En diciembre de 2025 el SAT recibió notificación sobre la detección de 2-Metilmetcatinona (2-MMC), una catinona sintética sin uso medicinal reconocido. Actúa como estimulante del sistema nervioso central. Se consume por vía oral, inhalada o inyectable. Los efectos incluyen euforia, confusión, cuadros de psicosis aguda, agresividad y paranoia. Alto riesgo de toxicidad cardiovascular y neuropsiquiátrica.',
+      severity: 'high',
+      timestamp: new Date('2025-12-10').getTime(),
+      source: 'SAT — Ministerio de Salud de la Nación',
+      alertNumber: 'SAT N°26/2025',
+      year: 2025,
+      substances: ['2-MMC', '2-Metilmetcatinona'],
+      pdfUrl: 'https://www.argentina.gob.ar/sites/default/files/alerta-1-2-metilmetcatinona-sat-n-26.pdf',
+    },
+    {
       id: 'sat-2025-4',
       province: 'Ciudad Autónoma de Buenos Aires',
       title: 'SAT N°4/2025 — 25E-NBOH en troqueles multicolor',

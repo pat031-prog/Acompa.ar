@@ -77,12 +77,21 @@ export const Home: React.FC<HomeProps> = ({ onNavigate }) => {
               </p>
               <button
                 onClick={() => setShowTour(!showTour)}
-                className="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium"
+                className="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium transition-all duration-200"
                 style={{
                   background: showTour ? 'var(--surface-active)' : 'var(--accent-primary)',
                   color: showTour ? 'var(--text-secondary)' : '#fff',
                   borderRadius: 'var(--radius-sm)',
-                  border: showTour ? '1px solid var(--border-medium)' : 'none'
+                  border: showTour ? '1px solid var(--border-medium)' : 'none',
+                  boxShadow: showTour ? 'none' : '0 2px 8px rgba(199, 112, 92, 0.25)'
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.transform = 'translateY(-1px)';
+                  if (!showTour) e.currentTarget.style.boxShadow = '0 4px 12px rgba(199, 112, 92, 0.35)';
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.transform = 'translateY(0)';
+                  if (!showTour) e.currentTarget.style.boxShadow = '0 2px 8px rgba(199, 112, 92, 0.25)';
                 }}
               >
                 {showTour ? 'Cerrar tour' : 'Recorrer la plataforma'}
@@ -90,10 +99,16 @@ export const Home: React.FC<HomeProps> = ({ onNavigate }) => {
             </div>
             {urgentAlerts.length > 0 && (
               <div
-                className="flex items-center gap-2 px-3 py-2 text-xs font-semibold"
-                style={{ background: 'rgba(239, 68, 68, 0.08)', borderRadius: 'var(--radius-sm)', border: '1px solid rgba(239, 68, 68, 0.2)', color: '#f87171' }}
+                className="flex items-center gap-2 px-3 py-2 text-xs font-semibold transition-all duration-300"
+                style={{
+                  background: 'rgba(239, 68, 68, 0.08)',
+                  borderRadius: 'var(--radius-sm)',
+                  border: '1px solid rgba(239, 68, 68, 0.2)',
+                  color: '#f87171',
+                  animation: 'fadeInUp 0.4s var(--ease-out-strong) 0.1s both'
+                }}
               >
-                <span className="w-2 h-2 rounded-full bg-red-500 animate-pulse"></span>
+                <span className="w-2 h-2 rounded-full bg-red-500" style={{ animation: 'pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite' }}></span>
                 {urgentAlerts.length} Alerta{urgentAlerts.length > 1 ? 's' : ''} Urgente{urgentAlerts.length > 1 ? 's' : ''}
               </div>
             )}
@@ -101,18 +116,33 @@ export const Home: React.FC<HomeProps> = ({ onNavigate }) => {
 
           {/* Tour */}
           {showTour && (
-            <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-3 mt-5" style={{ animation: 'scaleIn 0.25s var(--ease-out-strong) both' }}>
+            <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-3 mt-5">
               {tourSteps.map((step, idx) => (
                 <button
                   key={idx}
                   onClick={() => { onNavigate?.(step.tab); setShowTour(false); }}
-                  className="text-left p-4 group"
-                  style={{ background: 'var(--surface-1)', borderRadius: 'var(--radius-md)', border: '1px solid var(--border-subtle)' }}
+                  className="text-left p-4 group transition-all duration-300"
+                  style={{
+                    background: 'var(--surface-1)',
+                    borderRadius: 'var(--radius-md)',
+                    border: '1px solid var(--border-subtle)',
+                    animation: `fadeInUp 0.3s var(--ease-out-strong) ${idx * 0.05}s both`,
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.transform = 'translateY(-4px)';
+                    e.currentTarget.style.boxShadow = 'var(--shadow-lifted)';
+                    e.currentTarget.style.borderColor = 'var(--accent-primary)';
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.transform = 'translateY(0)';
+                    e.currentTarget.style.boxShadow = 'none';
+                    e.currentTarget.style.borderColor = 'var(--border-subtle)';
+                  }}
                 >
-                  <div className="text-2xl mb-2">{step.icon}</div>
+                  <div className="text-2xl mb-2" style={{ display: 'inline-block', transition: 'transform 0.2s' }}>{step.icon}</div>
                   <h3 className="text-sm font-semibold mb-1" style={{ color: 'var(--text-primary)' }}>{step.title}</h3>
                   <p className="text-xs mb-3" style={{ color: 'var(--text-tertiary)', lineHeight: '1.5' }}>{step.desc}</p>
-                  <span className="text-xs font-medium flex items-center gap-1" style={{ color: 'var(--accent-primary)' }}>
+                  <span className="text-xs font-medium flex items-center gap-1 transition-all" style={{ color: 'var(--accent-primary)' }}>
                     {step.action} <ArrowRightIcon />
                   </span>
                 </button>
@@ -122,7 +152,7 @@ export const Home: React.FC<HomeProps> = ({ onNavigate }) => {
         </section>
 
         {/* ── Stats ── */}
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-3" style={{ animation: 'fadeInUp 0.4s var(--ease-out-strong) 0.05s both' }}>
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
           {[
             { label: 'Alertas SAT activas', value: alerts.length.toString(), sub: `${urgentAlerts.length} urgentes`, color: '#f87171' },
             { label: 'Recursos verificados', value: totalResources.toString(), sub: 'centros de atención', color: 'var(--accent-primary)' },
@@ -131,10 +161,25 @@ export const Home: React.FC<HomeProps> = ({ onNavigate }) => {
           ].map((stat, idx) => (
             <div
               key={idx}
-              className="p-4"
-              style={{ background: 'var(--surface-1)', borderRadius: 'var(--radius-md)', border: '1px solid var(--border-subtle)' }}
+              className="p-4 transition-all duration-300"
+              style={{
+                background: 'var(--surface-1)',
+                borderRadius: 'var(--radius-md)',
+                border: '1px solid var(--border-subtle)',
+                animation: `fadeInUp 0.3s var(--ease-out-strong) ${0.08 + idx * 0.04}s both`,
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.transform = 'translateY(-2px)';
+                e.currentTarget.style.boxShadow = 'var(--shadow-ambient)';
+                e.currentTarget.style.borderColor = stat.color;
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.transform = 'translateY(0)';
+                e.currentTarget.style.boxShadow = 'none';
+                e.currentTarget.style.borderColor = 'var(--border-subtle)';
+              }}
             >
-              <p className="text-2xl font-bold" style={{ color: stat.color, fontVariantNumeric: 'tabular-nums' }}>{stat.value}</p>
+              <p className="text-2xl font-bold transition-transform duration-200" style={{ color: stat.color, fontVariantNumeric: 'tabular-nums' }}>{stat.value}</p>
               <p className="text-xs font-medium mt-1" style={{ color: 'var(--text-primary)' }}>{stat.label}</p>
               <p className="text-xs mt-0.5" style={{ color: 'var(--text-muted)' }}>{stat.sub}</p>
             </div>
@@ -192,12 +237,12 @@ export const Home: React.FC<HomeProps> = ({ onNavigate }) => {
 
           {/* Alert Cards */}
           <div className="space-y-2">
-            {filteredAlerts.slice(0, 8).map((alert) => {
+            {filteredAlerts.slice(0, 8).map((alert, idx) => {
               const style = getSeverityStyle(alert.severity);
               return (
                 <div
                   key={alert.id}
-                  className="p-4"
+                  className="p-4 transition-all duration-300"
                   style={{
                     background: style.bg,
                     borderRadius: 'var(--radius-md)',
@@ -205,6 +250,15 @@ export const Home: React.FC<HomeProps> = ({ onNavigate }) => {
                     border: `1px solid ${style.border}`,
                     borderLeftWidth: '3px',
                     borderLeftColor: style.color,
+                    animation: `fadeInUp 0.3s var(--ease-out-strong) ${0.15 + idx * 0.03}s both`,
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.transform = 'translateX(4px)';
+                    e.currentTarget.style.boxShadow = 'var(--shadow-ambient)';
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.transform = 'translateX(0)';
+                    e.currentTarget.style.boxShadow = 'none';
                   }}
                 >
                   <div className="flex items-start justify-between gap-3 mb-2">
@@ -292,12 +346,32 @@ export const Home: React.FC<HomeProps> = ({ onNavigate }) => {
               <button
                 key={idx}
                 onClick={() => onNavigate?.(tool.tab)}
-                className="text-left p-4 group"
-                style={{ background: 'var(--surface-1)', borderRadius: 'var(--radius-md)', border: '1px solid var(--border-subtle)', cursor: 'pointer' }}
-                onMouseEnter={(e) => { e.currentTarget.style.borderColor = tool.accent; e.currentTarget.style.background = 'var(--surface-2)'; }}
-                onMouseLeave={(e) => { e.currentTarget.style.borderColor = 'var(--border-subtle)'; e.currentTarget.style.background = 'var(--surface-1)'; }}
+                className="text-left p-4 group transition-all duration-300"
+                style={{
+                  background: 'var(--surface-1)',
+                  borderRadius: 'var(--radius-md)',
+                  border: '1px solid var(--border-subtle)',
+                  cursor: 'pointer',
+                  animation: `fadeInUp 0.3s var(--ease-out-strong) ${0.2 + idx * 0.05}s both`,
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.borderColor = tool.accent;
+                  e.currentTarget.style.background = 'var(--surface-2)';
+                  e.currentTarget.style.transform = 'translateY(-2px) scale(1.02)';
+                  e.currentTarget.style.boxShadow = 'var(--shadow-md)';
+                  const icon = e.currentTarget.querySelector('.tool-icon') as HTMLElement;
+                  if (icon) icon.style.transform = 'scale(1.1) rotate(5deg)';
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.borderColor = 'var(--border-subtle)';
+                  e.currentTarget.style.background = 'var(--surface-1)';
+                  e.currentTarget.style.transform = 'translateY(0) scale(1)';
+                  e.currentTarget.style.boxShadow = 'none';
+                  const icon = e.currentTarget.querySelector('.tool-icon') as HTMLElement;
+                  if (icon) icon.style.transform = 'scale(1) rotate(0deg)';
+                }}
               >
-                <div className="text-2xl mb-2">{tool.icon}</div>
+                <div className="tool-icon text-2xl mb-2 transition-transform duration-200">{tool.icon}</div>
                 <h3 className="text-sm font-semibold mb-0.5" style={{ color: 'var(--text-primary)' }}>{tool.title}</h3>
                 <p className="text-xs" style={{ color: 'var(--text-tertiary)' }}>{tool.desc}</p>
               </button>

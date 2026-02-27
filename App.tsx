@@ -4,7 +4,7 @@ import { Header } from './components/Header';
 import { ChatWindow } from './components/ChatWindow';
 import { ChatInput } from './components/ChatInput';
 import { ConsentModal } from './components/ConsentModal';
-import { getChatbotResponse } from './services/geminiService';
+import { getDeepInfraResponse } from './services/deepinfraService';
 import { Tabs } from './components/Tabs';
 import { Home } from './components/Home';
 import { Library } from './components/Library';
@@ -20,6 +20,7 @@ const App: React.FC = () => {
   const [messages, setMessages] = useState<Message[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [consent, setConsent] = useState<ConsentData | null>(null);
+  const [apiKey, setApiKey] = useState<string>('');
   const [activeTab, setActiveTab] = useState<Tab>('home');
   const [sidebarCollapsed, setSidebarCollapsed] = useState<boolean>(false);
 
@@ -49,12 +50,16 @@ const App: React.FC = () => {
       if (!consent) {
         throw new Error("Consent not given.");
       }
+      if (!apiKey) {
+        throw new Error("API key not provided.");
+      }
+
       const history: HistoryContent[] = messages.map(msg => ({
         role: msg.sender === 'user' ? 'user' : 'model',
         parts: [{ text: msg.text }]
       }));
 
-      const { text: botResponseText, sources: botResponseSources } = await getChatbotResponse(text, history, consent);
+      const { text: botResponseText, sources: botResponseSources } = await getDeepInfraResponse(text, history, consent, apiKey);
 
       const botMessage: Message = {
         id: `bot-${Date.now()}`,
@@ -74,11 +79,30 @@ const App: React.FC = () => {
     } finally {
       setIsLoading(false);
     }
-  }, [isLoading, consent, messages]);
+  }, [isLoading, consent, apiKey, messages]);
 
-  const handleConsent = (consentData: ConsentData) => {
+  const handleConsent = (consentData: ConsentData, apiKeyValue: string) => {
     setConsent(consentData);
+    setApiKey(apiKeyValue);
+    // Store API key in localStorage for persistence
+    try {
+      localStorage.setItem('deepinfra_api_key', apiKeyValue);
+    } catch (error) {
+      console.error('Error storing API key:', error);
+    }
   };
+
+  // Load API key from localStorage on mount
+  useEffect(() => {
+    try {
+      const storedKey = localStorage.getItem('deepinfra_api_key');
+      if (storedKey) {
+        setApiKey(storedKey);
+      }
+    } catch (error) {
+      console.error('Error loading API key:', error);
+    }
+  }, []);
 
   const handleNavigate = (tab: string) => {
     setActiveTab(tab as Tab);
@@ -86,7 +110,7 @@ const App: React.FC = () => {
 
   return (
     <div className="flex h-full w-full overflow-hidden relative z-10" style={{ color: 'var(--text-primary)', fontFamily: 'var(--font-ui)' }}>
-      {!consent && <ConsentModal onConsent={handleConsent} />}
+      {(!consent || !apiKey) && <ConsentModal onConsent={handleConsent} />}
 
       {/* ── Sidebar — Collapsible ── */}
       <aside
