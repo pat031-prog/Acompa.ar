@@ -28,7 +28,11 @@ export const ChatWindow: React.FC<ChatWindowProps> = ({ messages, isLoading }) =
   return (
     <div
       ref={scrollRef}
-      className="flex-1 overflow-y-auto p-5 space-y-5 bg-white/[0.01] border border-white/[0.06] rounded-t-lg mt-4"
+      className="flex-1 overflow-y-auto p-5 space-y-5 rounded-t-lg mt-4"
+      style={{
+        background: 'var(--surface-1)',
+        border: '1px solid var(--border-subtle)',
+      }}
     >
       {messages.map((msg) => (
         <MessageBubble key={msg.id} message={msg} />

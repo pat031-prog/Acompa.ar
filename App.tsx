@@ -109,7 +109,7 @@ const App: React.FC = () => {
   };
 
   return (
-    <div className="flex h-full w-full overflow-hidden relative z-10" style={{ color: 'var(--text-primary)', fontFamily: 'var(--font-ui)' }}>
+    <div className="flex h-full w-full overflow-hidden relative z-10" style={{ color: 'var(--text-primary)', fontFamily: 'var(--font-ui)', background: 'var(--bg-primary)' }}>
       {(!consent || !apiKey) && <ConsentModal onConsent={handleConsent} />}
 
       {/* ── Sidebar — Collapsible ── */}
@@ -197,8 +197,8 @@ const App: React.FC = () => {
       </div>
 
       {/* ── Main Content ── */}
-      <main className="flex-1 flex flex-col min-w-0 overflow-hidden lg:mt-0 mt-[110px]">
-        <div className="flex-1 flex flex-col h-full overflow-hidden">
+      <main className="flex-1 flex flex-col min-w-0 overflow-hidden lg:mt-0 mt-[110px]" style={{ background: 'var(--bg-primary)' }}>
+        <div className="flex-1 flex flex-col h-full overflow-hidden" style={{ background: 'var(--bg-primary)' }}>
           {activeTab === 'home' && <Home onNavigate={handleNavigate} />}
           {activeTab === 'chat' && (
             <div className="flex flex-col flex-1 h-full overflow-hidden">
