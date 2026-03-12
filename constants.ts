@@ -183,9 +183,136 @@ export const MAP_DATA: Record<string, MapDataset> = {
   'Tierra del Fuego, Antártida e Islas del Atlántico Sur': { totalQueries: 80, topCategories: [] },
 };
 
-export const SUBSTANCE_CATEGORIES: SubstanceCategory[] = ['Estimulante', 'Depresor', 'Psicodélico', 'Disociativo', 'Empatógeno'];
+export const SUBSTANCE_CATEGORIES: SubstanceCategory[] = ['Estimulante', 'Depresor', 'Psicodélico', 'Disociativo', 'Empatógeno', 'Psicofármaco'];
 
 export const LIBRARY_DATA: LibraryEntry[] = [
+  {
+    title: "Clonazepam",
+    aliases: ["Rivotril", "Clona", "Clonagin"],
+    category: ["Depresor", "Psicofármaco"],
+    chemicalFormula: "C₁₅H₁₀ClN₃O₃",
+    content: {
+      description: "Benzodiacepina recetada comúnmente para trastornos de ansiedad, ataques de pánico y convulsiones. En Argentina tiene alta prevalencia de uso y a veces se consume de forma no médica o recreativa.",
+      effects: {
+        positive: ["Relajación muscular", "Alivio de la ansiedad", "Sedación", "Sensación de calma profunda"],
+        negative: ["Somnolencia extrema", "Amnesia anterógrada (olvidar lo que pasa bajo los efectos)", "Falta de coordinación motora", "Depresión respiratoria al mezclar"],
+      },
+      duration: {
+        total: "8 - 12 horas",
+        onset: "20 - 60 minutos",
+        peak: "1 - 4 horas",
+      },
+      dosage: {
+        warning: "Dosis terapéutica usual: 0.25mg a 2mg. Su uso continuo genera alta tolerancia y un grave síndrome de abstinencia al cortarlo. Dosis altas recreativas multiplican el riesgo de 'blackouts'.",
+      },
+      risks: [
+        "Síndrome de abstinencia potencialmente mortal si se suspende de golpe tras uso prolongado (riesgo de convulsiones).",
+        "Depresión respiratoria severa al mezclar con otros depresores (alcohol, opioides, ketamina).",
+        "Amnesia profunda y desinhibición impulsiva.",
+      ],
+      guidelines: [
+        "⚠️ **Mezclas Letales:** NUNCA lo mezcles con alcohol u otros sedantes, el riesgo de paro respiratorio es gigantesco.",
+        "📉 **Bajada gradual:** Si lo tomás hace tiempo, la dosis debe bajarse de a poco supervisada por un médico.",
+        "🚗 **Cuidado motriz:** Afecta enormemente los reflejos."
+      ],
+      alerts: "Es la benzodiacepina de mayor circulación en Argentina. En el mercado irregular a veces se venden píldoras falsificadas con otras sustancias de la familia."
+    }
+  },
+  {
+    title: "Alprazolam",
+    aliases: ["Alplax", "Xanax", "Tranquinal"],
+    category: ["Depresor", "Psicofármaco"],
+    chemicalFormula: "C₁₇H₁₃ClN₄",
+    content: {
+      description: "Benzodiacepina de acción rápida, recetada para ansiedad extrema y sedación. Al actuar tan rápido, causa un 'pico' que eleva muchísimo su potencial adictivo en relación a otras pastillas.",
+      effects: {
+        positive: ["Supresión fulminante de ansiedad", "Euforia leve (consecuencia de la bajada abrupta de estrés)", "Relajación general"],
+        negative: ["Pérdida de memoria a corto plazo ('blackouts')", "Falsa sensación de sobriedad", "Inhibición reducida", "Rebote de ansiedad intenso al pasarse el efecto"],
+      },
+      duration: {
+        total: "5 - 8 horas",
+        onset: "15 - 30 minutos",
+        peak: "1 - 2 horas",
+      },
+      dosage: {
+        warning: "Sube muy rápido. Es sumamente común creer 'no sentir nada' (Delirio de sobriedad) y redosificar, causando amnesia severa o intoxicación a las pocas horas.",
+      },
+      risks: [
+        "Delirio de sobriedad (tomar más creyendo que no hizo efecto).",
+        "Alto riesgo de desinhibición impulsiva vergonzosa o peligrosa.",
+        "Dependencia física muy rápida, con síntomas de abstinencia feroces."
+      ],
+      guidelines: [
+        "🚫 **Mezclas Peligrosas:** NO mezclar bajo NINGUNA circunstancia con alcohol.",
+        "🔒 **Alejá la tira:** Si consumís ocasionalmente, guardá o escondé las pastillas sobrantes; la redosificación inconsciente es el riesgo número uno.",
+        "🏥 **Derivación:** Si sentís que no podés dejar de tomarlo, buscá a un profesional (SEDRONAR 141)."
+      ],
+      alerts: "Genera mucha inestabilidad 'entre dosis' si se toma regularmente (rebote de ansiedad). Su toxicidad al mezclarse con alcohol, aunque sea 1 sola cerveza, es altísima."
+    }
+  },
+  {
+    title: "ISRS (Fluoxetina / Sertralina)",
+    aliases: ["Prozac", "Zoloft", "Atenix", "Antidepresivos"],
+    category: ["Psicofármaco"],
+    chemicalFormula: "Variable",
+    content: {
+      description: "Inhibidores Selectivos de la Recaptación de Serotonina (ISRS). Son los antidepresivos de primera línea más recetados en Argentina para depresión y ansiedad crónica.",
+      effects: {
+        positive: ["Estabilización lenta del estado de ánimo", "Disminución del pánico a largo plazo", "Mayor resiliencia al estrés base"],
+        negative: ["Ansiedad paradójica en las primerísimas semanas", "Disfunción sexual (baja de líbido, anorgasmia)", "Sudoración o bostezos constantes", "Apatía emocional ('sentirse plano')"],
+      },
+      duration: {
+        total: "Actividad base crónica",
+        onset: "2 a 4 semanas para ver resultados beneficiosos",
+        peak: "Constante en sangre",
+      },
+      dosage: {
+        warning: "NUNCA se deben cortar abruptamente. Dejar de tomarlos súbitamente genera el síndrome de discontinuación: mareos agudos parecidos a 'cortocircuitos' en el cerebro (brain zaps), llanto fácil y confusión.",
+      },
+      risks: [
+        "Síndrome Serotoninérgico potencialmente letal si se mezcla con otras sustancias que disparen serotonina (MDMA, Ayahuasca, DXM).",
+        "Cortocircuitos cerebrales (brain zaps) al saltearse dosis.",
+      ],
+      guidelines: [
+        "❌ **Éxtasis (MDMA):** Mezclar ISRS con MDMA bloquea los efectos eufóricos del éxtasis, y en ciertos casos puede iniciar Síndrome Serotoninérgico.",
+        "☠️ **IMAOs y Ayahuasca:** Combinar ISRS con plantas ceremoniales como la Ayahuasca o medicamentos IMAO es fatal.",
+        "⏰ **Rutina:** Tratar de tomarlos a la misma hora para mantener el nivel basal y no sentir mareos."
+      ],
+      alerts: "Muchas drogas populares de fiesta no tienen efecto, o tienen un efecto súper peligroso estando bajo este tratamiento. Blanquealo siempre a la hora de revisar interacciones."
+    }
+  },
+  {
+    title: "Quetiapina",
+    aliases: ["Seroquel", "Vesparax", "Rosal"],
+    category: ["Depresor", "Psicofármaco"],
+    chemicalFormula: "C₂₁H₂₅N₃O₂S",
+    content: {
+      description: "Antipsicótico atípico. Formalmente recetado para esquizofrenia o bipolaridad, pero en Argentina es increíblemente popular su uso 'off-label' en dosis bajas para el insomnio severo.",
+      effects: {
+        positive: ["Inducción del sueño muy rápida y agresiva (dosis bajas)", "Detiene la 'aceleración mental' o ruido obsesivo", "Estabiliza explosiones de irritabilidad"],
+        negative: ["Resaca de atontamiento inmenso al día siguiente", "Antojo incontrolable por comer dulce o carbohidratos (riesgo metabólico)", "Caídas de presión al levantarse (hipotensión)", "Sequedad de boca brutal"],
+      },
+      duration: {
+        total: "6 - 12 horas",
+        onset: "30 - 60 minutos",
+        peak: "1.5 - 2 horas",
+      },
+      dosage: {
+        warning: "Por debajo de 50mg actúa casi puramente como un potente 'soporífero' (anti-histamínico). Sobre 300mg actúa sobre la dopamina y serotonina para cuadros psiquiátricos mayores.",
+      },
+      risks: [
+        "Aumento agudo de peso y cambio del metabolismo hacia la diabetes o colesterol alto si se usa con frecuencia.",
+        "Insomnio de rebote gravísimo al suspenderla.",
+        "Palpitaciones o bajón repentino de presión."
+      ],
+      guidelines: [
+        "🛏️ **Tomala ya acostado:** El golpe de sueño es muy súbito y puede marearte fuerte si estás caminando.",
+        "🛑 **Trip Killer:** En reducción de daños a veces se usa para cortar urgencias ('malos viajes' psicodélicos extremos) porque bloquea serotonina y dopamina forzando el sueño, aunque no debería ser una práctica ligera.",
+        "❤️ **Salud metabólica:** Cuidado si la tomás seguido solo para dormir, los efectos en hígado y corazón a largo plazo no valen la pena para un simple insomnio."
+      ],
+      alerts: "Si usás quetiapina prestada para dormir, tené mucho cuidado. Es una medicación psiquiátrica mayor pesada, y la tolerancia al sueño sube, dejándote los efectos metabólicos graves."
+    }
+  },
   {
     title: "MDMA",
     aliases: ["Éxtasis", "Pasti", "Rola", "Molly", "Cristal"],

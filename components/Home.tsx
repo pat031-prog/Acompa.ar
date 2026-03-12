@@ -140,7 +140,7 @@ export const Home: React.FC<HomeProps> = ({ onNavigate }) => {
           <div className="grid sm:grid-cols-2 gap-0" style={{ border: '2px solid rgba(255,255,255,0.1)' }}>
             {[
               { num: '01', title: 'Chat IA', desc: 'Consultá al asistente sobre sustancias, efectos e interacciones.', tab: 'chat', action: 'Comenzar' },
-              { num: '02', title: 'Biblioteca', desc: '+500 sustancias documentadas con datos de fuentes internacionales.', tab: 'library', action: 'Explorar' },
+              { num: '02', title: 'Biblioteca', desc: '+100 sustancias documentadas con datos de fuentes internacionales.', tab: 'library', action: 'Explorar' },
               { num: '03', title: 'Guía de Testeo', desc: 'Aprendé a usar reactivos para verificar composición.', tab: 'testing', action: 'Aprender' },
               { num: '04', title: 'Recursos', desc: 'Centros de atención, organizaciones y servicios cercanos.', tab: 'resources', action: 'Ver Mapa' },
             ].map((item, idx) => (
@@ -224,7 +224,7 @@ export const Home: React.FC<HomeProps> = ({ onNavigate }) => {
 
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-8 sm:gap-12">
             {[
-              { value: '500+', label: 'Sustancias', sub: 'en catálogo', color: 'var(--text-primary)' },
+              { value: '+100', label: 'Sustancias', sub: 'en catálogo', color: 'var(--text-primary)' },
               { value: totalResources.toString(), label: 'Recursos', sub: 'en el mapa local', color: '#34d399' },
               { value: '3+', label: 'Redes', sub: 'organizaciones aliadas', color: 'var(--accent-primary)' },
               { value: '100%', label: 'Privacidad', sub: 'totalmente anónimo', color: '#60a5fa' },

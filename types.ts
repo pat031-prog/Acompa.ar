@@ -28,7 +28,7 @@ export interface HistoryContent {
   parts: HistoryPart[];
 }
 
-export type SubstanceCategory = 'Estimulante' | 'Depresor' | 'Psicodélico' | 'Disociativo' | 'Empatógeno' | 'Otro';
+export type SubstanceCategory = 'Estimulante' | 'Depresor' | 'Psicodélico' | 'Disociativo' | 'Empatógeno' | 'Psicofármaco' | 'Otro';
 
 export interface LibraryEntry {
   title: string;
