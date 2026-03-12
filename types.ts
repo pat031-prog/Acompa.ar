@@ -11,9 +11,12 @@ export interface Message {
   sources?: Source[];
 }
 
+export type ConsumptionType = 'experimental' | 'occasional' | 'regular' | 'problematic';
+
 export interface ConsentData {
   share: boolean;
   province: string;
+  consumptionType?: ConsumptionType;
 }
 
 // Type for simplified chat history passed to Gemini
@@ -91,7 +94,7 @@ export interface TestingResource {
 // Local resources types
 export interface LocalResource {
   name: string;
-  type: 'hospital' | 'clinic' | 'hotline' | 'ngo' | 'community_center' | 'therapy';
+  type: 'hospital' | 'clinic' | 'hotline' | 'ngo' | 'community_center' | 'therapy' | 'testing_lab' | 'harm_reduction' | 'activism' | 'government';
   province: string;
   city?: string;
   address?: string;

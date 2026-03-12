@@ -18,7 +18,7 @@ const CheckBadgeIcon: React.FC = () => (
   <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5"><path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75 11.25 15 15 9.75M21 12c0 1.268-.63 2.39-1.593 3.068a3.745 3.745 0 0 1-1.043 3.296 3.745 3.745 0 0 1-3.296 1.043A3.745 3.745 0 0 1 12 21c-1.268 0-2.39-.63-3.068-1.593a3.746 3.746 0 0 1-3.296-1.043 3.745 3.745 0 0 1-1.043-3.296A3.745 3.745 0 0 1 3 12c0-1.268.63-2.39 1.593-3.068a3.745 3.745 0 0 1 1.043-3.296 3.746 3.746 0 0 1 3.296-1.043A3.746 3.746 0 0 1 12 3c1.268 0 2.39.63 3.068 1.593a3.746 3.746 0 0 1 3.296 1.043 3.746 3.746 0 0 1 1.043 3.296A3.745 3.745 0 0 1 21 12Z" /></svg>
 );
 
-const getTypeIcon = (type: LocalResource['type']) => ({ hospital: '🏥', clinic: '⚕️', hotline: '📞', ngo: '🤝', community_center: '🏘️', therapy: '💭' }[type] || '📍');
+const getTypeIcon = (type: LocalResource['type']) => ({ hospital: '🏥', clinic: '⚕️', hotline: '📞', ngo: '🤝', community_center: '🏘️', therapy: '💭', testing_lab: '🔬', harm_reduction: '🛡️', activism: '✊', government: '🏛️' }[type] || '📍');
 
 const inputStyle: React.CSSProperties = { background: 'var(--bg-primary)', color: 'var(--text-primary)', border: '1px solid var(--border-medium)', borderRadius: 'var(--radius-sm)', outline: 'none', width: '100%', padding: '10px 12px', fontSize: '14px' };
 
@@ -81,7 +81,53 @@ export const ResourcesDirectory: React.FC = () => {
           <span className="hidden sm:inline">Directorio de Recursos en Argentina</span>
           <span className="sm:hidden">Recursos</span>
         </h1>
-        <p className="editorial-subtitle text-xs sm:text-sm mt-1">Centros de atención, líneas de ayuda y organizaciones de reducción de daños</p>
+        <p className="editorial-subtitle text-xs sm:text-sm mt-1">Centros de atención, líneas de ayuda, organizaciones y redes comunitarias de reducción de daños</p>
+      </div>
+
+      {/* Quick Access - Emergency Lines */}
+      <div className="px-6 sm:px-8 pb-2 pt-2" style={{ borderBottom: '1px solid var(--border-subtle)' }}>
+        <p className="text-xs font-semibold mb-3" style={{ color: 'var(--text-muted)', letterSpacing: '0.05em', textTransform: 'uppercase' }}>Si necesitás ayuda ahora</p>
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 pb-4">
+          <a
+            href="tel:141"
+            className="flex items-center gap-3 p-3.5 transition-all duration-200"
+            style={{ background: 'var(--surface-1)', border: '1px solid var(--border-subtle)', borderRadius: 'var(--radius-md)', textDecoration: 'none' }}
+            onMouseEnter={(e) => { e.currentTarget.style.borderColor = 'var(--accent-primary)'; e.currentTarget.style.boxShadow = 'var(--shadow-ambient)'; }}
+            onMouseLeave={(e) => { e.currentTarget.style.borderColor = 'var(--border-subtle)'; e.currentTarget.style.boxShadow = 'none'; }}
+          >
+            <div className="w-10 h-10 flex items-center justify-center text-xl flex-shrink-0" style={{ background: 'var(--surface-2)', borderRadius: 'var(--radius-sm)' }}>🏛️</div>
+            <div>
+              <p className="text-sm font-bold" style={{ color: 'var(--text-primary)' }}>SEDRONAR 141</p>
+              <p className="text-xs" style={{ color: 'var(--text-tertiary)' }}>Consumos problemáticos • 24hs</p>
+            </div>
+          </a>
+          <a
+            href="tel:107"
+            className="flex items-center gap-3 p-3.5 transition-all duration-200"
+            style={{ background: 'var(--surface-1)', border: '1px solid var(--border-subtle)', borderRadius: 'var(--radius-md)', textDecoration: 'none' }}
+            onMouseEnter={(e) => { e.currentTarget.style.borderColor = 'var(--color-red)'; e.currentTarget.style.boxShadow = 'var(--shadow-ambient)'; }}
+            onMouseLeave={(e) => { e.currentTarget.style.borderColor = 'var(--border-subtle)'; e.currentTarget.style.boxShadow = 'none'; }}
+          >
+            <div className="w-10 h-10 flex items-center justify-center text-xl flex-shrink-0" style={{ background: 'var(--color-red-subtle)', borderRadius: 'var(--radius-sm)' }}>🚑</div>
+            <div>
+              <p className="text-sm font-bold" style={{ color: 'var(--text-primary)' }}>SAME 107</p>
+              <p className="text-xs" style={{ color: 'var(--text-tertiary)' }}>Emergencias médicas • 24hs</p>
+            </div>
+          </a>
+          <a
+            href="tel:135"
+            className="flex items-center gap-3 p-3.5 transition-all duration-200"
+            style={{ background: 'var(--surface-1)', border: '1px solid var(--border-subtle)', borderRadius: 'var(--radius-md)', textDecoration: 'none' }}
+            onMouseEnter={(e) => { e.currentTarget.style.borderColor = 'var(--color-purple, #8b5cf6)'; e.currentTarget.style.boxShadow = 'var(--shadow-ambient)'; }}
+            onMouseLeave={(e) => { e.currentTarget.style.borderColor = 'var(--border-subtle)'; e.currentTarget.style.boxShadow = 'none'; }}
+          >
+            <div className="w-10 h-10 flex items-center justify-center text-xl flex-shrink-0" style={{ background: 'var(--surface-2)', borderRadius: 'var(--radius-sm)' }}>🧠</div>
+            <div>
+              <p className="text-sm font-bold" style={{ color: 'var(--text-primary)' }}>Línea 135</p>
+              <p className="text-xs" style={{ color: 'var(--text-tertiary)' }}>Salud mental (CABA) • 24hs</p>
+            </div>
+          </a>
+        </div>
       </div>
 
       <div className="p-6 sm:p-8 space-y-3 sm:space-y-4" style={{ borderBottom: '1px solid var(--border-subtle)' }}>
@@ -125,10 +171,25 @@ export const ResourcesDirectory: React.FC = () => {
         )}
       </div>
 
+      {/* Community Networks & Activism Section */}
+      {LOCAL_RESOURCES.filter(r => r.type === 'activism' || r.type === 'harm_reduction').length > 0 && (
+        <div className="max-w-5xl mx-auto mt-8 mb-4">
+          <h2 className="text-base font-semibold mb-3 flex items-center gap-2" style={{ color: 'var(--text-primary)' }}>
+            <span>✊</span> Redes Comunitarias y Activismo
+          </h2>
+          <p className="text-xs mb-4" style={{ color: 'var(--text-tertiary)' }}>
+            Organizaciones de la sociedad civil que trabajan por los derechos de las personas que usan sustancias y la reducción de daños basada en evidencia.
+          </p>
+          <div className="grid gap-4">
+            {LOCAL_RESOURCES.filter(r => r.type === 'activism' || r.type === 'harm_reduction').map((r, i) => <ResourceCard key={`community-${i}`} resource={r} />)}
+          </div>
+        </div>
+      )}
+
       <div className="p-4" style={{ borderTop: '1px solid var(--border-subtle)', background: 'var(--color-red-subtle)' }}>
         <div className="max-w-5xl mx-auto">
           <p className="text-sm font-semibold" style={{ color: 'var(--color-red)' }}>
-            ⚠️ En caso de emergencia médica, llamá inmediatamente al SAME: <a href="tel:107" style={{ textDecoration: 'underline' }}>107</a>
+            ⚠️ En caso de emergencia médica, llamá al SAME: <a href="tel:107" style={{ textDecoration: 'underline' }}>107</a>. Consumos problemáticos: SEDRONAR <a href="tel:141" style={{ textDecoration: 'underline' }}>141</a> (24hs, gratuito).
           </p>
         </div>
       </div>

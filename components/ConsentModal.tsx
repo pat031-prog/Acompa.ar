@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import type { ConsentData } from '../types';
-import { PROVINCES } from '../constants';
+import type { ConsentData, ConsumptionType } from '../types';
+import { PROVINCES, CONSUMPTION_TYPE_LABELS } from '../constants';
 
 interface ConsentModalProps {
   onConsent: (consentData: ConsentData, apiKey: string) => void;
@@ -10,13 +10,14 @@ export const ConsentModal: React.FC<ConsentModalProps> = ({ onConsent }) => {
   const [province, setProvince] = useState<string>('');
   const [apiKey, setApiKey] = useState<string>('');
   const [showInfo, setShowInfo] = useState<boolean>(false);
+  const [consumptionType, setConsumptionType] = useState<ConsumptionType | undefined>(undefined);
 
   const handleAccept = () => {
     if (!apiKey.trim()) {
       alert('Por favor, ingresa tu API key de DeepInfra');
       return;
     }
-    onConsent({ share: true, province: province || '' }, apiKey.trim());
+    onConsent({ share: true, province: province || '', consumptionType }, apiKey.trim());
   };
 
   const handleSkip = () => {
@@ -24,7 +25,7 @@ export const ConsentModal: React.FC<ConsentModalProps> = ({ onConsent }) => {
       alert('Por favor, ingresa tu API key de DeepInfra');
       return;
     }
-    onConsent({ share: false, province: '' }, apiKey.trim());
+    onConsent({ share: false, province: '', consumptionType }, apiKey.trim());
   };
 
   return (
@@ -173,6 +174,54 @@ export const ConsentModal: React.FC<ConsentModalProps> = ({ onConsent }) => {
             <option value="">Prefiero no decir</option>
             {PROVINCES.map(p => <option key={p} value={p}>{p}</option>)}
           </select>
+        </div>
+
+        {/* Consumption type question */}
+        <div className="mt-4">
+          <label className="block text-sm font-medium mb-2" style={{ color: 'var(--text-secondary)' }}>
+            ¿Cómo describirías tu relación con el consumo? (opcional)
+          </label>
+          <div className="space-y-2">
+            {Object.entries(CONSUMPTION_TYPE_LABELS).map(([value, { label, description, icon }]) => (
+              <label
+                key={value}
+                className="flex items-start gap-3 p-2.5 cursor-pointer"
+                style={{
+                  background: consumptionType === value ? 'var(--surface-2)' : 'transparent',
+                  borderRadius: 'var(--radius-sm)',
+                  transition: 'background 0.15s ease',
+                }}
+                onMouseEnter={(e) => {
+                  if (consumptionType !== value) {
+                    e.currentTarget.style.background = 'var(--surface-1)';
+                  }
+                }}
+                onMouseLeave={(e) => {
+                  if (consumptionType !== value) {
+                    e.currentTarget.style.background = 'transparent';
+                  }
+                }}
+              >
+                <input
+                  type="radio"
+                  name="consumptionType"
+                  value={value}
+                  checked={consumptionType === value}
+                  onChange={(e) => setConsumptionType(e.target.value as ConsumptionType)}
+                  className="w-4 h-4 mt-0.5"
+                  style={{ accentColor: 'var(--accent-primary)' }}
+                />
+                <div>
+                  <span className="text-sm font-medium" style={{ color: 'var(--text-primary)' }}>
+                    {icon} {label}
+                  </span>
+                  <p className="text-xs mt-0.5" style={{ color: 'var(--text-tertiary)' }}>
+                    {description}
+                  </p>
+                </div>
+              </label>
+            ))}
+          </div>
         </div>
 
         <div className="mt-6 flex flex-col sm:flex-row gap-3">

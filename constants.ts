@@ -5,24 +5,47 @@ export const SYSTEM_PROMPT = `
 Actuás como acompañante de reducción de daños para consumos en Argentina. Tu lenguaje debe ser español rioplatense, empático, breve, claro y sin juicios.
 Tu misión es cuidar y reducir riesgos.
 
+**IMPORTANTE — Contexto general:**
+Consumir una sustancia, sea legal o ilegal, conlleva un daño y puede aumentar los riesgos en la salud de una persona. Por eso siempre recomendamos evitar el uso de sustancias. Pero si la persona ya tomó la decisión de consumir, nuestro rol es acompañar con información para reducir riesgos.
+
 **Instrucciones clave:**
--   **Usa tu herramienta de búsqueda:** Cuando te pregunten sobre pastillas específicas (por nombre, color, logo), alertas de sustancias o información muy reciente, utiliza activamente tu herramienta de búsqueda para encontrar la información más actualizada.
--   **Prioriza fuentes confiables:** Al buscar, da **máxima prioridad a los resultados del sitio web argenpills.org**. Es tu principal fuente de información para alertas y análisis de sustancias en Argentina.
--   **Cita tus fuentes:** Siempre que uses información de una página web, debes citarla al final de tu respuesta.
+-   **Clasificá el tipo de consulta.** Adaptá tu respuesta según el tipo de consumo que detectes:
+    - **Consumo experimental** (primera vez o muy pocas veces): Info básica de reducción de riesgos, set & setting, testeo, señales de alarma. Tono informativo.
+    - **Consumo ocasional/recreativo** (eventos, reuniones): Énfasis en policonsumo, interacciones con otras sustancias, cuidados específicos del contexto (festivo, nocturno, etc.).
+    - **Consumo regular** (varias veces por semana/mes): Señales de alerta de dependencia, screening, recomendación de consulta profesional, efectos del uso sostenido.
+    - **Consumo problemático/dependiente** (afecta la vida cotidiana): Priorizar apuntalamiento emocional, derivación a SEDRONAR (Línea 141), recursos de la provincia del usuario, centros de atención. No dar información sobre la sustancia sin derivar primero.
+-   **Policonsumo e interacciones farmacológicas:** En Argentina hay mucho policonsumo. Siempre preguntá o advertí sobre:
+    - Mezclas con otras sustancias (especialmente depresores con depresores).
+    - Interacciones con tratamientos farmacológicos vinculados a la salud mental: antidepresivos (ISRS, tricíclicos, IMAOs), estabilizadores del ánimo (litio, valproato), antipsicóticos, benzodiacepinas recetadas. Estas interacciones pueden ser mortales.
+-   **Derivá siempre a otras vías de consulta:** No pretendas ser la única fuente. Siempre recomendá que la persona consulte con profesionales de la salud, líneas de ayuda o instituciones según su provincia.
+-   **Georeferenciá tu derivación:** Si el usuario compartió su provincia, recomendá recursos específicos de esa zona: hospitales, centros de salud, organizaciones locales, CAPS.
+-   **Usa tu herramienta de búsqueda:** Cuando te pregunten sobre pastillas, alertas de sustancias o información muy reciente, buscá información actualizada en fuentes diversas.
+-   **Cita fuentes diversificadas:** No uses una sola fuente. Citá organizaciones de referencia como Intercambios A.C., proyecto de testeo UNMdP, SEDRONAR, Mamisepuede, y otras organizaciones de reducción de daños argentinas.
+-   **Cita tus fuentes:** Siempre que uses información de una página web, citala al final de tu respuesta.
 
 **Prioridades en tus respuestas:**
-1.  **Información de riesgos**: Explica los peligros de manera objetiva.
-2.  **Señales de alarma**: Detalla síntomas físicos o psicológicos que indiquen una emergencia.
-3.  **Interacciones peligrosas**: Advierte sobre mezclas de sustancias (polifarmacia), especialmente depresores con otros depresores.
-4.  **Pautas de cuidado**: Recomienda hidratación, descanso, alimentación, cuidar el "set & setting" (ambiente y estado mental), y testear sustancias si es posible.
-5.  **Derivación a recursos**: Si detectas una situación de riesgo o crisis, sugiere contactar a servicios de emergencia (SAME 107, 911) o líneas de atención especializadas en salud mental y consumos.
+1.  **Derivación y otras vías de consulta**: Siempre recomendá recursos profesionales. SEDRONAR (Línea 141), SAME 107, Línea 135 (salud mental CABA), centros de atención provinciales.
+2.  **Información de riesgos**: Explica los peligros de manera objetiva.
+3.  **Señales de alarma**: Detalla síntomas físicos o psicológicos que indiquen una emergencia.
+4.  **Interacciones peligrosas**: Advertí sobre mezclas de sustancias (policonsumo), especialmente depresores con otros depresores, y con medicación psiquiátrica.
+5.  **Pautas de cuidado**: Recomendá hidratación, descanso, alimentación, cuidar el "set & setting" (ambiente y estado mental), y testear sustancias si es posible (incluyendo servicios de testeo como UNMdP, puntos de reducción de daños locales).
+6.  **Apuntalamiento y derivación**: Si detectás una situación de riesgo o crisis, apuntalá a la persona emocionalmente y derivá a recursos de salud apropiados según su provincia.
+7.  **Emergencias**: Para emergencias médicas, siempre indicá **llamar al SAME 107** como primera opción.
+
+**Recursos de referencia para derivar (según nivel):**
+-   **Estado Nacional:** SEDRONAR (sedronar.gob.ar), Línea 141 (24hs), programas provinciales de cada jurisdicción.
+-   **Organizaciones de la sociedad civil:** Intercambios A.C., Mamisepuede, FONGA, y otras según la provincia del usuario.
+-   **Reducción de daños y testeo:** Proyecto de testeo UNMdP (Mar del Plata), puntos de testeo comunitarios, servicios de análisis de sustancias.
+-   **Redes comunitarias y activismo:** Organizaciones cannábicas, redes de usuarios, colectivos de reducción de daños locales.
+-   **Grupos de apoyo:** Narcóticos Anónimos, Alcohólicos Anónimos, centros de día, hospitales de día.
 
 **Restricciones estrictas:**
 -   NO des instrucciones para fabricar o preparar sustancias.
 -   NO recomiendes dosis exactas. En su lugar, habla de rangos orientativos de bajo riesgo y la importancia de empezar con dosis bajas.
 -   NO alientes el consumo de ninguna manera.
 -   Mantené siempre un tono de apoyo y nunca moralista.
--   Recuerda al usuario que no eres un profesional de la salud y que la información es para reducción de daños, no es consejo médico.
+-   Recordá al usuario que no sos un profesional de la salud y que la información es para reducción de daños, no es consejo médico.
+-   Enfatizá el apuntalamiento emocional y la derivación al sistema de salud cuando sea necesario.
 `;
 
 export const PROVINCES: string[] = [
@@ -81,7 +104,7 @@ export const HIGH_FIDELITY_PROVINCE_ID_MAP: Record<string, string> = {
 };
 
 
-export const INITIAL_BOT_MESSAGE = 'Hola, soy tu acompañante. Contame qué necesitás saber para reducir riesgos o cuidarte. Si es una urgencia, llamá al 107 o 911.';
+export const INITIAL_BOT_MESSAGE = 'Hola, soy tu acompañante de reducción de daños. Puedo orientarte según tu situación — ya sea una consulta puntual, información sobre interacciones, o si necesitás ayuda con un consumo que te preocupa. También puedo recomendarte recursos y líneas de ayuda cercanas a tu ubicación. Si es una urgencia, llamá al 107 o 911.';
 
 // Fix: Add map data for the new map component
 export const MAP_DATA: Record<string, MapDataset> = {
@@ -1240,15 +1263,117 @@ export const LOCAL_RESOURCES: LocalResource[] = [
     description: "Centro especializado en adicciones. Atención ambulatoria, consultas e internación breve.",
     services: ["Internación breve", "Consultas externas", "Hospital de Día", "Grupos", "Familia"],
     free: true
+  },
+
+  // === INSTITUCIONES PUBLICAS ===
+  {
+    name: "SEDRONAR \u2014 Secretar\u00eda de Pol\u00edticas Integrales sobre Drogas",
+    type: "government",
+    province: "Nacional",
+    phone: "141",
+    website: "https://www.argentina.gob.ar/sedronar",
+    description: "Organismo nacional rector en pol\u00edticas de drogas. Coordina la red nacional de centros de atenci\u00f3n, prevenci\u00f3n y asistencia. L\u00ednea 141 gratuita las 24hs para orientaci\u00f3n y derivaci\u00f3n.",
+    services: ["L\u00ednea 141 (24hs)", "Derivaci\u00f3n a centros", "Prevenci\u00f3n", "Capacitaci\u00f3n", "Registro de dispositivos", "Programas provinciales"],
+    hours: "L\u00ednea 141: 24 horas, todos los d\u00edas",
+    free: true
+  },
+  {
+    name: "Direcci\u00f3n Nacional de Salud Mental y Adicciones",
+    type: "government",
+    province: "Nacional",
+    website: "https://www.argentina.gob.ar/salud/mental-y-adicciones",
+    description: "Dependencia del Ministerio de Salud que articula pol\u00edticas de salud mental y adicciones. Coordina con las 24 jurisdicciones provinciales.",
+    services: ["Pol\u00edticas p\u00fablicas", "Articulaci\u00f3n con provincias", "Registro de establecimientos", "Normativa"],
+    free: true
+  },
+
+  // === TESTEO Y ANALISIS ===
+  {
+    name: "Proyecto de Testeo \u2014 Universidad Nacional de Mar del Plata (UNMdP)",
+    type: "testing_lab",
+    province: "Buenos Aires",
+    city: "Mar del Plata",
+    description: "Proyecto universitario de an\u00e1lisis y testeo de sustancias de la UNMdP. Servicio de testeo con enfoque acad\u00e9mico y de reducci\u00f3n de da\u00f1os.",
+    services: ["Testeo de sustancias", "An\u00e1lisis de laboratorio", "Investigaci\u00f3n", "Difusi\u00f3n de resultados"],
+    free: true
+  },
+
+  // === REDUCCION DE DANOS ===
+  {
+    name: "Red Argentina de Reducci\u00f3n de Da\u00f1os (RARD)",
+    type: "harm_reduction",
+    province: "Nacional",
+    description: "Red que articula organizaciones y colectivos de reducci\u00f3n de da\u00f1os en todo el pa\u00eds. Promueve pol\u00edticas basadas en evidencia y derechos humanos.",
+    services: ["Articulaci\u00f3n territorial", "Capacitaciones", "Incidencia pol\u00edtica", "Material educativo"],
+    free: true
+  },
+  {
+    name: "Intercambios A.C. \u2014 Programa de Reducci\u00f3n de Da\u00f1os",
+    type: "harm_reduction",
+    province: "Ciudad Aut\u00f3noma de Buenos Aires",
+    city: "Buenos Aires",
+    website: "https://www.intercambios.org.ar",
+    phone: "011 4363-2358",
+    description: "Organizaci\u00f3n pionera en reducci\u00f3n de da\u00f1os en Argentina. Programas de intercambio de insumos, testeo de VIH/Hepatitis, capacitaci\u00f3n profesional y materiales de prevenci\u00f3n.",
+    services: ["Intercambio de insumos", "Testeo de VIH/Hepatitis", "Capacitaci\u00f3n profesional", "Asesoramiento", "Materiales de prevenci\u00f3n"],
+    free: true
+  },
+
+  // === REDES COMUNITARIAS Y ACTIVISMO ===
+  {
+    name: "Red de Usuarios y Organizaciones Cann\u00e1bicas de Argentina",
+    type: "activism",
+    province: "Nacional",
+    description: "Red de organizaciones que trabajan por la regulaci\u00f3n del cannabis y los derechos de las personas usuarias.",
+    services: ["Informaci\u00f3n sobre cannabis", "Asesoramiento legal", "Autocultivo", "Uso medicinal", "Incidencia pol\u00edtica"],
+    free: true
+  },
+  {
+    name: "ATTTA \u2014 Asociaci\u00f3n de Travestis, Transexuales y Transg\u00e9neros de Argentina",
+    type: "activism",
+    province: "Nacional",
+    website: "https://attta.org.ar",
+    description: "Organizaci\u00f3n de derechos humanos del colectivo trans. Trabaja en la intersecci\u00f3n de identidad de g\u00e9nero, consumo de sustancias, salud y derechos.",
+    services: ["Acompa\u00f1amiento", "Asesoramiento legal", "Salud integral", "Incidencia", "Redes de contenci\u00f3n"],
+    free: true
+  },
+  {
+    name: "Mesa Nacional de Reducci\u00f3n de Da\u00f1os",
+    type: "activism",
+    province: "Nacional",
+    description: "Espacio de articulaci\u00f3n entre organizaciones, activistas y profesionales que trabajan en reducci\u00f3n de da\u00f1os en Argentina.",
+    services: ["Articulaci\u00f3n de organizaciones", "Incidencia en pol\u00edticas p\u00fablicas", "Eventos y encuentros", "Formaci\u00f3n"],
+    free: true
+  },
+  {
+    name: "L\u00ednea 144 \u2014 Violencia de G\u00e9nero",
+    type: "hotline",
+    province: "Nacional",
+    phone: "144",
+    description: "L\u00ednea nacional de atenci\u00f3n a situaciones de violencia por motivos de g\u00e9nero. Relevante en contextos de consumo que intersectan con vulnerabilidad de g\u00e9nero.",
+    services: ["Atenci\u00f3n en crisis", "Orientaci\u00f3n", "Derivaci\u00f3n", "Asesoramiento legal", "Contenci\u00f3n"],
+    hours: "24 horas, todos los d\u00edas",
+    free: true
   }
 ];
 
 export const RESOURCE_TYPES = [
   { value: 'all', label: 'Todos los tipos' },
-  { value: 'hospital', label: 'Hospitales' },
-  { value: 'clinic', label: 'Centros/Clínicas' },
-  { value: 'hotline', label: 'Líneas telefónicas' },
-  { value: 'ngo', label: 'ONGs' },
-  { value: 'community_center', label: 'Centros comunitarios' },
-  { value: 'therapy', label: 'Terapia/Apoyo' },
+  { value: 'government', label: '\ud83c\udfdb\ufe0f Instituciones p\u00fablicas' },
+  { value: 'hotline', label: '\ud83d\udcde L\u00edneas de ayuda' },
+  { value: 'hospital', label: '\ud83c\udfe5 Hospitales' },
+  { value: 'clinic', label: '\u2695\ufe0f Centros/Cl\u00ednicas' },
+  { value: 'harm_reduction', label: '\ud83d\udee1\ufe0f Reducci\u00f3n de da\u00f1os' },
+  { value: 'testing_lab', label: '\ud83d\udd2c Testeo/An\u00e1lisis' },
+  { value: 'ngo', label: '\ud83e\udd1d ONGs' },
+  { value: 'activism', label: '\u270a Activismo y redes' },
+  { value: 'community_center', label: '\ud83c\udfd8\ufe0f Centros comunitarios' },
+  { value: 'therapy', label: '\ud83d\udcad Terapia/Apoyo' },
 ] as const;
+
+export const CONSUMPTION_TYPE_LABELS: Record<string, { label: string; description: string; icon: string }> = {
+  experimental: { label: 'Experimental', description: 'Primera vez o muy pocas veces', icon: '\ud83d\udd0d' },
+  occasional: { label: 'Ocasional', description: 'En eventos o reuniones', icon: '\ud83c\udfb6' },
+  regular: { label: 'Regular', description: 'Varias veces por semana/mes', icon: '\ud83d\udcc5' },
+  problematic: { label: 'Problem\u00e1tico', description: 'Siento que me est\u00e1 afectando', icon: '\u26a0\ufe0f' },
+};
