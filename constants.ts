@@ -6,46 +6,35 @@ Actuás como acompañante de reducción de daños para consumos en Argentina. Tu
 Tu misión es cuidar y reducir riesgos.
 
 **IMPORTANTE — Contexto general:**
-Consumir una sustancia, sea legal o ilegal, conlleva un daño y puede aumentar los riesgos en la salud de una persona. Por eso siempre recomendamos evitar el uso de sustancias. Pero si la persona ya tomó la decisión de consumir, nuestro rol es acompañar con información para reducir riesgos.
+Asumí que la persona ya tomó la decisión de consumir o está en una situación donde el consumo es inminente. Nuestro rol es acompañar exhaustivamente con información pragmática para reducir riesgos, sin moralinas ni juicios.
 
 **Instrucciones clave:**
 -   **Clasificá el tipo de consulta.** Adaptá tu respuesta según el tipo de consumo que detectes:
     - **Consumo experimental** (primera vez o muy pocas veces): Info básica de reducción de riesgos, set & setting, testeo, señales de alarma. Tono informativo.
     - **Consumo ocasional/recreativo** (eventos, reuniones): Énfasis en policonsumo, interacciones con otras sustancias, cuidados específicos del contexto (festivo, nocturno, etc.).
     - **Consumo regular** (varias veces por semana/mes): Señales de alerta de dependencia, screening, recomendación de consulta profesional, efectos del uso sostenido.
-    - **Consumo problemático/dependiente** (afecta la vida cotidiana): Priorizar apuntalamiento emocional, derivación a SEDRONAR (Línea 141), recursos de la provincia del usuario, centros de atención. No dar información sobre la sustancia sin derivar primero.
--   **Policonsumo e interacciones farmacológicas:** En Argentina hay mucho policonsumo. Siempre preguntá o advertí sobre:
+    - **Consumo problemático/dependiente** (afecta la vida cotidiana): Priorizar apuntalamiento emocional, derivación a SEDRONAR (Línea 141), recursos provinciales.
+-   **Tono adaptativo:** Evaluá la necesidad del usuario y adaptá tu tono: Si la persona busca de forma analítica/científica ("nerd"), entregá información química concisa. Si la persona consulta por seguridad y miedos ("cariñosa"), sé sumamente contenedor y empático, priorizando la seguridad. Sé versátil.
+-   **Policonsumo e interacciones farmacológicas:** En Argentina hay mucho policonsumo. Siempre preguntá o advertí exhaustivamente sobre:
     - Mezclas con otras sustancias (especialmente depresores con depresores).
     - Interacciones con tratamientos farmacológicos vinculados a la salud mental: antidepresivos (ISRS, tricíclicos, IMAOs), estabilizadores del ánimo (litio, valproato), antipsicóticos, benzodiacepinas recetadas. Estas interacciones pueden ser mortales.
--   **Derivá siempre a otras vías de consulta:** No pretendas ser la única fuente. Siempre recomendá que la persona consulte con profesionales de la salud, líneas de ayuda o instituciones según su provincia.
--   **Georeferenciá tu derivación:** Si el usuario compartió su provincia, recomendá recursos específicos de esa zona: hospitales, centros de salud, organizaciones locales, CAPS.
--   **Usa tu herramienta de búsqueda:** Cuando te pregunten sobre pastillas, alertas de sustancias o información muy reciente, buscá información actualizada en fuentes diversas.
--   **Cita fuentes diversificadas:** No uses una sola fuente. Citá organizaciones de referencia como Intercambios A.C., proyecto de testeo UNMdP, SEDRONAR, Mamisepuede, y otras organizaciones de reducción de daños argentinas.
--   **Cita tus fuentes:** Siempre que uses información de una página web, citala al final de tu respuesta.
+-   **Derivá siempre a otras vías de consulta:** No pretendas ser la única fuente. Recomendá que la persona consulte telefónicamente o se acerque a instituciones.
+-   **Georeferenciá tu derivación:** Si el usuario aporta su provincia o zona, recomendá recursos locales: hospitales, centros de salud comunitarios, y en particular, nuestras organizaciones de referencia.
+-   **Organizaciones de referencia:** Citá SIEMPRE a nuestras organizaciones: Intercambios A.C., PAF! (Proyecto de Atención en Fiestas), Mamisepuede, Vuelo Seguro.
+-   **PROHIBIDO MENCIONAR ARGENPILLS:** NUNCA recomiendes foros como ArgenPills. Evitá a toda costa mencionarlos. Derivá en su lugar a dispositivos territoriales como PAF! o Intercambios.
+-   **Usa tu herramienta de búsqueda:** Buscá información actualizada si hay consultas concretas de emergencias, pero no envíes al usuario a foros.
+-   **Cita tus fuentes:** Si usás información de la web, detalla brevemente la organización de donde la obtuviste (ej. SEDRONAR, PAF!).
 
 **Prioridades en tus respuestas:**
-1.  **Derivación y otras vías de consulta**: Siempre recomendá recursos profesionales. SEDRONAR (Línea 141), SAME 107, Línea 135 (salud mental CABA), centros de atención provinciales.
-2.  **Información de riesgos**: Explica los peligros de manera objetiva.
-3.  **Señales de alarma**: Detalla síntomas físicos o psicológicos que indiquen una emergencia.
-4.  **Interacciones peligrosas**: Advertí sobre mezclas de sustancias (policonsumo), especialmente depresores con otros depresores, y con medicación psiquiátrica.
-5.  **Pautas de cuidado**: Recomendá hidratación, descanso, alimentación, cuidar el "set & setting" (ambiente y estado mental), y testear sustancias si es posible (incluyendo servicios de testeo como UNMdP, puntos de reducción de daños locales).
-6.  **Apuntalamiento y derivación**: Si detectás una situación de riesgo o crisis, apuntalá a la persona emocionalmente y derivá a recursos de salud apropiados según su provincia.
-7.  **Emergencias**: Para emergencias médicas, siempre indicá **llamar al SAME 107** como primera opción.
-
-**Recursos de referencia para derivar (según nivel):**
--   **Estado Nacional:** SEDRONAR (sedronar.gob.ar), Línea 141 (24hs), programas provinciales de cada jurisdicción.
--   **Organizaciones de la sociedad civil:** Intercambios A.C., Mamisepuede, FONGA, y otras según la provincia del usuario.
--   **Reducción de daños y testeo:** Proyecto de testeo UNMdP (Mar del Plata), puntos de testeo comunitarios, servicios de análisis de sustancias.
--   **Redes comunitarias y activismo:** Organizaciones cannábicas, redes de usuarios, colectivos de reducción de daños locales.
--   **Grupos de apoyo:** Narcóticos Anónimos, Alcohólicos Anónimos, centros de día, hospitales de día.
+1.  **Apuntalamiento y derivación**: Si detectás una situación de riesgo, apuntalá a la persona y recomendá SEDRONAR (Línea 141), SAME 107, o entidades locales según la geolocalización.
+2.  **Información de riesgos e interacciones**: Advertí tajantemente sobre policonsumo y medicación psiquiátrica.
+3.  **Pautas de cuidado**: Hidratación, descanso, set & setting.
+4.  **Emergencias**: Llamar al SAME 107 o a emergencias de salud ante descompensaciones.
 
 **Restricciones estrictas:**
--   NO des instrucciones para fabricar o preparar sustancias.
--   NO recomiendes dosis exactas. En su lugar, habla de rangos orientativos de bajo riesgo y la importancia de empezar con dosis bajas.
--   NO alientes el consumo de ninguna manera.
--   Mantené siempre un tono de apoyo y nunca moralista.
--   Recordá al usuario que no sos un profesional de la salud y que la información es para reducción de daños, no es consejo médico.
--   Enfatizá el apuntalamiento emocional y la derivación al sistema de salud cuando sea necesario.
+-   NO des instrucciones de fabricación ni recomiendes dosis exactas.
+-   Mantené NUNCA un tono moralista, punitivo o condenatorio. Evitá usar frases genéricas ("la mejor forma de evitar riesgos es no consumir").
+-   Recordá que no reemplazás el consejo médico.
 `;
 
 export const PROVINCES: string[] = [
@@ -346,7 +335,7 @@ export const LIBRARY_DATA: LibraryEntry[] = [
         "💊 **Dosificá bajo:** Empezá con dosis bajas, especialmente si la sustancia es de origen desconocido.",
         "❌ **Evitar mezclar con:** Alcohol (aumenta la deshidratación y la neurotoxicidad), IMAOs, y otros estimulantes (aumenta la carga cardíaca)."
       ],
-      alerts: "Las pastillas de éxtasis a menudo contienen otras sustancias como cafeína, anfetaminas o catinonas sintéticas. A veces, no contienen MDMA en absoluto. Testear la sustancia con reactivos es la forma más segura de saber su composición. Priorizá la información de análisis de fuentes locales como ArgenPills."
+      alerts: "Las pastillas de éxtasis a menudo contienen otras sustancias como cafeína, anfetaminas o catinonas sintéticas. A veces, no contienen MDMA en absoluto. Testear la sustancia con reactivos es la forma más segura de saber su composición. Priorizá la información de análisis de organizaciones locales de reducción de daños como PAF! o Intercambios."
     }
   },
   {
@@ -1048,11 +1037,11 @@ export const TESTING_RESOURCES: TestingResource[] = [
     contact: "Instagram: @paf.oficial"
   },
   {
-    name: "ArgenPills",
+    name: "PAF! (Proyecto de Atención en Fiestas)",
     type: "organization",
-    website: "https://argenpills.org",
+    website: "https://www.instagram.com/pafytu/",
     description: "Comunidad online y foro referente sobre reducción de daños en el país. Comparten reportes y reviews sobre sustancias (pastillas, cristales) que circulan en Argentina y orientan sobre reactivos.",
-    contact: "Foro online / Instagram: @argenpills"
+    contact: "Instagram: @pafytu"
   },
   {
     name: "Test Kits (Compra Local e Internacional)",
@@ -1095,10 +1084,10 @@ export const INSTITUTIONAL_TESTING = [
     contact: "Instagram: @paf.oficial"
   },
   {
-    name: "ArgenPills",
+    name: "PAF! (Proyecto de Atención en Fiestas)",
     type: "Comunidad / Foro",
     description: "Comunidad online de referencia en Argentina. Recopilan reportes de usuarios sobre reactivos y pastillas circulantes, democratizando la información de riesgos.",
-    contact: "Foro: argenpills.org"
+    contact: "Instagram: @pafytu"
   }
 ];
 
@@ -1151,7 +1140,7 @@ export const TESTING_GUIDE = {
     "⏱️ **Esperá unos segundos:** Algunas reacciones son lentas.",
     "🧪 **Guardá correctamente:** Los reactivos tienen fecha de vencimiento. Guardarlos en lugar fresco y oscuro.",
     "🚫 **Los test tienen limitaciones:** No detectan todos los adulterantes y no miden pureza.",
-    "💡 **Consultá con expertos:** Llevá tus sustancias a servicios de análisis como ArgenPills para un análisis más completo (GC/MS)."
+    "💡 **Consultá con expertos:** Llevá tus sustancias a servicios comunitarios o proyectos de reducción de daños para un análisis más completo (GC/MS)."
   ],
 
   commonAdulterants: [
@@ -1332,10 +1321,10 @@ export const LOCAL_RESOURCES: LocalResource[] = [
     free: true
   },
   {
-    name: "ArgenPills",
+    name: "PAF! (Proyecto de Atención en Fiestas)",
     type: "ngo",
     province: "Nacional",
-    website: "https://argenpills.org",
+    website: "https://www.instagram.com/pafytu/",
     description: "Principal organización de análisis y reducción de daños en Argentina. Base de datos de pastillas analizadas, alertas territoriales y testeo gratuito.",
     services: ["Testeo de sustancias (GC/MS)", "Alertas de adulteración", "Base de datos de análisis", "Información", "Talleres"],
     free: true
