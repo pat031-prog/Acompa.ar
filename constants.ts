@@ -104,7 +104,7 @@ export const HIGH_FIDELITY_PROVINCE_ID_MAP: Record<string, string> = {
 };
 
 
-export const INITIAL_BOT_MESSAGE = 'Hola, soy tu acompañante de reducción de daños. Puedo orientarte según tu situación — ya sea una consulta puntual, información sobre interacciones, o si necesitás ayuda con un consumo que te preocupa. También puedo recomendarte recursos y líneas de ayuda cercanas a tu ubicación. Si es una urgencia, llamá al 107 o 911.';
+export const INITIAL_BOT_MESSAGE = 'Hola, soy tu acompañante de reducción de daños. Puedo orientarte según tu situación — ya sea una consulta puntual, información sobre interacciones, o si necesitás ayuda con un consumo que te preocupa. También puedo recomendarte recursos y líneas de ayuda cercanas a tu ubicación. Si es una urgencia, llamá al 107.';
 
 // Fix: Add map data for the new map component
 export const MAP_DATA: Record<string, MapDataset> = {
@@ -755,7 +755,7 @@ export const LIBRARY_DATA: LibraryEntry[] = [
       guidelines: [
         "🆘 **LLEVÁ NALOXONA:** Es un antagonista opioide que puede revertir una sobredosis. Es la herramienta más importante. Aprendé a usarla.",
         "🧪 **TESTEÁ TUS SUSTANCIAS:** Usá tiras reactivas de fentanilo para analizar muestras antes de consumir.",
-        "🧑‍🤝‍🧑 **NUNCA CONSUMAS A SOLAS:** Si algo sale mal, necesitás que alguien llame a emergencias (107/911).",
+        "🧑‍🤝‍🧑 **NUNCA CONSUMAS A SOLAS:** Si algo sale mal, necesitás que alguien llame a emergencias (107).",
         "🤏 **EMPEZÁ CON UNA DOSIS MÍNIMA:** Si vas a consumir una sustancia nueva, probá una cantidad ínfima (la punta de una llave) y esperá.",
         "🚨 **SEÑALES DE SOBREDOSIS:** Respiración lenta o ausente, piel fría y húmeda, labios azules, no responde a estímulos. Llamá a emergencias inmediatamente y administrá naloxona si la tenés.",
       ],
