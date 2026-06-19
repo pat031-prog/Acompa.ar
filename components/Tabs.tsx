@@ -96,14 +96,14 @@ export const Tabs: React.FC<TabsProps> = ({ activeTab, setActiveTab, collapsed =
             title={collapsed ? item.label : undefined}
             className="group relative flex items-center text-left text-sm"
             style={{
-              gap: collapsed ? '0' : '10px',
-              padding: collapsed ? '10px' : '8px 12px',
+              gap: collapsed ? '0' : '11px',
+              padding: collapsed ? '10px' : '9px 12px',
               justifyContent: collapsed ? 'center' : 'flex-start',
-              borderRadius: '0',
-              background: isActive ? 'var(--surface-active)' : 'transparent',
+              borderRadius: 'var(--radius-md)',
+              background: isActive ? 'var(--accent-subtle)' : 'transparent',
               color: isActive ? 'var(--text-primary)' : 'var(--text-tertiary)',
-              borderLeft: isActive ? '3px solid var(--accent-primary)' : '3px solid transparent',
-              fontWeight: isActive ? 700 : 500,
+              border: `1px solid ${isActive ? 'var(--accent-medium)' : 'transparent'}`,
+              fontWeight: isActive ? 600 : 500,
               letterSpacing: '0.02em',
               fontFamily: 'var(--font-ui)',
               WebkitTapHighlightColor: 'transparent',
@@ -113,14 +113,14 @@ export const Tabs: React.FC<TabsProps> = ({ activeTab, setActiveTab, collapsed =
               if (!isActive) {
                 e.currentTarget.style.background = 'var(--surface-hover)';
                 e.currentTarget.style.color = 'var(--text-secondary)';
-                e.currentTarget.style.borderLeftColor = 'rgba(255,255,255,0.1)';
+                e.currentTarget.style.borderColor = 'var(--border-subtle)';
               }
             }}
             onMouseLeave={(e) => {
               if (!isActive) {
                 e.currentTarget.style.background = 'transparent';
                 e.currentTarget.style.color = 'var(--text-tertiary)';
-                e.currentTarget.style.borderLeftColor = 'transparent';
+                e.currentTarget.style.borderColor = 'transparent';
               }
             }}
           >

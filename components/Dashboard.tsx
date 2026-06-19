@@ -56,7 +56,7 @@ const AlertCard: React.FC<{ alert: TerritorialAlert; onDelete: () => void }> = (
   const badge = getSeverityBadge(alert.severity);
   const style = getSeverityStyle(alert.severity);
   return (
-    <div className="p-5 sm:p-6" style={{ background: style.bg, border: `1px solid ${style.border}`, borderLeft: `3px solid ${style.accent}`, borderRadius: 'var(--radius-md)' }}>
+    <div className="p-5 sm:p-6" style={{ background: style.bg, border: `1px solid ${style.border}`, borderLeft: `3px solid ${style.accent}`, borderRadius: 'var(--radius-lg)' }}>
       <div className="flex items-start justify-between gap-3 sm:gap-4 mb-3">
         <div className="flex items-center gap-1.5 sm:gap-2 flex-wrap">
           <span style={{ color: style.accent }}><ExclamationTriangleIcon /></span>
@@ -93,7 +93,7 @@ const AlertCard: React.FC<{ alert: TerritorialAlert; onDelete: () => void }> = (
   );
 };
 
-const inputStyle: React.CSSProperties = { background: 'var(--bg-primary)', color: 'var(--text-primary)', border: '1px solid var(--border-medium)', borderRadius: 'var(--radius-sm)', outline: 'none', width: '100%', padding: '10px 12px', fontSize: '14px' };
+const inputStyle: React.CSSProperties = { background: 'var(--bg-primary)', color: 'var(--text-primary)', border: '1px solid var(--border-subtle)', borderRadius: 'var(--radius-md)', outline: 'none', width: '100%', padding: '10px 12px', fontSize: '14px' };
 
 export const Dashboard: React.FC = () => {
   const [selectedProvince, setSelectedProvince] = useState<string>('all');
@@ -130,7 +130,7 @@ export const Dashboard: React.FC = () => {
 
   const handleDeleteAlert = (id: string) => { deleteAlert(id); setAlerts(getAlerts(selectedProvince)); };
 
-  const statCardStyle = (accent: string): React.CSSProperties => ({ background: 'var(--surface-1)', border: '1px solid var(--border-subtle)', borderLeft: `3px solid ${accent}`, borderRadius: 'var(--radius-md)', padding: '24px 32px' });
+  const statCardStyle = (accent: string): React.CSSProperties => ({ background: 'var(--surface-1)', border: '1px solid var(--border-subtle)', borderLeft: `3px solid ${accent}`, borderRadius: 'var(--radius-lg)', padding: '24px 32px' });
 
   return (
     <div className="flex-1 flex flex-col min-h-0">
@@ -176,7 +176,7 @@ export const Dashboard: React.FC = () => {
               Alertas Territoriales ({alerts.length})
             </h2>
             {alerts.length === 0 ? (
-              <div className="p-10 sm:p-12 text-center" style={{ background: 'var(--surface-1)', border: '1px solid var(--border-subtle)', borderRadius: 'var(--radius-md)' }}><p style={{ color: 'var(--text-muted)' }}>No hay alertas activas para esta provincia.</p></div>
+              <div className="p-10 sm:p-12 text-center" style={{ background: 'var(--surface-1)', border: '1px solid var(--border-subtle)', borderRadius: 'var(--radius-lg)' }}><p style={{ color: 'var(--text-muted)' }}>No hay alertas activas para esta provincia.</p></div>
             ) : (
               <div className="grid gap-5 sm:gap-6">{alerts.map(a => <AlertCard key={a.id} alert={a} onDelete={() => handleDeleteAlert(a.id)} />)}</div>
             )}
@@ -188,17 +188,17 @@ export const Dashboard: React.FC = () => {
             <div style={statCardStyle('var(--color-violet)')}><h3 className="text-sm font-medium mb-1" style={{ color: 'var(--text-secondary)' }}>Categorías Activas</h3><p className="text-3xl font-bold" style={{ color: 'var(--text-primary)' }}>{Object.keys(stats.queriesByCategory).length}</p></div>
           </div>
 
-          <div className="p-5 sm:p-6 lg:p-8" style={{ background: 'var(--surface-1)', border: '1px solid var(--border-subtle)', borderRadius: 'var(--radius-md)' }}>
+          <div className="p-5 sm:p-6 lg:p-8" style={{ background: 'var(--surface-1)', border: '1px solid var(--border-subtle)', borderRadius: 'var(--radius-lg)' }}>
             <h3 className="text-sm sm:text-base font-semibold mb-4 sm:mb-5 lg:mb-6" style={{ color: 'var(--text-primary)' }}>Tendencia de Consultas</h3>
             <div className="h-48 sm:h-64"><Line data={trendData} options={chartOptions} /></div>
           </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-5 sm:gap-6 lg:gap-8">
-            <div className="p-5 sm:p-6 lg:p-8" style={{ background: 'var(--surface-1)', border: '1px solid var(--border-subtle)', borderRadius: 'var(--radius-md)' }}>
+            <div className="p-5 sm:p-6 lg:p-8" style={{ background: 'var(--surface-1)', border: '1px solid var(--border-subtle)', borderRadius: 'var(--radius-lg)' }}>
               <h3 className="text-sm sm:text-base font-semibold mb-4 sm:mb-5 lg:mb-6" style={{ color: 'var(--text-primary)' }}>Por Categoría</h3>
               <div className="h-48 sm:h-64"><Doughnut data={categoryData} options={doughnutOptions} /></div>
             </div>
-            <div className="p-5 sm:p-6 lg:p-8" style={{ background: 'var(--surface-1)', border: '1px solid var(--border-subtle)', borderRadius: 'var(--radius-md)' }}>
+            <div className="p-5 sm:p-6 lg:p-8" style={{ background: 'var(--surface-1)', border: '1px solid var(--border-subtle)', borderRadius: 'var(--radius-lg)' }}>
               <h3 className="text-sm sm:text-base font-semibold mb-4 sm:mb-5 lg:mb-6" style={{ color: 'var(--text-primary)' }}>Sustancias Más Consultadas</h3>
               <div className="h-48 sm:h-64"><Bar data={topSubstancesData} options={chartOptions} /></div>
             </div>

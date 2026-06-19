@@ -162,7 +162,7 @@ export const Literature: React.FC = () => {
     return (
         <div className="flex-1 flex flex-col min-h-0 bg-[var(--bg-primary)]">
             {/* Editorial Header */}
-            <div className="p-6 sm:p-8" style={{ borderBottom: '2.5px solid rgba(255,255,255,0.12)' }}>
+            <div className="p-6 sm:p-8" style={{ borderBottom: '1px solid var(--border-subtle)' }}>
                 <div className="flex items-center gap-3 mb-3">
                     <span style={{ color: 'var(--color-blue)' }}><BookIcon /></span>
                     <span style={{ fontSize: '10px', fontWeight: 700, letterSpacing: '0.12em', textTransform: 'uppercase', color: 'var(--accent-primary)' }}>LECTURAS</span>
@@ -202,7 +202,9 @@ export const Literature: React.FC = () => {
                                     fontWeight: 700,
                                     letterSpacing: '0.08em',
                                     textTransform: 'uppercase',
-                                    padding: '4px 8px',
+                                    padding: '4px 10px',
+                                    borderRadius: 'var(--radius-pill)',
+                                    border: '1px solid rgba(199,112,92,0.2)',
                                 }}>
                                     {article.type}
                                 </span>
@@ -257,7 +259,7 @@ export const Literature: React.FC = () => {
                 </div>
 
                 {/* Footer Note */}
-                <div className="mt-16 pt-8 max-w-4xl mx-auto" style={{ borderTop: '2px solid rgba(255,255,255,0.08)' }}>
+                <div className="mt-16 pt-8 max-w-4xl mx-auto" style={{ borderTop: '1px solid var(--border-subtle)' }}>
                     <p className="text-center" style={{ fontFamily: 'var(--font-editorial)', fontStyle: 'italic', fontSize: '12px', color: 'var(--text-muted)' }}>
                         Esta sección está en construcción. Próximamente incorporaremos un buscador de papers académicos y artículos archivados.
                     </p>

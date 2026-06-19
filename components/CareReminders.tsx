@@ -32,7 +32,10 @@ const ReminderCard: React.FC<{ reminder: Reminder; onToggle: () => void; onInter
   };
 
   return (
-    <div className="p-5 sm:p-6" style={{ background: 'var(--surface-1)', border: '2px solid rgba(255,255,255,0.1)', borderLeft: `4px solid ${getTypeBorderColor(reminder.type)}`, borderRadius: '0' }}>
+    <div className="p-5 sm:p-6 rounded-2xl transition-all duration-200" style={{ background: 'var(--surface-1)', border: '1px solid var(--border-subtle)', borderLeft: `4px solid ${getTypeBorderColor(reminder.type)}` }}
+      onMouseEnter={(e) => { e.currentTarget.style.background = 'var(--surface-2)'; e.currentTarget.style.transform = 'translateY(-2px)'; e.currentTarget.style.boxShadow = 'var(--shadow-md)'; }}
+      onMouseLeave={(e) => { e.currentTarget.style.background = 'var(--surface-1)'; e.currentTarget.style.transform = 'translateY(0)'; e.currentTarget.style.boxShadow = 'none'; }}
+    >
       <div className="flex items-start justify-between gap-4">
         <div className="flex items-start gap-3 flex-1">
           <div className="flex-shrink-0 text-3xl">{getTypeIcon(reminder.type)}</div>
@@ -43,10 +46,10 @@ const ReminderCard: React.FC<{ reminder: Reminder; onToggle: () => void; onInter
               <div className="flex items-center gap-1.5"><ClockIcon />
                 {isEditing ? (
                   <div className="flex items-center gap-1">
-                    <input type="number" value={customInterval} onChange={(e) => setCustomInterval(e.target.value)} min="1" max="1440" className="w-16 px-1.5 py-0.5" style={{ background: 'var(--bg-primary)', border: '1px solid var(--border-medium)', borderRadius: '4px', color: 'var(--text-primary)', fontSize: '12px' }} />
+                    <input type="number" value={customInterval} onChange={(e) => setCustomInterval(e.target.value)} min="1" max="1440" className="w-16 px-1.5 py-0.5" style={{ background: 'var(--bg-primary)', border: '1px solid var(--border-medium)', borderRadius: 'var(--radius-md)', color: 'var(--text-primary)', fontSize: '12px' }} />
                     <span>min</span>
-                    <button onClick={handleSave} className="ml-1 px-2 py-0.5" style={{ background: 'var(--accent-primary)', borderRadius: '4px', color: '#fff', fontSize: '12px' }}>✓</button>
-                    <button onClick={() => { setCustomInterval(reminder.intervalMinutes.toString()); setIsEditing(false); }} className="px-2 py-0.5" style={{ background: 'var(--surface-3)', borderRadius: '4px', color: 'var(--text-secondary)', fontSize: '12px' }}>✕</button>
+                    <button onClick={handleSave} className="ml-1 px-2 py-0.5 rounded-full" style={{ background: 'var(--accent-primary)', color: '#fff', fontSize: '12px' }}>✓</button>
+                    <button onClick={() => { setCustomInterval(reminder.intervalMinutes.toString()); setIsEditing(false); }} className="px-2 py-0.5 rounded-full" style={{ background: 'var(--surface-3)', color: 'var(--text-secondary)', fontSize: '12px' }}>✕</button>
                   </div>
                 ) : (
                   <button onClick={() => setIsEditing(true)} style={{ color: 'var(--accent-primary)' }}>Cada {reminder.intervalMinutes} min</button>
@@ -58,8 +61,8 @@ const ReminderCard: React.FC<{ reminder: Reminder; onToggle: () => void; onInter
         </div>
         <label className="flex-shrink-0 relative inline-block w-12 h-6 cursor-pointer">
           <input type="checkbox" checked={reminder.enabled} onChange={onToggle} className="sr-only peer" />
-          <div style={{ background: reminder.enabled ? 'var(--accent-primary)' : 'var(--surface-3)', borderRadius: '0', width: '48px', height: '24px', position: 'relative', transition: 'background var(--transition-fast)' }}>
-            <div style={{ position: 'absolute', top: '2px', left: reminder.enabled ? '26px' : '2px', width: '20px', height: '20px', background: '#fff', borderRadius: '0', transition: 'left var(--transition-fast)' }} />
+          <div style={{ background: reminder.enabled ? 'var(--accent-primary)' : 'var(--surface-3)', borderRadius: '999px', width: '48px', height: '24px', position: 'relative', transition: 'background var(--transition-fast)' }}>
+            <div style={{ position: 'absolute', top: '2px', left: reminder.enabled ? '26px' : '2px', width: '20px', height: '20px', background: '#fff', borderRadius: '50%', transition: 'left var(--transition-fast)' }} />
           </div>
         </label>
       </div>
@@ -101,7 +104,7 @@ export const CareReminders: React.FC = () => {
 
   return (
     <div className="flex-1 flex flex-col min-h-0">
-      <div className="p-6 sm:p-8" style={{ borderBottom: '2.5px solid rgba(255,255,255,0.12)' }}>
+      <div className="p-6 sm:p-8" style={{ borderBottom: '1px solid var(--border-subtle)' }}>
         <div className="flex items-center gap-3 mb-3">
           <span style={{ color: 'var(--color-amber)' }}><BellIcon /></span>
           <span style={{ fontSize: '10px', fontWeight: 700, letterSpacing: '0.12em', textTransform: 'uppercase', color: 'var(--accent-primary)' }}>CUIDADO</span>
@@ -127,19 +130,19 @@ export const CareReminders: React.FC = () => {
       <div className="flex-1 overflow-y-auto p-6 sm:p-8 md:p-10 lg:p-12">
         <div className="max-w-3xl mx-auto space-y-8 lg:space-y-10">
           {notificationPermission !== 'granted' && (
-            <div className="p-5 sm:p-6" style={{ background: 'var(--color-blue-subtle)', border: '2px solid var(--color-blue-medium)', borderLeft: '4px solid var(--color-blue)', borderRadius: '0' }}>
+            <div className="p-5 sm:p-6" style={{ background: 'var(--color-blue-subtle)', border: '1px solid var(--color-blue-medium)', borderLeft: '3px solid var(--color-blue)', borderRadius: 'var(--radius-lg)' }}>
               <div className="flex items-start gap-3">
                 <div className="flex-shrink-0 text-2xl">🔔</div>
                 <div className="flex-1">
                   <h3 className="font-semibold mb-1" style={{ color: 'var(--text-primary)' }}>Activá las notificaciones</h3>
                   <p className="text-sm mb-3" style={{ color: 'var(--text-secondary)' }}>Para recibir recordatorios cuando estés en otra pestaña o app, necesitamos tu permiso para enviar notificaciones.</p>
-                  <button onClick={requestNotificationPermission} className="px-4 py-2 text-xs font-bold transition-all duration-200" style={{ background: 'var(--accent-primary)', color: '#fff', borderRadius: '0', border: '2px solid var(--accent-primary)', letterSpacing: '0.06em', textTransform: 'uppercase' as const }}>PERMITIR NOTIFICACIONES</button>
+                  <button onClick={requestNotificationPermission} className="px-4 py-2 text-xs font-bold transition-all duration-200" style={{ background: 'var(--accent-primary)', color: '#fff', borderRadius: 'var(--radius-pill)', border: 'none', letterSpacing: '0.06em', textTransform: 'uppercase' as const }}>PERMITIR NOTIFICACIONES</button>
                 </div>
               </div>
             </div>
           )}
 
-          <div className="p-5 sm:p-6" style={{ background: 'var(--surface-1)', border: '2px solid rgba(255,255,255,0.1)', borderRadius: '0' }}>
+          <div className="p-5 sm:p-6" style={{ background: 'var(--surface-1)', border: '1px solid var(--border-medium)', borderRadius: 'var(--radius-lg)' }}>
             <div className="flex items-center justify-between">
               <div>
                 <h3 className="text-sm font-medium" style={{ color: 'var(--text-secondary)' }}>Estado</h3>
@@ -152,7 +155,7 @@ export const CareReminders: React.FC = () => {
             </div>
           </div>
 
-          <div className="p-5 sm:p-6" style={{ background: 'var(--color-amber-subtle)', border: '2px solid var(--color-amber-medium)', borderLeft: '4px solid var(--color-amber)', borderRadius: '0' }}>
+          <div className="p-5 sm:p-6" style={{ background: 'var(--color-amber-subtle)', border: '1px solid var(--color-amber-medium)', borderLeft: '3px solid var(--color-amber)', borderRadius: 'var(--radius-lg)' }}>
             <p className="text-sm" style={{ color: 'var(--text-primary)' }}>
               <strong style={{ color: 'var(--color-amber)' }}>💡 Consejo:</strong> Los recordatorios son especialmente útiles durante experiencias psicoactivas. Hidratarse, descansar y alimentarse de forma regular reduce riesgos y mejora el bienestar.
             </p>
@@ -164,7 +167,7 @@ export const CareReminders: React.FC = () => {
             {reminders.map(r => <ReminderCard key={r.id} reminder={r} onToggle={() => handleToggle(r.id)} onIntervalChange={(m) => handleIntervalChange(r.id, m)} />)}
           </div>
 
-          <div className="p-5 sm:p-6" style={{ background: 'var(--surface-1)', border: '2px solid rgba(255,255,255,0.1)', borderRadius: '0' }}>
+          <div className="p-5 sm:p-6" style={{ background: 'var(--surface-1)', border: '1px solid var(--border-medium)', borderRadius: 'var(--radius-lg)' }}>
             <h3 className="text-sm font-semibold mb-2" style={{ color: 'var(--text-primary)' }}>Cómo usar los recordatorios</h3>
             <ul className="space-y-2 text-sm" style={{ color: 'var(--text-tertiary)' }}>
               <li>• <strong style={{ color: 'var(--text-secondary)' }}>Activá/desactivá:</strong> Usa el interruptor para habilitar o deshabilitar cada recordatorio</li>
@@ -174,7 +177,7 @@ export const CareReminders: React.FC = () => {
             </ul>
           </div>
 
-          <div className="pt-4" style={{ borderTop: '2px solid rgba(255,255,255,0.08)' }}>
+          <div className="pt-4" style={{ borderTop: '1px solid var(--border-subtle)' }}>
             <p className="text-xs text-center" style={{ color: 'var(--text-muted)' }}>Los recordatorios son orientativos. Escuchá tu cuerpo y ajustá según tus necesidades. Si te sentís mal, buscá asistencia médica inmediatamente.</p>
           </div>
         </div>

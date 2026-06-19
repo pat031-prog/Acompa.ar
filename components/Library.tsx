@@ -5,6 +5,17 @@ import type { LibraryEntry, SubstanceCategory } from '../types';
 import { toggleFavorite, isFavorite, getFavorites } from '../services/favoritesService';
 import { CompareSubstances } from './CompareSubstances';
 import { PsychonautWikiInfo } from './PsychonautWikiInfo';
+import { categoryColor, primaryCategoryColor, withAlpha } from './categoryStyles';
+
+// Semantic accent hexes (mirror the CSS custom properties, usable in JS colour math)
+const C = {
+  green: '#34D399',
+  amber: '#FBBF24',
+  red: '#F87171',
+  blue: '#60A5FA',
+  violet: '#A78BFA',
+  accent: '#C7705C',
+};
 
 // --- Icon Components ---
 const SearchIcon: React.FC = () => (
@@ -13,64 +24,82 @@ const SearchIcon: React.FC = () => (
   </svg>
 );
 const ClockIcon: React.FC = () => (
-  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5"><path strokeLinecap="round" strokeLinejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" /></svg>
+  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.6} stroke="currentColor" className="w-5 h-5"><path strokeLinecap="round" strokeLinejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" /></svg>
 );
 const ScaleIcon: React.FC = () => (
-  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5"><path strokeLinecap="round" strokeLinejoin="round" d="M12 3v17.25m0 0c-1.472 0-2.882.265-4.185.75M12 20.25c1.472 0 2.882.265 4.185.75M18.75 4.97A48.416 48.416 0 0 0 12 4.5c-2.291 0-4.545.16-6.75.47m13.5 0c-1.472 0-2.882.265-4.185.75M12 4.5c1.472 0 2.882.265 4.185.75M5.25 4.97A48.416 48.416 0 0 1 12 4.5c2.291 0 4.545.16 6.75.47m13.5 0c1.472 0 2.882.265 4.185.75M12 4.5c-1.472 0-2.882.265-4.185.75M3.75 12a.75.75 0 0 1 .75-.75h15a.75.75 0 0 1 0 1.5h-15a.75.75 0 0 1-.75-.75Zm0 0A48.11 48.11 0 0 1 12 10.5c2.291 0 4.545.16 6.75.47m-13.5 0a48.11 48.11 0 0 0 13.5 0Z" /></svg>
+  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.6} stroke="currentColor" className="w-5 h-5"><path strokeLinecap="round" strokeLinejoin="round" d="M12 3v17.25m0 0c-1.472 0-2.882.265-4.185.75M12 20.25c1.472 0 2.882.265 4.185.75M18.75 4.97A48.416 48.416 0 0 0 12 4.5c-2.291 0-4.545.16-6.75.47m13.5 0c-1.472 0-2.882.265-4.185.75M12 4.5c1.472 0 2.882.265 4.185.75M5.25 4.97A48.416 48.416 0 0 1 12 4.5c2.291 0 4.545.16 6.75.47m13.5 0c1.472 0 2.882.265 4.185.75M12 4.5c-1.472 0-2.882.265-4.185.75M3.75 12a.75.75 0 0 1 .75-.75h15a.75.75 0 0 1 0 1.5h-15a.75.75 0 0 1-.75-.75Zm0 0A48.11 48.11 0 0 1 12 10.5c2.291 0 4.545.16 6.75.47m-13.5 0a48.11 48.11 0 0 0 13.5 0Z" /></svg>
 );
 const HeartIcon: React.FC = () => (
-  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5"><path strokeLinecap="round" strokeLinejoin="round" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z" /></svg>
+  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.6} stroke="currentColor" className="w-5 h-5"><path strokeLinecap="round" strokeLinejoin="round" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z" /></svg>
 );
 const WarningIcon: React.FC = () => (
-  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5"><path strokeLinecap="round" strokeLinejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126ZM12 15.75h.007v.008H12v-.008Z" /></svg>
+  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.6} stroke="currentColor" className="w-5 h-5"><path strokeLinecap="round" strokeLinejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126ZM12 15.75h.007v.008H12v-.008Z" /></svg>
 );
 const CheckIcon: React.FC = () => (
-  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5"><path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" /></svg>
+  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.6} stroke="currentColor" className="w-5 h-5"><path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" /></svg>
 );
 const AlertIcon: React.FC = () => (
-  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5"><path strokeLinecap="round" strokeLinejoin="round" d="M12 9v3.75m9-.75a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9 3.75h.008v.008H12v-.008Z" /></svg>
+  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.6} stroke="currentColor" className="w-5 h-5"><path strokeLinecap="round" strokeLinejoin="round" d="M12 9v3.75m9-.75a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9 3.75h.008v.008H12v-.008Z" /></svg>
 );
-const StarIcon: React.FC<{ filled?: boolean }> = ({ filled = false }) => (
+const StarIcon: React.FC<{ filled?: boolean; className?: string }> = ({ filled = false, className = 'w-5 h-5' }) => (
   filled ? (
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className={className}>
       <path fillRule="evenodd" d="M10.788 3.21c.448-1.077 1.976-1.077 2.424 0l2.082 5.006 5.404.434c1.164.093 1.636 1.545.749 2.305l-4.117 3.527 1.257 5.273c.271 1.136-.964 2.033-1.96 1.425L12 18.354 7.373 21.18c-.996.608-2.231-.29-1.96-1.425l1.257-5.273-4.117-3.527c-.887-.76-.415-2.212.749-2.305l5.404-.434 2.082-5.005Z" clipRule="evenodd" />
     </svg>
   ) : (
-    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5">
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.6} stroke="currentColor" className={className}>
       <path strokeLinecap="round" strokeLinejoin="round" d="M11.48 3.499a.562.562 0 0 1 1.04 0l2.125 5.111a.563.563 0 0 0 .475.345l5.518.442c.499.04.701.663.321.988l-4.204 3.602a.563.563 0 0 0-.182.557l1.285 5.385a.562.562 0 0 1-.84.61l-4.725-2.885a.562.562 0 0 0-.586 0L6.982 20.54a.562.562 0 0 1-.84-.61l1.285-5.386a.562.562 0 0 0-.182-.557l-4.204-3.602a.562.562 0 0 1 .321-.988l5.518-.442a.563.563 0 0 0 .475-.345L11.48 3.5Z" />
     </svg>
   )
 );
 const CompareIcon: React.FC = () => (
-  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5">
+  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.6} stroke="currentColor" className="w-5 h-5">
     <path strokeLinecap="round" strokeLinejoin="round" d="M7.5 21 3 16.5m0 0L7.5 12M3 16.5h13.5m0-13.5L21 7.5m0 0L16.5 12M21 7.5H7.5" />
   </svg>
 );
-const CalculatorIcon: React.FC = () => (
-  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5">
-    <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 15.75V18m-7.5-6.75h.008v.008H8.25v-.008Zm0 2.25h.008v.008H8.25V13.5Zm0 2.25h.008v.008H8.25v-.008Zm0 2.25h.008v.008H8.25V18Zm2.498-6.75h.007v.008h-.007v-.008Zm0 2.25h.007v.008h-.007V13.5Zm0 2.25h.007v.008h-.007v-.008Zm0 2.25h.007v.008h-.007V18Zm2.504-6.75h.008v.008h-.008v-.008Zm0 2.25h.008v.008h-.008V13.5Zm0 2.25h.008v.008h-.008v-.008Zm0 2.25h.008v.008h-.008V18Zm2.498-6.75h.008v.008h-.008v-.008Zm0 2.25h.008v.008h-.008V13.5ZM8.25 6h7.5v2.25h-7.5V6ZM12 2.25c-1.892 0-3.758.11-5.593.322C5.307 2.7 4.5 3.65 4.5 4.757V19.5a2.25 2.25 0 0 0 2.25 2.25h10.5a2.25 2.25 0 0 0 2.25-2.25V4.757c0-1.108-.806-2.057-1.907-2.185A48.507 48.507 0 0 0 12 2.25Z" />
-  </svg>
+const ChevronRightIcon: React.FC = () => (
+  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-4 h-4"><path strokeLinecap="round" strokeLinejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" /></svg>
 );
+const ArrowLeftIcon: React.FC = () => (
+  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.8} stroke="currentColor" className="w-5 h-5"><path strokeLinecap="round" strokeLinejoin="round" d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18" /></svg>
+);
+// --- End Icon Components ---
 
-const InfoSection: React.FC<{ title: string; icon: React.ReactNode; children: React.ReactNode; color?: string }> = ({ title, icon, children, color }) => (
-  <div className="mt-8 lg:mt-10">
-    <div className="flex items-center gap-3 mb-4">
-      <span style={{ color: color || 'var(--text-secondary)' }}>{icon}</span>
-      <h3 className="font-bold" style={{ color: color || 'var(--text-primary)', fontFamily: 'var(--font-editorial)', letterSpacing: '-0.01em' }}>
-        {title}
-      </h3>
-      <div style={{ flex: 1, height: '1px', background: 'rgba(255,255,255,0.06)' }} />
-    </div>
-    <div className="pl-7 text-sm leading-relaxed space-y-3" style={{ color: 'var(--text-secondary)' }}>
-      {children}
-    </div>
+const CategoryChip: React.FC<{ category: SubstanceCategory }> = ({ category }) => {
+  const c = categoryColor(category);
+  return (
+    <span
+      className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-semibold whitespace-nowrap"
+      style={{ color: c, background: withAlpha(c, 0.12), border: `1px solid ${withAlpha(c, 0.30)}` }}
+    >
+      <span className="w-1.5 h-1.5 rounded-full" style={{ background: c }} />
+      {category}
+    </span>
+  );
+};
+
+const StatCard: React.FC<{ label: string; value: string }> = ({ label, value }) => (
+  <div className="rounded-2xl p-3.5" style={{ background: 'var(--surface-1)', border: '1px solid var(--border-subtle)' }}>
+    <div className="text-[10px] uppercase tracking-[0.1em] font-bold" style={{ color: 'var(--text-muted)' }}>{label}</div>
+    <div className="mt-1 text-sm font-medium leading-snug" style={{ color: 'var(--text-primary)' }}>{value}</div>
   </div>
 );
 
+const InfoCard: React.FC<{ title: string; icon: React.ReactNode; accent: string; children: React.ReactNode; className?: string }> = ({ title, icon, accent, children, className = '' }) => (
+  <section className={`rounded-2xl p-5 sm:p-6 ${className}`} style={{ background: 'var(--surface-1)', border: '1px solid var(--border-subtle)' }}>
+    <header className="flex items-center gap-3 mb-4">
+      <span className="flex items-center justify-center w-9 h-9 rounded-xl flex-shrink-0" style={{ background: withAlpha(accent, 0.14), color: accent }}>{icon}</span>
+      <h3 className="font-semibold" style={{ color: 'var(--text-primary)', fontFamily: 'var(--font-editorial)', fontSize: '17px', letterSpacing: '-0.01em' }}>{title}</h3>
+    </header>
+    <div className="text-sm leading-relaxed space-y-2" style={{ color: 'var(--text-secondary)' }}>{children}</div>
+  </section>
+);
 
-const LibraryDetailView: React.FC<{ item: LibraryEntry; onFavoriteToggle: () => void }> = ({ item, onFavoriteToggle }) => {
+
+const LibraryDetailView: React.FC<{ item: LibraryEntry; onFavoriteToggle: () => void; onBack: () => void }> = ({ item, onFavoriteToggle, onBack }) => {
   const [imageError, setImageError] = useState(false);
   const [isItemFavorite, setIsItemFavorite] = useState(isFavorite(item.title));
+  const color = primaryCategoryColor(item.category);
 
   useEffect(() => {
     setImageError(false);
@@ -84,129 +113,138 @@ const LibraryDetailView: React.FC<{ item: LibraryEntry; onFavoriteToggle: () => 
   };
 
   return (
-    <div className="p-6 sm:p-8 lg:p-10 xl:p-12" style={{ animation: 'fadeInUp 0.3s var(--ease-out-strong) both' }}>
-      {/* Editorial article header */}
-      <div className="flex items-center gap-3 mb-6">
-        <span style={{ fontSize: '10px', fontWeight: 700, letterSpacing: '0.12em', textTransform: 'uppercase', color: 'var(--accent-primary)' }}>
-          SUSTANCIA
-        </span>
-        <div style={{ flex: 1, height: '1px', background: 'rgba(255,255,255,0.06)' }} />
-        <button
-          onClick={handleFavoriteClick}
-          className="flex-shrink-0 p-2 transition-all active:scale-95"
-          style={{
-            background: isItemFavorite ? 'var(--color-amber-subtle)' : 'transparent',
-            color: isItemFavorite ? 'var(--color-amber)' : 'var(--text-muted)',
-            borderRadius: '0',
-            border: `1.5px solid ${isItemFavorite ? 'var(--color-amber-medium)' : 'rgba(255,255,255,0.08)'}`,
-          }}
-          title={isItemFavorite ? 'Quitar de favoritos' : 'Agregar a favoritos'}
-          aria-label={isItemFavorite ? 'Quitar de favoritos' : 'Agregar a favoritos'}
-        >
-          <StarIcon filled={isItemFavorite} />
-        </button>
+    <div className="p-4 sm:p-6 lg:p-8 xl:p-10 max-w-3xl mx-auto w-full" style={{ animation: 'fadeInUp 0.3s var(--ease-out-strong) both' }} key={item.title}>
+      {/* Mobile back */}
+      <button
+        onClick={onBack}
+        className="md:hidden inline-flex items-center gap-2 mb-4 px-3 py-2 rounded-full text-sm font-medium"
+        style={{ background: 'var(--surface-1)', border: '1px solid var(--border-subtle)', color: 'var(--text-secondary)' }}
+      >
+        <ArrowLeftIcon /> Volver
+      </button>
+
+      {/* Hero */}
+      <div
+        className="relative overflow-hidden rounded-3xl p-5 sm:p-7"
+        style={{
+          background: `linear-gradient(135deg, ${withAlpha(color, 0.18)}, ${withAlpha(color, 0.04)} 45%, transparent 75%)`,
+          border: '1px solid var(--border-subtle)',
+        }}
+      >
+        <div className="flex items-start justify-between gap-4">
+          <div className="min-w-0">
+            <div className="flex flex-wrap gap-1.5 mb-3">
+              {item.category.map(cat => <CategoryChip key={cat} category={cat} />)}
+            </div>
+            <h2 style={{ fontFamily: 'var(--font-editorial)', fontSize: 'clamp(1.7rem, 4vw, 2.4rem)', fontWeight: 700, letterSpacing: '-0.025em', lineHeight: 1.1, color: 'var(--text-primary)' }}>
+              {item.title}
+            </h2>
+            <p className="mt-2 text-sm" style={{ color: 'var(--text-tertiary)' }}>
+              También conocido como <span style={{ color: 'var(--text-secondary)' }}>{item.aliases.join(', ')}</span>
+            </p>
+          </div>
+
+          <div className="flex flex-col items-center gap-2 flex-shrink-0">
+            <button
+              onClick={handleFavoriteClick}
+              className="p-2.5 rounded-full transition-all active:scale-90"
+              style={{
+                background: isItemFavorite ? withAlpha(C.amber, 0.14) : 'var(--surface-2)',
+                color: isItemFavorite ? C.amber : 'var(--text-muted)',
+                border: `1px solid ${isItemFavorite ? withAlpha(C.amber, 0.35) : 'var(--border-subtle)'}`,
+              }}
+              title={isItemFavorite ? 'Quitar de favoritos' : 'Agregar a favoritos'}
+              aria-label={isItemFavorite ? 'Quitar de favoritos' : 'Agregar a favoritos'}
+            >
+              <StarIcon filled={isItemFavorite} />
+            </button>
+            {item.structureImage && !imageError ? (
+              <div className="hidden sm:flex w-24 h-24 items-center justify-center rounded-2xl p-1.5 bg-white">
+                <img src={item.structureImage} alt={`Estructura química de ${item.title}`} className="max-h-full max-w-full object-contain" onError={() => setImageError(true)} />
+              </div>
+            ) : (
+              <div className="hidden sm:flex w-24 h-24 items-center justify-center rounded-2xl px-2 text-center" style={{ background: 'var(--surface-2)', border: '1px solid var(--border-subtle)' }}>
+                <span className="font-mono text-xs tracking-wide select-all" style={{ color: 'var(--text-tertiary)' }}>{item.chemicalFormula}</span>
+              </div>
+            )}
+          </div>
+        </div>
       </div>
 
-      <h2 style={{
-        fontFamily: 'var(--font-editorial)',
-        fontSize: 'clamp(1.5rem, 3vw, 2rem)',
-        fontWeight: 700,
-        letterSpacing: '-0.02em',
-        lineHeight: 1.15,
-        color: 'var(--text-primary)',
-      }}>{item.title}</h2>
+      <p className="mt-6 text-[15px] leading-relaxed" style={{ color: 'var(--text-secondary)' }}>{item.content.description}</p>
 
-      <div style={{ width: '40px', height: '3px', background: 'var(--accent-primary)', margin: '12px 0 8px' }} />
-
-      <p style={{
-        fontFamily: 'var(--font-editorial)',
-        fontStyle: 'italic',
-        fontSize: '13px',
-        color: 'var(--text-muted)',
-        lineHeight: 1.5,
-      }}>
-        También: {item.aliases.join(', ')}
-      </p>
-
-      {item.structureImage && !imageError ? (
-        <div
-          className="my-6 p-4 flex justify-center items-center min-h-[148px]"
-          style={{ background: 'var(--surface-1)', borderRadius: '0', border: '2px solid rgba(255,255,255,0.1)' }}
-        >
-          <img
-            src={item.structureImage}
-            alt={`Estructura química de ${item.title}`}
-            className="max-h-32 p-1 rounded bg-white"
-            onError={() => setImageError(true)}
-          />
+      {/* Duración — stat cards */}
+      <div className="mt-6">
+        <div className="flex items-center gap-2.5 mb-3">
+          <span style={{ color: C.blue }}><ClockIcon /></span>
+          <h3 className="font-semibold" style={{ color: 'var(--text-primary)', fontFamily: 'var(--font-editorial)', fontSize: '17px' }}>Duración</h3>
         </div>
-      ) : (
-        <div
-          className="my-6 p-4 flex justify-center items-center min-h-[148px]"
-          style={{ background: 'var(--surface-1)', borderRadius: '0', border: '2px solid rgba(255,255,255,0.1)' }}
-        >
-          <p className="font-mono text-xl tracking-wider select-all" style={{ color: 'var(--text-tertiary)' }}>{item.chemicalFormula}</p>
+        <div className="grid grid-cols-3 gap-3">
+          <StatCard label="Inicio" value={item.content.duration.onset} />
+          <StatCard label="Pico / Meseta" value={item.content.duration.peak} />
+          <StatCard label="Total" value={item.content.duration.total} />
         </div>
-      )}
+      </div>
 
-      <p className="mt-6 text-sm leading-relaxed" style={{ color: 'var(--text-secondary)' }}>{item.content.description}</p>
-
-      <InfoSection title="Efectos" icon={<HeartIcon />} color="var(--text-primary)">
-        <div>
-          <strong style={{ color: 'var(--color-green)', fontWeight: 600 }}>Positivos:</strong>
-          <ul className="list-disc pl-5 mt-1">
+      {/* Efectos — two columns */}
+      <div className="mt-5 grid sm:grid-cols-2 gap-4">
+        <InfoCard title="Efectos positivos" icon={<HeartIcon />} accent={C.green}>
+          <ul className="list-disc pl-5 space-y-1.5">
             {item.content.effects.positive.map(e => <li key={e}>{e}</li>)}
           </ul>
-        </div>
-        <div className="mt-3">
-          <strong style={{ color: 'var(--color-amber)', fontWeight: 600 }}>Negativos:</strong>
-          <ul className="list-disc pl-5 mt-1">
+        </InfoCard>
+        <InfoCard title="Efectos negativos" icon={<WarningIcon />} accent={C.amber}>
+          <ul className="list-disc pl-5 space-y-1.5">
             {item.content.effects.negative.map(e => <li key={e}>{e}</li>)}
           </ul>
-        </div>
-      </InfoSection>
+        </InfoCard>
+      </div>
 
-      <InfoSection title="Duración" icon={<ClockIcon />} color="var(--text-primary)">
-        <p><strong style={{ color: 'var(--text-primary)' }}>Inicio:</strong> {item.content.duration.onset}</p>
-        <p><strong style={{ color: 'var(--text-primary)' }}>Pico/Meseta:</strong> {item.content.duration.peak}</p>
-        <p><strong style={{ color: 'var(--text-primary)' }}>Total:</strong> {item.content.duration.total}</p>
-      </InfoSection>
+      {/* Dosificación */}
+      <div className="mt-5">
+        <InfoCard title="Dosificación" icon={<ScaleIcon />} accent={C.violet}>
+          {item.content.dosage.oral && <p><strong style={{ color: 'var(--text-primary)' }}>Oral:</strong> {item.content.dosage.oral}</p>}
+          {item.content.dosage.nasal && <p><strong style={{ color: 'var(--text-primary)' }}>Nasal:</strong> {item.content.dosage.nasal}</p>}
+          {item.content.dosage.inhalation && <p><strong style={{ color: 'var(--text-primary)' }}>Inhalado:</strong> {item.content.dosage.inhalation}</p>}
+          <p
+            className="mt-3 text-xs p-3.5 rounded-xl"
+            style={{ color: 'var(--text-secondary)', background: withAlpha(C.amber, 0.10), border: `1px solid ${withAlpha(C.amber, 0.28)}`, borderLeft: `3px solid ${C.amber}` }}
+          >
+            <strong style={{ color: C.amber, fontWeight: 600 }}>Importante: </strong>{item.content.dosage.warning}
+          </p>
+        </InfoCard>
+      </div>
 
-      <InfoSection title="Dosificación" icon={<ScaleIcon />} color="var(--text-primary)">
-        {item.content.dosage.oral && <p><strong style={{ color: 'var(--text-primary)' }}>Oral:</strong> {item.content.dosage.oral}</p>}
-        {item.content.dosage.nasal && <p><strong style={{ color: 'var(--text-primary)' }}>Nasal:</strong> {item.content.dosage.nasal}</p>}
-        {item.content.dosage.inhalation && <p><strong style={{ color: 'var(--text-primary)' }}>Inhalado:</strong> {item.content.dosage.inhalation}</p>}
-        <p
-          className="mt-2 text-xs p-3"
-          style={{
-            color: 'var(--text-secondary)',
-            background: 'var(--color-amber-subtle)',
-            borderRadius: '0',
-            border: '1.5px solid var(--color-amber-medium)',
-            borderLeft: '4px solid var(--color-amber)',
-          }}
-        >
-          <strong style={{ color: 'var(--color-amber)', fontWeight: 600 }}>Importante:</strong> {item.content.dosage.warning}
-        </p>
-      </InfoSection>
+      {/* Riesgos */}
+      <div className="mt-5">
+        <InfoCard title="Principales riesgos" icon={<AlertIcon />} accent={C.red}>
+          <ul className="list-disc pl-5 space-y-1.5">
+            {item.content.risks.map(r => <li key={r}>{r}</li>)}
+          </ul>
+        </InfoCard>
+      </div>
 
-      <InfoSection title="Principales Riesgos" icon={<WarningIcon />} color="var(--color-red)">
-        <ul className="list-disc pl-5">
-          {item.content.risks.map(r => <li key={r}>{r}</li>)}
-        </ul>
-      </InfoSection>
+      {/* Pautas de Cuidado */}
+      <div className="mt-5">
+        <InfoCard title="Pautas de cuidado" icon={<CheckIcon />} accent={C.green}>
+          <ul className="space-y-2.5">
+            {item.content.guidelines.map((line, index) => (
+              <li key={index} className="flex gap-2" dangerouslySetInnerHTML={{ __html: line.replace(/\*\*(.*?)\*\*/g, `<strong style="font-weight:600; color: ${C.blue}">$1</strong>`) }} />
+            ))}
+          </ul>
+        </InfoCard>
+      </div>
 
-      <InfoSection title="Pautas de Cuidado" icon={<CheckIcon />} color="var(--color-green)">
-        <ul className="space-y-2.5">
-          {item.content.guidelines.map((line, index) => (
-            <li key={index} dangerouslySetInnerHTML={{ __html: line.replace(/\*\*(.*?)\*\*/g, `<strong style="font-weight:600; color: var(--color-blue)">$1</strong>`) }} />
-          ))}
-        </ul>
-      </InfoSection>
-
-      <InfoSection title="Alertas del Mercado" icon={<AlertIcon />} color="var(--color-red)">
-        <p>{item.content.alerts}</p>
-      </InfoSection>
+      {/* Alertas del Mercado */}
+      <div className="mt-5">
+        <section className="rounded-2xl p-5 sm:p-6" style={{ background: withAlpha(C.red, 0.07), border: `1px solid ${withAlpha(C.red, 0.25)}` }}>
+          <header className="flex items-center gap-3 mb-3">
+            <span className="flex items-center justify-center w-9 h-9 rounded-xl flex-shrink-0" style={{ background: withAlpha(C.red, 0.16), color: C.red }}><AlertIcon /></span>
+            <h3 className="font-semibold" style={{ color: 'var(--text-primary)', fontFamily: 'var(--font-editorial)', fontSize: '17px' }}>Alertas del mercado</h3>
+          </header>
+          <p className="text-sm leading-relaxed" style={{ color: 'var(--text-secondary)' }}>{item.content.alerts}</p>
+        </section>
+      </div>
 
       <PsychonautWikiInfo substanceName={item.title} />
     </div>
@@ -221,6 +259,7 @@ export const Library: React.FC = () => {
   const [showOnlyFavorites, setShowOnlyFavorites] = useState(false);
   const [favoritesUpdateTrigger, setFavoritesUpdateTrigger] = useState(0);
   const [viewMode, setViewMode] = useState<'browse' | 'compare'>('browse');
+  const [mobileDetailOpen, setMobileDetailOpen] = useState(false);
 
   const filteredLibraryData = useMemo(() => {
     let data = LIBRARY_DATA;
@@ -247,31 +286,34 @@ export const Library: React.FC = () => {
     }
   }, [filteredLibraryData, selectedItem]);
 
-  const handleFavoriteToggle = () => {
-    setFavoritesUpdateTrigger(prev => prev + 1);
+  const handleSelect = (item: LibraryEntry) => {
+    setSelectedItem(item);
+    setMobileDetailOpen(true);
   };
 
-  const btnStyle = (active: boolean): React.CSSProperties => ({
-    background: active ? 'var(--accent-primary)' : 'transparent',
-    color: active ? '#fff' : 'var(--text-tertiary)',
-    border: active ? '1.5px solid var(--accent-primary)' : '1.5px solid rgba(255,255,255,0.1)',
-    borderRadius: '0',
-    padding: '4px 10px',
-    fontSize: '11px',
-    fontWeight: 700,
-    letterSpacing: '0.06em',
+  const handleFavoriteToggle = () => setFavoritesUpdateTrigger(prev => prev + 1);
+
+  const pillStyle = (active: boolean, color?: string): React.CSSProperties => ({
+    background: active ? (color ? withAlpha(color, 0.16) : withAlpha(C.accent, 0.18)) : 'var(--surface-1)',
+    color: active ? (color || C.accent) : 'var(--text-tertiary)',
+    border: `1px solid ${active ? withAlpha(color || C.accent, 0.4) : 'var(--border-subtle)'}`,
+    borderRadius: '999px',
+    padding: '5px 13px',
+    fontSize: '12px',
+    fontWeight: 600,
     transition: 'all var(--transition-fast)',
     cursor: 'pointer',
+    whiteSpace: 'nowrap',
   });
 
-  const actionBtnStyle: React.CSSProperties = {
-    background: 'var(--surface-1)',
-    color: 'var(--text-secondary)',
-    border: '2px solid rgba(255,255,255,0.1)',
-    borderRadius: '0',
+  const actionBtnStyle = (active: boolean, activeColor?: string): React.CSSProperties => ({
+    background: active && activeColor ? withAlpha(activeColor, 0.12) : 'var(--surface-1)',
+    color: active && activeColor ? activeColor : 'var(--text-secondary)',
+    border: `1px solid ${active && activeColor ? withAlpha(activeColor, 0.3) : 'var(--border-subtle)'}`,
+    borderRadius: 'var(--radius-md)',
     padding: '10px 12px',
-    fontSize: '14px',
-    fontWeight: 700,
+    fontSize: '13px',
+    fontWeight: 600,
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
@@ -279,22 +321,22 @@ export const Library: React.FC = () => {
     cursor: 'pointer',
     transition: 'all var(--transition-fast)',
     width: '100%',
-  };
+  });
 
   if (viewMode === 'compare') {
     return (
       <div className="flex-1 flex flex-col min-h-0">
-        <div className="p-5 sm:p-6 flex items-center justify-between" style={{ borderBottom: '2px solid rgba(255,255,255,0.08)' }}>
+        <div className="p-4 sm:p-6 flex items-center justify-between" style={{ borderBottom: '1px solid var(--border-subtle)' }}>
           <div className="flex items-center gap-3">
             <span style={{ fontSize: '10px', fontWeight: 700, letterSpacing: '0.12em', textTransform: 'uppercase', color: 'var(--accent-primary)' }}>MODO</span>
             <h2 style={{ fontFamily: 'var(--font-editorial)', fontSize: '18px', fontWeight: 700, color: 'var(--text-primary)' }}>Comparación</h2>
           </div>
           <button
             onClick={() => setViewMode('browse')}
-            className="px-3 py-1.5 text-sm flex items-center gap-2 transition-colors"
-            style={{ background: 'var(--surface-2)', color: 'var(--text-secondary)', borderRadius: 'var(--radius-sm)', border: '1px solid var(--border-subtle)' }}
+            className="px-3.5 py-2 text-sm flex items-center gap-2 rounded-full transition-colors"
+            style={{ background: 'var(--surface-2)', color: 'var(--text-secondary)', border: '1px solid var(--border-subtle)' }}
           >
-            Volver a Biblioteca
+            <ArrowLeftIcon /> Volver a Biblioteca
           </button>
         </div>
         <CompareSubstances />
@@ -302,119 +344,115 @@ export const Library: React.FC = () => {
     );
   }
 
-
   return (
-    <div className="flex-1 flex flex-col md:flex-row min-h-0">
+    <div className="flex-1 flex min-h-0">
       {/* Left Pane: Navigation */}
-      <div className="w-full md:w-1/3 md:max-w-sm flex flex-col" style={{ borderRight: '2.5px solid rgba(255,255,255,0.12)' }}>
-        <div className="p-5 sm:p-6" style={{ borderBottom: '2px solid rgba(255,255,255,0.1)' }}>
+      <div
+        className={`${mobileDetailOpen ? 'hidden md:flex' : 'flex'} w-full md:w-[330px] lg:w-[380px] flex-shrink-0 flex-col min-h-0`}
+        style={{ borderRight: '1px solid var(--border-subtle)' }}
+      >
+        <div className="p-4 sm:p-5 flex-shrink-0" style={{ borderBottom: '1px solid var(--border-subtle)' }}>
           <div className="relative">
-            <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3" style={{ color: 'var(--text-muted)' }}>
+            <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3.5" style={{ color: 'var(--text-muted)' }}>
               <SearchIcon />
             </div>
             <input
               type="text"
-              placeholder="Buscar sustancia..."
+              placeholder="Buscar sustancia o alias..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full p-2.5 pl-10 text-sm"
+              className="w-full py-2.5 pl-11 pr-3 text-sm"
               style={{
-                background: 'var(--bg-primary)',
+                background: 'var(--surface-1)',
                 color: 'var(--text-primary)',
-                border: 'none',
-                borderBottom: '2.5px solid rgba(255,255,255,0.15)',
-                borderRadius: '0',
+                border: '1px solid var(--border-subtle)',
+                borderRadius: 'var(--radius-md)',
                 outline: 'none',
-                transition: 'border-color var(--transition-fast)',
+                transition: 'border-color var(--transition-fast), background var(--transition-fast)',
               }}
-              onFocus={(e) => e.currentTarget.style.borderBottomColor = 'var(--accent-primary)'}
-              onBlur={(e) => e.currentTarget.style.borderBottomColor = 'rgba(255,255,255,0.15)'}
+              onFocus={(e) => { e.currentTarget.style.borderColor = 'var(--accent-primary)'; e.currentTarget.style.background = 'var(--surface-2)'; }}
+              onBlur={(e) => { e.currentTarget.style.borderColor = 'var(--border-subtle)'; e.currentTarget.style.background = 'var(--surface-1)'; }}
             />
           </div>
-          <div className="flex flex-wrap gap-2 mt-4">
-            <button
-              onClick={() => setSelectedCategory('All')}
-              style={btnStyle(selectedCategory === 'All')}
-            >
-              Todas
-            </button>
+          <div className="flex flex-wrap gap-2 mt-3.5">
+            <button onClick={() => setSelectedCategory('All')} style={pillStyle(selectedCategory === 'All')}>Todas</button>
             {SUBSTANCE_CATEGORIES.map(category => (
-              <button
-                key={category}
-                onClick={() => setSelectedCategory(category)}
-                style={btnStyle(selectedCategory === category)}
-              >
+              <button key={category} onClick={() => setSelectedCategory(category)} style={pillStyle(selectedCategory === category, categoryColor(category))}>
                 {category}
               </button>
             ))}
           </div>
-          <button
-            onClick={() => setShowOnlyFavorites(!showOnlyFavorites)}
-            className="mt-4 transition-all active:scale-[0.98]"
-            style={{
-              ...actionBtnStyle,
-              background: showOnlyFavorites ? 'var(--color-amber-subtle)' : 'var(--surface-1)',
-              color: showOnlyFavorites ? 'var(--color-amber)' : 'var(--text-secondary)',
-              border: `2px solid ${showOnlyFavorites ? 'var(--color-amber-medium)' : 'rgba(255,255,255,0.1)'}`,
-              fontWeight: 700,
-            }}
-          >
-            <StarIcon filled={showOnlyFavorites} />
-            {showOnlyFavorites ? 'Mostrar Todas' : 'Solo Favoritos'}
-          </button>
-          <button
-            onClick={() => setViewMode('compare')}
-            className="mt-3 transition-all active:scale-[0.98]"
-            style={actionBtnStyle}
-            onMouseEnter={(e) => { e.currentTarget.style.borderColor = 'var(--color-violet)'; e.currentTarget.style.color = 'var(--color-violet)'; }}
-            onMouseLeave={(e) => { e.currentTarget.style.borderColor = 'var(--border-subtle)'; e.currentTarget.style.color = 'var(--text-secondary)'; }}
-          >
-            <CompareIcon />
-            Comparar Sustancias
-          </button>
+          <div className="grid grid-cols-2 gap-2.5 mt-3.5">
+            <button
+              onClick={() => setShowOnlyFavorites(!showOnlyFavorites)}
+              className="transition-all active:scale-[0.98]"
+              style={actionBtnStyle(showOnlyFavorites, C.amber)}
+            >
+              <StarIcon filled={showOnlyFavorites} className="w-4 h-4" />
+              {showOnlyFavorites ? 'Todas' : 'Favoritos'}
+            </button>
+            <button
+              onClick={() => setViewMode('compare')}
+              className="transition-all active:scale-[0.98]"
+              style={actionBtnStyle(false)}
+              onMouseEnter={(e) => { e.currentTarget.style.borderColor = withAlpha(C.violet, 0.4); e.currentTarget.style.color = C.violet; }}
+              onMouseLeave={(e) => { e.currentTarget.style.borderColor = 'var(--border-subtle)'; e.currentTarget.style.color = 'var(--text-secondary)'; }}
+            >
+              <CompareIcon /> Comparar
+            </button>
+          </div>
         </div>
-        <nav className="overflow-y-auto p-5 sm:p-6 h-64 md:h-auto md:flex-1">
-          <ul className="space-y-1">
-            {filteredLibraryData.map(item => (
-              <li key={item.title}>
-                <button
-                  onClick={() => setSelectedItem(item)}
-                  className="w-full text-left text-sm p-3 transition-all duration-200 active:scale-[0.98]"
-                  style={{
-                    borderRadius: '0',
-                    background: selectedItem?.title === item.title ? 'var(--accent-subtle)' : 'transparent',
-                    color: selectedItem?.title === item.title ? 'var(--text-primary)' : 'var(--text-tertiary)',
-                    fontWeight: selectedItem?.title === item.title ? 700 : 400,
-                    borderLeft: selectedItem?.title === item.title ? '3px solid var(--accent-primary)' : '3px solid transparent',
-                    borderBottom: '1px solid rgba(255,255,255,0.05)',
-                  }}
-                  onMouseEnter={(e) => {
-                    if (selectedItem?.title !== item.title) {
-                      e.currentTarget.style.background = 'var(--surface-hover)';
-                      e.currentTarget.style.color = 'var(--text-secondary)';
-                    }
-                  }}
-                  onMouseLeave={(e) => {
-                    if (selectedItem?.title !== item.title) {
-                      e.currentTarget.style.background = 'transparent';
-                      e.currentTarget.style.color = 'var(--text-tertiary)';
-                    }
-                  }}
-                >
-                  {item.title}
-                </button>
-              </li>
-            ))}
-          </ul>
+
+        <nav className="overflow-y-auto p-3 flex-1">
+          {filteredLibraryData.length === 0 ? (
+            <p className="text-center text-sm mt-8" style={{ color: 'var(--text-muted)' }}>Sin resultados.</p>
+          ) : (
+            <ul className="space-y-1">
+              {filteredLibraryData.map(item => {
+                const active = selectedItem?.title === item.title;
+                const dot = primaryCategoryColor(item.category);
+                const fav = isFavorite(item.title);
+                return (
+                  <li key={item.title}>
+                    <button
+                      onClick={() => handleSelect(item)}
+                      className="group w-full text-left p-3 flex items-center gap-3 transition-all active:scale-[0.99]"
+                      style={{
+                        borderRadius: 'var(--radius-md)',
+                        background: active ? 'var(--surface-2)' : 'transparent',
+                        border: `1px solid ${active ? 'var(--border-medium)' : 'transparent'}`,
+                      }}
+                      onMouseEnter={(e) => { if (!active) e.currentTarget.style.background = 'var(--surface-1)'; }}
+                      onMouseLeave={(e) => { if (!active) e.currentTarget.style.background = 'transparent'; }}
+                    >
+                      <span
+                        className="w-2.5 h-2.5 rounded-full flex-shrink-0"
+                        style={{ background: dot, boxShadow: active ? `0 0 0 4px ${withAlpha(dot, 0.18)}` : 'none', transition: 'box-shadow var(--transition-fast)' }}
+                      />
+                      <span className="flex-1 min-w-0">
+                        <span className="block text-sm truncate" style={{ color: active ? 'var(--text-primary)' : 'var(--text-secondary)', fontWeight: active ? 600 : 500 }}>{item.title}</span>
+                        {item.aliases.length > 0 && (
+                          <span className="block text-xs truncate" style={{ color: 'var(--text-muted)' }}>{item.aliases.slice(0, 3).join(' · ')}</span>
+                        )}
+                      </span>
+                      {fav && <span style={{ color: C.amber }}><StarIcon filled className="w-3.5 h-3.5" /></span>}
+                      <span className="flex-shrink-0 opacity-0 group-hover:opacity-60 transition-opacity" style={{ color: 'var(--text-muted)' }}><ChevronRightIcon /></span>
+                    </button>
+                  </li>
+                );
+              })}
+            </ul>
+          )}
         </nav>
       </div>
 
       {/* Right Pane: Detail View */}
-      <div className="flex-1 overflow-y-auto">
+      <div className={`${mobileDetailOpen ? 'flex' : 'hidden md:flex'} flex-1 flex-col min-h-0 overflow-y-auto`}>
         {selectedItem ? (
-          <LibraryDetailView item={selectedItem} onFavoriteToggle={handleFavoriteToggle} />
+          <LibraryDetailView item={selectedItem} onFavoriteToggle={handleFavoriteToggle} onBack={() => setMobileDetailOpen(false)} />
         ) : (
-          <div className="text-center p-10">
+          <div className="flex-1 flex flex-col items-center justify-center text-center p-10">
+            <div className="w-14 h-14 rounded-2xl flex items-center justify-center mb-4" style={{ background: 'var(--surface-1)', color: 'var(--text-muted)' }}><SearchIcon /></div>
             <p style={{ color: 'var(--text-muted)' }}>No se encontraron resultados.</p>
           </div>
         )}

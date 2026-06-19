@@ -117,8 +117,8 @@ const App: React.FC = () => {
       <aside
         className="hidden lg:flex flex-col flex-shrink-0 relative"
         style={{
-          width: sidebarCollapsed ? '72px' : '264px',
-          borderRight: '2.5px solid rgba(255,255,255,0.12)',
+          width: sidebarCollapsed ? '76px' : '268px',
+          borderRight: '1px solid var(--border-subtle)',
           background: 'var(--bg-secondary)',
           transition: 'width 250ms var(--ease-standard)'
         }}
@@ -126,13 +126,13 @@ const App: React.FC = () => {
         {/* Collapse Toggle */}
         <button
           onClick={() => setSidebarCollapsed(!sidebarCollapsed)}
-          className="absolute -right-3 top-7 z-10 w-6 h-6 flex items-center justify-center"
+          className="absolute -right-3 top-7 z-10 w-6 h-6 flex items-center justify-center rounded-full"
           style={{
             background: 'var(--bg-tertiary)',
-            border: '2px solid rgba(255,255,255,0.12)',
+            border: '1px solid var(--border-medium)',
             color: 'var(--text-muted)',
             fontSize: '10px',
-            borderRadius: '0',
+            boxShadow: 'var(--shadow-sm)',
           }}
           title={sidebarCollapsed ? 'Expandir' : 'Contraer'}
         >
@@ -146,12 +146,12 @@ const App: React.FC = () => {
       </aside>
 
       {/* ── Mobile Header ── */}
-      <div className="lg:hidden fixed top-0 left-0 right-0 z-50" style={{ background: 'var(--bg-secondary)', borderBottom: '2.5px solid rgba(255,255,255,0.12)' }}>
+      <div className="lg:hidden fixed top-0 left-0 right-0 z-50" style={{ background: 'var(--bg-secondary)', borderBottom: '1px solid var(--border-subtle)', backdropFilter: 'blur(8px)' }}>
         <div className="px-4 py-3">
           <div className="flex items-center gap-3">
             <div
-              className="w-8 h-8 flex items-center justify-center"
-              style={{ background: 'var(--accent-primary)', borderRadius: '0' }}
+              className="w-8 h-8 flex items-center justify-center rounded-xl"
+              style={{ background: 'var(--accent-primary)', boxShadow: 'var(--shadow-glow-accent)' }}
             >
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
                 <path d="M12 2L4 6v5c0 5.55 3.84 10.74 8 12 4.16-1.26 8-6.45 8-12V6L12 2Z" fill="rgba(255,255,255,0.15)" stroke="white" strokeWidth="1.5" />
@@ -183,14 +183,13 @@ const App: React.FC = () => {
               <button
                 key={tab.id}
                 onClick={() => setActiveTab(tab.id)}
-                className="px-4 py-2 text-xs whitespace-nowrap transition-colors"
+                className="px-3.5 py-1.5 text-xs whitespace-nowrap transition-colors rounded-full"
                 style={{
-                  background: activeTab === tab.id ? 'var(--accent-primary)' : 'transparent',
+                  background: activeTab === tab.id ? 'var(--accent-primary)' : 'var(--surface-1)',
                   color: activeTab === tab.id ? '#fff' : 'var(--text-tertiary)',
-                  borderRadius: '0',
-                  border: activeTab === tab.id ? '1.5px solid var(--accent-primary)' : '1.5px solid rgba(255,255,255,0.1)',
-                  fontWeight: 700,
-                  letterSpacing: '0.08em',
+                  border: `1px solid ${activeTab === tab.id ? 'var(--accent-primary)' : 'var(--border-subtle)'}`,
+                  fontWeight: 600,
+                  letterSpacing: '0.04em',
                   fontSize: '11px',
                 }}
               >
@@ -202,8 +201,14 @@ const App: React.FC = () => {
       </div>
 
       {/* ── Main Content ── */}
-      <main className="flex-1 flex flex-col min-w-0 overflow-hidden lg:mt-0 mt-[110px]" style={{ background: 'var(--bg-primary)' }}>
-        <div className="flex-1 flex flex-col h-full overflow-hidden" style={{ background: 'var(--bg-primary)' }}>
+      <main
+        className="flex-1 flex flex-col min-w-0 overflow-hidden lg:mt-0 mt-[104px]"
+        style={{
+          backgroundColor: 'var(--bg-primary)',
+          backgroundImage: 'radial-gradient(45rem 45rem at 12% -8%, rgba(199,112,92,0.06), transparent 60%), radial-gradient(40rem 40rem at 108% 4%, rgba(96,165,250,0.05), transparent 55%)',
+        }}
+      >
+        <div className="flex-1 flex flex-col h-full overflow-hidden">
           {activeTab === 'home' && <Home onNavigate={handleNavigate} />}
           {activeTab === 'chat' && (
             <div className="flex flex-col flex-1 h-full overflow-hidden">

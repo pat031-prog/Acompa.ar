@@ -26,20 +26,21 @@ const ExclamationTriangleIcon: React.FC = () => (
 type Section = 'institutional' | 'guide' | 'reagents' | 'adulterants';
 
 const tabStyle = (active: boolean): React.CSSProperties => ({
-  background: active ? 'var(--accent-primary)' : 'transparent',
+  background: active ? 'var(--accent-primary)' : 'var(--surface-1)',
   color: active ? '#fff' : 'var(--text-tertiary)',
-  border: active ? '2px solid var(--accent-primary)' : '2px solid rgba(255,255,255,0.1)',
-  borderRadius: '0',
-  padding: '10px 18px',
+  border: `1px solid ${active ? 'var(--accent-primary)' : 'var(--border-subtle)'}`,
+  borderRadius: '999px',
+  padding: '8px 16px',
   fontSize: '13px',
-  fontWeight: 700,
-  letterSpacing: '0.04em',
+  fontWeight: 600,
+  letterSpacing: '0.01em',
   cursor: 'pointer',
   transition: 'all var(--transition-fast)',
   whiteSpace: 'nowrap' as const,
   display: 'flex',
   alignItems: 'center',
   gap: '8px',
+  boxShadow: active ? 'var(--shadow-glow-accent)' : 'none',
 });
 
 export const TestingGuide: React.FC = () => {
@@ -47,7 +48,7 @@ export const TestingGuide: React.FC = () => {
 
   return (
     <div className="flex-1 flex flex-col min-h-0">
-      <div className="p-6 sm:p-8" style={{ borderBottom: '2.5px solid rgba(255,255,255,0.12)' }}>
+      <div className="p-6 sm:p-8" style={{ borderBottom: '1px solid var(--border-subtle)' }}>
         <div className="flex items-center gap-3 mb-3">
           <span style={{ color: 'var(--color-violet)' }}><BeakerIcon /></span>
           <span style={{ fontSize: '10px', fontWeight: 700, letterSpacing: '0.12em', textTransform: 'uppercase', color: 'var(--accent-primary)' }}>GUÍA</span>
@@ -71,7 +72,7 @@ export const TestingGuide: React.FC = () => {
         </p>
       </div>
 
-      <div className="flex gap-2 p-5 sm:p-6 overflow-x-auto" style={{ borderBottom: '2px solid rgba(255,255,255,0.1)' }}>
+      <div className="flex gap-2 p-5 sm:p-6 overflow-x-auto scrollbar-hide" style={{ borderBottom: '1px solid var(--border-subtle)' }}>
         <button onClick={() => setActiveSection('institutional')} style={tabStyle(activeSection === 'institutional')}><MapPinIcon /> Centros Oficiales</button>
         <button onClick={() => setActiveSection('guide')} style={tabStyle(activeSection === 'guide')}><BookOpenIcon /> Testeo Manual</button>
         <button onClick={() => setActiveSection('reagents')} style={tabStyle(activeSection === 'reagents')}><BeakerIcon /> Reactivos</button>
@@ -112,13 +113,13 @@ const InstitutionalSection: React.FC = () => (
       <hr className="editorial-divider-accent" style={{ marginTop: '0', marginBottom: '16px' }} />
       <div className="grid gap-4">
         {INSTITUTIONAL_TESTING.map((resource) => (
-          <div key={resource.name} className="p-4 sm:p-5 transition-colors" style={{ background: 'var(--surface-1)', border: '1px solid rgba(255,255,255,0.08)', borderRadius: '0' }}>
+          <div key={resource.name} className="editorial-card p-4 sm:p-5">
             <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-4">
               <div>
-                <h3 className="font-bold text-base mb-1" style={{ color: 'var(--text-primary)', fontFamily: 'var(--font-editorial)' }}>
+                <h3 className="font-bold text-base mb-1.5" style={{ color: 'var(--text-primary)', fontFamily: 'var(--font-editorial)' }}>
                   {resource.name}
                 </h3>
-                <span className="inline-block px-2 py-0.5 mb-2 text-[10px] uppercase tracking-wider font-bold" style={{ background: 'rgba(255,255,255,0.1)', color: 'var(--text-tertiary)' }}>
+                <span className="inline-block px-2.5 py-0.5 mb-2 text-[10px] uppercase tracking-wider font-bold rounded-full" style={{ background: 'var(--surface-2)', color: 'var(--text-tertiary)', border: '1px solid var(--border-subtle)' }}>
                   {resource.type}
                 </span>
                 <p className="text-sm leading-relaxed mb-3" style={{ color: 'var(--text-secondary)' }}>
@@ -175,19 +176,19 @@ const ReagentsSection: React.FC = () => (
     </p>
     <div className="grid gap-6">
       {REAGENT_TESTS.map((reagent) => (
-        <div key={reagent.name} className="overflow-hidden" style={{ background: 'var(--surface-1)', border: '2px solid rgba(255,255,255,0.1)', borderRadius: '0' }}>
-          <div className="p-4" style={{ background: 'var(--surface-2)', borderBottom: '2px solid rgba(255,255,255,0.08)' }}>
-            <h3 className="text-lg font-bold" style={{ color: 'var(--text-primary)' }}>{reagent.name}</h3>
+        <div key={reagent.name} className="overflow-hidden rounded-2xl" style={{ background: 'var(--surface-1)', border: '1px solid var(--border-subtle)' }}>
+          <div className="p-4 sm:p-5" style={{ background: 'var(--surface-2)', borderBottom: '1px solid var(--border-subtle)' }}>
+            <h3 className="text-lg font-bold" style={{ color: 'var(--text-primary)', fontFamily: 'var(--font-editorial)' }}>{reagent.name}</h3>
             <p className="text-sm mt-1" style={{ color: 'var(--text-tertiary)' }}>{reagent.description}</p>
           </div>
-          <div className="p-4">
-            <div className="grid gap-2">
+          <div className="p-3 sm:p-4">
+            <div className="grid gap-1.5">
               {reagent.substances.map((sub, idx) => (
-                <div key={idx} className="flex items-center justify-between p-2" style={{ background: 'var(--bg-primary)', borderRadius: '0' }}>
+                <div key={idx} className="flex items-center justify-between gap-3 p-2.5 rounded-xl" style={{ background: 'var(--bg-primary)' }}>
                   <span className="text-sm font-medium" style={{ color: 'var(--text-primary)' }}>{sub.substance}</span>
                   <div className="flex items-center gap-3">
-                    <span className="text-xs" style={{ color: 'var(--text-muted)' }}>{sub.reaction}</span>
-                    <div className="w-12 h-6" style={{ backgroundColor: sub.color, border: '1.5px solid rgba(255,255,255,0.15)', borderRadius: '0' }} title={sub.reaction} />
+                    <span className="text-xs text-right" style={{ color: 'var(--text-muted)' }}>{sub.reaction}</span>
+                    <div className="w-12 h-6 rounded-lg flex-shrink-0" style={{ backgroundColor: sub.color, border: '1px solid rgba(255,255,255,0.18)' }} title={sub.reaction} />
                   </div>
                 </div>
               ))}
@@ -206,19 +207,19 @@ const ResourcesSection: React.FC = () => (
     </p>
     <div className="grid gap-5 sm:gap-6">
       {TESTING_RESOURCES.map((resource, idx) => (
-        <div key={idx} className="p-5 sm:p-6" style={{ background: 'var(--surface-1)', border: '2px solid rgba(255,255,255,0.1)', borderRadius: '0' }}>
+        <div key={idx} className="p-5 sm:p-6" style={{ background: 'var(--surface-1)', border: '1px solid var(--border-subtle)', borderRadius: 'var(--radius-lg)' }}>
           <div className="flex items-start gap-3">
             <div className="flex-shrink-0 mt-1">
               {resource.type === 'organization' && (
-                <div className="w-10 h-10 flex items-center justify-center" style={{ background: 'var(--color-violet-subtle)', borderRadius: '0', color: 'var(--color-violet)' }}><BeakerIcon /></div>
+                <div className="w-10 h-10 flex items-center justify-center" style={{ background: 'var(--color-violet-subtle)', borderRadius: 'var(--radius-md)', color: 'var(--color-violet)' }}><BeakerIcon /></div>
               )}
               {resource.type === 'online' && (
-                <div className="w-10 h-10 flex items-center justify-center" style={{ background: 'var(--color-blue-subtle)', borderRadius: '0', color: 'var(--color-blue)' }}>
+                <div className="w-10 h-10 flex items-center justify-center" style={{ background: 'var(--color-blue-subtle)', borderRadius: 'var(--radius-md)', color: 'var(--color-blue)' }}>
                   <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5"><path strokeLinecap="round" strokeLinejoin="round" d="M13.19 8.688a4.5 4.5 0 0 1 1.242 7.244l-4.5 4.5a4.5 4.5 0 0 1-6.364-6.364l1.757-1.757m13.35-.622 1.757-1.757a4.5 4.5 0 0 0-6.364-6.364l-4.5 4.5a4.5 4.5 0 0 0 1.242 7.244" /></svg>
                 </div>
               )}
               {resource.type === 'physical' && (
-                <div className="w-10 h-10 flex items-center justify-center" style={{ background: 'var(--color-green-subtle)', borderRadius: '0', color: 'var(--color-green)' }}><MapPinIcon /></div>
+                <div className="w-10 h-10 flex items-center justify-center" style={{ background: 'var(--color-green-subtle)', borderRadius: 'var(--radius-md)', color: 'var(--color-green)' }}><MapPinIcon /></div>
               )}
             </div>
             <div className="flex-1">
@@ -237,7 +238,7 @@ const ResourcesSection: React.FC = () => (
 
 const AdulterantsSection: React.FC = () => (
   <div className="max-w-4xl mx-auto space-y-6">
-    <div className="p-4" style={{ background: 'var(--color-red-subtle)', border: '2px solid var(--color-red-medium)', borderLeft: '4px solid var(--color-red)', borderRadius: '0' }}>
+    <div className="p-4 sm:p-5 rounded-2xl" style={{ background: 'var(--color-red-subtle)', border: '1px solid var(--color-red-medium)', borderLeft: '4px solid var(--color-red)' }}>
       <p className="text-sm leading-relaxed" style={{ color: 'var(--text-primary)' }}>
         <strong style={{ color: 'var(--color-red)' }}>⚠️ Advertencia:</strong> Estos son algunos de los adulterantes más peligrosos que se encuentran en el mercado ilegal. El testeo de sustancias es fundamental para detectarlos.
       </p>
@@ -245,7 +246,7 @@ const AdulterantsSection: React.FC = () => (
 
     <div className="grid gap-5 sm:gap-6">
       {TESTING_GUIDE.commonAdulterants.map((adulterant, idx) => (
-        <div key={idx} className="p-4" style={{ background: 'var(--surface-1)', border: '2px solid rgba(255,255,255,0.1)', borderLeft: '4px solid var(--color-red)', borderRadius: '0' }}>
+        <div key={idx} className="p-4 sm:p-5 rounded-2xl" style={{ background: 'var(--surface-1)', border: '1px solid var(--border-subtle)', borderLeft: '4px solid var(--color-red)' }}>
           <h3 className="font-bold flex items-center gap-2" style={{ color: 'var(--text-primary)' }}>
             <span style={{ color: 'var(--color-red)' }}><ExclamationTriangleIcon /></span>
             {adulterant.substance}
@@ -255,7 +256,7 @@ const AdulterantsSection: React.FC = () => (
       ))}
     </div>
 
-    <div className="p-4 mt-6" style={{ background: 'var(--color-blue-subtle)', border: '2px solid var(--color-blue-medium)', borderLeft: '4px solid var(--color-blue)', borderRadius: '0' }}>
+    <div className="p-4 sm:p-5 mt-6 rounded-2xl" style={{ background: 'var(--color-blue-subtle)', border: '1px solid var(--color-blue-medium)', borderLeft: '4px solid var(--color-blue)' }}>
       <p className="text-sm leading-relaxed" style={{ color: 'var(--text-primary)' }}>
         <strong style={{ color: 'var(--color-blue)' }}>💡 Recuerda:</strong> Los reactivos de color NO detectan todos los adulterantes. Para un análisis completo (GC/MS), llevá tus sustancias a organizaciones como ArgenPills.
       </p>

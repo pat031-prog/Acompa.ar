@@ -77,7 +77,7 @@ export const Home: React.FC<HomeProps> = ({ onNavigate }) => {
     <div className="flex-1 flex flex-col min-h-0 overflow-y-auto" style={{ background: 'var(--bg-primary)' }}>
 
       {/* ═══════ HERO — editorial magazine cover ═══════ */}
-      <section className="relative overflow-hidden" style={{ borderBottom: '2px solid rgba(255,255,255,0.08)', minHeight: '340px' }}>
+      <section className="relative overflow-hidden" style={{ borderBottom: '1px solid var(--border-subtle)', minHeight: '340px' }}>
         {/* Decorative circles */}
         <GeoCircle size={200} top="-60px" right="-40px" opacity={0.07} />
         <HalftoneCircle size={140} top="40px" right="60px" opacity={0.12} />
@@ -125,7 +125,7 @@ export const Home: React.FC<HomeProps> = ({ onNavigate }) => {
       </section>
 
       {/* ═══════ NAVIGATION CARDS — e-reader style ═══════ */}
-      <section className="relative" style={{ borderBottom: '2px solid rgba(255,255,255,0.08)' }}>
+      <section className="relative" style={{ borderBottom: '1px solid var(--border-subtle)' }}>
         <div className="max-w-4xl mx-auto px-6 sm:px-10 py-10">
 
           {/* Section label */}
@@ -133,11 +133,11 @@ export const Home: React.FC<HomeProps> = ({ onNavigate }) => {
             <span style={{ fontSize: '10px', fontWeight: 700, letterSpacing: '0.12em', textTransform: 'uppercase', color: 'var(--text-muted)' }}>
               EXPLORAR
             </span>
-            <div style={{ flex: 1, height: '1px', background: 'rgba(255,255,255,0.08)' }} />
+            <div style={{ flex: 1, height: '1px', background: 'var(--border-subtle)' }} />
           </div>
 
           {/* Two column editorial cards */}
-          <div className="grid sm:grid-cols-2 gap-0" style={{ border: '2px solid rgba(255,255,255,0.1)' }}>
+          <div className="grid sm:grid-cols-2 gap-4">
             {[
               { num: '01', title: 'Chat IA', desc: 'Consultá al asistente sobre sustancias, efectos e interacciones.', tab: 'chat', action: 'Comenzar' },
               { num: '02', title: 'Biblioteca', desc: '+100 sustancias documentadas con datos de fuentes internacionales.', tab: 'library', action: 'Explorar' },
@@ -147,17 +147,22 @@ export const Home: React.FC<HomeProps> = ({ onNavigate }) => {
               <button
                 key={idx}
                 onClick={() => onNavigate?.(item.tab)}
-                className="text-left p-7 sm:p-10 group transition-all duration-200 relative overflow-hidden"
+                className="text-left p-7 sm:p-9 group transition-all duration-200 relative overflow-hidden rounded-2xl"
                 style={{
-                  background: 'transparent',
-                  borderRight: idx % 2 === 0 ? '1px solid rgba(255,255,255,0.08)' : 'none',
-                  borderBottom: idx < 2 ? '1px solid rgba(255,255,255,0.08)' : 'none',
+                  background: 'var(--surface-1)',
+                  border: '1px solid var(--border-subtle)',
                 }}
                 onMouseEnter={(e) => {
-                  e.currentTarget.style.background = 'rgba(199,112,92,0.04)';
+                  e.currentTarget.style.background = 'var(--surface-2)';
+                  e.currentTarget.style.borderColor = 'var(--border-medium)';
+                  e.currentTarget.style.transform = 'translateY(-2px)';
+                  e.currentTarget.style.boxShadow = 'var(--shadow-md)';
                 }}
                 onMouseLeave={(e) => {
-                  e.currentTarget.style.background = 'transparent';
+                  e.currentTarget.style.background = 'var(--surface-1)';
+                  e.currentTarget.style.borderColor = 'var(--border-subtle)';
+                  e.currentTarget.style.transform = 'translateY(0)';
+                  e.currentTarget.style.boxShadow = 'none';
                 }}
               >
                 {/* Large number */}
@@ -211,7 +216,7 @@ export const Home: React.FC<HomeProps> = ({ onNavigate }) => {
       </section>
 
       {/* ═══════ STATS — large editorial numbers ═══════ */}
-      <section className="relative" style={{ borderBottom: '2px solid rgba(255,255,255,0.08)' }}>
+      <section className="relative" style={{ borderBottom: '1px solid var(--border-subtle)' }}>
         <GeoCircle size={100} top="-30px" left="-30px" opacity={0.04} />
 
         <div className="max-w-4xl mx-auto px-6 sm:px-10 py-10">
@@ -219,7 +224,7 @@ export const Home: React.FC<HomeProps> = ({ onNavigate }) => {
             <span style={{ fontSize: '10px', fontWeight: 700, letterSpacing: '0.12em', textTransform: 'uppercase', color: 'var(--text-muted)' }}>
               EN NÚMEROS
             </span>
-            <div style={{ flex: 1, height: '1px', background: 'rgba(255,255,255,0.08)' }} />
+            <div style={{ flex: 1, height: '1px', background: 'var(--border-subtle)' }} />
           </div>
 
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-8 sm:gap-12">
@@ -260,7 +265,7 @@ export const Home: React.FC<HomeProps> = ({ onNavigate }) => {
       </section>
 
       {/* ═══════ ALERTAS — compact, low emphasis ═══════ */}
-      <section className="relative" style={{ borderBottom: '2px solid rgba(255,255,255,0.08)' }}>
+      <section className="relative" style={{ borderBottom: '1px solid var(--border-subtle)' }}>
         <div className="max-w-4xl mx-auto px-6 sm:px-10 py-10">
 
           <div className="flex items-center justify-between mb-6">
@@ -268,7 +273,7 @@ export const Home: React.FC<HomeProps> = ({ onNavigate }) => {
               <span style={{ fontSize: '10px', fontWeight: 700, letterSpacing: '0.12em', textTransform: 'uppercase', color: 'var(--text-muted)' }}>
                 ALERTAS SAT
               </span>
-              <div style={{ width: '40px', height: '1px', background: 'rgba(255,255,255,0.08)' }} />
+              <div style={{ width: '40px', height: '1px', background: 'var(--border-subtle)' }} />
               <span style={{ fontSize: '10px', color: 'var(--text-muted)', fontFamily: 'var(--font-editorial)', fontStyle: 'italic' }}>
                 <a href="https://www.argentina.gob.ar/sat/alertas" target="_blank" rel="noopener noreferrer" style={{ color: 'var(--accent-primary)', textDecoration: 'none' }}>
                   argentina.gob.ar/sat
@@ -348,10 +353,10 @@ export const Home: React.FC<HomeProps> = ({ onNavigate }) => {
             <span style={{ fontSize: '10px', fontWeight: 700, letterSpacing: '0.12em', textTransform: 'uppercase', color: 'var(--text-muted)' }}>
               TAMBIÉN
             </span>
-            <div style={{ flex: 1, height: '1px', background: 'rgba(255,255,255,0.08)' }} />
+            <div style={{ flex: 1, height: '1px', background: 'var(--border-subtle)' }} />
           </div>
 
-          <div className="space-y-0" style={{ border: '2px solid rgba(255,255,255,0.08)' }}>
+          <div className="space-y-0 rounded-2xl overflow-hidden" style={{ border: '1px solid var(--border-subtle)', background: 'var(--surface-1)' }}>
             {[
               { icon: '🗺️', title: 'Observatorio', desc: 'Alertas territoriales y estadísticas de consumo', tab: 'observatory' },
               { icon: '🔔', title: 'Recordatorios', desc: 'Hidratación, descanso y alimentación automáticos', tab: 'reminders' },

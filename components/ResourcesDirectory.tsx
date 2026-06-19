@@ -51,7 +51,7 @@ const ResourceCard: React.FC<{ resource: LocalResource }> = ({ resource }) => (
           <div className="mt-3 pt-3" style={{ borderTop: '1px solid var(--border-subtle)' }}>
             <div className="flex items-center gap-1 text-xs mb-1.5" style={{ color: 'var(--text-muted)' }}><CheckBadgeIcon /><span>Servicios:</span></div>
             <div className="flex flex-wrap gap-1.5">
-              {resource.services.map((s, i) => <span key={i} className="px-2 py-0.5 text-xs" style={{ background: 'var(--surface-2)', color: 'var(--text-secondary)', borderRadius: '4px' }}>{s}</span>)}
+              {resource.services.map((s, i) => <span key={i} className="px-2 py-0.5 text-xs" style={{ background: 'var(--surface-2)', color: 'var(--text-secondary)', borderRadius: 'var(--radius-sm)', border: '1px solid var(--border-subtle)' }}>{s}</span>)}
             </div>
           </div>
         )}

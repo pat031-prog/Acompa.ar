@@ -3,15 +3,14 @@ import React from 'react';
 
 export const Header: React.FC = () => {
   return (
-    <header className="px-5 py-5" style={{ borderBottom: '2.5px solid rgba(255,255,255,0.15)' }}>
+    <header className="px-5 py-5" style={{ borderBottom: '1px solid var(--border-subtle)' }}>
       <div className="flex items-center gap-3.5">
-        {/* Logo Mark — Editorial square */}
+        {/* Logo Mark */}
         <div
-          className="w-10 h-10 flex-shrink-0 flex items-center justify-center"
+          className="w-10 h-10 flex-shrink-0 flex items-center justify-center rounded-2xl"
           style={{
             background: 'var(--accent-primary)',
-            borderRadius: '0',
-            border: '2px solid var(--accent-primary)',
+            boxShadow: 'var(--shadow-glow-accent)',
           }}
         >
           <svg width="22" height="22" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
