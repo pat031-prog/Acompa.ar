@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { REAGENT_TESTS, TESTING_RESOURCES, TESTING_GUIDE, INSTITUTIONAL_TESTING } from '../constants';
-import { GeoCircle, HalftoneCircle, SectionKicker } from './decorative';
+import { PageHeader } from './ui';
 
 const SAGE = 'var(--accent-secondary)';
 
@@ -51,28 +51,12 @@ export const TestingGuide: React.FC = () => {
 
   return (
     <div className="flex-1 flex flex-col min-h-0">
-      <div className="relative overflow-hidden p-6 sm:p-8" style={{ borderBottom: '1px solid var(--border-subtle)' }}>
-        <GeoCircle size={130} top="-40px" right="0px" opacity={0.05} color={SAGE} />
-        <HalftoneCircle size={80} bottom="-15px" left="20%" opacity={0.07} color={SAGE} />
-        <div className="relative z-10">
-          <SectionKicker label="Guía de reducción de riesgos" color={SAGE} />
-          <h1 style={{
-            fontFamily: 'var(--font-editorial)',
-            fontSize: 'clamp(1.6rem, 5vw, 2.2rem)',
-            fontWeight: 700, letterSpacing: '-0.02em',
-            color: 'var(--text-primary)',
-            lineHeight: 1.2
-          }}>
-            Testeo de Sustancias
-          </h1>
-          <p className="mt-2.5" style={{
-            fontFamily: 'var(--font-editorial)', fontStyle: 'italic', fontSize: '15px',
-            color: 'var(--text-tertiary)', lineHeight: 1.6,
-          }}>
-            Información completa sobre reactivos, recursos y cómo testear sustancias en Argentina
-          </p>
-        </div>
-      </div>
+      <PageHeader
+        eyebrow="Guía de reducción de riesgos"
+        title="Testeo de Sustancias"
+        description="Información completa sobre reactivos, recursos y cómo testear sustancias en Argentina."
+        accent={SAGE}
+      />
 
       <div className="flex gap-2 p-5 sm:p-6 overflow-x-auto scrollbar-hide" style={{ borderBottom: '1px solid var(--border-subtle)' }}>
         <button onClick={() => setActiveSection('institutional')} style={tabStyle(activeSection === 'institutional')}><MapPinIcon /> Centros Oficiales</button>

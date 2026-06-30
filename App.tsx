@@ -203,10 +203,7 @@ const App: React.FC = () => {
       {/* ── Main Content ── */}
       <main
         className="flex-1 flex flex-col min-w-0 overflow-hidden lg:mt-0 mt-[104px]"
-        style={{
-          backgroundColor: 'var(--bg-primary)',
-          backgroundImage: 'radial-gradient(45rem 45rem at 12% -8%, rgba(199,112,92,0.06), transparent 60%), radial-gradient(40rem 40rem at 108% 4%, rgba(96,165,250,0.05), transparent 55%)',
-        }}
+        style={{ backgroundColor: 'var(--bg-primary)' }}
       >
         <div className="flex-1 flex flex-col h-full overflow-hidden">
           {activeTab === 'home' && <Home onNavigate={handleNavigate} />}

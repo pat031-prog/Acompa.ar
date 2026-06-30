@@ -21,6 +21,7 @@ import {
 } from '../services/analyticsService';
 import { PROVINCES } from '../constants';
 import type { SubstanceCategory } from '../types';
+import { PageHeader } from './ui';
 
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, BarElement, Title, Tooltip, Legend, ArcElement);
 
@@ -134,14 +135,11 @@ export const Dashboard: React.FC = () => {
 
   return (
     <div className="flex-1 flex flex-col min-h-0">
-      <div className="p-6 sm:p-8" style={{ borderBottom: '1px solid var(--border-subtle)' }}>
-        <h1 className="editorial-heading text-xl sm:text-2xl flex items-center gap-2">
-          <span style={{ color: 'var(--accent-primary)' }}><ChartBarIcon /></span>
-          <span className="hidden sm:inline">Dashboard de Estadísticas</span>
-          <span className="sm:hidden">Estadísticas</span>
-        </h1>
-        <p className="editorial-subtitle text-xs sm:text-sm mt-1">Análisis de consultas, tendencias y alertas territoriales</p>
-      </div>
+      <PageHeader
+        eyebrow="Estadísticas"
+        title="Dashboard de gestión"
+        description="Análisis de consultas, tendencias y alertas territoriales."
+      />
 
       <div className="p-6 sm:p-8" style={{ borderBottom: '1px solid var(--border-subtle)' }}>
         <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">

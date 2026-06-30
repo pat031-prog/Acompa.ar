@@ -15,143 +15,147 @@
     rel="stylesheet">
   <style>
     /* ═══════════════════════════════════════
-         Acompañ.Ar — Design System v2
-         Professional dark theme + terracotta accent
+         Acompañ.Ar — Design System v3 "Calm Clinical"
+         Inspired by Linear / Things: solid surface ladder,
+         hairline borders, 8pt grid, one type system.
+         Elevation = lighter surface over a dark canvas (no decorative shadows).
          ═══════════════════════════════════════ */
     :root {
-      /* ── Core Palette ── */
-      --bg-primary: #0a0a0f;
-      --bg-secondary: #0e0f14;
-      --bg-tertiary: #131419;
-      --surface: rgba(255, 255, 255, 0.04);
-      --surface-hover: rgba(255, 255, 255, 0.07);
-      --surface-active: rgba(255, 255, 255, 0.10);
-      --surface-1: rgba(255, 255, 255, 0.05);
-      --surface-2: rgba(255, 255, 255, 0.08);
-      --surface-3: rgba(255, 255, 255, 0.11);
+      /* ── Surface ladder (solid; lighter = higher elevation) ── */
+      --bg-primary: #0C0D10;   /* app canvas */
+      --bg-secondary: #101116; /* sidebar / chrome */
+      --bg-tertiary: #15171C;  /* raised */
+      --surface-1: #15171C;    /* card base */
+      --surface-2: #1A1C22;    /* card hover / nested */
+      --surface-3: #20232A;    /* active / popover */
+      --surface: var(--surface-1);
+      --surface-hover: var(--surface-2);
+      --surface-active: var(--surface-3);
 
-      /* ── Digital Humanism aliases (warm paper mapped to dark) ── */
+      /* ── Aliases kept for back-compat ── */
       --bg-paper-100: var(--bg-primary);
       --bg-paper-200: var(--bg-secondary);
       --bg-surface: var(--bg-tertiary);
       --bg: var(--bg-primary);
 
-      /* ── Text Hierarchy ── */
-      --text-primary: rgba(255, 255, 255, 0.92);
-      --text-secondary: rgba(255, 255, 255, 0.64);
-      --text-tertiary: rgba(255, 255, 255, 0.48);
-      --text-muted: rgba(255, 255, 255, 0.32);
+      /* ── Text hierarchy ── */
+      --text-primary: rgba(255, 255, 255, 0.94);
+      --text-secondary: rgba(255, 255, 255, 0.66);
+      --text-tertiary: rgba(255, 255, 255, 0.46);
+      --text-muted: rgba(255, 255, 255, 0.34);
       --text: var(--text-primary);
       --muted: var(--text-secondary);
+      --text-ink-900: var(--text-primary);
+      --text-ink-600: var(--text-secondary);
+      --text-ink-400: var(--text-tertiary);
 
-      /* Text ink aliases (for Home/Dashboard) */
-      --text-ink-900: rgba(255, 255, 255, 0.92);
-      --text-ink-600: rgba(255, 255, 255, 0.56);
-      --text-ink-400: rgba(255, 255, 255, 0.38);
-
-      /* ── Borders ── */
-      --border-subtle: rgba(255, 255, 255, 0.08);
-      --border-medium: rgba(255, 255, 255, 0.14);
-      --border-strong: rgba(255, 255, 255, 0.22);
+      /* ── Borders — hairline ── */
+      --border-subtle: rgba(255, 255, 255, 0.06);
+      --border-medium: rgba(255, 255, 255, 0.10);
+      --border-strong: rgba(255, 255, 255, 0.16);
       --border: var(--border-subtle);
-      --border-thick: 1px solid rgba(255, 255, 255, 0.10);
-      --border-editorial: 1px solid rgba(255, 255, 255, 0.08);
+      --border-thick: 1px solid var(--border-medium);
+      --border-editorial: 1px solid var(--border-subtle);
 
-      /* ── Accent — Terracotta (primary) ── */
+      /* ── Accent — Terracotta (primary brand) ── */
       --accent-primary: #C7705C;
-      --accent-hover: #d4826f;
+      --accent-hover: #D4826F;
       --accent-subtle: rgba(199, 112, 92, 0.12);
-      --accent-medium: rgba(199, 112, 92, 0.20);
-      --accent-weak: rgba(199, 112, 92, 0.08);
+      --accent-medium: rgba(199, 112, 92, 0.22);
+      --accent-weak: rgba(199, 112, 92, 0.07);
       --accent: var(--accent-primary);
 
-      /* ── Accent — Sage (secondary, used for safety/community sections) ── */
-      --accent-secondary: #7C9885;
-      --accent-secondary-hover: #8FAA98;
-      --accent-secondary-subtle: rgba(124, 152, 133, 0.12);
-      --accent-secondary-medium: rgba(124, 152, 133, 0.22);
-      --accent-secondary-weak: rgba(124, 152, 133, 0.08);
+      /* ── Accent — Sage (secondary; safety / care sections) ── */
+      --accent-secondary: #7FA08A;
+      --accent-secondary-hover: #92B19C;
+      --accent-secondary-subtle: rgba(127, 160, 138, 0.12);
+      --accent-secondary-medium: rgba(127, 160, 138, 0.22);
+      --accent-secondary-weak: rgba(127, 160, 138, 0.07);
 
-      /* ── Semantic Colors — Vibrant ── */
-      --color-blue: #60A5FA;
-      --color-blue-subtle: rgba(96, 165, 250, 0.10);
-      --color-blue-medium: rgba(96, 165, 250, 0.20);
-      --color-green: #34D399;
-      --color-green-subtle: rgba(52, 211, 153, 0.10);
-      --color-green-medium: rgba(52, 211, 153, 0.20);
-      --color-amber: #FBBF24;
-      --color-amber-subtle: rgba(251, 191, 36, 0.10);
-      --color-amber-medium: rgba(251, 191, 36, 0.20);
-      --color-red: #F87171;
-      --color-red-subtle: rgba(248, 113, 113, 0.10);
-      --color-red-medium: rgba(248, 113, 113, 0.20);
+      /* ── Semantic colors ── */
+      --color-blue: #6AA5F4;
+      --color-blue-subtle: rgba(106, 165, 244, 0.10);
+      --color-blue-medium: rgba(106, 165, 244, 0.20);
+      --color-green: #4ADE9E;
+      --color-green-subtle: rgba(74, 222, 158, 0.10);
+      --color-green-medium: rgba(74, 222, 158, 0.20);
+      --color-amber: #F2B84B;
+      --color-amber-subtle: rgba(242, 184, 75, 0.10);
+      --color-amber-medium: rgba(242, 184, 75, 0.20);
+      --color-red: #F0726E;
+      --color-red-subtle: rgba(240, 114, 110, 0.10);
+      --color-red-medium: rgba(240, 114, 110, 0.20);
       --color-violet: #A78BFA;
       --color-violet-subtle: rgba(167, 139, 250, 0.10);
       --color-violet-medium: rgba(167, 139, 250, 0.20);
 
-      /* ── Shadows (soft depth) ── */
-      --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.25);
-      --shadow-md: 0 4px 14px rgba(0, 0, 0, 0.28);
-      --shadow-lg: 0 14px 40px rgba(0, 0, 0, 0.40);
-      --shadow-ambient: 0 1px 0 rgba(255, 255, 255, 0.04), 0 10px 30px rgba(0, 0, 0, 0.30);
-      --shadow-lifted: 0 10px 28px rgba(0, 0, 0, 0.32);
-      --shadow-glow-accent: 0 10px 30px rgba(199, 112, 92, 0.18);
-      --shadow-modal: 0 24px 70px rgba(0, 0, 0, 0.55), 0 2px 0 rgba(255, 255, 255, 0.06) inset;
+      /* ── Shadows — used sparingly (modals/popovers only) ── */
+      --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.30);
+      --shadow-md: 0 6px 20px rgba(0, 0, 0, 0.35);
+      --shadow-lg: 0 16px 44px rgba(0, 0, 0, 0.45);
+      --shadow-ambient: 0 1px 2px rgba(0, 0, 0, 0.30);
+      --shadow-lifted: 0 8px 24px rgba(0, 0, 0, 0.35);
+      --shadow-glow-accent: 0 6px 22px rgba(199, 112, 92, 0.16);
+      --shadow-modal: 0 24px 70px rgba(0, 0, 0, 0.60), 0 1px 0 rgba(255, 255, 255, 0.05) inset;
 
-      /* ── Glass (premium translucent surfaces) ── */
-      --glass-bg: linear-gradient(165deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.02)), rgba(14, 15, 20, 0.82);
-      --glass-bg-solid: rgba(17, 18, 24, 0.92);
-      --glass-blur: blur(24px) saturate(160%);
-      --glass-border: rgba(255, 255, 255, 0.12);
+      /* ── Glass (modal/popover translucent surface) ── */
+      --glass-bg: linear-gradient(165deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.01)), rgba(16, 17, 22, 0.85);
+      --glass-bg-solid: rgba(20, 22, 27, 0.94);
+      --glass-blur: blur(24px) saturate(140%);
+      --glass-border: rgba(255, 255, 255, 0.10);
 
-      /* ── Radius (soft, rounded) ── */
-      --radius-sm: 8px;
-      --radius-md: 12px;
-      --radius-lg: 16px;
-      --radius-xl: 22px;
+      /* ── Radius — tight, consistent ── */
+      --radius-sm: 6px;
+      --radius-md: 8px;
+      --radius-lg: 12px;
+      --radius-xl: 16px;
       --radius-pill: 999px;
 
-      /* ── Spacing ── */
+      /* ── Spacing — strict 8pt grid (4 is the only half-step) ── */
       --space-1: 4px;
       --space-2: 8px;
       --space-3: 12px;
       --space-4: 16px;
-      --space-5: 20px;
-      --space-6: 24px;
-      --space-8: 32px;
-      --space-10: 40px;
-      --space-12: 48px;
-      --space-16: 64px;
+      --space-5: 24px;
+      --space-6: 32px;
+      --space-8: 40px;
+      --space-10: 48px;
+      --space-12: 64px;
+      --space-16: 96px;
 
-      /* ── Typography ── */
+      /* ── Typography ──
+         One UI font (Inter). Serif (Newsreader) is DISPLAY-ONLY:
+         reserved for large page titles, never for labels/body/chrome. */
       --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
       --font-ui: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-      --font-editorial: 'Newsreader', Georgia, 'Times New Roman', serif;
+      --font-display: 'Newsreader', Georgia, 'Times New Roman', serif;
+      --font-editorial: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
       --font-mono: 'SF Mono', 'Fira Code', 'Consolas', monospace;
 
-      --font-size-xs: 13px;
-      --font-size-sm: 14px;
-      --font-size-base: 15px;
-      --font-size-md: 16px;
-      --font-size-lg: 18px;
+      /* Type scale */
+      --font-size-xs: 12px;
+      --font-size-sm: 13px;
+      --font-size-base: 14px;
+      --font-size-md: 15px;
+      --font-size-lg: 17px;
       --font-size-xl: 20px;
       --font-size-2xl: 24px;
       --font-size-3xl: 30px;
 
-      --line-height-tight: 1.25;
-      --line-height-snug: 1.375;
+      --line-height-tight: 1.2;
+      --line-height-snug: 1.4;
       --line-height-normal: 1.5;
-      --line-height-relaxed: 1.625;
+      --line-height-relaxed: 1.65;
 
       --letter-spacing-tight: -0.02em;
 
       /* ── Transitions & Easing ── */
-      --transition-fast: 150ms cubic-bezier(0.4, 0, 0.2, 1);
-      --transition-base: 200ms cubic-bezier(0.4, 0, 0.2, 1);
-      --transition-slow: 300ms cubic-bezier(0.4, 0, 0.2, 1);
+      --transition-fast: 130ms cubic-bezier(0.4, 0, 0.2, 1);
+      --transition-base: 180ms cubic-bezier(0.4, 0, 0.2, 1);
+      --transition-slow: 280ms cubic-bezier(0.4, 0, 0.2, 1);
 
-      --t-fast: 150ms;
-      --t-medium: 250ms;
+      --t-fast: 130ms;
+      --t-medium: 220ms;
       --ease: cubic-bezier(0.4, 0, 0.2, 1);
       --ease-standard: cubic-bezier(0.4, 0, 0.2, 1);
       --ease-out-strong: cubic-bezier(0.16, 1, 0.3, 1);
@@ -235,7 +239,7 @@
     /* ── Typography Hierarchy ── */
     h1 {
       font-size: var(--font-size-3xl);
-      font-weight: 700;
+      font-weight: 600;
       line-height: var(--line-height-tight);
       letter-spacing: -0.022em;
       color: var(--text-primary);
@@ -261,7 +265,7 @@
     h5,
     h6 {
       font-size: var(--font-size-lg);
-      font-weight: 500;
+      font-weight: 600;
       line-height: var(--line-height-snug);
       letter-spacing: -0.013em;
       color: var(--text-secondary);
@@ -296,49 +300,48 @@
       color: var(--accent-primary);
     }
 
-    /* Section heading — editorial serif with decorative accent line */
+    /* Section heading */
     .editorial-heading {
-      font-family: var(--font-editorial);
-      font-weight: 700;
-      letter-spacing: -0.03em;
-      line-height: 1.15;
+      font-family: var(--font-ui);
+      font-weight: 600;
+      letter-spacing: -0.02em;
+      line-height: 1.2;
       color: var(--text-primary);
     }
 
-    /* Subheading — lighter weight, editorial italic */
+    /* Subheading */
     .editorial-subtitle {
-      font-family: var(--font-editorial);
-      font-style: italic;
+      font-family: var(--font-ui);
       font-weight: 400;
-      color: var(--text-secondary);
-      line-height: 1.5;
+      color: var(--text-tertiary);
+      line-height: 1.55;
       letter-spacing: -0.005em;
     }
 
-    /* Section divider — thick editorial rule */
+    /* Section divider — hairline */
     .editorial-divider {
       border: none;
-      height: 2px;
-      background: rgba(255, 255, 255, 0.15);
-      margin: 28px 0;
+      height: 1px;
+      background: var(--border-subtle);
+      margin: 24px 0;
     }
 
-    /* Thick accent divider */
+    /* Accent divider — short rule */
     .editorial-divider-accent {
       border: none;
-      height: 3px;
+      height: 2px;
       background: var(--accent-primary);
-      margin: 28px 0;
-      width: 48px;
+      margin: 16px 0;
+      width: 40px;
+      border-radius: 999px;
     }
 
-    /* Editorial body text — refined reading */
+    /* Body text */
     .editorial-body {
-      font-family: var(--font-editorial);
-      font-size: 15px;
-      line-height: 1.75;
+      font-family: var(--font-ui);
+      font-size: 14px;
+      line-height: 1.6;
       color: var(--text-secondary);
-      letter-spacing: 0.003em;
       font-weight: 400;
       text-rendering: optimizeLegibility;
     }
@@ -348,48 +351,44 @@
       color: var(--text-primary);
     }
 
-    /* Caption / meta — small editorial label */
+    /* Caption / meta — small label */
     .editorial-caption {
-      font-family: var(--font-sans);
+      font-family: var(--font-ui);
       font-size: 11px;
-      font-weight: 500;
+      font-weight: 600;
       text-transform: uppercase;
       letter-spacing: 0.08em;
       color: var(--text-muted);
     }
 
-    /* Date stamp — editorial style */
+    /* Date stamp */
     .editorial-date {
-      font-family: var(--font-editorial);
-      font-style: italic;
+      font-family: var(--font-ui);
       font-size: 13px;
       color: var(--text-tertiary);
       letter-spacing: 0.01em;
     }
 
-    /* Pull quote — editorial callout */
+    /* Lead paragraph (was an italic serif pull-quote) */
     .editorial-pullquote {
-      font-family: var(--font-editorial);
-      font-size: 20px;
-      font-style: italic;
-      font-weight: 500;
-      line-height: 1.45;
-      color: var(--text-primary);
-      padding: 24px 28px;
-      border-left: 4px solid var(--accent-primary);
-      border-top: 1px solid rgba(255, 255, 255, 0.08);
-      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      font-family: var(--font-ui);
+      font-size: 16px;
+      font-weight: 400;
+      line-height: 1.6;
+      color: var(--text-secondary);
+      padding: 0 0 0 20px;
+      border-left: 2px solid var(--accent-primary);
       background: transparent;
-      margin: 28px 0;
+      margin: 4px 0 8px;
     }
 
-    /* Category label — editorial tag */
+    /* Category label — tag */
     .editorial-tag {
-      font-family: var(--font-sans);
+      font-family: var(--font-ui);
       font-size: 10px;
-      font-weight: 700;
+      font-weight: 600;
       text-transform: uppercase;
-      letter-spacing: 0.1em;
+      letter-spacing: 0.08em;
       padding: 4px 11px;
       border-radius: var(--radius-pill);
       border: 1px solid var(--border-medium);
@@ -408,8 +407,6 @@
     .editorial-card:hover {
       background: var(--surface-2);
       border-color: var(--border-medium);
-      transform: translateY(-2px);
-      box-shadow: var(--shadow-md);
     }
 
     /* Numbered list — editorial ordered list with accent numbers */
@@ -449,7 +446,7 @@
 
     /* ── Editorial utility classes ── */
     .ed-border-thick {
-      border: 2.5px solid rgba(255, 255, 255, 0.18);
+      border: 1px solid var(--border-medium);
     }
 
     .ed-uppercase {

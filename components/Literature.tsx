@@ -1,4 +1,5 @@
 import React from 'react';
+import { PageHeader } from './ui';
 
 const BookIcon: React.FC = () => (
     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5">
@@ -161,30 +162,13 @@ const LITERATURE_DATA: Article[] = [
 export const Literature: React.FC = () => {
     return (
         <div className="flex-1 flex flex-col min-h-0 bg-[var(--bg-primary)]">
-            {/* Editorial Header */}
-            <div className="p-6 sm:p-8" style={{ borderBottom: '1px solid var(--border-subtle)' }}>
-                <div className="flex items-center gap-3 mb-3">
-                    <span style={{ color: 'var(--color-blue)' }}><BookIcon /></span>
-                    <span style={{ fontSize: '10px', fontWeight: 700, letterSpacing: '0.12em', textTransform: 'uppercase', color: 'var(--accent-primary)' }}>LECTURAS</span>
-                    <div style={{ flex: 1, height: '1px', background: 'rgba(255,255,255,0.06)' }} />
-                </div>
-                <h1 style={{
-                    fontFamily: 'var(--font-editorial)',
-                    fontSize: 'clamp(1.6rem, 5vw, 2.2rem)',
-                    fontWeight: 700, letterSpacing: '-0.02em',
-                    color: 'var(--text-primary)',
-                    lineHeight: 1.2
-                }}>
-                    Literatura y Evidencia
-                </h1>
-                <div style={{ width: '40px', height: '3px', background: 'var(--accent-primary)', margin: '10px 0 6px' }} />
-                <p style={{
-                    fontFamily: 'var(--font-editorial)', fontStyle: 'italic', fontSize: '15px',
-                    color: 'var(--text-tertiary)', lineHeight: 1.6,
-                }}>
-                    Papers científicos, artículos de ciencias sociales y publicaciones sobre reducción de daños y políticas de drogas.
-                </p>
-            </div>
+            {/* Header */}
+            <PageHeader
+                eyebrow="Lecturas"
+                title="Literatura y Evidencia"
+                description="Papers científicos, artículos de ciencias sociales y publicaciones sobre reducción de daños y políticas de drogas."
+                accent="var(--color-blue)"
+            />
 
             {/* Article List */}
             <div className="flex-1 overflow-y-auto px-5 sm:px-10 py-8">

@@ -7,6 +7,7 @@ import {
   markReminderTriggered,
   type Reminder,
 } from '../services/remindersService';
+import { PageHeader } from './ui';
 
 const BellIcon: React.FC = () => (
   <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6"><path strokeLinecap="round" strokeLinejoin="round" d="M14.857 17.082a23.848 23.848 0 0 0 5.454-1.31A8.967 8.967 0 0 1 18 9.75V9A6 6 0 0 0 6 9v.75a8.967 8.967 0 0 1-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 0 1-5.714 0m5.714 0a3 3 0 1 1-5.714 0" /></svg>
@@ -104,28 +105,12 @@ export const CareReminders: React.FC = () => {
 
   return (
     <div className="flex-1 flex flex-col min-h-0">
-      <div className="p-6 sm:p-8" style={{ borderBottom: '1px solid var(--border-subtle)' }}>
-        <div className="flex items-center gap-3 mb-3">
-          <span style={{ color: 'var(--color-amber)' }}><BellIcon /></span>
-          <span style={{ fontSize: '10px', fontWeight: 700, letterSpacing: '0.12em', textTransform: 'uppercase', color: 'var(--accent-primary)' }}>CUIDADO</span>
-          <div style={{ flex: 1, height: '1px', background: 'rgba(255,255,255,0.06)' }} />
-        </div>
-        <h1 style={{
-          fontFamily: 'var(--font-editorial)',
-          fontSize: 'clamp(1.4rem, 3vw, 1.8rem)',
-          fontWeight: 700, letterSpacing: '-0.02em',
-          color: 'var(--text-primary)',
-        }}>
-          Recordatorios
-        </h1>
-        <div style={{ width: '40px', height: '3px', background: 'var(--accent-primary)', margin: '10px 0 6px' }} />
-        <p style={{
-          fontFamily: 'var(--font-editorial)', fontStyle: 'italic', fontSize: '13px',
-          color: 'var(--text-tertiary)', lineHeight: 1.5,
-        }}>
-          Configurá recordatorios automáticos para hidratación, descanso y alimentación
-        </p>
-      </div>
+      <PageHeader
+        eyebrow="Cuidado"
+        title="Recordatorios"
+        description="Configurá recordatorios automáticos para hidratación, descanso y alimentación."
+        accent="var(--color-amber)"
+      />
 
       <div className="flex-1 overflow-y-auto p-6 sm:p-8 md:p-10 lg:p-12">
         <div className="max-w-3xl mx-auto space-y-8 lg:space-y-10">

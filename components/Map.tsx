@@ -3,7 +3,7 @@ import React, { useState, useMemo } from 'react';
 import { MAP_DATA } from '../constants';
 import type { MapDataset } from '../types';
 import { ArgentinaMap } from './ArgentinaMap';
-import { GeoCircle, HalftoneCircle, SectionKicker } from './decorative';
+import { PageHeader, Callout } from './ui';
 import { withAlpha } from './categoryStyles';
 
 const SearchIcon: React.FC = () => (
@@ -94,25 +94,17 @@ export const Observatory: React.FC = () => {
   return (
     <div className="flex-1 overflow-y-auto flex flex-col">
       {/* Header */}
-      <section className="relative overflow-hidden px-5 sm:px-8 pt-7 pb-6" style={{ borderBottom: '1px solid var(--border-subtle)' }}>
-        <GeoCircle size={140} top="-50px" right="-20px" opacity={0.05} color={SAGE} />
-        <HalftoneCircle size={90} bottom="-20px" left="30%" opacity={0.08} color={SAGE} />
-        <div className="relative z-10">
-          <SectionKicker label="Observatorio territorial" color={SAGE} />
-          <h1 style={{ fontFamily: 'var(--font-editorial)', fontSize: 'clamp(1.5rem, 4vw, 2rem)', fontWeight: 700, letterSpacing: '-0.02em', color: 'var(--text-primary)' }}>
-            Mapa epidemiológico anónimo
-          </h1>
-          <p className="mt-2 max-w-xl" style={{ fontSize: '13px', fontFamily: 'var(--font-editorial)', fontStyle: 'italic', color: 'var(--text-tertiary)', lineHeight: 1.6 }}>
-            Datos agregados y anónimos de consultas por provincia. Cuanto más intenso el color, mayor el volumen de consultas registradas.
-          </p>
-          <div className="mt-4 p-3 flex gap-2" style={{ background: 'var(--accent-secondary-subtle)', border: `1px solid ${SAGE}33`, borderRadius: 'var(--radius-md)' }}>
-            <span style={{ fontSize: '14px' }}>⚠️</span>
-            <p style={{ color: 'var(--text-secondary)', fontFamily: 'var(--font-editorial)', fontStyle: 'italic', fontSize: '12.5px', lineHeight: 1.55 }}>
-              <strong style={{ color: 'var(--text-primary)' }}>Nota:</strong> Los datos mostrados son actualmente figurativos e inventados. Representan la visión a futuro de lo que Acompañ.Ar aspira a ser: una herramienta de mapeo epidemiológico anónimo en tiempo real para informar políticas públicas de salud preventiva.
-            </p>
-          </div>
-        </div>
-      </section>
+      <PageHeader
+        eyebrow="Observatorio territorial"
+        title="Mapa epidemiológico anónimo"
+        description="Datos agregados y anónimos de consultas por provincia. Cuanto más intenso el color, mayor el volumen de consultas registradas."
+        accent={SAGE}
+      />
+      <div className="px-5 sm:px-7 lg:px-8 pt-4">
+        <Callout accent="var(--accent-secondary)">
+          <strong style={{ color: 'var(--text-primary)' }}>Nota:</strong> Los datos mostrados son actualmente figurativos e inventados. Representan la visión a futuro de lo que Acompañ.Ar aspira a ser: una herramienta de mapeo epidemiológico anónimo en tiempo real para informar políticas públicas de salud preventiva.
+        </Callout>
+      </div>
 
       {/* Map + Panel */}
       <section className="flex-1 flex flex-col lg:flex-row min-h-0">

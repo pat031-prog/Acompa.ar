@@ -1,7 +1,7 @@
 import React, { useState, useMemo } from 'react';
 import { LOCAL_RESOURCES, PROVINCES, RESOURCE_TYPES } from '../constants';
 import type { LocalResource } from '../types';
-import { GeoCircle, HalftoneCircle, SectionKicker } from './decorative';
+import { PageHeader } from './ui';
 
 const SAGE = 'var(--accent-secondary)';
 
@@ -90,19 +90,12 @@ export const ResourcesDirectory: React.FC = () => {
 
   return (
     <div className="flex-1 overflow-y-auto flex flex-col min-h-0">
-      <div className="relative overflow-hidden p-6 sm:p-8" style={{ borderBottom: '1px solid var(--border-subtle)' }}>
-        <GeoCircle size={130} top="-40px" right="0px" opacity={0.05} color={SAGE} />
-        <HalftoneCircle size={80} bottom="-15px" left="25%" opacity={0.07} color={SAGE} />
-        <div className="relative z-10">
-          <SectionKicker label="Directorio nacional" color={SAGE} />
-          <h1 style={{ fontFamily: 'var(--font-editorial)', fontSize: 'clamp(1.6rem, 5vw, 2.2rem)', fontWeight: 700, letterSpacing: '-0.02em', color: 'var(--text-primary)', lineHeight: 1.2 }}>
-            Recursos en Argentina
-          </h1>
-          <p className="mt-2.5" style={{ fontFamily: 'var(--font-editorial)', fontStyle: 'italic', fontSize: '15px', color: 'var(--text-tertiary)', lineHeight: 1.6 }}>
-            Centros de atención, líneas de ayuda, organizaciones y redes comunitarias de reducción de daños
-          </p>
-        </div>
-      </div>
+      <PageHeader
+        eyebrow="Directorio nacional"
+        title="Recursos en Argentina"
+        description="Centros de atención, líneas de ayuda, organizaciones y redes comunitarias de reducción de daños."
+        accent={SAGE}
+      />
 
       {/* Quick Access - Emergency Lines */}
       <div className="px-6 sm:px-8 pt-6 pb-2" style={{ borderBottom: '1px solid var(--border-subtle)' }}>
