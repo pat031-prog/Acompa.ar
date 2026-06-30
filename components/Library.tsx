@@ -95,7 +95,7 @@ const Section: React.FC<{ title: string; icon: React.ReactNode; accent: string; 
   <section>
     <header className="flex items-center gap-2.5 mb-3.5 pb-3" style={{ borderBottom: '1px solid var(--border-subtle)' }}>
       <span style={{ color: accent }}>{icon}</span>
-      <h3 className="font-semibold" style={{ color: 'var(--text-primary)', fontFamily: 'var(--font-editorial)', fontSize: '17px', letterSpacing: '-0.01em' }}>{title}</h3>
+      <h3 style={{ color: 'var(--text-primary)', fontFamily: 'var(--font-display)', fontSize: '19px', fontWeight: 500, letterSpacing: '-0.01em' }}>{title}</h3>
     </header>
     <div className="text-sm leading-relaxed" style={{ color: 'var(--text-secondary)' }}>{children}</div>
   </section>
@@ -142,10 +142,11 @@ const LibraryDetailView: React.FC<{ item: LibraryEntry; onFavoriteToggle: () => 
 
       {/* Hero */}
       <div
-        className="relative overflow-hidden rounded-3xl p-5 sm:p-7"
+        className="relative overflow-hidden p-5 sm:p-7"
         style={{
-          background: `linear-gradient(135deg, ${withAlpha(color, 0.18)}, ${withAlpha(color, 0.04)} 45%, transparent 75%)`,
+          background: `linear-gradient(135deg, ${withAlpha(color, 0.20)}, ${withAlpha(color, 0.05)} 45%, transparent 75%)`,
           border: '1px solid var(--border-subtle)',
+          borderRadius: '22px 22px 22px 6px',
         }}
       >
         <div className="flex items-start justify-between gap-4">
@@ -153,7 +154,7 @@ const LibraryDetailView: React.FC<{ item: LibraryEntry; onFavoriteToggle: () => 
             <div className="flex flex-wrap gap-1.5 mb-3">
               {item.category.map(cat => <CategoryChip key={cat} category={cat} />)}
             </div>
-            <h2 style={{ fontFamily: 'var(--font-editorial)', fontSize: 'clamp(1.7rem, 4vw, 2.4rem)', fontWeight: 700, letterSpacing: '-0.025em', lineHeight: 1.1, color: 'var(--text-primary)' }}>
+            <h2 style={{ fontFamily: 'var(--font-display)', fontSize: 'clamp(1.9rem, 4vw, 2.6rem)', fontWeight: 500, letterSpacing: '-0.02em', lineHeight: 1.04, color: 'var(--text-primary)' }}>
               {item.title}
             </h2>
             <p className="mt-2 text-sm" style={{ color: 'var(--text-tertiary)' }}>

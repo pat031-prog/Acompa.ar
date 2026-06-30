@@ -21,21 +21,21 @@ export const PageHeader: React.FC<{
 }> = ({ eyebrow, title, description, accent = 'var(--accent-primary)', right }) => (
   <header
     className="px-5 sm:px-7 lg:px-8"
-    style={{ paddingTop: 'var(--space-5)', paddingBottom: 'var(--space-5)', borderBottom: '1px solid var(--border-subtle)' }}
+    style={{ paddingTop: 'var(--space-6)', paddingBottom: 'var(--space-5)', borderBottom: '1px solid var(--border-subtle)' }}
   >
     <div className="flex items-start justify-between gap-4 max-w-5xl">
       <div className="min-w-0">
-        <div
-          className="mb-2"
-          style={{ fontSize: '11px', fontWeight: 600, letterSpacing: '0.08em', textTransform: 'uppercase', color: accent }}
-        >
-          {eyebrow}
+        <div className="flex items-center gap-2.5 mb-3">
+          <span style={{ width: '18px', height: '2px', background: accent, borderRadius: '999px' }} />
+          <span style={{ fontSize: '11px', fontWeight: 600, letterSpacing: '0.18em', textTransform: 'uppercase', color: accent }}>
+            {eyebrow}
+          </span>
         </div>
-        <h1 style={{ fontSize: 'clamp(1.4rem, 3vw, 1.75rem)', fontWeight: 600, letterSpacing: '-0.02em', color: 'var(--text-primary)', lineHeight: 1.2 }}>
+        <h1 style={{ fontFamily: 'var(--font-display)', fontSize: 'clamp(1.9rem, 3.4vw, 2.5rem)', fontWeight: 500, letterSpacing: '-0.015em', color: 'var(--text-primary)', lineHeight: 1.08 }}>
           {title}
         </h1>
         {description && (
-          <p className="mt-2" style={{ fontSize: '14px', color: 'var(--text-tertiary)', lineHeight: 1.55, maxWidth: '52ch' }}>
+          <p className="mt-3" style={{ fontSize: '14.5px', color: 'var(--text-tertiary)', lineHeight: 1.55, maxWidth: '56ch' }}>
             {description}
           </p>
         )}
@@ -51,7 +51,7 @@ export const PageHeader: React.FC<{
 export const SectionTitle: React.FC<{ children: React.ReactNode; icon?: React.ReactNode; accent?: string; count?: number }> = ({ children, icon, accent = 'var(--text-tertiary)', count }) => (
   <div className="flex items-center gap-2.5 mb-4" style={{ paddingBottom: 'var(--space-3)', borderBottom: '1px solid var(--border-subtle)' }}>
     {icon && <span style={{ color: accent, display: 'inline-flex' }}>{icon}</span>}
-    <h2 style={{ fontSize: '15px', fontWeight: 600, letterSpacing: '-0.01em', color: 'var(--text-primary)' }}>{children}</h2>
+    <h2 style={{ fontFamily: 'var(--font-display)', fontSize: '18px', fontWeight: 500, letterSpacing: '-0.01em', color: 'var(--text-primary)' }}>{children}</h2>
     {typeof count === 'number' && (
       <span style={{ fontSize: '12px', fontWeight: 600, color: 'var(--text-muted)' }}>{count}</span>
     )}

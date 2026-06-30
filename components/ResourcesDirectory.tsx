@@ -145,7 +145,7 @@ export const ResourcesDirectory: React.FC = () => {
           <div className="max-w-4xl mx-auto space-y-9">
             {groups.map(group => (
               <section key={group.value}>
-                <h2 className="flex items-center gap-2 mb-1" style={{ fontFamily: 'var(--font-editorial)', fontSize: '17px', fontWeight: 700, color: 'var(--text-primary)' }}>
+                <h2 className="flex items-center gap-2 mb-1" style={{ fontFamily: 'var(--font-display)', fontSize: '19px', fontWeight: 500, color: 'var(--text-primary)' }}>
                   {group.label}
                   <span className="text-xs font-semibold" style={{ color: 'var(--text-muted)', fontFamily: 'var(--font-ui)' }}>· {group.items.length}</span>
                 </h2>

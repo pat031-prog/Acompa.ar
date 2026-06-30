@@ -54,15 +54,18 @@ export const Home: React.FC<HomeProps> = ({ onNavigate }) => {
     <div className="flex-1 flex flex-col min-h-0 overflow-y-auto" style={{ background: 'var(--bg-primary)' }}>
 
       {/* ── Hero ── */}
-      <section className="px-5 sm:px-8 lg:px-10" style={{ paddingTop: '56px', paddingBottom: '40px', borderBottom: '1px solid var(--border-subtle)' }}>
+      <section className="px-5 sm:px-8 lg:px-10 relative" style={{ paddingTop: '60px', paddingBottom: '48px', borderBottom: '1px solid var(--border-subtle)' }}>
         <div className="max-w-4xl mx-auto w-full">
-          <div className="mb-5" style={{ ...SECTION_LABEL, color: 'var(--accent-primary)' }}>
-            Plataforma · Reducción de riesgos y daños
+          <div className="flex items-center gap-2.5 mb-6">
+            <span style={{ width: '18px', height: '2px', background: 'var(--accent-primary)', borderRadius: '999px' }} />
+            <span style={{ fontSize: '11px', fontWeight: 600, letterSpacing: '0.18em', textTransform: 'uppercase', color: 'var(--accent-primary)' }}>
+              Plataforma · Reducción de riesgos y daños
+            </span>
           </div>
-          <h1 style={{ fontFamily: 'var(--font-display)', fontSize: 'clamp(2.2rem, 5vw, 3.2rem)', fontWeight: 600, lineHeight: 1.08, letterSpacing: '-0.03em', color: 'var(--text-primary)', maxWidth: '16ch' }}>
+          <h1 style={{ fontFamily: 'var(--font-display)', fontSize: 'clamp(2.6rem, 6vw, 4rem)', fontWeight: 500, lineHeight: 1.02, letterSpacing: '-0.02em', color: 'var(--text-primary)', maxWidth: '15ch' }}>
             Información basada en evidencia
           </h1>
-          <p className="mt-5" style={{ fontSize: '16px', lineHeight: 1.6, color: 'var(--text-secondary)', maxWidth: '54ch' }}>
+          <p className="mt-6" style={{ fontSize: '16px', lineHeight: 1.6, color: 'var(--text-secondary)', maxWidth: '52ch' }}>
             Explorá información sobre sustancias, testeo, centros de atención y alertas sanitarias en Argentina — de forma anónima y sin juicios.
           </p>
         </div>
@@ -77,9 +80,9 @@ export const Home: React.FC<HomeProps> = ({ onNavigate }) => {
           </div>
           <div className="grid sm:grid-cols-2 gap-3">
             {NAV_CARDS.map((item) => (
-              <Card key={item.num} interactive onClick={() => onNavigate?.(item.tab)} className="p-6 relative" style={{ cursor: 'pointer' }}>
-                <span style={{ position: 'absolute', top: '16px', right: '18px', fontSize: '13px', fontWeight: 600, color: 'var(--text-muted)', letterSpacing: '0.05em' }}>{item.num}</span>
-                <h3 style={{ fontSize: '17px', fontWeight: 600, letterSpacing: '-0.01em', color: 'var(--text-primary)', marginBottom: '6px' }}>{item.title}</h3>
+              <Card key={item.num} interactive onClick={() => onNavigate?.(item.tab)} className="p-6 relative overflow-hidden" style={{ cursor: 'pointer' }}>
+                <span style={{ position: 'absolute', top: '10px', right: '18px', fontFamily: 'var(--font-display)', fontSize: '34px', fontWeight: 500, color: 'var(--accent-weak)', letterSpacing: '-0.02em', lineHeight: 1 }}>{item.num}</span>
+                <h3 style={{ fontFamily: 'var(--font-display)', fontSize: '20px', fontWeight: 500, letterSpacing: '-0.01em', color: 'var(--text-primary)', marginBottom: '8px' }}>{item.title}</h3>
                 <p style={{ fontSize: '14px', lineHeight: 1.55, color: 'var(--text-tertiary)', marginBottom: '16px', maxWidth: '34ch' }}>{item.desc}</p>
                 <span className="inline-flex items-center gap-1.5" style={{ fontSize: '12px', fontWeight: 600, letterSpacing: '0.03em', color: 'var(--accent-primary)' }}>
                   {item.action} <ArrowRightIcon />

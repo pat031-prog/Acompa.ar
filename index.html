@@ -11,23 +11,24 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link
-    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&display=swap"
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;0,9..144,900;1,9..144,400;1,9..144,500&display=swap"
     rel="stylesheet">
   <style>
     /* ═══════════════════════════════════════
-         Acompañ.Ar — Design System v3 "Calm Clinical"
-         Inspired by Linear / Things: solid surface ladder,
-         hairline borders, 8pt grid, one type system.
-         Elevation = lighter surface over a dark canvas (no decorative shadows).
+         Acompañ.Ar — Design System v4 "Editorial Cálido"
+         Warm near-black canvas + terracotta, cream ink, a literary display
+         serif (Fraunces) for big moments, tracked-uppercase labels, and
+         confident scale contrast. Inspired by warm editorial art direction.
+         Elevation = lighter warm surface over the canvas (no heavy shadows).
          ═══════════════════════════════════════ */
     :root {
-      /* ── Surface ladder (solid; lighter = higher elevation) ── */
-      --bg-primary: #0C0D10;   /* app canvas */
-      --bg-secondary: #101116; /* sidebar / chrome */
-      --bg-tertiary: #15171C;  /* raised */
-      --surface-1: #15171C;    /* card base */
-      --surface-2: #1A1C22;    /* card hover / nested */
-      --surface-3: #20232A;    /* active / popover */
+      /* ── Surface ladder (solid, WARM; lighter = higher elevation) ── */
+      --bg-primary: #15110D;   /* app canvas — warm near-black */
+      --bg-secondary: #1A1611; /* sidebar / chrome */
+      --bg-tertiary: #211B15;  /* raised */
+      --surface-1: #1F1A14;    /* card base */
+      --surface-2: #271F18;    /* card hover / nested */
+      --surface-3: #322820;    /* active / popover */
       --surface: var(--surface-1);
       --surface-hover: var(--surface-2);
       --surface-active: var(--surface-3);
@@ -38,31 +39,31 @@
       --bg-surface: var(--bg-tertiary);
       --bg: var(--bg-primary);
 
-      /* ── Text hierarchy ── */
-      --text-primary: rgba(255, 255, 255, 0.94);
-      --text-secondary: rgba(255, 255, 255, 0.66);
-      --text-tertiary: rgba(255, 255, 255, 0.46);
-      --text-muted: rgba(255, 255, 255, 0.34);
+      /* ── Text hierarchy — warm cream ink ── */
+      --text-primary: rgba(247, 240, 232, 0.95);
+      --text-secondary: rgba(247, 240, 232, 0.64);
+      --text-tertiary: rgba(247, 240, 232, 0.45);
+      --text-muted: rgba(247, 240, 232, 0.32);
       --text: var(--text-primary);
       --muted: var(--text-secondary);
       --text-ink-900: var(--text-primary);
       --text-ink-600: var(--text-secondary);
       --text-ink-400: var(--text-tertiary);
 
-      /* ── Borders — hairline ── */
-      --border-subtle: rgba(255, 255, 255, 0.06);
-      --border-medium: rgba(255, 255, 255, 0.10);
-      --border-strong: rgba(255, 255, 255, 0.16);
+      /* ── Borders — warm hairline ── */
+      --border-subtle: rgba(247, 240, 232, 0.07);
+      --border-medium: rgba(247, 240, 232, 0.12);
+      --border-strong: rgba(247, 240, 232, 0.18);
       --border: var(--border-subtle);
       --border-thick: 1px solid var(--border-medium);
       --border-editorial: 1px solid var(--border-subtle);
 
-      /* ── Accent — Terracotta (primary brand) ── */
-      --accent-primary: #C7705C;
-      --accent-hover: #D4826F;
-      --accent-subtle: rgba(199, 112, 92, 0.12);
-      --accent-medium: rgba(199, 112, 92, 0.22);
-      --accent-weak: rgba(199, 112, 92, 0.07);
+      /* ── Accent — Terracotta (primary brand), warmed toward the reference ── */
+      --accent-primary: #CE7458;
+      --accent-hover: #DD8568;
+      --accent-subtle: rgba(206, 116, 88, 0.13);
+      --accent-medium: rgba(206, 116, 88, 0.24);
+      --accent-weak: rgba(206, 116, 88, 0.08);
       --accent: var(--accent-primary);
 
       /* ── Accent — Sage (secondary; safety / care sections) ── */
@@ -128,7 +129,7 @@
          reserved for large page titles, never for labels/body/chrome. */
       --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
       --font-ui: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-      --font-display: 'Newsreader', Georgia, 'Times New Roman', serif;
+      --font-display: 'Fraunces', Georgia, 'Times New Roman', serif;
       --font-editorial: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
       --font-mono: 'SF Mono', 'Fira Code', 'Consolas', monospace;
 
@@ -310,12 +311,12 @@
       color: var(--accent-primary);
     }
 
-    /* Section heading */
+    /* Section heading — display serif */
     .editorial-heading {
-      font-family: var(--font-ui);
-      font-weight: 600;
-      letter-spacing: -0.02em;
-      line-height: 1.2;
+      font-family: var(--font-display);
+      font-weight: 500;
+      letter-spacing: -0.015em;
+      line-height: 1.15;
       color: var(--text-primary);
     }
 
