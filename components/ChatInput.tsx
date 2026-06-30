@@ -31,7 +31,9 @@ export const ChatInput: React.FC<ChatInputProps> = ({ onSendMessage, isLoading, 
       className="flex items-center gap-3 p-3 mb-4"
       style={{
         background: 'var(--surface-1)',
-        borderTop: '1px solid var(--border-subtle)',
+        border: '1px solid var(--border-subtle)',
+        borderRadius: '0 0 var(--radius-xl) var(--radius-xl)',
+        boxShadow: 'var(--shadow-ambient)',
       }}
     >
       <input

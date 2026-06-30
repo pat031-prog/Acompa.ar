@@ -30,12 +30,16 @@ export const MessageBubble: React.FC<MessageBubbleProps> = ({ message }) => {
     ? {
       background: 'var(--accent-subtle)',
       border: '1px solid var(--accent-medium)',
-      borderRadius: 'var(--radius-md)',
+      borderRadius: 'var(--radius-lg)',
+      borderBottomRightRadius: 'var(--radius-sm)',
+      boxShadow: 'var(--shadow-sm)',
     }
     : {
       background: 'var(--surface-2)',
       border: '1px solid var(--border-subtle)',
-      borderRadius: 'var(--radius-md)',
+      borderRadius: 'var(--radius-lg)',
+      borderBottomLeftRadius: 'var(--radius-sm)',
+      boxShadow: 'var(--shadow-sm)',
     };
 
   const formattedText = {

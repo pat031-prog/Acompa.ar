@@ -40,18 +40,19 @@ export const ConsentModal: React.FC<ConsentModalProps> = ({ onConsent }) => {
         style={{
           background: 'var(--glass-bg)',
           backdropFilter: 'var(--glass-blur)',
+          WebkitBackdropFilter: 'var(--glass-blur)',
           border: '1px solid var(--glass-border)',
-          borderRadius: 'var(--radius-lg)',
-          padding: '28px',
-          boxShadow: 'var(--shadow-lg), var(--shadow-glow-accent)',
+          borderRadius: 'var(--radius-xl)',
+          padding: '32px',
+          boxShadow: 'var(--shadow-modal), var(--shadow-glow-accent)',
           animation: 'scaleIn 0.3s var(--ease-out-strong) both',
         }}
       >
         {/* Header */}
         <div className="flex items-center gap-3 mb-1">
           <div
-            className="w-10 h-10 flex items-center justify-center flex-shrink-0"
-            style={{ background: 'var(--accent-primary)', borderRadius: 'var(--radius-sm)' }}
+            className="w-11 h-11 flex items-center justify-center flex-shrink-0"
+            style={{ background: 'var(--accent-primary)', borderRadius: 'var(--radius-md)', boxShadow: 'var(--shadow-glow-accent)' }}
           >
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
               <path d="M12 2L4 6v5c0 5.55 3.84 10.74 8 12 4.16-1.26 8-6.45 8-12V6L12 2Z" fill="rgba(255,255,255,0.15)" stroke="white" strokeWidth="1.5" />

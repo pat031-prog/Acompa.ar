@@ -28,10 +28,12 @@ export const ChatWindow: React.FC<ChatWindowProps> = ({ messages, isLoading }) =
   return (
     <div
       ref={scrollRef}
-      className="flex-1 overflow-y-auto p-5 space-y-5 rounded-t-lg mt-4"
+      className="flex-1 overflow-y-auto p-5 space-y-5 mt-4"
       style={{
         background: 'var(--surface-1)',
         border: '1px solid var(--border-subtle)',
+        borderBottom: 'none',
+        borderRadius: 'var(--radius-xl) var(--radius-xl) 0 0',
       }}
     >
       {messages.map((msg) => (
