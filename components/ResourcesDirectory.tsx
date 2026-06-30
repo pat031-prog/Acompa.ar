@@ -1,63 +1,70 @@
 import React, { useState, useMemo } from 'react';
 import { LOCAL_RESOURCES, PROVINCES, RESOURCE_TYPES } from '../constants';
 import type { LocalResource } from '../types';
+import { GeoCircle, HalftoneCircle, SectionKicker } from './decorative';
+
+const SAGE = 'var(--accent-secondary)';
 
 const PhoneIcon: React.FC = () => (
-  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5"><path strokeLinecap="round" strokeLinejoin="round" d="M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 0 0 2.25-2.25v-1.372c0-.516-.351-.966-.852-1.091l-4.423-1.106c-.44-.11-.902.055-1.173.417l-.97 1.293c-.282.376-.769.542-1.21.38a12.035 12.035 0 0 1-7.143-7.143c-.162-.441.004-.928.38-1.21l1.293-.97c.363-.271.527-.734.417-1.173L6.963 3.102a1.125 1.125 0 0 0-1.091-.852H4.5A2.25 2.25 0 0 0 2.25 4.5v2.25Z" /></svg>
+  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-4 h-4"><path strokeLinecap="round" strokeLinejoin="round" d="M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 0 0 2.25-2.25v-1.372c0-.516-.351-.966-.852-1.091l-4.423-1.106c-.44-.11-.902.055-1.173.417l-.97 1.293c-.282.376-.769.542-1.21.38a12.035 12.035 0 0 1-7.143-7.143c-.162-.441.004-.928.38-1.21l1.293-.97c.363-.271.527-.734.417-1.173L6.963 3.102a1.125 1.125 0 0 0-1.091-.852H4.5A2.25 2.25 0 0 0 2.25 4.5v2.25Z" /></svg>
 );
 const MapPinIcon: React.FC = () => (
-  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5"><path strokeLinecap="round" strokeLinejoin="round" d="M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" /><path strokeLinecap="round" strokeLinejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1 1 15 0Z" /></svg>
+  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-4 h-4"><path strokeLinecap="round" strokeLinejoin="round" d="M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" /><path strokeLinecap="round" strokeLinejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1 1 15 0Z" /></svg>
 );
 const ClockIcon: React.FC = () => (
-  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5"><path strokeLinecap="round" strokeLinejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" /></svg>
+  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-4 h-4"><path strokeLinecap="round" strokeLinejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" /></svg>
 );
 const GlobeIcon: React.FC = () => (
-  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5"><path strokeLinecap="round" strokeLinejoin="round" d="M12 21a9.004 9.004 0 0 0 8.716-6.747M12 21a9.004 9.004 0 0 1-8.716-6.747M12 21c2.485 0 4.5-4.03 4.5-9S14.485 3 12 3m0 18c-2.485 0-4.5-4.03-4.5-9S9.515 3 12 3m0 0a8.997 8.997 0 0 1 7.843 4.582M12 3a8.997 8.997 0 0 0-7.843 4.582m15.686 0A11.953 11.953 0 0 1 12 10.5c-2.998 0-5.74-1.1-7.843-2.918m15.686 0A8.959 8.959 0 0 1 21 12c0 .778-.099 1.533-.284 2.253m0 0A17.919 17.919 0 0 1 12 16.5c-3.162 0-6.133-.815-8.716-2.247m0 0A9.015 9.015 0 0 1 3 12c0-1.605.42-3.113 1.157-4.418" /></svg>
-);
-const CheckBadgeIcon: React.FC = () => (
-  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5"><path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75 11.25 15 15 9.75M21 12c0 1.268-.63 2.39-1.593 3.068a3.745 3.745 0 0 1-1.043 3.296 3.745 3.745 0 0 1-3.296 1.043A3.745 3.745 0 0 1 12 21c-1.268 0-2.39-.63-3.068-1.593a3.746 3.746 0 0 1-3.296-1.043 3.745 3.745 0 0 1-1.043-3.296A3.745 3.745 0 0 1 3 12c0-1.268.63-2.39 1.593-3.068a3.745 3.745 0 0 1 1.043-3.296 3.746 3.746 0 0 1 3.296-1.043A3.746 3.746 0 0 1 12 3c1.268 0 2.39.63 3.068 1.593a3.746 3.746 0 0 1 3.296 1.043 3.746 3.746 0 0 1 1.043 3.296A3.745 3.745 0 0 1 21 12Z" /></svg>
+  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-4 h-4"><path strokeLinecap="round" strokeLinejoin="round" d="M12 21a9.004 9.004 0 0 0 8.716-6.747M12 21a9.004 9.004 0 0 1-8.716-6.747M12 21c2.485 0 4.5-4.03 4.5-9S14.485 3 12 3m0 18c-2.485 0-4.5-4.03-4.5-9S9.515 3 12 3m0 0a8.997 8.997 0 0 1 7.843 4.582M12 3a8.997 8.997 0 0 0-7.843 4.582m15.686 0A11.953 11.953 0 0 1 12 10.5c-2.998 0-5.74-1.1-7.843-2.918m15.686 0A8.959 8.959 0 0 1 21 12c0 .778-.099 1.533-.284 2.253m0 0A17.919 17.919 0 0 1 12 16.5c-3.162 0-6.133-.815-8.716-2.247m0 0A9.015 9.015 0 0 1 3 12c0-1.605.42-3.113 1.157-4.418" /></svg>
 );
 
 const getTypeIcon = (type: LocalResource['type']) => ({ hospital: '🏥', clinic: '⚕️', hotline: '📞', ngo: '🤝', community_center: '🏘️', therapy: '💭', testing_lab: '🔬', harm_reduction: '🛡️', activism: '✊', government: '🏛️' }[type] || '📍');
 
-const inputStyle: React.CSSProperties = { background: 'var(--bg-primary)', color: 'var(--text-primary)', border: '1px solid var(--border-medium)', borderRadius: 'var(--radius-sm)', outline: 'none', width: '100%', padding: '10px 12px', fontSize: '14px' };
+const inputStyle: React.CSSProperties = { background: 'var(--surface-1)', color: 'var(--text-primary)', border: '1px solid var(--border-subtle)', borderRadius: 'var(--radius-md)', outline: 'none', width: '100%', padding: '10px 12px', fontSize: '14px' };
 
-const ResourceCard: React.FC<{ resource: LocalResource }> = ({ resource }) => (
-  <div
-    className="p-5 sm:p-6 transition-all duration-200"
-    style={{ background: 'var(--surface-1)', border: '1px solid var(--border-subtle)', borderRadius: 'var(--radius-md)' }}
-    onMouseEnter={(e) => { e.currentTarget.style.borderColor = 'var(--accent-primary)'; e.currentTarget.style.boxShadow = 'var(--shadow-ambient)'; }}
-    onMouseLeave={(e) => { e.currentTarget.style.borderColor = 'var(--border-subtle)'; e.currentTarget.style.boxShadow = 'none'; }}
-  >
-    <div className="flex items-start gap-3 sm:gap-4">
-      <div className="flex-shrink-0 w-10 h-10 sm:w-12 sm:h-12 flex items-center justify-center text-xl sm:text-2xl" style={{ background: 'var(--surface-2)', border: '1px solid var(--border-subtle)', borderRadius: 'var(--radius-sm)' }}>
-        {getTypeIcon(resource.type)}
-      </div>
-      <div className="flex-1 min-w-0">
-        <div className="flex items-start justify-between gap-2 mb-2">
-          <h3 className="font-semibold text-sm sm:text-base" style={{ color: 'var(--text-primary)' }}>{resource.name}</h3>
-          {resource.free && (
-            <span className="flex-shrink-0 px-2 py-0.5 text-xs font-medium" style={{ background: 'var(--color-green-subtle)', color: 'var(--color-green)', border: '1px solid var(--color-green-medium)', borderRadius: '999px' }}>Gratuito</span>
-          )}
-        </div>
-        <p className="text-sm mb-3 leading-relaxed" style={{ color: 'var(--text-secondary)' }}>{resource.description}</p>
-        <div className="space-y-2 text-sm" style={{ color: 'var(--text-tertiary)' }}>
-          {resource.phone && <div className="flex items-center gap-2"><PhoneIcon /><a href={`tel:${resource.phone}`} style={{ color: 'var(--color-blue)' }}>{resource.phone}</a></div>}
-          {(resource.address || resource.city) && <div className="flex items-center gap-2"><MapPinIcon /><span>{resource.address && `${resource.address}, `}{resource.city && `${resource.city}, `}{resource.province}</span></div>}
-          {resource.hours && <div className="flex items-center gap-2"><ClockIcon /><span>{resource.hours}</span></div>}
-          {resource.website && <div className="flex items-center gap-2"><GlobeIcon /><a href={resource.website} target="_blank" rel="noopener noreferrer" className="truncate" style={{ color: 'var(--color-blue)' }}>{resource.website.replace(/^https?:\/\//, '')}</a></div>}
-        </div>
-        {resource.services.length > 0 && (
-          <div className="mt-3 pt-3" style={{ borderTop: '1px solid var(--border-subtle)' }}>
-            <div className="flex items-center gap-1 text-xs mb-1.5" style={{ color: 'var(--text-muted)' }}><CheckBadgeIcon /><span>Servicios:</span></div>
-            <div className="flex flex-wrap gap-1.5">
-              {resource.services.map((s, i) => <span key={i} className="px-2 py-0.5 text-xs" style={{ background: 'var(--surface-2)', color: 'var(--text-secondary)', borderRadius: 'var(--radius-sm)', border: '1px solid var(--border-subtle)' }}>{s}</span>)}
-            </div>
-          </div>
+/** A directory row — flowing, not boxed. The icon+type colour gives scanability without repeating a card shell N times. */
+const ResourceRow: React.FC<{ resource: LocalResource; isLast: boolean }> = ({ resource, isLast }) => (
+  <div className="py-4 flex items-start gap-3 sm:gap-4" style={{ borderBottom: isLast ? 'none' : '1px solid var(--border-subtle)' }}>
+    <div className="flex-shrink-0 w-9 h-9 flex items-center justify-center text-lg" style={{ background: 'var(--surface-2)', borderRadius: 'var(--radius-sm)' }}>
+      {getTypeIcon(resource.type)}
+    </div>
+    <div className="flex-1 min-w-0">
+      <div className="flex items-start justify-between gap-2">
+        <h3 className="font-semibold text-sm sm:text-[15px]" style={{ color: 'var(--text-primary)' }}>{resource.name}</h3>
+        {resource.free && (
+          <span className="flex-shrink-0 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wide" style={{ color: 'var(--color-green)', background: 'var(--color-green-subtle)', borderRadius: '999px' }}>Gratuito</span>
         )}
       </div>
+      <p className="text-sm mt-1 leading-relaxed" style={{ color: 'var(--text-secondary)' }}>{resource.description}</p>
+      <div className="flex flex-wrap gap-x-4 gap-y-1.5 mt-2.5 text-xs" style={{ color: 'var(--text-tertiary)' }}>
+        {resource.phone && <span className="flex items-center gap-1.5"><PhoneIcon /><a href={`tel:${resource.phone}`} style={{ color: SAGE }}>{resource.phone}</a></span>}
+        {(resource.address || resource.city) && <span className="flex items-center gap-1.5"><MapPinIcon />{resource.address && `${resource.address}, `}{resource.city && `${resource.city}, `}{resource.province}</span>}
+        {resource.hours && <span className="flex items-center gap-1.5"><ClockIcon />{resource.hours}</span>}
+        {resource.website && <span className="flex items-center gap-1.5"><GlobeIcon /><a href={resource.website} target="_blank" rel="noopener noreferrer" style={{ color: SAGE }}>{resource.website.replace(/^https?:\/\//, '')}</a></span>}
+      </div>
+      {resource.services.length > 0 && (
+        <div className="flex flex-wrap gap-1.5 mt-2.5">
+          {resource.services.map((s, i) => <span key={i} className="px-2 py-0.5 text-[11px]" style={{ background: 'var(--surface-2)', color: 'var(--text-tertiary)', borderRadius: 'var(--radius-sm)' }}>{s}</span>)}
+        </div>
+      )}
     </div>
   </div>
+);
+
+const EmergencyLink: React.FC<{ href: string; icon: string; title: string; subtitle: string; accentColor: string; iconBg: string }> = ({ href, icon, title, subtitle, accentColor, iconBg }) => (
+  <a
+    href={href}
+    className="flex items-center gap-3 p-3.5 transition-all duration-200"
+    style={{ background: 'var(--surface-1)', border: '1px solid var(--border-subtle)', borderRadius: 'var(--radius-md)', textDecoration: 'none' }}
+    onMouseEnter={(e) => { e.currentTarget.style.borderColor = accentColor; e.currentTarget.style.boxShadow = 'var(--shadow-ambient)'; }}
+    onMouseLeave={(e) => { e.currentTarget.style.borderColor = 'var(--border-subtle)'; e.currentTarget.style.boxShadow = 'none'; }}
+  >
+    <div className="w-10 h-10 flex items-center justify-center text-xl flex-shrink-0" style={{ background: iconBg, borderRadius: 'var(--radius-sm)' }}>{icon}</div>
+    <div>
+      <p className="text-sm font-bold" style={{ color: 'var(--text-primary)' }}>{title}</p>
+      <p className="text-xs" style={{ color: 'var(--text-tertiary)' }}>{subtitle}</p>
+    </div>
+  </a>
 );
 
 export const ResourcesDirectory: React.FC = () => {
@@ -73,60 +80,37 @@ export const ResourcesDirectory: React.FC = () => {
     return f;
   }, [selectedProvince, selectedType, searchTerm]);
 
+  // Group by type, in RESOURCE_TYPES order, so the directory reads as labeled sections rather than one uniform wall of cards.
+  const groups = useMemo(() => {
+    return RESOURCE_TYPES
+      .filter(t => t.value !== 'all')
+      .map(t => ({ ...t, items: filteredResources.filter(r => r.type === t.value) }))
+      .filter(g => g.items.length > 0);
+  }, [filteredResources]);
+
   return (
-    <div className="flex-1 flex flex-col min-h-0">
-      <div className="p-6 sm:p-8" style={{ borderBottom: '1px solid var(--border-subtle)' }}>
-        <h1 className="editorial-heading text-xl sm:text-2xl flex items-center gap-2">
-          <span style={{ color: 'var(--color-green)' }}><MapPinIcon /></span>
-          <span className="hidden sm:inline">Directorio de Recursos en Argentina</span>
-          <span className="sm:hidden">Recursos</span>
-        </h1>
-        <p className="editorial-subtitle text-xs sm:text-sm mt-1">Centros de atención, líneas de ayuda, organizaciones y redes comunitarias de reducción de daños</p>
+    <div className="flex-1 overflow-y-auto flex flex-col min-h-0">
+      <div className="relative overflow-hidden p-6 sm:p-8" style={{ borderBottom: '1px solid var(--border-subtle)' }}>
+        <GeoCircle size={130} top="-40px" right="0px" opacity={0.05} color={SAGE} />
+        <HalftoneCircle size={80} bottom="-15px" left="25%" opacity={0.07} color={SAGE} />
+        <div className="relative z-10">
+          <SectionKicker label="Directorio nacional" color={SAGE} />
+          <h1 style={{ fontFamily: 'var(--font-editorial)', fontSize: 'clamp(1.6rem, 5vw, 2.2rem)', fontWeight: 700, letterSpacing: '-0.02em', color: 'var(--text-primary)', lineHeight: 1.2 }}>
+            Recursos en Argentina
+          </h1>
+          <p className="mt-2.5" style={{ fontFamily: 'var(--font-editorial)', fontStyle: 'italic', fontSize: '15px', color: 'var(--text-tertiary)', lineHeight: 1.6 }}>
+            Centros de atención, líneas de ayuda, organizaciones y redes comunitarias de reducción de daños
+          </p>
+        </div>
       </div>
 
       {/* Quick Access - Emergency Lines */}
-      <div className="px-6 sm:px-8 pb-2 pt-2" style={{ borderBottom: '1px solid var(--border-subtle)' }}>
+      <div className="px-6 sm:px-8 pt-6 pb-2" style={{ borderBottom: '1px solid var(--border-subtle)' }}>
         <p className="text-xs font-semibold mb-3" style={{ color: 'var(--text-muted)', letterSpacing: '0.05em', textTransform: 'uppercase' }}>Si necesitás ayuda ahora</p>
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 pb-4">
-          <a
-            href="tel:141"
-            className="flex items-center gap-3 p-3.5 transition-all duration-200"
-            style={{ background: 'var(--surface-1)', border: '1px solid var(--border-subtle)', borderRadius: 'var(--radius-md)', textDecoration: 'none' }}
-            onMouseEnter={(e) => { e.currentTarget.style.borderColor = 'var(--accent-primary)'; e.currentTarget.style.boxShadow = 'var(--shadow-ambient)'; }}
-            onMouseLeave={(e) => { e.currentTarget.style.borderColor = 'var(--border-subtle)'; e.currentTarget.style.boxShadow = 'none'; }}
-          >
-            <div className="w-10 h-10 flex items-center justify-center text-xl flex-shrink-0" style={{ background: 'var(--surface-2)', borderRadius: 'var(--radius-sm)' }}>🏛️</div>
-            <div>
-              <p className="text-sm font-bold" style={{ color: 'var(--text-primary)' }}>SEDRONAR 141</p>
-              <p className="text-xs" style={{ color: 'var(--text-tertiary)' }}>Consumos problemáticos • 24hs</p>
-            </div>
-          </a>
-          <a
-            href="tel:107"
-            className="flex items-center gap-3 p-3.5 transition-all duration-200"
-            style={{ background: 'var(--surface-1)', border: '1px solid var(--border-subtle)', borderRadius: 'var(--radius-md)', textDecoration: 'none' }}
-            onMouseEnter={(e) => { e.currentTarget.style.borderColor = 'var(--color-red)'; e.currentTarget.style.boxShadow = 'var(--shadow-ambient)'; }}
-            onMouseLeave={(e) => { e.currentTarget.style.borderColor = 'var(--border-subtle)'; e.currentTarget.style.boxShadow = 'none'; }}
-          >
-            <div className="w-10 h-10 flex items-center justify-center text-xl flex-shrink-0" style={{ background: 'var(--color-red-subtle)', borderRadius: 'var(--radius-sm)' }}>🚑</div>
-            <div>
-              <p className="text-sm font-bold" style={{ color: 'var(--text-primary)' }}>SAME 107</p>
-              <p className="text-xs" style={{ color: 'var(--text-tertiary)' }}>Emergencias médicas • 24hs</p>
-            </div>
-          </a>
-          <a
-            href="tel:135"
-            className="flex items-center gap-3 p-3.5 transition-all duration-200"
-            style={{ background: 'var(--surface-1)', border: '1px solid var(--border-subtle)', borderRadius: 'var(--radius-md)', textDecoration: 'none' }}
-            onMouseEnter={(e) => { e.currentTarget.style.borderColor = 'var(--color-purple, #8b5cf6)'; e.currentTarget.style.boxShadow = 'var(--shadow-ambient)'; }}
-            onMouseLeave={(e) => { e.currentTarget.style.borderColor = 'var(--border-subtle)'; e.currentTarget.style.boxShadow = 'none'; }}
-          >
-            <div className="w-10 h-10 flex items-center justify-center text-xl flex-shrink-0" style={{ background: 'var(--surface-2)', borderRadius: 'var(--radius-sm)' }}>🧠</div>
-            <div>
-              <p className="text-sm font-bold" style={{ color: 'var(--text-primary)' }}>Línea 135</p>
-              <p className="text-xs" style={{ color: 'var(--text-tertiary)' }}>Salud mental (CABA) • 24hs</p>
-            </div>
-          </a>
+          <EmergencyLink href="tel:141" icon="🏛️" title="SEDRONAR 141" subtitle="Consumos problemáticos • 24hs" accentColor={SAGE} iconBg="var(--surface-2)" />
+          <EmergencyLink href="tel:107" icon="🚑" title="SAME 107" subtitle="Emergencias médicas • 24hs" accentColor="var(--color-red)" iconBg="var(--color-red-subtle)" />
+          <EmergencyLink href="tel:135" icon="🧠" title="Línea 135" subtitle="Salud mental (CABA) • 24hs" accentColor="var(--color-violet)" iconBg="var(--surface-2)" />
         </div>
       </div>
 
@@ -153,41 +137,37 @@ export const ResourcesDirectory: React.FC = () => {
         <div className="flex items-center justify-between text-sm">
           <span style={{ color: 'var(--text-tertiary)' }}>{filteredResources.length} {filteredResources.length === 1 ? 'recurso encontrado' : 'recursos encontrados'}</span>
           {(selectedProvince !== 'all' || selectedType !== 'all' || searchTerm) && (
-            <button onClick={() => { setSelectedProvince('all'); setSelectedType('all'); setSearchTerm(''); }} style={{ color: 'var(--accent-primary)' }}>Limpiar filtros</button>
+            <button onClick={() => { setSelectedProvince('all'); setSelectedType('all'); setSearchTerm(''); }} style={{ color: SAGE }}>Limpiar filtros</button>
           )}
         </div>
       </div>
 
-      <div className="flex-1 overflow-y-auto p-6 sm:p-8 md:p-10 lg:p-12">
-        {filteredResources.length === 0 ? (
+      <div className="p-6 sm:p-8 md:px-10 md:py-9">
+        {groups.length === 0 ? (
           <div className="text-center py-12">
             <p className="text-sm sm:text-base" style={{ color: 'var(--text-muted)' }}>No se encontraron recursos con esos criterios.</p>
-            <button onClick={() => { setSelectedProvince('all'); setSelectedType('all'); setSearchTerm(''); }} className="mt-3 text-sm sm:text-base" style={{ color: 'var(--accent-primary)' }}>Ver todos los recursos</button>
+            <button onClick={() => { setSelectedProvince('all'); setSelectedType('all'); setSearchTerm(''); }} className="mt-3 text-sm sm:text-base" style={{ color: SAGE }}>Ver todos los recursos</button>
           </div>
         ) : (
-          <div className="grid gap-5 sm:gap-6 max-w-5xl mx-auto">
-            {filteredResources.map((r, i) => <ResourceCard key={i} resource={r} />)}
+          <div className="max-w-4xl mx-auto space-y-9">
+            {groups.map(group => (
+              <section key={group.value}>
+                <h2 className="flex items-center gap-2 mb-1" style={{ fontFamily: 'var(--font-editorial)', fontSize: '17px', fontWeight: 700, color: 'var(--text-primary)' }}>
+                  {group.label}
+                  <span className="text-xs font-semibold" style={{ color: 'var(--text-muted)', fontFamily: 'var(--font-ui)' }}>· {group.items.length}</span>
+                </h2>
+                <hr style={{ border: 'none', height: '2px', background: SAGE, width: '40px', margin: '10px 0 2px' }} />
+                <div>
+                  {group.items.map((r, i) => <ResourceRow key={`${group.value}-${i}`} resource={r} isLast={i === group.items.length - 1} />)}
+                </div>
+              </section>
+            ))}
           </div>
         )}
       </div>
 
-      {/* Community Networks & Activism Section */}
-      {LOCAL_RESOURCES.filter(r => r.type === 'activism' || r.type === 'harm_reduction').length > 0 && (
-        <div className="max-w-5xl mx-auto mt-8 mb-4">
-          <h2 className="text-base font-semibold mb-3 flex items-center gap-2" style={{ color: 'var(--text-primary)' }}>
-            <span>✊</span> Redes Comunitarias y Activismo
-          </h2>
-          <p className="text-xs mb-4" style={{ color: 'var(--text-tertiary)' }}>
-            Organizaciones de la sociedad civil que trabajan por los derechos de las personas que usan sustancias y la reducción de daños basada en evidencia.
-          </p>
-          <div className="grid gap-4">
-            {LOCAL_RESOURCES.filter(r => r.type === 'activism' || r.type === 'harm_reduction').map((r, i) => <ResourceCard key={`community-${i}`} resource={r} />)}
-          </div>
-        </div>
-      )}
-
       <div className="p-4" style={{ borderTop: '1px solid var(--border-subtle)', background: 'var(--color-red-subtle)' }}>
-        <div className="max-w-5xl mx-auto">
+        <div className="max-w-4xl mx-auto">
           <p className="text-sm font-semibold" style={{ color: 'var(--color-red)' }}>
             ⚠️ En caso de emergencia médica, llamá al SAME: <a href="tel:107" style={{ textDecoration: 'underline' }}>107</a>. Consumos problemáticos: SEDRONAR <a href="tel:141" style={{ textDecoration: 'underline' }}>141</a> (24hs, gratuito).
           </p>

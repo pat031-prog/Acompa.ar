@@ -1,5 +1,8 @@
 import React, { useState } from 'react';
 import { REAGENT_TESTS, TESTING_RESOURCES, TESTING_GUIDE, INSTITUTIONAL_TESTING } from '../constants';
+import { GeoCircle, HalftoneCircle, SectionKicker } from './decorative';
+
+const SAGE = 'var(--accent-secondary)';
 
 const BeakerIcon: React.FC = () => (
   <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5">
@@ -26,9 +29,9 @@ const ExclamationTriangleIcon: React.FC = () => (
 type Section = 'institutional' | 'guide' | 'reagents' | 'adulterants';
 
 const tabStyle = (active: boolean): React.CSSProperties => ({
-  background: active ? 'var(--accent-primary)' : 'var(--surface-1)',
-  color: active ? '#fff' : 'var(--text-tertiary)',
-  border: `1px solid ${active ? 'var(--accent-primary)' : 'var(--border-subtle)'}`,
+  background: active ? SAGE : 'var(--surface-1)',
+  color: active ? '#0e1410' : 'var(--text-tertiary)',
+  border: `1px solid ${active ? SAGE : 'var(--border-subtle)'}`,
   borderRadius: '999px',
   padding: '8px 16px',
   fontSize: '13px',
@@ -40,7 +43,7 @@ const tabStyle = (active: boolean): React.CSSProperties => ({
   display: 'flex',
   alignItems: 'center',
   gap: '8px',
-  boxShadow: active ? 'var(--shadow-glow-accent)' : 'none',
+  boxShadow: active ? '0 10px 30px rgba(124,152,133,0.25)' : 'none',
 });
 
 export const TestingGuide: React.FC = () => {
@@ -48,28 +51,27 @@ export const TestingGuide: React.FC = () => {
 
   return (
     <div className="flex-1 flex flex-col min-h-0">
-      <div className="p-6 sm:p-8" style={{ borderBottom: '1px solid var(--border-subtle)' }}>
-        <div className="flex items-center gap-3 mb-3">
-          <span style={{ color: 'var(--color-violet)' }}><BeakerIcon /></span>
-          <span style={{ fontSize: '10px', fontWeight: 700, letterSpacing: '0.12em', textTransform: 'uppercase', color: 'var(--accent-primary)' }}>GUÍA</span>
-          <div style={{ flex: 1, height: '1px', background: 'rgba(255,255,255,0.06)' }} />
+      <div className="relative overflow-hidden p-6 sm:p-8" style={{ borderBottom: '1px solid var(--border-subtle)' }}>
+        <GeoCircle size={130} top="-40px" right="0px" opacity={0.05} color={SAGE} />
+        <HalftoneCircle size={80} bottom="-15px" left="20%" opacity={0.07} color={SAGE} />
+        <div className="relative z-10">
+          <SectionKicker label="Guía de reducción de riesgos" color={SAGE} />
+          <h1 style={{
+            fontFamily: 'var(--font-editorial)',
+            fontSize: 'clamp(1.6rem, 5vw, 2.2rem)',
+            fontWeight: 700, letterSpacing: '-0.02em',
+            color: 'var(--text-primary)',
+            lineHeight: 1.2
+          }}>
+            Testeo de Sustancias
+          </h1>
+          <p className="mt-2.5" style={{
+            fontFamily: 'var(--font-editorial)', fontStyle: 'italic', fontSize: '15px',
+            color: 'var(--text-tertiary)', lineHeight: 1.6,
+          }}>
+            Información completa sobre reactivos, recursos y cómo testear sustancias en Argentina
+          </p>
         </div>
-        <h1 style={{
-          fontFamily: 'var(--font-editorial)',
-          fontSize: 'clamp(1.6rem, 5vw, 2.2rem)',
-          fontWeight: 700, letterSpacing: '-0.02em',
-          color: 'var(--text-primary)',
-          lineHeight: 1.2
-        }}>
-          Testeo de Sustancias
-        </h1>
-        <div style={{ width: '40px', height: '3px', background: 'var(--accent-primary)', margin: '10px 0 6px' }} />
-        <p style={{
-          fontFamily: 'var(--font-editorial)', fontStyle: 'italic', fontSize: '15px',
-          color: 'var(--text-tertiary)', lineHeight: 1.6,
-        }}>
-          Información completa sobre reactivos, recursos y cómo testear sustancias en Argentina
-        </p>
       </div>
 
       <div className="flex gap-2 p-5 sm:p-6 overflow-x-auto scrollbar-hide" style={{ borderBottom: '1px solid var(--border-subtle)' }}>
@@ -110,27 +112,32 @@ const InstitutionalSection: React.FC = () => (
       <p className="text-sm mb-4" style={{ color: 'var(--text-secondary)' }}>
         Recomendamos acudir prioritariamente a centros de testeo universitarios, laboratorios oficiales o asociaciones civiles formales. Estos espacios cuentan con tecnología avanzada (cromatógrafos, espectrómetros) y personal capacitado para análisis de composición exactos y asesoramiento integral.
       </p>
-      <hr className="editorial-divider-accent" style={{ marginTop: '0', marginBottom: '16px' }} />
-      <div className="grid gap-4">
-        {INSTITUTIONAL_TESTING.map((resource) => (
-          <div key={resource.name} className="editorial-card p-4 sm:p-5">
-            <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-4">
-              <div>
-                <h3 className="font-bold text-base mb-1.5" style={{ color: 'var(--text-primary)', fontFamily: 'var(--font-editorial)' }}>
-                  {resource.name}
-                </h3>
-                <span className="inline-block px-2.5 py-0.5 mb-2 text-[10px] uppercase tracking-wider font-bold rounded-full" style={{ background: 'var(--surface-2)', color: 'var(--text-tertiary)', border: '1px solid var(--border-subtle)' }}>
-                  {resource.type}
-                </span>
-                <p className="text-sm leading-relaxed mb-3" style={{ color: 'var(--text-secondary)' }}>
-                  {resource.description}
-                </p>
-                {resource.contact && (
-                  <div className="text-xs font-semibold" style={{ color: 'var(--accent-primary)' }}>
-                    Contacto: <span style={{ color: 'var(--text-primary)' }}>{resource.contact}</span>
-                  </div>
-                )}
-              </div>
+      <hr className="editorial-divider-accent" style={{ marginTop: '0', marginBottom: '4px', background: SAGE }} />
+      <div>
+        {INSTITUTIONAL_TESTING.map((resource, idx) => (
+          <div
+            key={resource.name}
+            className="py-5 flex flex-col sm:flex-row sm:items-start gap-3 sm:gap-6"
+            style={{ borderBottom: idx < INSTITUTIONAL_TESTING.length - 1 ? '1px solid var(--border-subtle)' : 'none' }}
+          >
+            <span
+              className="flex-shrink-0 text-[10px] uppercase tracking-wider font-bold sm:w-28"
+              style={{ color: SAGE }}
+            >
+              {resource.type}
+            </span>
+            <div className="flex-1 min-w-0">
+              <h3 className="font-bold text-base mb-1.5" style={{ color: 'var(--text-primary)', fontFamily: 'var(--font-editorial)' }}>
+                {resource.name}
+              </h3>
+              <p className="text-sm leading-relaxed" style={{ color: 'var(--text-secondary)' }}>
+                {resource.description}
+              </p>
+              {resource.contact && (
+                <div className="text-xs font-semibold mt-2" style={{ color: SAGE }}>
+                  Contacto: <span style={{ color: 'var(--text-primary)' }}>{resource.contact}</span>
+                </div>
+              )}
             </div>
           </div>
         ))}
@@ -244,14 +251,18 @@ const AdulterantsSection: React.FC = () => (
       </p>
     </div>
 
-    <div className="grid gap-5 sm:gap-6">
+    <div className="grid sm:grid-cols-2 gap-x-8">
       {TESTING_GUIDE.commonAdulterants.map((adulterant, idx) => (
-        <div key={idx} className="p-4 sm:p-5 rounded-2xl" style={{ background: 'var(--surface-1)', border: '1px solid var(--border-subtle)', borderLeft: '4px solid var(--color-red)' }}>
-          <h3 className="font-bold flex items-center gap-2" style={{ color: 'var(--text-primary)' }}>
-            <span style={{ color: 'var(--color-red)' }}><ExclamationTriangleIcon /></span>
-            {adulterant.substance}
-          </h3>
-          <p className="text-sm mt-2" style={{ color: 'var(--text-secondary)' }}>{adulterant.risk}</p>
+        <div
+          key={idx}
+          className="py-4 flex gap-3"
+          style={{ borderBottom: idx < TESTING_GUIDE.commonAdulterants.length - (TESTING_GUIDE.commonAdulterants.length % 2 === 0 ? 2 : 1) ? '1px solid var(--border-subtle)' : 'none' }}
+        >
+          <span className="flex-shrink-0 mt-0.5" style={{ color: 'var(--color-red)' }}><ExclamationTriangleIcon /></span>
+          <div>
+            <h3 className="font-bold" style={{ color: 'var(--text-primary)' }}>{adulterant.substance}</h3>
+            <p className="text-sm mt-1" style={{ color: 'var(--text-secondary)' }}>{adulterant.risk}</p>
+          </div>
         </div>
       ))}
     </div>

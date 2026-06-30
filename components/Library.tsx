@@ -78,20 +78,37 @@ const CategoryChip: React.FC<{ category: SubstanceCategory }> = ({ category }) =
   );
 };
 
-const StatCard: React.FC<{ label: string; value: string }> = ({ label, value }) => (
-  <div className="rounded-2xl p-3.5" style={{ background: 'var(--surface-1)', border: '1px solid var(--border-subtle)' }}>
-    <div className="text-[10px] uppercase tracking-[0.1em] font-bold" style={{ color: 'var(--text-muted)' }}>{label}</div>
-    <div className="mt-1 text-sm font-medium leading-snug" style={{ color: 'var(--text-primary)' }}>{value}</div>
+/** Timeline strip — one element, three segments, instead of three separate boxes. */
+const DurationStrip: React.FC<{ onset: string; peak: string; total: string }> = ({ onset, peak, total }) => (
+  <div className="flex rounded-2xl overflow-hidden" style={{ border: '1px solid var(--border-subtle)' }}>
+    {[{ label: 'Inicio', value: onset }, { label: 'Pico / Meseta', value: peak }, { label: 'Total', value: total }].map((seg, i) => (
+      <div key={seg.label} className="flex-1 p-3.5" style={{ borderLeft: i > 0 ? '1px solid var(--border-subtle)' : 'none' }}>
+        <div className="text-[10px] uppercase tracking-[0.1em] font-bold" style={{ color: 'var(--text-muted)' }}>{seg.label}</div>
+        <div className="mt-1 text-sm font-medium leading-snug" style={{ color: 'var(--text-primary)' }}>{seg.value}</div>
+      </div>
+    ))}
   </div>
 );
 
-const InfoCard: React.FC<{ title: string; icon: React.ReactNode; accent: string; children: React.ReactNode; className?: string }> = ({ title, icon, accent, children, className = '' }) => (
-  <section className={`rounded-2xl p-5 sm:p-6 ${className}`} style={{ background: 'var(--surface-1)', border: '1px solid var(--border-subtle)' }}>
-    <header className="flex items-center gap-3 mb-4">
-      <span className="flex items-center justify-center w-9 h-9 rounded-xl flex-shrink-0" style={{ background: withAlpha(accent, 0.14), color: accent }}>{icon}</span>
+/** Editorial section — icon + title + thin rule, content flows free (no box). Used for the bulk of the dossier. */
+const Section: React.FC<{ title: string; icon: React.ReactNode; accent: string; children: React.ReactNode }> = ({ title, icon, accent, children }) => (
+  <section>
+    <header className="flex items-center gap-2.5 mb-3.5 pb-3" style={{ borderBottom: '1px solid var(--border-subtle)' }}>
+      <span style={{ color: accent }}>{icon}</span>
       <h3 className="font-semibold" style={{ color: 'var(--text-primary)', fontFamily: 'var(--font-editorial)', fontSize: '17px', letterSpacing: '-0.01em' }}>{title}</h3>
     </header>
-    <div className="text-sm leading-relaxed space-y-2" style={{ color: 'var(--text-secondary)' }}>{children}</div>
+    <div className="text-sm leading-relaxed" style={{ color: 'var(--text-secondary)' }}>{children}</div>
+  </section>
+);
+
+/** Tonal callout — reserved for genuinely critical content (warnings, market alerts) so it still stands out once the rest of the page stops using boxes everywhere. */
+const Callout: React.FC<{ title: string; icon: React.ReactNode; accent: string; children: React.ReactNode }> = ({ title, icon, accent, children }) => (
+  <section className="rounded-2xl p-5 sm:p-6" style={{ background: withAlpha(accent, 0.07), border: `1px solid ${withAlpha(accent, 0.25)}` }}>
+    <header className="flex items-center gap-3 mb-3">
+      <span className="flex items-center justify-center w-9 h-9 rounded-xl flex-shrink-0" style={{ background: withAlpha(accent, 0.16), color: accent }}>{icon}</span>
+      <h3 className="font-semibold" style={{ color: 'var(--text-primary)', fontFamily: 'var(--font-editorial)', fontSize: '17px' }}>{title}</h3>
+    </header>
+    <div className="text-sm leading-relaxed" style={{ color: 'var(--text-secondary)' }}>{children}</div>
   </section>
 );
 
@@ -173,80 +190,89 @@ const LibraryDetailView: React.FC<{ item: LibraryEntry; onFavoriteToggle: () => 
 
       <p className="mt-6 text-[15px] leading-relaxed" style={{ color: 'var(--text-secondary)' }}>{item.content.description}</p>
 
-      {/* Duración — stat cards */}
-      <div className="mt-6">
+      {/* Duración — single strip, three segments */}
+      <div className="mt-7">
         <div className="flex items-center gap-2.5 mb-3">
           <span style={{ color: C.blue }}><ClockIcon /></span>
           <h3 className="font-semibold" style={{ color: 'var(--text-primary)', fontFamily: 'var(--font-editorial)', fontSize: '17px' }}>Duración</h3>
         </div>
-        <div className="grid grid-cols-3 gap-3">
-          <StatCard label="Inicio" value={item.content.duration.onset} />
-          <StatCard label="Pico / Meseta" value={item.content.duration.peak} />
-          <StatCard label="Total" value={item.content.duration.total} />
-        </div>
+        <DurationStrip onset={item.content.duration.onset} peak={item.content.duration.peak} total={item.content.duration.total} />
       </div>
 
-      {/* Efectos — two columns */}
-      <div className="mt-5 grid sm:grid-cols-2 gap-4">
-        <InfoCard title="Efectos positivos" icon={<HeartIcon />} accent={C.green}>
-          <ul className="list-disc pl-5 space-y-1.5">
-            {item.content.effects.positive.map(e => <li key={e}>{e}</li>)}
-          </ul>
-        </InfoCard>
-        <InfoCard title="Efectos negativos" icon={<WarningIcon />} accent={C.amber}>
-          <ul className="list-disc pl-5 space-y-1.5">
-            {item.content.effects.negative.map(e => <li key={e}>{e}</li>)}
-          </ul>
-        </InfoCard>
+      {/* Efectos — one section, two flowing columns, no boxes */}
+      <div className="mt-8">
+        <Section title="Efectos" icon={<HeartIcon />} accent={C.green}>
+          <div className="grid sm:grid-cols-2 gap-x-8 gap-y-5">
+            <div>
+              <p className="text-xs font-bold uppercase tracking-wider mb-2" style={{ color: C.green }}>Positivos</p>
+              <ul className="space-y-1.5">
+                {item.content.effects.positive.map(e => (
+                  <li key={e} className="flex gap-2"><span style={{ color: C.green }}>＋</span><span>{e}</span></li>
+                ))}
+              </ul>
+            </div>
+            <div>
+              <p className="text-xs font-bold uppercase tracking-wider mb-2" style={{ color: C.amber }}>Negativos</p>
+              <ul className="space-y-1.5">
+                {item.content.effects.negative.map(e => (
+                  <li key={e} className="flex gap-2"><span style={{ color: C.amber }}>－</span><span>{e}</span></li>
+                ))}
+              </ul>
+            </div>
+          </div>
+        </Section>
       </div>
 
       {/* Dosificación */}
-      <div className="mt-5">
-        <InfoCard title="Dosificación" icon={<ScaleIcon />} accent={C.violet}>
-          {item.content.dosage.oral && <p><strong style={{ color: 'var(--text-primary)' }}>Oral:</strong> {item.content.dosage.oral}</p>}
-          {item.content.dosage.nasal && <p><strong style={{ color: 'var(--text-primary)' }}>Nasal:</strong> {item.content.dosage.nasal}</p>}
-          {item.content.dosage.inhalation && <p><strong style={{ color: 'var(--text-primary)' }}>Inhalado:</strong> {item.content.dosage.inhalation}</p>}
+      <div className="mt-8">
+        <Section title="Dosificación" icon={<ScaleIcon />} accent={C.violet}>
+          <div className="space-y-1.5">
+            {item.content.dosage.oral && <p><strong style={{ color: 'var(--text-primary)' }}>Oral:</strong> {item.content.dosage.oral}</p>}
+            {item.content.dosage.nasal && <p><strong style={{ color: 'var(--text-primary)' }}>Nasal:</strong> {item.content.dosage.nasal}</p>}
+            {item.content.dosage.inhalation && <p><strong style={{ color: 'var(--text-primary)' }}>Inhalado:</strong> {item.content.dosage.inhalation}</p>}
+          </div>
           <p
-            className="mt-3 text-xs p-3.5 rounded-xl"
+            className="mt-3.5 text-xs p-3.5 rounded-xl"
             style={{ color: 'var(--text-secondary)', background: withAlpha(C.amber, 0.10), border: `1px solid ${withAlpha(C.amber, 0.28)}`, borderLeft: `3px solid ${C.amber}` }}
           >
             <strong style={{ color: C.amber, fontWeight: 600 }}>Importante: </strong>{item.content.dosage.warning}
           </p>
-        </InfoCard>
+        </Section>
       </div>
 
-      {/* Riesgos */}
-      <div className="mt-5">
-        <InfoCard title="Principales riesgos" icon={<AlertIcon />} accent={C.red}>
-          <ul className="list-disc pl-5 space-y-1.5">
+      {/* Riesgos — left accent rule, not a box */}
+      <div className="mt-8">
+        <Section title="Principales riesgos" icon={<AlertIcon />} accent={C.red}>
+          <ul className="space-y-2 pl-4" style={{ borderLeft: `2px solid ${withAlpha(C.red, 0.3)}` }}>
             {item.content.risks.map(r => <li key={r}>{r}</li>)}
           </ul>
-        </InfoCard>
+        </Section>
       </div>
 
       {/* Pautas de Cuidado */}
-      <div className="mt-5">
-        <InfoCard title="Pautas de cuidado" icon={<CheckIcon />} accent={C.green}>
+      <div className="mt-8">
+        <Section title="Pautas de cuidado" icon={<CheckIcon />} accent={C.green}>
           <ul className="space-y-2.5">
             {item.content.guidelines.map((line, index) => (
-              <li key={index} className="flex gap-2" dangerouslySetInnerHTML={{ __html: line.replace(/\*\*(.*?)\*\*/g, `<strong style="font-weight:600; color: ${C.blue}">$1</strong>`) }} />
+              <li key={index} className="flex gap-2.5">
+                <span className="flex-shrink-0 mt-0.5" style={{ color: C.green }}><CheckIcon /></span>
+                <span dangerouslySetInnerHTML={{ __html: line.replace(/\*\*(.*?)\*\*/g, `<strong style="font-weight:600; color: ${C.blue}">$1</strong>`) }} />
+              </li>
             ))}
           </ul>
-        </InfoCard>
+        </Section>
       </div>
 
-      {/* Alertas del Mercado */}
-      <div className="mt-5">
-        <section className="rounded-2xl p-5 sm:p-6" style={{ background: withAlpha(C.red, 0.07), border: `1px solid ${withAlpha(C.red, 0.25)}` }}>
-          <header className="flex items-center gap-3 mb-3">
-            <span className="flex items-center justify-center w-9 h-9 rounded-xl flex-shrink-0" style={{ background: withAlpha(C.red, 0.16), color: C.red }}><AlertIcon /></span>
-            <h3 className="font-semibold" style={{ color: 'var(--text-primary)', fontFamily: 'var(--font-editorial)', fontSize: '17px' }}>Alertas del mercado</h3>
-          </header>
-          <p className="text-sm leading-relaxed" style={{ color: 'var(--text-secondary)' }}>{item.content.alerts}</p>
-        </section>
+      {/* Alertas del Mercado — the one deliberate callout box; stands out precisely because nothing else above is boxed */}
+      <div className="mt-8">
+        <Callout title="Alertas del mercado" icon={<AlertIcon />} accent={C.red}>
+          {item.content.alerts}
+        </Callout>
       </div>
 
-      <PsychonautWikiInfo substanceName={item.title} />
+      <div className="mt-8">
+        <PsychonautWikiInfo substanceName={item.title} />
+      </div>
     </div>
   );
 };
