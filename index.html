@@ -168,6 +168,16 @@
       padding: 0;
     }
 
+    /* Buttons inherit type and carry no UA chrome by default — every styled
+       button sets its own background/border explicitly. Prevents the UA
+       default border (border-color: currentColor) from leaking through. */
+    button {
+      font: inherit;
+      color: inherit;
+      background: none;
+      border: none;
+    }
+
     /* ── Base ── */
     html,
     body {

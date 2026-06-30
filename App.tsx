@@ -150,12 +150,18 @@ const App: React.FC = () => {
         <div className="px-4 py-3">
           <div className="flex items-center gap-3">
             <div
-              className="w-8 h-8 flex items-center justify-center rounded-xl"
-              style={{ background: 'var(--accent-primary)', boxShadow: 'var(--shadow-glow-accent)' }}
+              className="w-8 h-8 flex items-center justify-center"
+              style={{ background: 'linear-gradient(150deg, var(--accent-hover), var(--accent-primary))', borderRadius: '9px', boxShadow: 'var(--shadow-glow-accent), inset 0 1px 0 rgba(255,255,255,0.18)' }}
             >
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
-                <path d="M12 2L4 6v5c0 5.55 3.84 10.74 8 12 4.16-1.26 8-6.45 8-12V6L12 2Z" fill="rgba(255,255,255,0.15)" stroke="white" strokeWidth="1.5" />
-                <path d="M12 17.5s-4.5-3-4.5-5.5a2.5 2.5 0 0 1 4.5-1.5 2.5 2.5 0 0 1 4.5 1.5c0 2.5-4.5 5.5-4.5 5.5Z" fill="white" opacity="0.95" />
+              <svg width="19" height="19" viewBox="0 0 24 24" fill="white">
+                <g opacity="0.55">
+                  <circle cx="8.6" cy="8" r="2.4" />
+                  <path d="M3.9 18.6c0-2.7 2.1-4.7 4.7-4.7s4.7 2 4.7 4.7a.6.6 0 0 1-.6.6H4.5a.6.6 0 0 1-.6-.6Z" />
+                </g>
+                <g>
+                  <circle cx="15.2" cy="9" r="2.7" />
+                  <path d="M9.6 19.4c0-3 2.5-5.3 5.6-5.3s5.6 2.3 5.6 5.3a.7.7 0 0 1-.7.7H10.3a.7.7 0 0 1-.7-.7Z" />
+                </g>
               </svg>
             </div>
             <div>

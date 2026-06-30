@@ -4,7 +4,6 @@ import { MAP_DATA } from '../constants';
 import type { MapDataset } from '../types';
 import { ArgentinaMap } from './ArgentinaMap';
 import { PageHeader, Callout } from './ui';
-import { withAlpha } from './categoryStyles';
 
 const SearchIcon: React.FC = () => (
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-4 h-4">
@@ -81,11 +80,20 @@ export const Observatory: React.FC = () => {
 
   const maxQueries = useMemo(() => Math.max(1, ...Object.values(MAP_DATA).map(d => d.totalQueries)), []);
 
+  // Solid sequential ramp (dark teal-green → vivid mint). Solid colours read
+  // far cleaner than alpha-over-canvas, which looked muddy and low-contrast.
+  const rampColor = (intensity: number): string => {
+    const lo = [0x1d, 0x2e, 0x28]; // #1D2E28 deep green
+    const hi = [0x86, 0xE0, 0xA9]; // #86E0A9 bright mint
+    const t = Math.pow(Math.min(1, Math.max(0, intensity)), 0.85);
+    const c = lo.map((l, i) => Math.round(l + (hi[i] - l) * t));
+    return `rgb(${c[0]}, ${c[1]}, ${c[2]})`;
+  };
+
   const getFill = (provinceName: string): string => {
     const data = MAP_DATA[provinceName];
-    if (!data) return 'var(--surface-2)';
-    const intensity = Math.min(1, data.totalQueries / maxQueries);
-    return withAlpha('#7C9885', 0.18 + intensity * 0.72);
+    if (!data) return '#161A19'; // no-data: near-canvas neutral
+    return rampColor(data.totalQueries / maxQueries);
   };
 
   const activeName = hovered || selected;
@@ -124,8 +132,8 @@ export const Observatory: React.FC = () => {
           <div className="absolute bottom-5 left-6 sm:left-8 flex items-center gap-2">
             <span style={{ fontSize: '10px', color: 'var(--text-muted)', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.05em' }}>Menos</span>
             <div style={{ display: 'flex', width: '64px', height: '8px', borderRadius: '999px', overflow: 'hidden' }}>
-              {[0.18, 0.35, 0.52, 0.69, 0.9].map((a, i) => (
-                <div key={i} style={{ flex: 1, background: withAlpha('#7C9885', a) }} />
+              {[0.05, 0.3, 0.55, 0.8, 1].map((a, i) => (
+                <div key={i} style={{ flex: 1, background: rampColor(a) }} />
               ))}
             </div>
             <span style={{ fontSize: '10px', color: 'var(--text-muted)', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.05em' }}>Más</span>

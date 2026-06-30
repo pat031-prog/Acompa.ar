@@ -21,7 +21,7 @@ import {
 } from '../services/analyticsService';
 import { PROVINCES } from '../constants';
 import type { SubstanceCategory } from '../types';
-import { PageHeader } from './ui';
+import { PageHeader, tint } from './ui';
 
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, BarElement, Title, Tooltip, Legend, ArcElement);
 
@@ -57,30 +57,35 @@ const AlertCard: React.FC<{ alert: TerritorialAlert; onDelete: () => void }> = (
   const badge = getSeverityBadge(alert.severity);
   const style = getSeverityStyle(alert.severity);
   return (
-    <div className="p-5 sm:p-6" style={{ background: style.bg, border: `1px solid ${style.border}`, borderLeft: `3px solid ${style.accent}`, borderRadius: 'var(--radius-lg)' }}>
-      <div className="flex items-start justify-between gap-3 sm:gap-4 mb-3">
-        <div className="flex items-center gap-1.5 sm:gap-2 flex-wrap">
-          <span style={{ color: style.accent }}><ExclamationTriangleIcon /></span>
-          <span className="text-xs px-1.5 sm:px-2 py-0.5 font-semibold" style={{ background: badge.bg, color: badge.color, borderRadius: '999px' }}>{badge.label}</span>
+    <div
+      className="group p-5"
+      style={{ background: 'var(--surface-1)', border: '1px solid var(--border-subtle)', borderRadius: 'var(--radius-lg)' }}
+    >
+      <div className="flex items-start justify-between gap-4 mb-2.5">
+        <div className="flex items-center gap-2 flex-wrap">
+          <span className="inline-flex items-center gap-1.5 text-[10px] px-2 py-0.5 font-bold uppercase tracking-wide" style={{ background: tint(style.accent), color: style.accent, borderRadius: '999px' }}>
+            <span style={{ width: '5px', height: '5px', borderRadius: '50%', background: style.accent }} />
+            {badge.label}
+          </span>
           <span className="text-xs" style={{ color: 'var(--text-muted)' }}>{alert.province}</span>
         </div>
-        <button onClick={onDelete} className="flex-shrink-0 w-6 h-6 flex items-center justify-center transition-opacity" style={{ color: 'var(--text-muted)', opacity: 0.5 }} title="Descartar alerta" aria-label="Descartar alerta">✕</button>
+        <button onClick={onDelete} className="flex-shrink-0 w-6 h-6 flex items-center justify-center rounded-md opacity-0 group-hover:opacity-60 hover:!opacity-100 transition-opacity" style={{ color: 'var(--text-muted)' }} title="Descartar alerta" aria-label="Descartar alerta">✕</button>
       </div>
-      <h3 className="font-semibold text-sm sm:text-base mb-1" style={{ color: 'var(--text-primary)' }}>
+      <h3 className="font-semibold text-[15px] mb-1.5" style={{ color: 'var(--text-primary)' }}>
         {alert.sourceUrl || alert.pdfUrl ? (
-          <a href={alert.sourceUrl || alert.pdfUrl} target="_blank" rel="noopener noreferrer" className="hover:underline" style={{ color: 'var(--accent-primary)' }}>
-            {alert.title} <span className="inline-block ml-1 opacity-70">↗</span>
+          <a href={alert.sourceUrl || alert.pdfUrl} target="_blank" rel="noopener noreferrer" className="hover:underline" style={{ color: 'var(--text-primary)' }}>
+            {alert.title} <span className="inline-block ml-0.5" style={{ color: style.accent }}>↗</span>
           </a>
         ) : (
           alert.title
         )}
       </h3>
-      <p className="text-xs sm:text-sm mb-3" style={{ color: 'var(--text-secondary)' }}>{alert.message}</p>
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-1 sm:gap-0 text-[11px] font-semibold tracking-wide" style={{ color: 'var(--text-muted)' }}>
-        <span className="truncate uppercase">
+      <p className="text-sm mb-3 leading-relaxed" style={{ color: 'var(--text-tertiary)' }}>{alert.message}</p>
+      <div className="flex items-center justify-between gap-3 text-[11px]" style={{ color: 'var(--text-muted)' }}>
+        <span className="truncate">
           {alert.source && (
             alert.sourceUrl || alert.pdfUrl ? (
-              <a href={alert.sourceUrl || alert.pdfUrl} target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">
+              <a href={alert.sourceUrl || alert.pdfUrl} target="_blank" rel="noopener noreferrer" className="transition-colors hover:text-white" style={{ color: 'var(--text-muted)', textDecoration: 'none' }}>
                 Fuente: {alert.source}
               </a>
             ) : (
@@ -131,7 +136,7 @@ export const Dashboard: React.FC = () => {
 
   const handleDeleteAlert = (id: string) => { deleteAlert(id); setAlerts(getAlerts(selectedProvince)); };
 
-  const statCardStyle = (accent: string): React.CSSProperties => ({ background: 'var(--surface-1)', border: '1px solid var(--border-subtle)', borderLeft: `3px solid ${accent}`, borderRadius: 'var(--radius-lg)', padding: '24px 32px' });
+  const statCardStyle: React.CSSProperties = { background: 'var(--surface-1)', border: '1px solid var(--border-subtle)', borderRadius: 'var(--radius-lg)', padding: '20px 24px' };
 
   return (
     <div className="flex-1 flex flex-col min-h-0">
@@ -166,24 +171,25 @@ export const Dashboard: React.FC = () => {
         </div>
       </div>
 
-      <div className="flex-1 overflow-y-auto p-6 sm:p-8 md:p-10 lg:p-12">
-        <div className="max-w-6xl mx-auto space-y-6 sm:space-y-8 lg:space-y-10">
-          <div>
-            <h2 className="editorial-heading text-lg mb-4 sm:mb-5 flex items-center gap-2">
-              <span style={{ color: 'var(--color-red)' }}><ExclamationTriangleIcon /></span>
-              Alertas Territoriales ({alerts.length})
-            </h2>
-            {alerts.length === 0 ? (
-              <div className="p-10 sm:p-12 text-center" style={{ background: 'var(--surface-1)', border: '1px solid var(--border-subtle)', borderRadius: 'var(--radius-lg)' }}><p style={{ color: 'var(--text-muted)' }}>No hay alertas activas para esta provincia.</p></div>
-            ) : (
-              <div className="grid gap-5 sm:gap-6">{alerts.map(a => <AlertCard key={a.id} alert={a} onDelete={() => handleDeleteAlert(a.id)} />)}</div>
-            )}
+      <div className="flex-1 overflow-y-auto px-5 sm:px-7 lg:px-8 py-6">
+        <div className="max-w-6xl space-y-7">
+          {/* KPIs first */}
+          <div className="grid grid-cols-3 gap-4">
+            <div style={statCardStyle}><h3 className="text-xs font-medium mb-1" style={{ color: 'var(--text-muted)' }}>Total de consultas</h3><p className="text-3xl font-semibold" style={{ color: 'var(--color-blue)' }}>{stats.totalQueries}</p></div>
+            <div style={statCardStyle}><h3 className="text-xs font-medium mb-1" style={{ color: 'var(--text-muted)' }}>Sustancias únicas</h3><p className="text-3xl font-semibold" style={{ color: 'var(--color-green)' }}>{stats.topSubstances.length}</p></div>
+            <div style={statCardStyle}><h3 className="text-xs font-medium mb-1" style={{ color: 'var(--text-muted)' }}>Categorías activas</h3><p className="text-3xl font-semibold" style={{ color: 'var(--color-violet)' }}>{Object.keys(stats.queriesByCategory).length}</p></div>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-5 sm:gap-6 lg:gap-8">
-            <div style={statCardStyle('var(--color-blue)')}><h3 className="text-sm font-medium mb-1" style={{ color: 'var(--text-secondary)' }}>Total de Consultas</h3><p className="text-3xl font-bold" style={{ color: 'var(--text-primary)' }}>{stats.totalQueries}</p></div>
-            <div style={statCardStyle('var(--color-green)')}><h3 className="text-sm font-medium mb-1" style={{ color: 'var(--text-secondary)' }}>Sustancias Únicas</h3><p className="text-3xl font-bold" style={{ color: 'var(--text-primary)' }}>{stats.topSubstances.length}</p></div>
-            <div style={statCardStyle('var(--color-violet)')}><h3 className="text-sm font-medium mb-1" style={{ color: 'var(--text-secondary)' }}>Categorías Activas</h3><p className="text-3xl font-bold" style={{ color: 'var(--text-primary)' }}>{Object.keys(stats.queriesByCategory).length}</p></div>
+          <div>
+            <h2 className="text-[13px] font-semibold uppercase tracking-wide mb-3 flex items-center gap-2" style={{ color: 'var(--text-muted)' }}>
+              <span style={{ color: 'var(--color-red)' }}><ExclamationTriangleIcon /></span>
+              Alertas territoriales · {alerts.length}
+            </h2>
+            {alerts.length === 0 ? (
+              <div className="p-10 text-center" style={{ background: 'var(--surface-1)', border: '1px solid var(--border-subtle)', borderRadius: 'var(--radius-lg)' }}><p style={{ color: 'var(--text-muted)' }}>No hay alertas activas para esta provincia.</p></div>
+            ) : (
+              <div className="grid sm:grid-cols-2 gap-4">{alerts.map(a => <AlertCard key={a.id} alert={a} onDelete={() => handleDeleteAlert(a.id)} />)}</div>
+            )}
           </div>
 
           <div className="p-5 sm:p-6 lg:p-8" style={{ background: 'var(--surface-1)', border: '1px solid var(--border-subtle)', borderRadius: 'var(--radius-lg)' }}>

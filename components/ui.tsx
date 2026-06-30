@@ -163,7 +163,7 @@ const VAR_TINTS: Record<string, { subtle: string; medium: string }> = {
   'var(--color-violet)': { subtle: 'var(--color-violet-subtle)', medium: 'var(--color-violet-medium)' },
 };
 
-export function tint(color: string, level: 'subtle' | 'medium'): string {
+export function tint(color: string, level: 'subtle' | 'medium' = 'subtle'): string {
   if (VAR_TINTS[color]) return VAR_TINTS[color][level];
   if (color.startsWith('#')) return hexAlpha(color, level === 'subtle' ? 0.12 : 0.24);
   return color;

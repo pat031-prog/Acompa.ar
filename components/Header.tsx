@@ -5,30 +5,24 @@ export const Header: React.FC = () => {
   return (
     <header className="px-5 py-5" style={{ borderBottom: '1px solid var(--border-subtle)' }}>
       <div className="flex items-center gap-3.5">
-        {/* Logo Mark */}
+        {/* Logo Mark — two figures together (accompaniment) */}
         <div
-          className="w-10 h-10 flex-shrink-0 flex items-center justify-center rounded-2xl"
+          className="w-10 h-10 flex-shrink-0 flex items-center justify-center"
           style={{
-            background: 'var(--accent-primary)',
-            boxShadow: 'var(--shadow-glow-accent)',
+            background: 'linear-gradient(150deg, var(--accent-hover), var(--accent-primary))',
+            borderRadius: '11px',
+            boxShadow: 'var(--shadow-glow-accent), inset 0 1px 0 rgba(255,255,255,0.18)',
           }}
         >
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-            {/* Shield outline */}
-            <path
-              d="M12 2L4 6v5c0 5.55 3.84 10.74 8 12 4.16-1.26 8-6.45 8-12V6L12 2Z"
-              fill="rgba(255,255,255,0.15)"
-              stroke="white"
-              strokeWidth="1.5"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            />
-            {/* Heart inside */}
-            <path
-              d="M12 17.5s-4.5-3-4.5-5.5a2.5 2.5 0 0 1 4.5-1.5 2.5 2.5 0 0 1 4.5 1.5c0 2.5-4.5 5.5-4.5 5.5Z"
-              fill="white"
-              opacity="0.95"
-            />
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="white" xmlns="http://www.w3.org/2000/svg">
+            <g opacity="0.55">
+              <circle cx="8.6" cy="8" r="2.4" />
+              <path d="M3.9 18.6c0-2.7 2.1-4.7 4.7-4.7s4.7 2 4.7 4.7a.6.6 0 0 1-.6.6H4.5a.6.6 0 0 1-.6-.6Z" />
+            </g>
+            <g>
+              <circle cx="15.2" cy="9" r="2.7" />
+              <path d="M9.6 19.4c0-3 2.5-5.3 5.6-5.3s5.6 2.3 5.6 5.3a.7.7 0 0 1-.7.7H10.3a.7.7 0 0 1-.7-.7Z" />
+            </g>
           </svg>
         </div>
 

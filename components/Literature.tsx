@@ -1,5 +1,5 @@
 import React from 'react';
-import { PageHeader } from './ui';
+import { PageHeader, Pill } from './ui';
 
 const BookIcon: React.FC = () => (
     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5">
@@ -159,10 +159,44 @@ const LITERATURE_DATA: Article[] = [
     }
 ];
 
+const TYPE_COLOR: Record<Article['type'], string> = {
+    'Paper Científico': 'var(--color-blue)',
+    'Ciencias Sociales': 'var(--color-violet)',
+    'Nota / Artículo': 'var(--accent-secondary)',
+};
+
+const ArticleCard: React.FC<{ article: Article }> = ({ article }) => {
+    const color = TYPE_COLOR[article.type];
+    return (
+        <a
+            href={article.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="group flex flex-col h-full p-5 transition-colors"
+            style={{ background: 'var(--surface-1)', border: '1px solid var(--border-subtle)', borderRadius: 'var(--radius-lg)', textDecoration: 'none' }}
+            onMouseEnter={(e) => { e.currentTarget.style.background = 'var(--surface-2)'; e.currentTarget.style.borderColor = 'var(--border-medium)'; }}
+            onMouseLeave={(e) => { e.currentTarget.style.background = 'var(--surface-1)'; e.currentTarget.style.borderColor = 'var(--border-subtle)'; }}
+        >
+            <div><Pill as="span" active color={color}>{article.type}</Pill></div>
+            <h2 className="mt-3 mb-1.5" style={{ fontSize: '16px', fontWeight: 600, color: 'var(--text-primary)', lineHeight: 1.35, letterSpacing: '-0.01em' }}>
+                {article.title}
+            </h2>
+            <div className="mb-3" style={{ fontSize: '12px', color: 'var(--text-muted)' }}>
+                {article.author} · {article.source}, {article.year}
+            </div>
+            <p className="mb-4 leading-relaxed flex-1" style={{ fontSize: '13.5px', color: 'var(--text-tertiary)' }}>
+                {article.summary}
+            </p>
+            <span className="inline-flex items-center gap-1.5 mt-auto" style={{ fontSize: '12px', fontWeight: 600, color }}>
+                Leer documento <ExternalLinkIcon />
+            </span>
+        </a>
+    );
+};
+
 export const Literature: React.FC = () => {
     return (
         <div className="flex-1 flex flex-col min-h-0 bg-[var(--bg-primary)]">
-            {/* Header */}
             <PageHeader
                 eyebrow="Lecturas"
                 title="Literatura y Evidencia"
@@ -170,81 +204,15 @@ export const Literature: React.FC = () => {
                 accent="var(--color-blue)"
             />
 
-            {/* Article List */}
-            <div className="flex-1 overflow-y-auto px-5 sm:px-10 py-8">
-                <div className="max-w-4xl mx-auto space-y-12">
+            <div className="flex-1 overflow-y-auto px-5 sm:px-7 lg:px-8 py-6">
+                <div className="grid sm:grid-cols-2 xl:grid-cols-3 gap-4">
                     {LITERATURE_DATA.map((article, idx) => (
-                        <article key={idx} className="relative pl-5 sm:pl-8" style={{ borderLeft: '2px solid rgba(255,255,255,0.08)' }}>
-
-                            {/* Type Category */}
-                            <div className="mb-3">
-                                <span style={{
-                                    display: 'inline-block',
-                                    background: 'rgba(199,112,92,0.1)',
-                                    color: 'var(--accent-primary)',
-                                    fontSize: '10px',
-                                    fontWeight: 700,
-                                    letterSpacing: '0.08em',
-                                    textTransform: 'uppercase',
-                                    padding: '4px 10px',
-                                    borderRadius: 'var(--radius-pill)',
-                                    border: '1px solid rgba(199,112,92,0.2)',
-                                }}>
-                                    {article.type}
-                                </span>
-                            </div>
-
-                            {/* Title */}
-                            <h2 className="mb-2" style={{
-                                fontFamily: 'var(--font-editorial)',
-                                fontSize: 'clamp(1.15rem, 4vw, 1.4rem)',
-                                fontWeight: 700,
-                                color: 'var(--text-primary)',
-                                lineHeight: 1.4,
-                            }}>
-                                {article.title}
-                            </h2>
-
-                            {/* Metadata */}
-                            <div className="mb-4" style={{ fontFamily: 'var(--font-editorial)', fontStyle: 'italic', fontSize: '13px', color: 'var(--text-muted)' }}>
-                                <span>{article.author}</span>
-                                <span className="mx-2">—</span>
-                                <span>{article.source}, {article.year}</span>
-                            </div>
-
-                            {/* Summary */}
-                            <p className="mb-5 leading-relaxed" style={{ fontSize: '15px', color: 'var(--text-secondary)' }}>
-                                {article.summary}
-                            </p>
-
-                            {/* Link */}
-                            <a
-                                href={article.url}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="inline-flex items-center gap-2 transition-colors"
-                                style={{
-                                    fontSize: '12px',
-                                    fontWeight: 700,
-                                    letterSpacing: '0.06em',
-                                    textTransform: 'uppercase',
-                                    color: 'var(--text-primary)',
-                                    borderBottom: '1px solid var(--text-primary)',
-                                    paddingBottom: '4px',
-                                    paddingTop: '4px'
-                                }}
-                                onMouseEnter={(e) => { e.currentTarget.style.color = 'var(--accent-primary)'; e.currentTarget.style.borderColor = 'var(--accent-primary)'; }}
-                                onMouseLeave={(e) => { e.currentTarget.style.color = 'var(--text-primary)'; e.currentTarget.style.borderColor = 'var(--text-primary)'; }}
-                            >
-                                LEER DOCUMENTO <ExternalLinkIcon />
-                            </a>
-                        </article>
+                        <ArticleCard key={idx} article={article} />
                     ))}
                 </div>
 
-                {/* Footer Note */}
-                <div className="mt-16 pt-8 max-w-4xl mx-auto" style={{ borderTop: '1px solid var(--border-subtle)' }}>
-                    <p className="text-center" style={{ fontFamily: 'var(--font-editorial)', fontStyle: 'italic', fontSize: '12px', color: 'var(--text-muted)' }}>
+                <div className="mt-10 pt-6" style={{ borderTop: '1px solid var(--border-subtle)' }}>
+                    <p className="text-center" style={{ fontSize: '12px', color: 'var(--text-muted)' }}>
                         Esta sección está en construcción. Próximamente incorporaremos un buscador de papers académicos y artículos archivados.
                     </p>
                 </div>

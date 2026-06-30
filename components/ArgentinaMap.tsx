@@ -26,8 +26,8 @@ export const ArgentinaMap: React.FC<ArgentinaMapProps> = ({ getFill, onProvinceH
               key={p.id}
               d={p.d}
               fill={getFill(p.name)}
-              stroke={isSelected ? 'var(--accent-primary)' : 'var(--bg-primary)'}
-              strokeWidth={isSelected ? 14 : 6}
+              stroke={isSelected ? 'var(--accent-primary)' : isHovered ? '#ffffff' : 'var(--bg-primary)'}
+              strokeWidth={isSelected ? 22 : isHovered ? 16 : 11}
               strokeLinejoin="round"
               filter={isSelected ? 'url(#map-glow)' : undefined}
               onMouseEnter={() => onProvinceHover(p.name)}
