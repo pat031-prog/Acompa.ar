@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { REAGENT_TESTS, TESTING_RESOURCES, TESTING_GUIDE, INSTITUTIONAL_TESTING } from '../constants';
 import { PageHeader } from './ui';
 
-const SAGE = 'var(--accent-secondary)';
+const SAGE = 'var(--accent-primary)';
 
 const BeakerIcon: React.FC = () => (
   <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5">

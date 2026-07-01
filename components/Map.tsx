@@ -11,7 +11,7 @@ const SearchIcon: React.FC = () => (
   </svg>
 );
 
-const SAGE = 'var(--accent-secondary)';
+const SAGE = 'var(--accent-primary)';
 
 const ProvinceRow: React.FC<{ name: string; data: MapDataset; isSelected: boolean; onClick: () => void; maxQueries: number }> = ({ name, data, isSelected, onClick, maxQueries }) => (
   <button
@@ -80,19 +80,19 @@ export const Observatory: React.FC = () => {
 
   const maxQueries = useMemo(() => Math.max(1, ...Object.values(MAP_DATA).map(d => d.totalQueries)), []);
 
-  // Solid sequential ramp (dark teal-green → vivid mint). Solid colours read
-  // far cleaner than alpha-over-canvas, which looked muddy and low-contrast.
+  // Warm terracotta sequential ramp (deep ember → bright coral) — cohesive
+  // with the editorial palette. Solid colours, not alpha-over-canvas.
   const rampColor = (intensity: number): string => {
-    const lo = [0x1d, 0x2e, 0x28]; // #1D2E28 deep green
-    const hi = [0x86, 0xE0, 0xA9]; // #86E0A9 bright mint
-    const t = Math.pow(Math.min(1, Math.max(0, intensity)), 0.85);
+    const lo = [0x2A, 0x1B, 0x15]; // #2A1B15 deep ember
+    const hi = [0xEC, 0x93, 0x6E]; // #EC936E bright coral
+    const t = Math.pow(Math.min(1, Math.max(0, intensity)), 0.8);
     const c = lo.map((l, i) => Math.round(l + (hi[i] - l) * t));
     return `rgb(${c[0]}, ${c[1]}, ${c[2]})`;
   };
 
   const getFill = (provinceName: string): string => {
     const data = MAP_DATA[provinceName];
-    if (!data) return '#161A19'; // no-data: near-canvas neutral
+    if (!data) return '#1D1712'; // no-data: near-canvas warm neutral
     return rampColor(data.totalQueries / maxQueries);
   };
 

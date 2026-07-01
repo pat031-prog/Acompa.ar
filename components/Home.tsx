@@ -62,7 +62,7 @@ export const Home: React.FC<HomeProps> = ({ onNavigate }) => {
               Plataforma · Reducción de riesgos y daños
             </span>
           </div>
-          <h1 style={{ fontFamily: 'var(--font-display)', fontSize: 'clamp(2.6rem, 6vw, 4rem)', fontWeight: 500, lineHeight: 1.02, letterSpacing: '-0.02em', color: 'var(--text-primary)', maxWidth: '15ch' }}>
+          <h1 style={{ fontFamily: 'var(--font-display)', fontSize: 'clamp(2.4rem, 5.5vw, 3.6rem)', fontWeight: 800, lineHeight: 0.98, letterSpacing: '-0.025em', color: 'var(--text-primary)', maxWidth: '15ch' }}>
             Información basada en evidencia
           </h1>
           <p className="mt-6" style={{ fontSize: '16px', lineHeight: 1.6, color: 'var(--text-secondary)', maxWidth: '52ch' }}>
@@ -80,11 +80,11 @@ export const Home: React.FC<HomeProps> = ({ onNavigate }) => {
           </div>
           <div className="grid sm:grid-cols-2 gap-3">
             {NAV_CARDS.map((item) => (
-              <Card key={item.num} interactive onClick={() => onNavigate?.(item.tab)} className="p-6 relative overflow-hidden" style={{ cursor: 'pointer' }}>
-                <span style={{ position: 'absolute', top: '10px', right: '18px', fontFamily: 'var(--font-display)', fontSize: '34px', fontWeight: 500, color: 'var(--accent-weak)', letterSpacing: '-0.02em', lineHeight: 1 }}>{item.num}</span>
-                <h3 style={{ fontFamily: 'var(--font-display)', fontSize: '20px', fontWeight: 500, letterSpacing: '-0.01em', color: 'var(--text-primary)', marginBottom: '8px' }}>{item.title}</h3>
-                <p style={{ fontSize: '14px', lineHeight: 1.55, color: 'var(--text-tertiary)', marginBottom: '16px', maxWidth: '34ch' }}>{item.desc}</p>
-                <span className="inline-flex items-center gap-1.5" style={{ fontSize: '12px', fontWeight: 600, letterSpacing: '0.03em', color: 'var(--accent-primary)' }}>
+              <Card key={item.num} interactive onClick={() => onNavigate?.(item.tab)} className="p-6 relative overflow-hidden" style={{ cursor: 'pointer', borderRadius: '16px 16px 16px 3px' }}>
+                <span style={{ position: 'absolute', top: '6px', right: '18px', fontFamily: 'var(--font-display)', fontSize: '44px', fontWeight: 800, color: 'var(--accent-subtle)', letterSpacing: '-0.03em', lineHeight: 1 }}>{item.num}</span>
+                <h3 style={{ fontFamily: 'var(--font-heading)', fontSize: '19px', fontWeight: 700, letterSpacing: '-0.01em', color: 'var(--text-primary)', marginBottom: '8px' }}>{item.title}</h3>
+                <p style={{ fontSize: '14px', lineHeight: 1.55, color: 'var(--text-tertiary)', marginBottom: '18px', maxWidth: '34ch' }}>{item.desc}</p>
+                <span className="inline-flex items-center gap-1.5" style={{ fontSize: '11px', fontWeight: 700, letterSpacing: '0.1em', textTransform: 'uppercase', color: 'var(--accent-primary)' }}>
                   {item.action} <ArrowRightIcon />
                 </span>
               </Card>
@@ -103,7 +103,7 @@ export const Home: React.FC<HomeProps> = ({ onNavigate }) => {
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-6">
             {stats.map((stat, idx) => (
               <div key={idx}>
-                <p style={{ fontFamily: 'var(--font-display)', fontSize: 'clamp(2rem, 4vw, 2.75rem)', fontWeight: 600, lineHeight: 1, color: stat.color, letterSpacing: '-0.03em' }}>{stat.value}</p>
+                <p style={{ fontFamily: 'var(--font-display)', fontSize: 'clamp(2rem, 4vw, 2.75rem)', fontWeight: 800, lineHeight: 1, color: stat.color, letterSpacing: '-0.03em' }}>{stat.value}</p>
                 <p className="mt-2.5" style={{ fontSize: '12px', fontWeight: 600, letterSpacing: '0.04em', textTransform: 'uppercase', color: 'var(--text-secondary)' }}>{stat.label}</p>
                 <p className="mt-0.5" style={{ fontSize: '12px', color: 'var(--text-muted)' }}>{stat.sub}</p>
               </div>

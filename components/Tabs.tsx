@@ -94,31 +94,31 @@ export const Tabs: React.FC<TabsProps> = ({ activeTab, setActiveTab, collapsed =
             onClick={() => setActiveTab(item.id)}
             aria-pressed={isActive}
             title={collapsed ? item.label : undefined}
-            className="group relative flex items-center text-left text-sm"
+            className="group relative flex items-center text-left"
             style={{
-              gap: collapsed ? '0' : '11px',
-              padding: collapsed ? '10px' : '9px 12px',
+              gap: collapsed ? '0' : '12px',
+              padding: collapsed ? '10px' : '10px 14px',
               justifyContent: collapsed ? 'center' : 'flex-start',
-              borderRadius: 'var(--radius-md)',
-              background: isActive ? 'var(--accent-subtle)' : 'transparent',
-              color: isActive ? 'var(--text-primary)' : 'var(--text-tertiary)',
+              borderRadius: 'var(--radius-pill)',
+              background: 'transparent',
+              color: isActive ? 'var(--accent-primary)' : 'var(--text-tertiary)',
               border: `1px solid ${isActive ? 'var(--accent-medium)' : 'transparent'}`,
-              fontWeight: isActive ? 600 : 500,
-              letterSpacing: '0.02em',
+              fontWeight: isActive ? 700 : 600,
+              fontSize: '11px',
+              letterSpacing: '0.13em',
+              textTransform: 'uppercase',
               fontFamily: 'var(--font-ui)',
               WebkitTapHighlightColor: 'transparent',
               transition: 'all 150ms var(--ease)'
             }}
             onMouseEnter={(e) => {
               if (!isActive) {
-                e.currentTarget.style.background = 'var(--surface-hover)';
-                e.currentTarget.style.color = 'var(--text-secondary)';
-                e.currentTarget.style.borderColor = 'var(--border-subtle)';
+                e.currentTarget.style.color = 'var(--text-primary)';
+                e.currentTarget.style.borderColor = 'var(--border-medium)';
               }
             }}
             onMouseLeave={(e) => {
               if (!isActive) {
-                e.currentTarget.style.background = 'transparent';
                 e.currentTarget.style.color = 'var(--text-tertiary)';
                 e.currentTarget.style.borderColor = 'transparent';
               }
@@ -126,12 +126,15 @@ export const Tabs: React.FC<TabsProps> = ({ activeTab, setActiveTab, collapsed =
           >
             <span
               className="flex-shrink-0"
-              style={{ color: isActive ? 'var(--accent-primary)' : 'inherit', opacity: isActive ? 1 : 0.7 }}
+              style={{ color: isActive ? 'var(--accent-primary)' : 'inherit', opacity: isActive ? 1 : 0.75 }}
             >
               {item.icon}
             </span>
             {!collapsed && (
-              <span className="flex-1" style={{ letterSpacing: '0.01em' }}>{item.label}</span>
+              <span className="flex-1">{item.label}</span>
+            )}
+            {!collapsed && isActive && (
+              <span className="flex-shrink-0" style={{ width: '5px', height: '5px', borderRadius: '50%', background: 'var(--accent-primary)' }} />
             )}
           </button>
         );

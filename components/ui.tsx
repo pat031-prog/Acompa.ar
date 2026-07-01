@@ -31,7 +31,7 @@ export const PageHeader: React.FC<{
             {eyebrow}
           </span>
         </div>
-        <h1 style={{ fontFamily: 'var(--font-display)', fontSize: 'clamp(1.9rem, 3.4vw, 2.5rem)', fontWeight: 500, letterSpacing: '-0.015em', color: 'var(--text-primary)', lineHeight: 1.08 }}>
+        <h1 style={{ fontFamily: 'var(--font-display)', fontSize: 'clamp(1.7rem, 3vw, 2.3rem)', fontWeight: 700, letterSpacing: '-0.02em', color: 'var(--text-primary)', lineHeight: 1.05 }}>
           {title}
         </h1>
         {description && (
@@ -51,7 +51,7 @@ export const PageHeader: React.FC<{
 export const SectionTitle: React.FC<{ children: React.ReactNode; icon?: React.ReactNode; accent?: string; count?: number }> = ({ children, icon, accent = 'var(--text-tertiary)', count }) => (
   <div className="flex items-center gap-2.5 mb-4" style={{ paddingBottom: 'var(--space-3)', borderBottom: '1px solid var(--border-subtle)' }}>
     {icon && <span style={{ color: accent, display: 'inline-flex' }}>{icon}</span>}
-    <h2 style={{ fontFamily: 'var(--font-display)', fontSize: '18px', fontWeight: 500, letterSpacing: '-0.01em', color: 'var(--text-primary)' }}>{children}</h2>
+    <h2 style={{ fontFamily: 'var(--font-heading)', fontSize: '15px', fontWeight: 700, letterSpacing: '0.02em', textTransform: 'uppercase', color: 'var(--text-primary)' }}>{children}</h2>
     {typeof count === 'number' && (
       <span style={{ fontSize: '12px', fontWeight: 600, color: 'var(--text-muted)' }}>{count}</span>
     )}
