@@ -216,7 +216,7 @@ export const Literature: React.FC = () => {
     return (
         <div className="flex flex-col md:flex-row h-full w-full overflow-hidden" style={{ background: 'var(--bg-primary)' }}>
             {/* ── Rail ── */}
-            <div className={`w-full md:w-1/3 flex-col p-6 md:p-10 relative ${mobileDetail ? 'hidden md:flex' : 'flex'}`} style={{ borderRight: '1px solid var(--border-subtle)' }}>
+            <div className={`w-full md:w-1/3 min-h-0 flex-1 md:flex-none flex-col p-6 md:p-10 relative ${mobileDetail ? 'hidden md:flex' : 'flex'}`} style={{ borderRight: '1px solid var(--border-subtle)' }}>
                 <div className="flex items-center justify-between mb-6">
                     <Kicker>Lecturas</Kicker>
                     <span style={{ color: 'var(--accent-primary)' }}><BookMarked size={22} /></span>
@@ -240,9 +240,9 @@ export const Literature: React.FC = () => {
             </div>
 
             {/* ── Detail (coral) ── */}
-            <div className={`w-full md:w-2/3 ${mobileDetail ? 'flex' : 'hidden md:flex'}`}>
+            <div className={`w-full md:w-2/3 min-h-0 flex-1 md:flex-none ${mobileDetail ? 'flex' : 'hidden md:flex'}`}>
                 {selected ? (
-                    <div className="w-full p-6 md:p-12 flex flex-col overflow-y-auto no-scrollbar rounded-t-[3rem] md:rounded-l-[4rem] md:rounded-tr-none" style={{ background: 'var(--accent-primary)', color: 'var(--accent-ink)', paddingBottom: '120px' }}>
+                    <div className="w-full min-h-0 p-6 md:p-12 flex flex-col overflow-y-auto overflow-x-hidden no-scrollbar rounded-t-[3rem] md:rounded-l-[4rem] md:rounded-tr-none" style={{ background: 'var(--accent-primary)', color: 'var(--accent-ink)', paddingBottom: '120px' }}>
                         <Detail article={selected} index={LITERATURE_DATA.findIndex(a => a.title === selected.title) + 1} onBack={() => setMobileDetail(false)} />
                     </div>
                 ) : (

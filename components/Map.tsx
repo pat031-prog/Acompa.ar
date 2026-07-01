@@ -47,9 +47,12 @@ export const Observatory: React.FC = () => {
 
   const activeName = hovered || selected;
   const activeData = activeName ? MAP_DATA[activeName] : null;
+  // The detail card is driven by the *clicked* province only, so moving the
+  // cursor over the map doesn't remount/flicker it.
+  const selData = selected ? MAP_DATA[selected] : null;
 
   return (
-    <div className="flex flex-col md:flex-row h-full w-full overflow-hidden" style={{ background: 'var(--bg-primary)' }}>
+    <div className="flex flex-col md:flex-row h-full w-full overflow-y-auto md:overflow-hidden min-h-0" style={{ background: 'var(--bg-primary)' }}>
       {/* ── Rail: ranking ── */}
       <div className="w-full md:w-1/3 flex-col p-6 md:p-10 relative flex" style={{ borderRight: '1px solid var(--border-subtle)' }}>
         <div className="flex items-center justify-between mb-6">
@@ -68,7 +71,7 @@ export const Observatory: React.FC = () => {
           />
         </div>
 
-        <motion.div className="flex flex-col gap-3 flex-1 overflow-y-auto no-scrollbar pt-2" style={{ paddingBottom: '120px' }} variants={listContainer} initial="initial" animate="animate">
+        <motion.div className="flex flex-col gap-3 flex-1 md:min-h-0 overflow-y-auto no-scrollbar pt-2 md:pb-[120px]" variants={listContainer} initial="initial" animate="animate">
           {provinceData.length === 0 ? (
             <p className="text-center text-sm mt-8" style={{ color: 'var(--text-muted)' }}>Sin resultados.</p>
           ) : (
@@ -122,18 +125,18 @@ export const Observatory: React.FC = () => {
             </DarkCard>
 
             {/* Stats card */}
-            {activeData ? (
+            {selData ? (
               <AnimatePresence mode="wait">
-                <motion.div key={activeName} variants={detailVariants} initial="initial" animate="animate" exit="exit">
+                <motion.div key={selected} variants={detailVariants} initial="initial" animate="animate" exit="exit">
                   <DarkCard className="p-7 md:p-9">
                     <div className="space-y-6">
                       <DataBlock label="Consultas totales">
-                        <p style={{ fontFamily: 'var(--font-display)', fontWeight: 700, fontSize: '28px', color: 'var(--accent-primary)', lineHeight: 1 }}>{activeData.totalQueries.toLocaleString('es-AR')}</p>
+                        <p style={{ fontFamily: 'var(--font-display)', fontWeight: 700, fontSize: '28px', color: 'var(--accent-primary)', lineHeight: 1 }}>{selData.totalQueries.toLocaleString('es-AR')}</p>
                       </DataBlock>
-                      {activeData.topCategories.length > 0 ? (
+                      {selData.topCategories.length > 0 ? (
                         <DataBlock label="Categorías principales">
                           <div className="mt-2 space-y-3">
-                            {activeData.topCategories.map((cat) => (
+                            {selData.topCategories.map((cat) => (
                               <div key={cat.category} className="flex items-center gap-3">
                                 <span className="text-sm flex-1 min-w-0" style={{ color: 'var(--text-secondary)' }}>{cat.category}</span>
                                 <div style={{ width: '90px', height: '4px', borderRadius: '999px', background: 'var(--surface-3)', overflow: 'hidden' }}>
@@ -153,7 +156,7 @@ export const Observatory: React.FC = () => {
               </AnimatePresence>
             ) : (
               <DarkCard className="p-7 md:p-9">
-                <p className="text-sm leading-relaxed" style={{ color: 'var(--text-secondary)' }}>Pasá el cursor o tocá una provincia en el mapa —o elegila en la lista— para ver el detalle de consultas por categoría.</p>
+                <p className="text-sm leading-relaxed" style={{ color: 'var(--text-secondary)' }}>Tocá una provincia en el mapa —o elegila en la lista— para ver el detalle de consultas por categoría.</p>
               </DarkCard>
             )}
           </div>

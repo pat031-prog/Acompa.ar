@@ -19,17 +19,20 @@ export const pageVariants = {
 };
 
 // Detail-panel content enter/exit (coral panel inner slide).
+// Gentle x on enter only; exit is a quick fade (no x) so nothing shifts
+// horizontally or triggers a transient scrollbar.
 export const detailVariants = {
-  initial: { opacity: 0, x: 24 },
-  animate: { opacity: 1, x: 0, transition: { duration: 0.36, ease: EASE } },
-  exit: { opacity: 0, x: -20, transition: { duration: 0.2, ease: EASE } },
+  initial: { opacity: 0, x: 14 },
+  animate: { opacity: 1, x: 0, transition: { duration: 0.3, ease: EASE } },
+  exit: { opacity: 0, transition: { duration: 0.14, ease: EASE } },
 };
 
-// Staggered list container + item (rails, card grids).
+// Staggered list container + item (rails, card grids). Kept subtle so data
+// doesn't feel like it "jumps" in — small offset, quick, light stagger.
 export const listContainer = {
-  animate: { transition: { staggerChildren: 0.045, delayChildren: 0.04 } },
+  animate: { transition: { staggerChildren: 0.03, delayChildren: 0.02 } },
 };
 export const listItem = {
-  initial: { opacity: 0, y: 10 },
-  animate: { opacity: 1, y: 0, transition: { duration: 0.4, ease: EASE } },
+  initial: { opacity: 0, y: 8 },
+  animate: { opacity: 1, y: 0, transition: { duration: 0.3, ease: EASE } },
 };

@@ -17,7 +17,7 @@ const Detail: React.FC<{ item: LibraryEntry; index: number; onFavoriteToggle: ()
   const d = item.content;
 
   return (
-    <CoralPanel className="w-full md:w-2/3 p-6 md:p-12 flex flex-col relative overflow-y-auto no-scrollbar" style={{ paddingBottom: '120px' }}>
+    <CoralPanel className="w-full md:w-2/3 min-h-0 p-6 md:p-12 flex flex-col relative overflow-y-auto overflow-x-hidden no-scrollbar" style={{ paddingBottom: '120px' }}>
       <AnimatePresence mode="wait">
         <motion.div
           key={item.title}
@@ -157,7 +157,7 @@ export const Library: React.FC = () => {
   return (
     <div className="flex flex-col md:flex-row h-full w-full overflow-hidden" style={{ background: 'var(--bg-primary)' }}>
       {/* ── List rail ── */}
-      <div className={`w-full md:w-1/3 flex-col p-6 md:p-10 relative ${mobileDetail ? 'hidden md:flex' : 'flex'}`} style={{ borderRight: '1px solid var(--border-subtle)' }}>
+      <div className={`w-full md:w-1/3 min-h-0 flex-1 md:flex-none flex-col p-6 md:p-10 relative ${mobileDetail ? 'hidden md:flex' : 'flex'}`} style={{ borderRight: '1px solid var(--border-subtle)' }}>
         <div className="flex items-center justify-between mb-6">
           <Kicker>Biblioteca</Kicker>
           <button onClick={() => setViewMode('compare')} title="Comparar" style={{ color: 'var(--accent-primary)' }}><GitCompare size={22} /></button>
@@ -197,7 +197,7 @@ export const Library: React.FC = () => {
       </div>
 
       {/* ── Detail (coral) ── */}
-      <div className={`w-full md:w-2/3 ${mobileDetail ? 'flex' : 'hidden md:flex'}`}>
+      <div className={`w-full md:w-2/3 min-h-0 flex-1 md:flex-none ${mobileDetail ? 'flex' : 'hidden md:flex'}`}>
         {selectedItem ? (
           <Detail item={selectedItem} index={LIBRARY_DATA.findIndex(s => s.title === selectedItem.title) + 1} onFavoriteToggle={() => setFavTrigger(v => v + 1)} onBack={() => setMobileDetail(false)} />
         ) : (
