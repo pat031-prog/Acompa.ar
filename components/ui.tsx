@@ -226,9 +226,10 @@ export const PageHeader: React.FC<{
   description?: string;
   accent?: string;
   right?: React.ReactNode;
-}> = ({ eyebrow, title, description, accent = 'var(--accent-primary)', right }) => (
-  <header className="px-5 sm:px-7 lg:px-8" style={{ paddingTop: 'var(--space-6)', paddingBottom: 'var(--space-5)', borderBottom: '1px solid var(--border-subtle)' }}>
-    <div className="flex items-start justify-between gap-4 max-w-5xl">
+  icon?: React.ReactNode;   // renders a coral "planet" medallion beside the title
+}> = ({ eyebrow, title, description, accent = 'var(--accent-primary)', right, icon }) => (
+  <header className="px-5 sm:px-7 lg:px-8" style={{ paddingTop: 'var(--space-8)', paddingBottom: 'var(--space-6)', borderBottom: '1px solid var(--border-subtle)' }}>
+    <div className="flex items-center justify-between gap-6 max-w-5xl">
       <div className="min-w-0">
         <Kicker color={accent} className="mb-3">{eyebrow}</Kicker>
         <Display size="lg">{title}</Display>
@@ -236,7 +237,11 @@ export const PageHeader: React.FC<{
           <p className="mt-3" style={{ fontSize: '14.5px', color: 'var(--text-tertiary)', lineHeight: 1.55, maxWidth: '56ch' }}>{description}</p>
         )}
       </div>
-      {right && <div className="flex-shrink-0">{right}</div>}
+      {icon ? (
+        <Orb color={accent} size={68} className="hidden sm:flex" label={<span style={{ display: 'inline-flex' }}>{icon}</span>} />
+      ) : right ? (
+        <div className="flex-shrink-0">{right}</div>
+      ) : null}
     </div>
   </header>
 );
