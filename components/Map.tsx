@@ -3,6 +3,7 @@ import { MAP_DATA } from '../constants';
 import { ArgentinaMap } from './ArgentinaMap';
 import { Kicker, Display, DarkCard, DataBlock, RailItem, MonoLabel } from './ui';
 import { motion, AnimatePresence } from 'motion/react';
+import { listContainer, listItem, detailVariants } from './motion';
 import { Globe, Search } from 'lucide-react';
 
 export const Observatory: React.FC = () => {
@@ -67,23 +68,24 @@ export const Observatory: React.FC = () => {
           />
         </div>
 
-        <div className="flex flex-col gap-3 flex-1 overflow-y-auto no-scrollbar pt-2" style={{ paddingBottom: '120px' }}>
+        <motion.div className="flex flex-col gap-3 flex-1 overflow-y-auto no-scrollbar pt-2" style={{ paddingBottom: '120px' }} variants={listContainer} initial="initial" animate="animate">
           {provinceData.length === 0 ? (
             <p className="text-center text-sm mt-8" style={{ color: 'var(--text-muted)' }}>Sin resultados.</p>
           ) : (
             provinceData.map(({ provinceName, data }) => (
-              <RailItem
-                key={provinceName}
-                active={selected === provinceName}
-                onClick={() => setSelected(prev => prev === provinceName ? null : provinceName)}
-                layoutId="obs-pill"
-                sub={`${data.totalQueries.toLocaleString('es-AR')} consultas`}
-              >
-                {provinceName}
-              </RailItem>
+              <motion.div variants={listItem} key={provinceName}>
+                <RailItem
+                  active={selected === provinceName}
+                  onClick={() => setSelected(prev => prev === provinceName ? null : provinceName)}
+                  layoutId="obs-pill"
+                  sub={`${data.totalQueries.toLocaleString('es-AR')} consultas`}
+                >
+                  {provinceName}
+                </RailItem>
+              </motion.div>
             ))
           )}
-        </div>
+        </motion.div>
       </div>
 
       {/* ── Detail (coral): map card + stats ── */}
@@ -122,7 +124,7 @@ export const Observatory: React.FC = () => {
             {/* Stats card */}
             {activeData ? (
               <AnimatePresence mode="wait">
-                <motion.div key={activeName} initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -12 }} transition={{ duration: 0.25 }}>
+                <motion.div key={activeName} variants={detailVariants} initial="initial" animate="animate" exit="exit">
                   <DarkCard className="p-7 md:p-9">
                     <div className="space-y-6">
                       <DataBlock label="Consultas totales">

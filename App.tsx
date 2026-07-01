@@ -1,6 +1,7 @@
 
 import React, { useState, useEffect, useCallback } from 'react';
-import { motion, AnimatePresence } from 'motion/react';
+import { motion, AnimatePresence, MotionConfig } from 'motion/react';
+import { pageVariants } from './components/motion';
 import { ChatWindow } from './components/ChatWindow';
 import { ChatInput } from './components/ChatInput';
 import { ConsentModal } from './components/ConsentModal';
@@ -108,39 +109,43 @@ const App: React.FC = () => {
     setActiveTab(tab as Tab);
   };
 
+  const gated = !consent || !apiKey;
+
   return (
-    <div className="h-[100dvh] w-full overflow-hidden relative" style={{ color: 'var(--text-primary)', fontFamily: 'var(--font-ui)', background: 'var(--bg-primary)' }}>
-      {(!consent || !apiKey) && <ConsentModal onConsent={handleConsent} />}
+    <MotionConfig reducedMotion="user">
+      <div className="h-[100dvh] w-full overflow-hidden relative" style={{ color: 'var(--text-primary)', fontFamily: 'var(--font-ui)', background: 'var(--bg-primary)' }}>
+        <AnimatePresence>{gated && <ConsentModal onConsent={handleConsent} />}</AnimatePresence>
 
-      <AnimatePresence mode="wait">
-        <motion.div
-          key={activeTab}
-          initial={{ opacity: 0, y: 16 }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: -16 }}
-          transition={{ duration: 0.28 }}
-          className="absolute inset-x-0 top-0 overflow-hidden"
-          style={{ bottom: 0 }}
-        >
-          {activeTab === 'home' && <Home onNavigate={handleNavigate} />}
-          {activeTab === 'chat' && (
-            <div className="flex flex-col h-full overflow-hidden">
-              <ChatWindow messages={messages} isLoading={isLoading} />
-              <ChatInput onSendMessage={handleSendMessage} isLoading={isLoading} disabled={!consent} />
-            </div>
-          )}
-          {activeTab === 'library' && <Library />}
-          {activeTab === 'testing' && <TestingGuide />}
-          {activeTab === 'resources' && <ResourcesDirectory />}
-          {activeTab === 'observatory' && <Observatory />}
-          {activeTab === 'literature' && <Literature />}
-          {activeTab === 'reminders' && <CareReminders />}
-          {activeTab === 'dashboard' && <Dashboard />}
-        </motion.div>
-      </AnimatePresence>
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={activeTab}
+            variants={pageVariants}
+            initial="initial"
+            animate="animate"
+            exit="exit"
+            className="absolute inset-x-0 top-0 overflow-hidden"
+            style={{ bottom: 0 }}
+          >
+            {activeTab === 'home' && <Home onNavigate={handleNavigate} />}
+            {activeTab === 'chat' && (
+              <div className="flex flex-col h-full overflow-hidden">
+                <ChatWindow messages={messages} isLoading={isLoading} />
+                <ChatInput onSendMessage={handleSendMessage} isLoading={isLoading} disabled={!consent} />
+              </div>
+            )}
+            {activeTab === 'library' && <Library />}
+            {activeTab === 'testing' && <TestingGuide />}
+            {activeTab === 'resources' && <ResourcesDirectory />}
+            {activeTab === 'observatory' && <Observatory />}
+            {activeTab === 'literature' && <Literature />}
+            {activeTab === 'reminders' && <CareReminders />}
+            {activeTab === 'dashboard' && <Dashboard />}
+          </motion.div>
+        </AnimatePresence>
 
-      <BottomNav active={activeTab} onChange={setActiveTab} />
-    </div>
+        {!gated && <BottomNav active={activeTab} onChange={setActiveTab} />}
+      </div>
+    </MotionConfig>
   );
 };
 

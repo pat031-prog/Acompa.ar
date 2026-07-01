@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
+import { motion } from 'motion/react';
 import type { ConsentData, ConsumptionType } from '../types';
 import { PROVINCES, CONSUMPTION_TYPE_LABELS } from '../constants';
 import { Display, Kicker, MonoLabel } from './ui';
 import { ShieldCheck } from 'lucide-react';
+import { EASE } from './motion';
 
 interface ConsentModalProps {
   onConsent: (consentData: ConsentData, apiKey: string) => void;
@@ -30,9 +32,25 @@ export const ConsentModal: React.FC<ConsentModalProps> = ({ onConsent }) => {
   };
 
   return (
-    <div className="fixed inset-0 flex items-center justify-center z-50 p-4 overflow-y-auto" style={{ background: 'rgba(0,0,0,0.75)', backdropFilter: 'blur(8px)', WebkitBackdropFilter: 'blur(8px)' }} role="dialog" aria-modal="true">
-      <div className="max-w-lg w-full my-8" style={{ background: 'var(--surface-1)', border: '1px solid var(--border-subtle)', borderRadius: '2.5rem', boxShadow: '0 40px 100px rgba(0,0,0,0.6)', animation: 'scaleIn 0.3s var(--ease-out-strong) both' }}>
-        <div className="p-7 sm:p-9">
+    <motion.div
+      className="fixed inset-0 z-50 overflow-y-auto overscroll-contain flex items-start sm:items-center justify-center"
+      style={{ background: 'rgba(0,0,0,0.75)', backdropFilter: 'blur(8px)', WebkitBackdropFilter: 'blur(8px)', padding: '16px', paddingTop: 'max(16px, env(safe-area-inset-top))', paddingBottom: 'max(24px, env(safe-area-inset-bottom))' }}
+      role="dialog"
+      aria-modal="true"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      transition={{ duration: 0.25, ease: EASE }}
+    >
+      <motion.div
+        className="max-w-lg w-full my-auto"
+        style={{ background: 'var(--surface-1)', border: '1px solid var(--border-subtle)', borderRadius: '2rem', boxShadow: '0 40px 100px rgba(0,0,0,0.6)' }}
+        initial={{ opacity: 0, y: 24, scale: 0.98 }}
+        animate={{ opacity: 1, y: 0, scale: 1 }}
+        exit={{ opacity: 0, y: 12, scale: 0.98 }}
+        transition={{ duration: 0.34, ease: EASE }}
+      >
+        <div className="p-6 sm:p-9">
           {/* Masthead */}
           <div className="flex items-start justify-between mb-1">
             <Kicker>Reducción de daños</Kicker>
@@ -128,7 +146,7 @@ export const ConsentModal: React.FC<ConsentModalProps> = ({ onConsent }) => {
             </button>
           </div>
         </div>
-      </div>
-    </div>
+      </motion.div>
+    </motion.div>
   );
 };

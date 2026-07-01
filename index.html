@@ -569,6 +569,24 @@
     body {
       background-color: var(--bg-primary) !important;
     }
+
+    /* Smooth momentum scrolling inside panels/rails on iOS. */
+    .no-scrollbar {
+      -webkit-overflow-scrolling: touch;
+    }
+
+    /* Respect the OS "reduce motion" setting: neutralise CSS keyframes.
+       (Framer Motion transforms are handled by <MotionConfig reducedMotion="user">.) */
+    @media (prefers-reduced-motion: reduce) {
+      *,
+      *::before,
+      *::after {
+        animation-duration: 0.001ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.001ms !important;
+        scroll-behavior: auto !important;
+      }
+    }
   </style>
   <script type="importmap">
 {

@@ -3,6 +3,7 @@ import { LOCAL_RESOURCES, PROVINCES, RESOURCE_TYPES } from '../constants';
 import type { LocalResource } from '../types';
 import { Kicker, Display, DarkCard, DataBlock, RailItem, CoralButton, fieldStyle } from './ui';
 import { motion, AnimatePresence } from 'motion/react';
+import { listContainer, listItem, detailVariants } from './motion';
 import { MapPin, Search, Phone, Globe, Clock, CheckCircle2, Navigation2, ArrowLeft, Mail } from 'lucide-react';
 
 const TYPE_LABEL: Record<LocalResource['type'], string> = {
@@ -23,10 +24,10 @@ const Detail: React.FC<{ resource: LocalResource; index: number; onBack: () => v
     <AnimatePresence mode="wait">
       <motion.div
         key={resource.name}
-        initial={{ opacity: 0, x: 20 }}
-        animate={{ opacity: 1, x: 0 }}
-        exit={{ opacity: 0, x: -20 }}
-        transition={{ duration: 0.3 }}
+        variants={detailVariants}
+        initial="initial"
+        animate="animate"
+        exit="exit"
         className="max-w-2xl mx-auto w-full"
       >
         {/* Top row */}
@@ -159,17 +160,19 @@ export const ResourcesDirectory: React.FC = () => {
           </select>
         </div>
 
-        <div className="flex flex-col gap-3 flex-1 overflow-y-auto no-scrollbar pt-2" style={{ paddingBottom: '120px' }}>
+        <motion.div className="flex flex-col gap-3 flex-1 overflow-y-auto no-scrollbar pt-2" style={{ paddingBottom: '120px' }} variants={listContainer} initial="initial" animate="animate">
           {filtered.length === 0 ? (
             <p className="text-center text-sm mt-8" style={{ color: 'var(--text-muted)' }}>Sin resultados.</p>
           ) : (
             filtered.map(r => (
-              <RailItem key={r.name} active={selected?.name === r.name} onClick={() => select(r)} layoutId="resource-pill" sub={[r.city, r.province].filter(Boolean).join(' · ')}>
-                {r.name}
-              </RailItem>
+              <motion.div variants={listItem} key={r.name}>
+                <RailItem key={r.name} active={selected?.name === r.name} onClick={() => select(r)} layoutId="resource-pill" sub={[r.city, r.province].filter(Boolean).join(' · ')}>
+                  {r.name}
+                </RailItem>
+              </motion.div>
             ))
           )}
-        </div>
+        </motion.div>
       </div>
 
       {/* ── Detail (coral) ── */}

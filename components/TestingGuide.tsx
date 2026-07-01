@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { REAGENT_TESTS, TESTING_GUIDE, INSTITUTIONAL_TESTING } from '../constants';
 import { Kicker, Display, DarkCard, DataBlock, RailItem, MonoLabel } from './ui';
 import { motion, AnimatePresence } from 'motion/react';
+import { listContainer, listItem, detailVariants } from './motion';
 import { FlaskConical } from 'lucide-react';
 
 type Section = 'institutional' | 'guide' | 'reagents' | 'adulterants';
@@ -150,20 +151,22 @@ export const TestingGuide: React.FC = () => {
           <span style={{ color: 'var(--accent-primary)' }}><FlaskConical size={22} /></span>
         </div>
         <p className="text-sm leading-relaxed mb-8" style={{ color: 'var(--text-tertiary)' }}>Reactivos, centros y cómo verificar la composición de una sustancia en Argentina.</p>
-        <div className="flex flex-col gap-4">
+        <motion.div className="flex flex-col gap-4" variants={listContainer} initial="initial" animate="animate">
           {SECTIONS.map(s => (
-            <RailItem key={s.id} active={active === s.id} onClick={() => { setActive(s.id); setMobileDetail(true); }} layoutId="testing-pill" sub={s.sub}>
-              {s.label}
-            </RailItem>
+            <motion.div variants={listItem} key={s.id}>
+              <RailItem active={active === s.id} onClick={() => { setActive(s.id); setMobileDetail(true); }} layoutId="testing-pill" sub={s.sub}>
+                {s.label}
+              </RailItem>
+            </motion.div>
           ))}
-        </div>
+        </motion.div>
       </div>
 
       {/* ── Detail (coral) ── */}
       <div className={`w-full md:w-2/3 ${mobileDetail ? 'flex' : 'hidden md:flex'}`}>
         <div className="w-full p-6 md:p-12 flex flex-col overflow-y-auto no-scrollbar rounded-t-[3rem] md:rounded-l-[4rem] md:rounded-tr-none" style={{ background: 'var(--accent-primary)', color: 'var(--accent-ink)', paddingBottom: '120px' }}>
           <AnimatePresence mode="wait">
-            <motion.div key={active} initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }} transition={{ duration: 0.3 }} className="max-w-2xl mx-auto w-full">
+            <motion.div key={active} variants={detailVariants} initial="initial" animate="animate" exit="exit" className="max-w-2xl mx-auto w-full">
               <div className="mb-8 pt-2 md:pt-0">
                 <button onClick={() => setMobileDetail(false)} className="md:hidden inline-flex items-center gap-2 px-4 py-2 rounded-full mb-5" style={{ border: '1px solid rgba(0,0,0,0.15)', color: 'var(--accent-ink)', fontFamily: 'var(--font-mono)', fontSize: '12px', fontWeight: 700, letterSpacing: '0.08em', textTransform: 'uppercase' }}>← Volver</button>
                 <div className="mb-3" style={{ fontFamily: 'var(--font-mono)', fontSize: '11px', fontWeight: 700, letterSpacing: '0.14em', textTransform: 'uppercase', color: 'var(--accent-ink)', opacity: 0.65 }}>{current.sub}</div>

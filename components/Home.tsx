@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react';
+import { motion } from 'motion/react';
 import { getAlerts, type TerritorialAlert } from '../services/analyticsService';
 import { LOCAL_RESOURCES } from '../constants';
 import { Kicker, Display, MonoLabel } from './ui';
+import { listContainer, listItem } from './motion';
 import { ArrowRight, MessageCircle, BookOpen, FlaskConical, MapPin, Globe, Bell, BarChart3 } from 'lucide-react';
 
 const getTimeAgo = (timestamp: number): string => {
@@ -72,11 +74,12 @@ export const Home: React.FC<HomeProps> = ({ onNavigate }) => {
         {/* ── Explore ── */}
         <section style={{ paddingTop: '40px' }}>
           <MonoLabel>Explorar</MonoLabel>
-          <div className="grid sm:grid-cols-3 gap-3 mt-5">
+          <motion.div className="grid sm:grid-cols-3 gap-3 mt-5" variants={listContainer} initial="initial" whileInView="animate" viewport={{ once: true, amount: 0.2 }}>
             {EXPLORE.map((item) => {
               const Icon = item.icon;
               return (
-                <button key={item.num} onClick={() => onNavigate?.(item.tab)} className="text-left p-6 transition-colors group" style={surfaceCard}
+                <motion.div variants={listItem} key={item.num}>
+                <button onClick={() => onNavigate?.(item.tab)} className="text-left p-6 transition-colors group" style={surfaceCard}
                   onMouseEnter={(e) => { e.currentTarget.style.borderColor = 'var(--accent-primary)'; }}
                   onMouseLeave={(e) => { e.currentTarget.style.borderColor = 'var(--border-subtle)'; }}>
                   <div className="flex items-center justify-between">
@@ -86,9 +89,10 @@ export const Home: React.FC<HomeProps> = ({ onNavigate }) => {
                   <h3 className="mt-6" style={{ fontFamily: 'var(--font-display)', fontSize: '18px', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '-0.01em', color: 'var(--text-primary)' }}>{item.title}</h3>
                   <p className="mt-2" style={{ fontSize: '13px', lineHeight: 1.5, color: 'var(--text-tertiary)' }}>{item.desc}</p>
                 </button>
+                </motion.div>
               );
             })}
-          </div>
+          </motion.div>
         </section>
 
         {/* ── Stats ── */}
@@ -133,11 +137,12 @@ export const Home: React.FC<HomeProps> = ({ onNavigate }) => {
         {/* ── También ── */}
         <section style={{ paddingTop: '44px' }}>
           <MonoLabel>También</MonoLabel>
-          <div className="grid sm:grid-cols-3 gap-3 mt-5">
+          <motion.div className="grid sm:grid-cols-3 gap-3 mt-5" variants={listContainer} initial="initial" whileInView="animate" viewport={{ once: true, amount: 0.2 }}>
             {MORE.map((item) => {
               const Icon = item.icon;
               return (
-                <button key={item.num} onClick={() => onNavigate?.(item.tab)} className="text-left p-5 flex items-center gap-4 transition-colors group" style={surfaceCard}
+                <motion.div variants={listItem} key={item.num}>
+                <button onClick={() => onNavigate?.(item.tab)} className="text-left p-5 flex items-center gap-4 transition-colors group" style={surfaceCard}
                   onMouseEnter={(e) => { e.currentTarget.style.borderColor = 'var(--accent-primary)'; }}
                   onMouseLeave={(e) => { e.currentTarget.style.borderColor = 'var(--border-subtle)'; }}>
                   <span className="flex items-center justify-center flex-shrink-0" style={{ width: '40px', height: '40px', borderRadius: '50%', background: 'var(--bg-primary)', color: 'var(--accent-primary)' }}><Icon size={18} /></span>
@@ -146,9 +151,10 @@ export const Home: React.FC<HomeProps> = ({ onNavigate }) => {
                     <p style={{ fontSize: '12px', color: 'var(--text-muted)', marginTop: '3px' }}>{item.desc}</p>
                   </div>
                 </button>
+                </motion.div>
               );
             })}
-          </div>
+          </motion.div>
         </section>
 
         {/* ── Footer ── */}

@@ -1,57 +1,85 @@
-import React from 'react';
+import React, { useRef, useEffect } from 'react';
+import { motion } from 'motion/react';
 import type { Tab } from '../types';
 import { Home, MessageCircle, BookOpen, FlaskConical, MapPin, Globe, BookMarked, Bell, BarChart3 } from 'lucide-react';
+import { SPRING } from './motion';
 
 interface Props {
   active: Tab;
   onChange: (t: Tab) => void;
 }
 
-const ITEMS: { id: Tab; icon: React.ReactNode; label: string }[] = [
-  { id: 'home', icon: <Home size={19} />, label: 'Inicio' },
-  { id: 'library', icon: <BookOpen size={19} />, label: 'Biblioteca' },
-  { id: 'testing', icon: <FlaskConical size={19} />, label: 'Testeo' },
-  { id: 'resources', icon: <MapPin size={19} />, label: 'Recursos' },
-  { id: 'observatory', icon: <Globe size={19} />, label: 'Observatorio' },
-  { id: 'literature', icon: <BookMarked size={19} />, label: 'Lecturas' },
-  { id: 'reminders', icon: <Bell size={19} />, label: 'Cuidado' },
-  { id: 'dashboard', icon: <BarChart3 size={19} />, label: 'Stats' },
-  { id: 'chat', icon: <MessageCircle size={19} />, label: 'Asistente' },
+const ITEMS: { id: Tab; Icon: React.ComponentType<{ size?: number }>; label: string }[] = [
+  { id: 'home', Icon: Home, label: 'Inicio' },
+  { id: 'library', Icon: BookOpen, label: 'Biblioteca' },
+  { id: 'testing', Icon: FlaskConical, label: 'Testeo' },
+  { id: 'resources', Icon: MapPin, label: 'Recursos' },
+  { id: 'observatory', Icon: Globe, label: 'Observatorio' },
+  { id: 'literature', Icon: BookMarked, label: 'Lecturas' },
+  { id: 'reminders', Icon: Bell, label: 'Cuidado' },
+  { id: 'dashboard', Icon: BarChart3, label: 'Stats' },
+  { id: 'chat', Icon: MessageCircle, label: 'Asistente' },
 ];
 
-export const BottomNav: React.FC<Props> = ({ active, onChange }) => (
-  <div className="fixed bottom-0 left-0 right-0 flex justify-center z-50 pointer-events-none" style={{ padding: '16px' }}>
+export const BottomNav: React.FC<Props> = ({ active, onChange }) => {
+  const scrollRef = useRef<HTMLDivElement>(null);
+  const btnRefs = useRef<Record<string, HTMLButtonElement | null>>({});
+
+  // Keep the active tab in view on narrow screens (nav scrolls horizontally).
+  useEffect(() => {
+    const el = btnRefs.current[active];
+    el?.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+  }, [active]);
+
+  return (
     <div
-      className="pointer-events-auto flex gap-1 p-2 rounded-full overflow-x-auto no-scrollbar"
-      style={{ background: 'var(--surface-1)', border: '1px solid var(--border-subtle)', boxShadow: '0 14px 44px rgba(0,0,0,0.55)', maxWidth: 'calc(100vw - 24px)' }}
+      className="fixed left-0 right-0 flex justify-center z-50 pointer-events-none"
+      style={{ bottom: 0, padding: '12px', paddingBottom: 'max(12px, env(safe-area-inset-bottom))' }}
     >
-      {ITEMS.map((item) => {
-        const isActive = active === item.id;
-        return (
-          <button
-            key={item.id}
-            id={`tab-${item.id}`}
-            onClick={() => onChange(item.id)}
-            aria-pressed={isActive}
-            title={item.label}
-            className="flex items-center gap-2 flex-shrink-0 transition-all duration-300"
-            style={{
-              padding: isActive ? '11px 18px' : '11px 12px',
-              borderRadius: '999px',
-              background: isActive ? 'var(--accent-primary)' : 'transparent',
-              color: isActive ? 'var(--accent-ink)' : 'var(--text-tertiary)',
-              boxShadow: isActive ? '0 0 22px rgba(232,122,93,0.32)' : 'none',
-            }}
-            onMouseEnter={(e) => { if (!isActive) e.currentTarget.style.color = 'var(--text-primary)'; }}
-            onMouseLeave={(e) => { if (!isActive) e.currentTarget.style.color = 'var(--text-tertiary)'; }}
-          >
-            {item.icon}
-            {isActive && (
-              <span style={{ fontFamily: 'var(--font-heading)', fontSize: '12px', fontWeight: 600, letterSpacing: '0.1em', textTransform: 'uppercase' }}>{item.label}</span>
-            )}
-          </button>
-        );
-      })}
+      <div
+        ref={scrollRef}
+        className="pointer-events-auto flex items-center gap-0 sm:gap-1 rounded-full overflow-x-auto no-scrollbar p-1.5 sm:p-2"
+        style={{ background: 'var(--surface-1)', border: '1px solid var(--border-subtle)', boxShadow: '0 14px 44px rgba(0,0,0,0.55)', maxWidth: 'calc(100vw - 16px)' }}
+      >
+        {ITEMS.map((item) => {
+          const isActive = active === item.id;
+          const { Icon } = item;
+          return (
+            <button
+              key={item.id}
+              id={`tab-${item.id}`}
+              ref={(el) => { btnRefs.current[item.id] = el; }}
+              onClick={() => onChange(item.id)}
+              aria-pressed={isActive}
+              aria-label={item.label}
+              title={item.label}
+              className="relative flex items-center justify-center gap-2 flex-shrink-0 rounded-full transition-colors p-2.5 sm:p-3"
+              style={{
+                color: isActive ? 'var(--accent-ink)' : 'var(--text-tertiary)',
+                zIndex: 1,
+                WebkitTapHighlightColor: 'transparent',
+              }}
+              onMouseEnter={(e) => { if (!isActive) e.currentTarget.style.color = 'var(--text-primary)'; }}
+              onMouseLeave={(e) => { if (!isActive) e.currentTarget.style.color = 'var(--text-tertiary)'; }}
+            >
+              {isActive && (
+                <motion.span
+                  layoutId="nav-active"
+                  className="absolute inset-0 rounded-full"
+                  style={{ background: 'var(--accent-primary)', boxShadow: '0 0 22px rgba(232,122,93,0.32)', zIndex: -1 }}
+                  transition={SPRING}
+                />
+              )}
+              <Icon size={19} />
+              {isActive && (
+                <span className="hidden sm:inline whitespace-nowrap pr-1" style={{ fontFamily: 'var(--font-heading)', fontSize: '12px', fontWeight: 600, letterSpacing: '0.1em', textTransform: 'uppercase' }}>
+                  {item.label}
+                </span>
+              )}
+            </button>
+          );
+        })}
+      </div>
     </div>
-  </div>
-);
+  );
+};

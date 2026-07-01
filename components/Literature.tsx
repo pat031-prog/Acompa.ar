@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Kicker, Display, DarkCard, DataBlock, RailItem, CoralButton, Pill } from './ui';
 import { motion, AnimatePresence } from 'motion/react';
+import { listContainer, listItem, detailVariants } from './motion';
 import { BookMarked, ExternalLink, ArrowLeft } from 'lucide-react';
 
 interface Article {
@@ -159,10 +160,10 @@ const Detail: React.FC<{ article: Article; index: number; onBack: () => void }> 
     <AnimatePresence mode="wait">
         <motion.div
             key={article.title}
-            initial={{ opacity: 0, x: 20 }}
-            animate={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, x: -20 }}
-            transition={{ duration: 0.3 }}
+            variants={detailVariants}
+            initial="initial"
+            animate="animate"
+            exit="exit"
             className="max-w-2xl mx-auto w-full"
         >
             <div className="flex justify-between items-center mb-8 pt-2 md:pt-0">
@@ -227,13 +228,15 @@ export const Literature: React.FC = () => {
                     ))}
                 </div>
 
-                <div className="flex flex-col gap-3 flex-1 overflow-y-auto no-scrollbar pt-2" style={{ paddingBottom: '120px' }}>
+                <motion.div variants={listContainer} initial="initial" animate="animate" className="flex flex-col gap-3 flex-1 overflow-y-auto no-scrollbar pt-2" style={{ paddingBottom: '120px' }}>
                     {filtered.map(a => (
-                        <RailItem key={a.title} active={selected?.title === a.title} onClick={() => select(a)} layoutId="lit-pill" sub={`${a.source} · ${a.year}`}>
-                            {a.title}
-                        </RailItem>
+                        <motion.div variants={listItem} key={a.title}>
+                            <RailItem active={selected?.title === a.title} onClick={() => select(a)} layoutId="lit-pill" sub={`${a.source} · ${a.year}`}>
+                                {a.title}
+                            </RailItem>
+                        </motion.div>
                     ))}
-                </div>
+                </motion.div>
             </div>
 
             {/* ── Detail (coral) ── */}

@@ -8,6 +8,7 @@ import { categoryColor, primaryCategoryColor } from './categoryStyles';
 import { Kicker, Display, CoralPanel, DarkCard, DataBlock, RailItem, CircleButton, Pill, fieldStyle } from './ui';
 import { Search, Star, Maximize2, ArrowLeft, GitCompare, X } from 'lucide-react';
 import { AnimatePresence, motion } from 'motion/react';
+import { listContainer, listItem, detailVariants } from './motion';
 
 const Detail: React.FC<{ item: LibraryEntry; index: number; onFavoriteToggle: () => void; onBack: () => void }> = ({ item, index, onFavoriteToggle, onBack }) => {
   const [fav, setFav] = useState(isFavorite(item.title));
@@ -20,10 +21,10 @@ const Detail: React.FC<{ item: LibraryEntry; index: number; onFavoriteToggle: ()
       <AnimatePresence mode="wait">
         <motion.div
           key={item.title}
-          initial={{ opacity: 0, x: 20 }}
-          animate={{ opacity: 1, x: 0 }}
-          exit={{ opacity: 0, x: -20 }}
-          transition={{ duration: 0.3 }}
+          variants={detailVariants}
+          initial="initial"
+          animate="animate"
+          exit="exit"
           className="max-w-2xl mx-auto w-full"
         >
           {/* Top row */}
@@ -180,17 +181,19 @@ export const Library: React.FC = () => {
           <Pill color="var(--color-amber)" active={showOnlyFavorites} onClick={() => setShowOnlyFavorites(!showOnlyFavorites)}>★ Favoritos</Pill>
         </div>
 
-        <div className="flex flex-col gap-3 flex-1 overflow-y-auto no-scrollbar pt-3" style={{ paddingBottom: '120px' }}>
+        <motion.div className="flex flex-col gap-3 flex-1 overflow-y-auto no-scrollbar pt-3" style={{ paddingBottom: '120px' }} variants={listContainer} initial="initial" animate="animate">
           {filtered.length === 0 ? (
             <p className="text-center text-sm mt-8" style={{ color: 'var(--text-muted)' }}>Sin resultados.</p>
           ) : (
             filtered.map(item => (
-              <RailItem key={item.title} active={selectedItem?.title === item.title} onClick={() => select(item)} layoutId="library-pill">
-                {item.title}
-              </RailItem>
+              <motion.div variants={listItem} key={item.title}>
+                <RailItem active={selectedItem?.title === item.title} onClick={() => select(item)} layoutId="library-pill">
+                  {item.title}
+                </RailItem>
+              </motion.div>
             ))
           )}
-        </div>
+        </motion.div>
       </div>
 
       {/* ── Detail (coral) ── */}
