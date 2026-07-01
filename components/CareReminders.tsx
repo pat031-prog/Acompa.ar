@@ -8,10 +8,14 @@ import {
   type Reminder,
 } from '../services/remindersService';
 import { Kicker, Display, MonoLabel, Toggle } from './ui';
-import { Bell, Clock, Check, X } from 'lucide-react';
+import { Bell, Clock, Check, X, Droplet, Moon, Apple, Pause, StickyNote } from 'lucide-react';
 
-const getTypeIcon = (type: Reminder['type']) => ({ hydration: '💧', rest: '🛋️', nutrition: '🍎', break: '⏸️', custom: '📝' }[type] || '🔔');
+const TYPE_ICON: Record<Reminder['type'], React.ComponentType<{ size?: number }>> = {
+  hydration: Droplet, rest: Moon, nutrition: Apple, break: Pause, custom: StickyNote,
+};
 const getTypeColor = (type: Reminder['type']): string => ({ hydration: 'var(--color-blue)', rest: 'var(--color-violet)', nutrition: 'var(--color-green)', break: 'var(--color-amber)', custom: 'var(--text-muted)' }[type] || 'var(--text-muted)');
+// Messages carry a leading emoji in the data; strip it so it isn't duplicated beside the lucide icon.
+const cleanMessage = (m: string) => m.replace(/^[\p{Emoji_Presentation}\p{Extended_Pictographic}️‍]+\s*/u, '');
 
 const surfaceCard: React.CSSProperties = { background: 'var(--surface-1)', border: '1px solid var(--border-subtle)', borderRadius: '2rem' };
 
@@ -20,15 +24,16 @@ const ReminderCard: React.FC<{ reminder: Reminder; onToggle: () => void; onInter
   const [isEditing, setIsEditing] = useState(false);
   const handleSave = () => { const n = parseInt(customInterval); if (n > 0 && n <= 1440) { onIntervalChange(n); setIsEditing(false); } };
   const color = getTypeColor(reminder.type);
+  const Icon = TYPE_ICON[reminder.type] ?? Bell;
 
   return (
     <div className="flex items-center gap-4 sm:gap-5 p-5 sm:p-6 transition-opacity" style={{ ...surfaceCard, opacity: reminder.enabled ? 1 : 0.5 }}>
-      <div className="flex items-center justify-center flex-shrink-0" style={{ width: '48px', height: '48px', borderRadius: '50%', background: 'var(--bg-primary)', border: `1px solid ${color}` }}>
-        <span style={{ fontSize: '20px', lineHeight: 1 }}>{getTypeIcon(reminder.type)}</span>
+      <div className="flex items-center justify-center flex-shrink-0" style={{ width: '48px', height: '48px', borderRadius: '50%', background: 'var(--bg-primary)', border: `1px solid ${color}`, color }}>
+        <Icon size={20} />
       </div>
       <div className="flex-1 min-w-0">
         <h3 style={{ fontFamily: 'var(--font-mono)', fontSize: '13px', fontWeight: 700, letterSpacing: '0.06em', textTransform: 'uppercase', color: 'var(--text-primary)' }}>{reminder.title}</h3>
-        <p className="text-sm mt-1 truncate" style={{ color: 'var(--text-tertiary)' }}>{reminder.message}</p>
+        <p className="text-sm mt-1 truncate" style={{ color: 'var(--text-tertiary)' }}>{cleanMessage(reminder.message)}</p>
         <div className="flex items-center gap-1.5 mt-2.5" style={{ color: 'var(--text-muted)', fontSize: '12px' }}>
           <span style={{ color }}><Clock size={14} /></span>
           {isEditing ? (
