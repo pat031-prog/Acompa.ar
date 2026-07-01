@@ -167,28 +167,27 @@ export const Home: React.FC<HomeProps> = ({ onNavigate }) => {
             <span style={SECTION_LABEL}>También</span>
             <div style={{ flex: 1, height: '1px', background: 'var(--border-subtle)' }} />
           </div>
-          <Card className="overflow-hidden">
+          <div>
             {[
-              { title: 'Observatorio', desc: 'Mapa de alertas territoriales y estadísticas de consumo', tab: 'observatory' },
-              { title: 'Recordatorios', desc: 'Hidratación, descanso y alimentación automáticos', tab: 'reminders' },
-              { title: 'Estadísticas', desc: 'Dashboard de gestión y uso', tab: 'dashboard' },
+              { num: '05', title: 'Observatorio', desc: 'Mapa de alertas territoriales y estadísticas de consumo', tab: 'observatory' },
+              { num: '06', title: 'Recordatorios', desc: 'Hidratación, descanso y alimentación automáticos', tab: 'reminders' },
+              { num: '07', title: 'Estadísticas', desc: 'Dashboard de gestión y uso', tab: 'dashboard' },
             ].map((item, idx) => (
               <button
                 key={idx}
                 onClick={() => onNavigate?.(item.tab)}
-                className="w-full flex items-center gap-4 px-5 py-4 text-left transition-colors"
+                className="group w-full flex items-center gap-5 py-4 text-left transition-colors"
                 style={{ borderTop: idx === 0 ? 'none' : '1px solid var(--border-subtle)' }}
-                onMouseEnter={(e) => { e.currentTarget.style.background = 'var(--surface-2)'; }}
-                onMouseLeave={(e) => { e.currentTarget.style.background = 'transparent'; }}
               >
+                <span style={{ fontFamily: 'var(--font-display)', fontSize: '20px', fontWeight: 800, color: 'var(--accent-subtle)', letterSpacing: '-0.02em', minWidth: '34px' }}>{item.num}</span>
                 <div className="flex-1 min-w-0">
-                  <p style={{ fontSize: '14px', fontWeight: 600, color: 'var(--text-primary)' }}>{item.title}</p>
-                  <p style={{ fontSize: '12.5px', color: 'var(--text-muted)', marginTop: '2px' }}>{item.desc}</p>
+                  <p style={{ fontFamily: 'var(--font-heading)', fontSize: '13px', fontWeight: 700, letterSpacing: '0.04em', textTransform: 'uppercase', color: 'var(--text-primary)' }}>{item.title}</p>
+                  <p style={{ fontSize: '13px', color: 'var(--text-muted)', marginTop: '3px' }}>{item.desc}</p>
                 </div>
-                <span style={{ color: 'var(--text-muted)' }}><ArrowRightIcon /></span>
+                <span className="transition-transform group-hover:translate-x-1" style={{ color: 'var(--accent-primary)' }}><ArrowRightIcon /></span>
               </button>
             ))}
-          </Card>
+          </div>
         </div>
       </section>
 

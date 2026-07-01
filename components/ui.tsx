@@ -1,12 +1,62 @@
 import React from 'react';
 
 /**
- * ── Acompañ.Ar UI primitives ──
- * One source of truth for the shapes every screen is built from.
- * Inspired by Linear / Things: solid surfaces, hairline borders, 8pt rhythm,
- * one type system. If a screen needs a card, a header, a field or a pill,
- * it uses these — so the whole app shares the same bones.
+ * ── Acompañ.Ar UI primitives — "Dossier" ──
+ * Structure comes from editorial RULES, INDEX NUMBERS and TYPE, not from a
+ * wall of rounded boxes (which reads as generic/AI). Warm near-black canvas,
+ * terracotta accent, cream ink, bold grotesque display + uppercase labels.
  */
+
+/* ─────────────── SectionLabel ───────────────
+   Uppercase tracked kicker + optional count + hairline rule. Opens a block. */
+export const SectionLabel: React.FC<{ children: React.ReactNode; count?: number; accent?: string; rule?: boolean }> = ({ children, count, accent, rule = true }) => (
+  <div className="flex items-center gap-3">
+    {accent && <span style={{ width: '16px', height: '2px', background: accent, borderRadius: '999px' }} />}
+    <span style={{ fontFamily: 'var(--font-heading)', fontSize: '12px', fontWeight: 700, letterSpacing: '0.14em', textTransform: 'uppercase', color: 'var(--text-secondary)' }}>{children}</span>
+    {typeof count === 'number' && <span style={{ fontSize: '12px', fontWeight: 600, color: 'var(--text-muted)' }}>{count}</span>}
+    {rule && <span style={{ flex: 1, height: '1px', background: 'var(--border-subtle)' }} />}
+  </div>
+);
+
+/* ─────────────── IndexNum ───────────────
+   Oversized display index marker (01, 02, …) — the catalogue signature. */
+export const IndexNum: React.FC<{ children: React.ReactNode; size?: number; color?: string }> = ({ children, size = 28, color = 'var(--accent-medium)' }) => (
+  <span style={{ fontFamily: 'var(--font-display)', fontWeight: 800, fontSize: `${size}px`, lineHeight: 1, letterSpacing: '-0.03em', color, fontVariantNumeric: 'tabular-nums' }}>{children}</span>
+);
+
+/* ─────────────── RuledRow ───────────────
+   A list row separated by a top hairline — the anti-box list unit. */
+export const RuledRow: React.FC<{ children: React.ReactNode; first?: boolean; className?: string; onMouseEnter?: React.MouseEventHandler; onMouseLeave?: React.MouseEventHandler }> = ({ children, first, className = '', onMouseEnter, onMouseLeave }) => (
+  <div
+    className={className}
+    style={{ borderTop: first ? 'none' : '1px solid var(--border-subtle)' }}
+    onMouseEnter={onMouseEnter}
+    onMouseLeave={onMouseLeave}
+  >
+    {children}
+  </div>
+);
+
+/* ─────────────── InlineNote ───────────────
+   A left-ruled note (terracotta rule + uppercase label) — replaces tinted
+   callout boxes for advisory copy. */
+export const InlineNote: React.FC<{ label?: string; accent?: string; children: React.ReactNode }> = ({ label, accent = 'var(--accent-primary)', children }) => (
+  <div style={{ borderLeft: `2px solid ${accent}`, paddingLeft: '16px' }}>
+    {label && <div className="mb-1.5" style={{ fontFamily: 'var(--font-heading)', fontSize: '11px', fontWeight: 700, letterSpacing: '0.12em', textTransform: 'uppercase', color: accent }}>{label}</div>}
+    <div className="text-sm leading-relaxed" style={{ color: 'var(--text-secondary)' }}>{children}</div>
+  </div>
+);
+
+/* ─────────────── Toggle ───────────────
+   Shared switch. */
+export const Toggle: React.FC<{ checked: boolean; onChange: () => void }> = ({ checked, onChange }) => (
+  <label className="flex-shrink-0 relative inline-block cursor-pointer" style={{ width: '44px', height: '24px' }}>
+    <input type="checkbox" checked={checked} onChange={onChange} className="sr-only" />
+    <div style={{ background: checked ? 'var(--accent-primary)' : 'var(--surface-3)', borderRadius: '999px', width: '44px', height: '24px', position: 'relative', transition: 'background var(--transition-fast)' }}>
+      <div style={{ position: 'absolute', top: '3px', left: checked ? '23px' : '3px', width: '18px', height: '18px', background: '#fff', borderRadius: '50%', transition: 'left var(--transition-fast)' }} />
+    </div>
+  </label>
+);
 
 /* ─────────────── PageHeader ───────────────
    Every section opens the same way: a small uppercase eyebrow, a title,

@@ -3,7 +3,7 @@ import React, { useState, useMemo } from 'react';
 import { MAP_DATA } from '../constants';
 import type { MapDataset } from '../types';
 import { ArgentinaMap } from './ArgentinaMap';
-import { PageHeader, Callout } from './ui';
+import { PageHeader, InlineNote } from './ui';
 
 const SearchIcon: React.FC = () => (
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-4 h-4">
@@ -96,6 +96,16 @@ export const Observatory: React.FC = () => {
     return rampColor(data.totalQueries / maxQueries);
   };
 
+  // Top provinces get a value label drawn on the map (skip CABA — too small,
+  // its centroid overlaps Buenos Aires).
+  const topLabels = useMemo(() =>
+    Object.entries(MAP_DATA)
+      .filter(([name]) => name !== 'Ciudad Autónoma de Buenos Aires')
+      .sort((a, b) => b[1].totalQueries - a[1].totalQueries)
+      .slice(0, 5)
+      .map(([name, d]) => ({ name, text: d.totalQueries.toLocaleString('es-AR') })),
+  []);
+
   const activeName = hovered || selected;
   const activeData = activeName ? MAP_DATA[activeName] : null;
 
@@ -108,35 +118,36 @@ export const Observatory: React.FC = () => {
         description="Datos agregados y anónimos de consultas por provincia. Cuanto más intenso el color, mayor el volumen de consultas registradas."
         accent={SAGE}
       />
-      <div className="px-5 sm:px-7 lg:px-8 pt-4">
-        <Callout accent="var(--accent-secondary)">
-          <strong style={{ color: 'var(--text-primary)' }}>Nota:</strong> Los datos mostrados son actualmente figurativos e inventados. Representan la visión a futuro de lo que Acompañ.Ar aspira a ser: una herramienta de mapeo epidemiológico anónimo en tiempo real para informar políticas públicas de salud preventiva.
-        </Callout>
+      <div className="px-5 sm:px-7 lg:px-8 pt-5">
+        <InlineNote label="Nota">
+          Los datos mostrados son actualmente figurativos e inventados. Representan la visión a futuro de lo que Acompañ.Ar aspira a ser: una herramienta de mapeo epidemiológico anónimo en tiempo real para informar políticas públicas de salud preventiva.
+        </InlineNote>
       </div>
 
       {/* Map + Panel */}
-      <section className="flex-1 flex flex-col lg:flex-row min-h-0">
+      <section className="flex-1 flex flex-col lg:flex-row min-h-0 mt-2">
         {/* Map */}
-        <div className="lg:w-[46%] flex-shrink-0 flex items-center justify-center p-6 sm:p-8 relative" style={{ borderBottom: '1px solid var(--border-subtle)', borderRight: '1px solid var(--border-subtle)' }}>
-          <div className="w-full max-w-[340px]" style={{ aspectRatio: '0.49' }}>
+        <div className="lg:w-[48%] flex-shrink-0 flex items-center justify-center px-6 py-8 relative" style={{ borderBottom: '1px solid var(--border-subtle)', borderRight: '1px solid var(--border-subtle)' }}>
+          <div style={{ height: 'min(70vh, 560px)', aspectRatio: '0.49', maxWidth: '100%' }}>
             <ArgentinaMap
               getFill={getFill}
               onProvinceHover={setHovered}
               onProvinceClick={(name) => setSelected(prev => prev === name ? null : name)}
               hoveredProvince={hovered}
               selectedProvince={selected}
+              labels={topLabels}
             />
           </div>
 
           {/* Legend */}
-          <div className="absolute bottom-5 left-6 sm:left-8 flex items-center gap-2">
-            <span style={{ fontSize: '10px', color: 'var(--text-muted)', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.05em' }}>Menos</span>
-            <div style={{ display: 'flex', width: '64px', height: '8px', borderRadius: '999px', overflow: 'hidden' }}>
+          <div className="absolute bottom-6 left-6 sm:left-8 flex items-center gap-2.5">
+            <span style={{ fontFamily: 'var(--font-heading)', fontSize: '9px', color: 'var(--text-muted)', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.12em' }}>Menos</span>
+            <div style={{ display: 'flex', width: '72px', height: '6px', borderRadius: '999px', overflow: 'hidden' }}>
               {[0.05, 0.3, 0.55, 0.8, 1].map((a, i) => (
                 <div key={i} style={{ flex: 1, background: rampColor(a) }} />
               ))}
             </div>
-            <span style={{ fontSize: '10px', color: 'var(--text-muted)', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.05em' }}>Más</span>
+            <span style={{ fontFamily: 'var(--font-heading)', fontSize: '9px', color: 'var(--text-muted)', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.12em' }}>Más</span>
           </div>
         </div>
 

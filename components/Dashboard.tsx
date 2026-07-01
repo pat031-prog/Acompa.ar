@@ -21,7 +21,7 @@ import {
 } from '../services/analyticsService';
 import { PROVINCES } from '../constants';
 import type { SubstanceCategory } from '../types';
-import { PageHeader, tint } from './ui';
+import { PageHeader, SectionLabel } from './ui';
 
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, BarElement, Title, Tooltip, Legend, ArcElement);
 
@@ -53,47 +53,42 @@ const getTimeAgo = (timestamp: number): string => {
   return 'Hace un momento';
 };
 
-const AlertCard: React.FC<{ alert: TerritorialAlert; onDelete: () => void }> = ({ alert, onDelete }) => {
+const AlertRow: React.FC<{ alert: TerritorialAlert; onDelete: () => void; first: boolean }> = ({ alert, onDelete, first }) => {
   const badge = getSeverityBadge(alert.severity);
   const style = getSeverityStyle(alert.severity);
   return (
-    <div
-      className="group p-5"
-      style={{ background: 'var(--surface-1)', border: '1px solid var(--border-subtle)', borderRadius: 'var(--radius-lg)' }}
-    >
-      <div className="flex items-start justify-between gap-4 mb-2.5">
-        <div className="flex items-center gap-2 flex-wrap">
-          <span className="inline-flex items-center gap-1.5 text-[10px] px-2 py-0.5 font-bold uppercase tracking-wide" style={{ background: tint(style.accent), color: style.accent, borderRadius: '999px' }}>
-            <span style={{ width: '5px', height: '5px', borderRadius: '50%', background: style.accent }} />
-            {badge.label}
-          </span>
-          <span className="text-xs" style={{ color: 'var(--text-muted)' }}>{alert.province}</span>
-        </div>
-        <button onClick={onDelete} className="flex-shrink-0 w-6 h-6 flex items-center justify-center rounded-md opacity-0 group-hover:opacity-60 hover:!opacity-100 transition-opacity" style={{ color: 'var(--text-muted)' }} title="Descartar alerta" aria-label="Descartar alerta">✕</button>
+    <div className="group flex gap-4 py-5" style={{ borderTop: first ? 'none' : '1px solid var(--border-subtle)' }}>
+      {/* severity rail */}
+      <div className="flex-shrink-0 flex flex-col items-center pt-1.5" style={{ width: '8px' }}>
+        <span style={{ width: '8px', height: '8px', borderRadius: '50%', background: style.accent }} />
+        <span className="flex-1 mt-2" style={{ width: '2px', background: `linear-gradient(${style.accent}, transparent)`, opacity: 0.4 }} />
       </div>
-      <h3 className="font-semibold text-[15px] mb-1.5" style={{ color: 'var(--text-primary)' }}>
-        {alert.sourceUrl || alert.pdfUrl ? (
-          <a href={alert.sourceUrl || alert.pdfUrl} target="_blank" rel="noopener noreferrer" className="hover:underline" style={{ color: 'var(--text-primary)' }}>
-            {alert.title} <span className="inline-block ml-0.5" style={{ color: style.accent }}>↗</span>
-          </a>
-        ) : (
-          alert.title
-        )}
-      </h3>
-      <p className="text-sm mb-3 leading-relaxed" style={{ color: 'var(--text-tertiary)' }}>{alert.message}</p>
-      <div className="flex items-center justify-between gap-3 text-[11px]" style={{ color: 'var(--text-muted)' }}>
-        <span className="truncate">
-          {alert.source && (
-            alert.sourceUrl || alert.pdfUrl ? (
-              <a href={alert.sourceUrl || alert.pdfUrl} target="_blank" rel="noopener noreferrer" className="transition-colors hover:text-white" style={{ color: 'var(--text-muted)', textDecoration: 'none' }}>
-                Fuente: {alert.source}
-              </a>
-            ) : (
-              `Fuente: ${alert.source}`
-            )
+      <div className="flex-1 min-w-0">
+        <div className="flex items-center gap-2 mb-1.5">
+          <span style={{ fontFamily: 'var(--font-heading)', fontSize: '10px', fontWeight: 700, letterSpacing: '0.1em', textTransform: 'uppercase', color: style.accent }}>{badge.label}</span>
+          <span className="text-xs" style={{ color: 'var(--text-muted)' }}>· {alert.province}</span>
+          <span className="text-xs ml-auto flex items-center gap-2" style={{ color: 'var(--text-muted)' }}>
+            {getTimeAgo(alert.timestamp)}
+            <button onClick={onDelete} className="w-5 h-5 flex items-center justify-center opacity-0 group-hover:opacity-60 hover:!opacity-100 transition-opacity" style={{ color: 'var(--text-muted)' }} title="Descartar alerta" aria-label="Descartar alerta">✕</button>
+          </span>
+        </div>
+        <h3 className="font-semibold text-[15px] mb-1" style={{ color: 'var(--text-primary)' }}>
+          {alert.sourceUrl || alert.pdfUrl ? (
+            <a href={alert.sourceUrl || alert.pdfUrl} target="_blank" rel="noopener noreferrer" className="hover:underline" style={{ color: 'var(--text-primary)' }}>
+              {alert.title} <span className="inline-block ml-0.5" style={{ color: style.accent }}>↗</span>
+            </a>
+          ) : (
+            alert.title
           )}
-        </span>
-        <span className="flex-shrink-0">{getTimeAgo(alert.timestamp)}</span>
+        </h3>
+        <p className="text-sm mb-2 leading-relaxed" style={{ color: 'var(--text-tertiary)' }}>{alert.message}</p>
+        {alert.source && (
+          <div className="text-[11px]" style={{ color: 'var(--text-muted)' }}>
+            {alert.sourceUrl || alert.pdfUrl ? (
+              <a href={alert.sourceUrl || alert.pdfUrl} target="_blank" rel="noopener noreferrer" className="transition-colors hover:text-white" style={{ color: 'var(--text-muted)', textDecoration: 'none' }}>Fuente: {alert.source}</a>
+            ) : `Fuente: ${alert.source}`}
+          </div>
+        )}
       </div>
     </div>
   );
@@ -136,8 +131,6 @@ export const Dashboard: React.FC = () => {
 
   const handleDeleteAlert = (id: string) => { deleteAlert(id); setAlerts(getAlerts(selectedProvince)); };
 
-  const statCardStyle: React.CSSProperties = { background: 'var(--surface-1)', border: '1px solid var(--border-subtle)', borderRadius: 'var(--radius-lg)', padding: '20px 24px' };
-
   return (
     <div className="flex-1 flex flex-col min-h-0">
       <PageHeader
@@ -172,23 +165,27 @@ export const Dashboard: React.FC = () => {
       </div>
 
       <div className="flex-1 overflow-y-auto px-5 sm:px-7 lg:px-8 py-6">
-        <div className="max-w-6xl space-y-7">
-          {/* KPIs first */}
-          <div className="grid grid-cols-3 gap-4">
-            <div style={statCardStyle}><h3 className="text-xs font-medium mb-1" style={{ color: 'var(--text-muted)' }}>Total de consultas</h3><p className="text-3xl font-semibold" style={{ color: 'var(--color-blue)' }}>{stats.totalQueries}</p></div>
-            <div style={statCardStyle}><h3 className="text-xs font-medium mb-1" style={{ color: 'var(--text-muted)' }}>Sustancias únicas</h3><p className="text-3xl font-semibold" style={{ color: 'var(--color-green)' }}>{stats.topSubstances.length}</p></div>
-            <div style={statCardStyle}><h3 className="text-xs font-medium mb-1" style={{ color: 'var(--text-muted)' }}>Categorías activas</h3><p className="text-3xl font-semibold" style={{ color: 'var(--color-violet)' }}>{Object.keys(stats.queriesByCategory).length}</p></div>
+        <div className="max-w-6xl space-y-9">
+          {/* KPIs — a ruled 3-cell strip, no boxes */}
+          <div className="grid grid-cols-3" style={{ borderTop: '1px solid var(--border-subtle)', borderBottom: '1px solid var(--border-subtle)' }}>
+            {[
+              { label: 'Total de consultas', value: stats.totalQueries, color: 'var(--text-primary)' },
+              { label: 'Sustancias únicas', value: stats.topSubstances.length, color: 'var(--accent-primary)' },
+              { label: 'Categorías activas', value: Object.keys(stats.queriesByCategory).length, color: 'var(--text-primary)' },
+            ].map((kpi, i) => (
+              <div key={i} className="py-5" style={{ borderLeft: i > 0 ? '1px solid var(--border-subtle)' : 'none', paddingLeft: i > 0 ? '24px' : 0 }}>
+                <p style={{ fontFamily: 'var(--font-display)', fontSize: '38px', fontWeight: 800, lineHeight: 1, letterSpacing: '-0.03em', color: kpi.color }}>{kpi.value}</p>
+                <p className="mt-2" style={{ fontFamily: 'var(--font-heading)', fontSize: '10px', fontWeight: 700, letterSpacing: '0.12em', textTransform: 'uppercase', color: 'var(--text-muted)' }}>{kpi.label}</p>
+              </div>
+            ))}
           </div>
 
           <div>
-            <h2 className="text-[13px] font-semibold uppercase tracking-wide mb-3 flex items-center gap-2" style={{ color: 'var(--text-muted)' }}>
-              <span style={{ color: 'var(--color-red)' }}><ExclamationTriangleIcon /></span>
-              Alertas territoriales · {alerts.length}
-            </h2>
+            <SectionLabel accent="var(--color-red)" count={alerts.length}>Alertas territoriales</SectionLabel>
             {alerts.length === 0 ? (
-              <div className="p-10 text-center" style={{ background: 'var(--surface-1)', border: '1px solid var(--border-subtle)', borderRadius: 'var(--radius-lg)' }}><p style={{ color: 'var(--text-muted)' }}>No hay alertas activas para esta provincia.</p></div>
+              <p className="py-10 text-center" style={{ color: 'var(--text-muted)' }}>No hay alertas activas para esta provincia.</p>
             ) : (
-              <div className="grid sm:grid-cols-2 gap-4">{alerts.map(a => <AlertCard key={a.id} alert={a} onDelete={() => handleDeleteAlert(a.id)} />)}</div>
+              <div className="mt-1">{alerts.map((a, i) => <AlertRow key={a.id} alert={a} first={i === 0} onDelete={() => handleDeleteAlert(a.id)} />)}</div>
             )}
           </div>
 
