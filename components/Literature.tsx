@@ -1,18 +1,7 @@
-import React from 'react';
-import { PageHeader, Panel, Pill, Display, Orb, SectionLabel } from './ui';
-
-const ExternalLinkIcon: React.FC<{ className?: string }> = ({ className = 'w-4 h-4' }) => (
-    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className={className}>
-        <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 6H5.25A2.25 2.25 0 0 0 3 8.25v10.5A2.25 2.25 0 0 0 5.25 21h10.5A2.25 2.25 0 0 0 18 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25" />
-    </svg>
-);
-
-// Section medallion: an open book (24x24, stroke 1.6, currentColor — renders in accent-ink on coral)
-const BookIcon: React.FC = () => (
-    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" strokeWidth={1.6} stroke="currentColor">
-        <path strokeLinecap="round" strokeLinejoin="round" d="M12 6.5C12 5.4 10.8 4.5 8.5 4.5S4 5 3.5 5.5v13c.5-.5 2.2-1 4.5-1s3.5.9 4 1.5m0-12.5c0-1.1 1.2-2 3.5-2s4 .5 4.5 1v13c-.5-.5-2.2-1-4.5-1s-3.5.9-4 1.5m0-12.5v12.5" />
-    </svg>
-);
+import React, { useState, useEffect } from 'react';
+import { Kicker, Display, DarkCard, DataBlock, RailItem, CoralButton, Pill } from './ui';
+import { motion, AnimatePresence } from 'motion/react';
+import { BookMarked, ExternalLink, ArrowLeft } from 'lucide-react';
 
 interface Article {
     title: string;
@@ -166,73 +155,98 @@ const TYPE_COLOR: Record<Article['type'], string> = {
     'Nota / Artículo': 'var(--accent-primary)',
 };
 
-const ArticleCard: React.FC<{ article: Article }> = ({ article }) => {
-    const color = TYPE_COLOR[article.type];
-    return (
-        <a
-            href={article.url}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="group block h-full"
-            style={{ textDecoration: 'none' }}
+const Detail: React.FC<{ article: Article; index: number; onBack: () => void }> = ({ article, index, onBack }) => (
+    <AnimatePresence mode="wait">
+        <motion.div
+            key={article.title}
+            initial={{ opacity: 0, x: 20 }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: -20 }}
+            transition={{ duration: 0.3 }}
+            className="max-w-2xl mx-auto w-full"
         >
-            <Panel
-                interactive
-                tab={<ExternalLinkIcon className="w-[18px] h-[18px]" />}
-                cut="lg"
-                className="flex flex-col h-full p-7 pr-14"
-            >
-                {/* ── Identity row: a small type-colored orb beside its Pill ── */}
-                <div className="flex items-center gap-3">
-                    <Orb color={color} size={26} />
-                    <Pill as="span" active color={color}>{article.type}</Pill>
+            <div className="flex justify-between items-center mb-8 pt-2 md:pt-0">
+                <button onClick={onBack} className="md:hidden inline-flex items-center gap-2 px-4 py-2 rounded-full" style={{ border: '1px solid rgba(0,0,0,0.15)', color: 'var(--accent-ink)', fontFamily: 'var(--font-mono)', fontSize: '12px', fontWeight: 700, letterSpacing: '0.08em', textTransform: 'uppercase' }}>
+                    <ArrowLeft size={15} /> Volver
+                </button>
+                <span className="hidden md:inline" style={{ fontFamily: 'var(--font-mono)', fontSize: '13px', fontWeight: 700, opacity: 0.5, textTransform: 'uppercase' }}>#{String(index).padStart(2, '0')} · {article.year}</span>
+                <div className="rounded-full flex items-center gap-2 px-4 py-2" style={{ background: 'var(--bg-primary)', color: 'var(--accent-primary)' }}>
+                    <span style={{ fontFamily: 'var(--font-mono)', fontSize: '11px', fontWeight: 700, letterSpacing: '0.1em', textTransform: 'uppercase' }}>{article.type}</span>
                 </div>
+            </div>
 
-                <Display size="md" upper className="mt-6" style={{ letterSpacing: '-0.005em' }}>
-                    {article.title}
-                </Display>
+            <div className="text-center md:text-left mb-10">
+                <Display size="lg" upper color="var(--accent-ink)">{article.title}</Display>
+                <p className="mt-4" style={{ fontFamily: 'var(--font-mono)', fontSize: '12px', fontWeight: 700, letterSpacing: '0.1em', textTransform: 'uppercase', opacity: 0.7 }}>{article.author} · {article.source}, {article.year}</p>
+            </div>
 
-                <div className="mt-3" style={{ fontFamily: 'var(--font-heading)', fontSize: '11px', fontWeight: 700, letterSpacing: '0.08em', textTransform: 'uppercase', color: 'var(--text-muted)' }}>
-                    {article.author} · {article.source}, {article.year}
+            <DarkCard className="p-7 md:p-9">
+                <div className="space-y-6">
+                    <DataBlock label="Síntesis">
+                        <p className="leading-relaxed" style={{ fontSize: '15px', color: 'var(--text-secondary)' }}>{article.summary}</p>
+                    </DataBlock>
+                    <div className="pt-2">
+                        <a href={article.url} target="_blank" rel="noopener noreferrer" className="block">
+                            <CoralButton><ExternalLink size={16} /> Leer documento</CoralButton>
+                        </a>
+                    </div>
                 </div>
-
-                <p className="mt-4 flex-1" style={{ fontSize: '13.5px', lineHeight: 1.6, color: 'var(--text-tertiary)' }}>
-                    {article.summary}
-                </p>
-
-                <span className="inline-flex items-center gap-1.5 mt-8" style={{ fontFamily: 'var(--font-heading)', fontSize: '11px', fontWeight: 700, letterSpacing: '0.1em', textTransform: 'uppercase', color: 'var(--accent-primary)' }}>
-                    Leer documento <ExternalLinkIcon className="w-3.5 h-3.5" />
-                </span>
-            </Panel>
-        </a>
-    );
-};
+            </DarkCard>
+        </motion.div>
+    </AnimatePresence>
+);
 
 export const Literature: React.FC = () => {
+    const [selectedType, setSelectedType] = useState<Article['type'] | 'All'>('All');
+    const [selected, setSelected] = useState<Article | null>(LITERATURE_DATA[0]);
+    const [mobileDetail, setMobileDetail] = useState(false);
+
+    const types: (Article['type'] | 'All')[] = ['All', 'Paper Científico', 'Ciencias Sociales', 'Nota / Artículo'];
+    const filtered = selectedType === 'All' ? LITERATURE_DATA : LITERATURE_DATA.filter(a => a.type === selectedType);
+
+    useEffect(() => {
+        if (!selected || !filtered.some(a => a.title === selected.title)) {
+            setSelected(filtered.length > 0 ? filtered[0] : null);
+        }
+    }, [filtered, selected]);
+
+    const select = (a: Article) => { setSelected(a); setMobileDetail(true); };
+
     return (
-        <div className="flex-1 flex flex-col min-h-0 overflow-y-auto" style={{ background: 'var(--bg-primary)' }}>
-            <PageHeader
-                eyebrow="Lecturas"
-                title="Literatura y Evidencia"
-                description="Papers científicos, artículos de ciencias sociales y publicaciones sobre reducción de daños y políticas de drogas."
-                accent="var(--accent-primary)"
-                icon={<BookIcon />}
-            />
+        <div className="flex flex-col md:flex-row h-full w-full overflow-hidden" style={{ background: 'var(--bg-primary)' }}>
+            {/* ── Rail ── */}
+            <div className={`w-full md:w-1/3 flex-col p-6 md:p-10 relative ${mobileDetail ? 'hidden md:flex' : 'flex'}`} style={{ borderRight: '1px solid var(--border-subtle)' }}>
+                <div className="flex items-center justify-between mb-6">
+                    <Kicker>Lecturas</Kicker>
+                    <span style={{ color: 'var(--accent-primary)' }}><BookMarked size={22} /></span>
+                </div>
 
-            <div className="flex-1 px-5 sm:px-7 lg:px-8 max-w-6xl w-full mx-auto" style={{ paddingTop: 'var(--space-8)', paddingBottom: 'var(--space-10)' }}>
-                <SectionLabel accent="var(--accent-primary)" count={LITERATURE_DATA.length}>Biblioteca de referencia</SectionLabel>
-
-                <div className="grid sm:grid-cols-2 xl:grid-cols-3 gap-5 sm:gap-6 mt-6">
-                    {LITERATURE_DATA.map((article, idx) => (
-                        <ArticleCard key={idx} article={article} />
+                <div className="flex flex-wrap gap-2 mb-4">
+                    {types.map(t => (
+                        <Pill key={t} color={t === 'All' ? 'var(--accent-primary)' : TYPE_COLOR[t]} active={selectedType === t} onClick={() => setSelectedType(t)}>{t === 'All' ? 'Todas' : t}</Pill>
                     ))}
                 </div>
 
-                <div className="mt-14 pt-8" style={{ borderTop: '1px solid var(--border-subtle)' }}>
-                    <p className="text-center" style={{ fontSize: '12px', lineHeight: 1.65, color: 'var(--text-muted)', maxWidth: '60ch', margin: '0 auto' }}>
-                        Esta sección está en construcción. Próximamente incorporaremos un buscador de papers académicos y artículos archivados.
-                    </p>
+                <div className="flex flex-col gap-3 flex-1 overflow-y-auto no-scrollbar pt-2" style={{ paddingBottom: '120px' }}>
+                    {filtered.map(a => (
+                        <RailItem key={a.title} active={selected?.title === a.title} onClick={() => select(a)} layoutId="lit-pill" sub={`${a.source} · ${a.year}`}>
+                            {a.title}
+                        </RailItem>
+                    ))}
                 </div>
+            </div>
+
+            {/* ── Detail (coral) ── */}
+            <div className={`w-full md:w-2/3 ${mobileDetail ? 'flex' : 'hidden md:flex'}`}>
+                {selected ? (
+                    <div className="w-full p-6 md:p-12 flex flex-col overflow-y-auto no-scrollbar rounded-t-[3rem] md:rounded-l-[4rem] md:rounded-tr-none" style={{ background: 'var(--accent-primary)', color: 'var(--accent-ink)', paddingBottom: '120px' }}>
+                        <Detail article={selected} index={LITERATURE_DATA.findIndex(a => a.title === selected.title) + 1} onBack={() => setMobileDetail(false)} />
+                    </div>
+                ) : (
+                    <div className="flex-1 flex flex-col items-center justify-center text-center p-10" style={{ color: 'var(--text-muted)' }}>
+                        <BookMarked size={28} /><p className="mt-4">Elegí una lectura.</p>
+                    </div>
+                )}
             </div>
         </div>
     );

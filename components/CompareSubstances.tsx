@@ -95,17 +95,7 @@ export const CompareSubstances: React.FC = () => {
 
   return (
     <div className="flex-1 flex flex-col min-h-0">
-      <div className="p-4" style={{ borderBottom: '1px solid var(--border-subtle)' }}>
-        <h1 className="text-2xl font-bold flex items-center gap-2" style={{ color: 'var(--text-primary)', fontFamily: 'var(--font-editorial)' }}>
-          <span style={{ color: 'var(--color-violet)' }}><CompareIcon /></span>
-          Comparador de Sustancias
-        </h1>
-        <p className="text-sm mt-1" style={{ color: 'var(--text-tertiary)' }}>
-          Compara dos sustancias lado a lado para entender sus diferencias y similitudes
-        </p>
-      </div>
-
-      <div className="p-4" style={{ borderBottom: '1px solid var(--border-subtle)' }}>
+      <div className="p-4 sm:px-6" style={{ borderBottom: '1px solid var(--border-subtle)' }}>
         <div className="flex flex-col md:flex-row gap-4">
           <SubstanceSelect label="Sustancia 1" selected={substance1} onSelect={setSubstance1} exclude={substance2?.title} />
           <SubstanceSelect label="Sustancia 2" selected={substance2} onSelect={setSubstance2} exclude={substance1?.title} />
@@ -158,32 +148,32 @@ export const CompareSubstances: React.FC = () => {
             <ComparisonRow label="Fórmula química" value1={<code className="font-mono px-2 py-1" style={{ background: 'var(--surface-2)', borderRadius: '4px', color: 'var(--text-primary)' }}>{substance1.chemicalFormula}</code>} value2={<code className="font-mono px-2 py-1" style={{ background: 'var(--surface-2)', borderRadius: '4px', color: 'var(--text-primary)' }}>{substance2.chemicalFormula}</code>} />
 
             <div className="mt-6">
-              <h2 className="text-xl font-bold mb-3" style={{ color: 'var(--text-primary)', fontFamily: 'var(--font-editorial)' }}>Descripción</h2>
+              <h2 className="text-xl font-bold mb-3" style={{ color: 'var(--text-primary)', fontFamily: 'var(--font-display)' }}>Descripción</h2>
               <ComparisonRow label="" value1={substance1.content.description} value2={substance2.content.description} />
             </div>
 
             <div className="mt-6">
-              <h2 className="text-xl font-bold mb-3" style={{ color: 'var(--text-primary)', fontFamily: 'var(--font-editorial)' }}>Efectos</h2>
+              <h2 className="text-xl font-bold mb-3" style={{ color: 'var(--text-primary)', fontFamily: 'var(--font-display)' }}>Efectos</h2>
               <ComparisonRow label="Positivos" value1={<ul className="list-disc pl-5 space-y-1">{substance1.content.effects.positive.map((e, i) => (<li key={i} style={{ color: 'var(--color-green)' }}>{e}</li>))}</ul>} value2={<ul className="list-disc pl-5 space-y-1">{substance2.content.effects.positive.map((e, i) => (<li key={i} style={{ color: 'var(--color-green)' }}>{e}</li>))}</ul>} />
               <ComparisonRow label="Negativos" value1={<ul className="list-disc pl-5 space-y-1">{substance1.content.effects.negative.map((e, i) => (<li key={i} style={{ color: 'var(--color-amber)' }}>{e}</li>))}</ul>} value2={<ul className="list-disc pl-5 space-y-1">{substance2.content.effects.negative.map((e, i) => (<li key={i} style={{ color: 'var(--color-amber)' }}>{e}</li>))}</ul>} />
             </div>
 
             <div className="mt-6">
-              <h2 className="text-xl font-bold mb-3" style={{ color: 'var(--text-primary)', fontFamily: 'var(--font-editorial)' }}>Duración</h2>
+              <h2 className="text-xl font-bold mb-3" style={{ color: 'var(--text-primary)', fontFamily: 'var(--font-display)' }}>Duración</h2>
               <ComparisonRow label="Inicio" value1={substance1.content.duration.onset} value2={substance2.content.duration.onset} />
               <ComparisonRow label="Pico" value1={substance1.content.duration.peak} value2={substance2.content.duration.peak} />
               <ComparisonRow label="Total" value1={substance1.content.duration.total} value2={substance2.content.duration.total} />
             </div>
 
             <div className="mt-6">
-              <h2 className="text-xl font-bold mb-3" style={{ color: 'var(--text-primary)', fontFamily: 'var(--font-editorial)' }}>Dosificación</h2>
+              <h2 className="text-xl font-bold mb-3" style={{ color: 'var(--text-primary)', fontFamily: 'var(--font-display)' }}>Dosificación</h2>
               {substance1.content.dosage.oral && substance2.content.dosage.oral && <ComparisonRow label="Oral" value1={substance1.content.dosage.oral} value2={substance2.content.dosage.oral} />}
               {substance1.content.dosage.nasal && substance2.content.dosage.nasal && <ComparisonRow label="Nasal" value1={substance1.content.dosage.nasal} value2={substance2.content.dosage.nasal} />}
               {substance1.content.dosage.inhalation && substance2.content.dosage.inhalation && <ComparisonRow label="Inhalado" value1={substance1.content.dosage.inhalation} value2={substance2.content.dosage.inhalation} />}
             </div>
 
             <div className="mt-6">
-              <h2 className="text-xl font-bold mb-3" style={{ color: 'var(--color-red)', fontFamily: 'var(--font-editorial)' }}>Principales Riesgos</h2>
+              <h2 className="text-xl font-bold mb-3" style={{ color: 'var(--color-red)', fontFamily: 'var(--font-display)' }}>Principales Riesgos</h2>
               <ComparisonRow label="" value1={<ul className="list-disc pl-5 space-y-1">{substance1.content.risks.map((r, i) => (<li key={i} style={{ color: 'var(--color-red)' }}>{r}</li>))}</ul>} value2={<ul className="list-disc pl-5 space-y-1">{substance2.content.risks.map((r, i) => (<li key={i} style={{ color: 'var(--color-red)' }}>{r}</li>))}</ul>} />
             </div>
 

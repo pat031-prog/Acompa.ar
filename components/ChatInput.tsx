@@ -1,6 +1,5 @@
-
 import React, { useState } from 'react';
-import { fieldStyle } from './ui';
+import { Send } from 'lucide-react';
 
 interface ChatInputProps {
   onSendMessage: (text: string) => void;
@@ -8,12 +7,8 @@ interface ChatInputProps {
   disabled: boolean;
 }
 
-const SendIcon: React.FC = () => (
-  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5">
-    <path d="M3.478 2.404a.75.75 0 0 0-.926.941l2.432 7.905H13.5a.75.75 0 0 1 0 1.5H4.984l-2.432 7.905a.75.75 0 0 0 .926.94 60.519 60.519 0 0 0 18.445-8.986.75.75 0 0 0 0-1.218A60.517 60.517 0 0 0 3.478 2.404Z" />
-  </svg>
-);
-
+/** SafeTrip composer: pill input on the dark surface + coral circular send.
+ *  Extra bottom padding lifts it clear of the floating BottomNav. */
 export const ChatInput: React.FC<ChatInputProps> = ({ onSendMessage, isLoading, disabled }) => {
   const [text, setText] = useState('');
 
@@ -28,60 +23,46 @@ export const ChatInput: React.FC<ChatInputProps> = ({ onSendMessage, isLoading, 
   const inactive = isLoading || disabled || !text.trim();
 
   return (
-    <form
-      onSubmit={handleSubmit}
-      className="flex items-center gap-3 px-5 sm:px-7 lg:px-8 py-4"
-      style={{
-        background: 'var(--surface-1)',
-        borderTop: '1px solid var(--border-subtle)',
-      }}
-    >
-      <input
-        type="text"
-        value={text}
-        onChange={(e) => setText(e.target.value)}
-        placeholder={disabled ? 'Por favor, aceptá los términos para comenzar...' : 'Escribí tu pregunta o situación...'}
-        className="flex-1"
-        style={fieldStyle}
-        onFocus={(e) => {
-          e.currentTarget.style.borderColor = 'var(--accent-primary)';
-        }}
-        onBlur={(e) => {
-          e.currentTarget.style.borderColor = 'var(--border-medium)';
-        }}
-        disabled={isLoading || disabled}
-      />
-      <button
-        type="submit"
-        disabled={inactive}
-        className="flex items-center justify-center flex-shrink-0"
-        style={{
-          width: '48px',
-          height: '48px',
-          borderRadius: '50%',
-          border: 'none',
-          background: inactive ? 'var(--surface-3)' : 'var(--accent-primary)',
-          color: inactive ? 'var(--text-muted)' : 'var(--accent-ink)',
-          cursor: inactive ? 'not-allowed' : 'pointer',
-          boxShadow: inactive ? 'none' : 'var(--shadow-lg)',
-          transition: 'background var(--transition-fast), transform var(--transition-fast)',
-        }}
-        onMouseEnter={(e) => {
-          if (!inactive) {
-            e.currentTarget.style.background = 'var(--accent-hover)';
-            e.currentTarget.style.transform = 'scale(1.05)';
-          }
-        }}
-        onMouseLeave={(e) => {
-          if (!inactive) {
-            e.currentTarget.style.background = 'var(--accent-primary)';
-            e.currentTarget.style.transform = 'scale(1)';
-          }
-        }}
-        aria-label="Enviar mensaje"
-      >
-        <SendIcon />
-      </button>
-    </form>
+    <div className="px-5 sm:px-7 lg:px-10 pt-4" style={{ background: 'var(--bg-primary)', paddingBottom: '104px' }}>
+      <form onSubmit={handleSubmit} className="relative max-w-4xl mx-auto">
+        <input
+          type="text"
+          value={text}
+          onChange={(e) => setText(e.target.value)}
+          placeholder={disabled ? 'Aceptá los términos para comenzar…' : 'Preguntá sobre dosis, interacciones, efectos…'}
+          disabled={isLoading || disabled}
+          className="w-full"
+          style={{
+            background: 'var(--surface-1)',
+            border: '1px solid var(--border-medium)',
+            borderRadius: '999px',
+            outline: 'none',
+            color: 'var(--text-primary)',
+            padding: '16px 64px 16px 24px',
+            fontSize: '15px',
+            transition: 'border-color var(--transition-fast)',
+          }}
+          onFocus={(e) => { e.currentTarget.style.borderColor = 'var(--accent-primary)'; }}
+          onBlur={(e) => { e.currentTarget.style.borderColor = 'var(--border-medium)'; }}
+        />
+        <button
+          type="submit"
+          disabled={inactive}
+          aria-label="Enviar mensaje"
+          className="absolute right-2 top-1/2 -translate-y-1/2 flex items-center justify-center"
+          style={{
+            width: '44px', height: '44px', borderRadius: '50%', border: 'none',
+            background: inactive ? 'var(--surface-3)' : 'var(--accent-primary)',
+            color: inactive ? 'var(--text-muted)' : 'var(--accent-ink)',
+            cursor: inactive ? 'not-allowed' : 'pointer',
+            transition: 'background var(--transition-fast), transform var(--transition-fast)',
+          }}
+          onMouseEnter={(e) => { if (!inactive) { e.currentTarget.style.background = 'var(--accent-hover)'; e.currentTarget.style.transform = 'translateY(-50%) scale(1.06)'; } }}
+          onMouseLeave={(e) => { if (!inactive) { e.currentTarget.style.background = 'var(--accent-primary)'; e.currentTarget.style.transform = 'translateY(-50%) scale(1)'; } }}
+        >
+          <Send size={18} />
+        </button>
+      </form>
+    </div>
   );
 };

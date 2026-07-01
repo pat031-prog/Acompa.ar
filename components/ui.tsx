@@ -1,4 +1,5 @@
 import React from 'react';
+import { motion } from 'motion/react';
 
 /**
  * ── Acompañ.Ar UI primitives — "MARS" ──
@@ -11,27 +12,97 @@ import React from 'react';
 
 /* ════════════ Type ════════════ */
 
-/** Small uppercase tracked label — the recurring kicker ("OBSERVATORIO", "DISCOVER"). */
-export const Kicker: React.FC<{ children: React.ReactNode; color?: string; tick?: boolean; className?: string }> = ({ children, color = 'var(--accent-primary)', tick = true, className = '' }) => (
+/** SafeTrip kicker — coral, wide-tracked uppercase mono-ish label. */
+export const Kicker: React.FC<{ children: React.ReactNode; color?: string; tick?: boolean; className?: string }> = ({ children, color = 'var(--accent-primary)', tick = false, className = '' }) => (
   <div className={`flex items-center gap-2.5 ${className}`}>
     {tick && <span style={{ width: '18px', height: '2px', background: color, borderRadius: '999px' }} />}
-    <span style={{ fontFamily: 'var(--font-heading)', fontSize: '11px', fontWeight: 700, letterSpacing: '0.2em', textTransform: 'uppercase', color }}>{children}</span>
+    <span style={{ fontFamily: 'var(--font-heading)', fontSize: '13px', fontWeight: 600, letterSpacing: '0.28em', textTransform: 'uppercase', color }}>{children}</span>
   </div>
 );
 
-/** Big bold grotesque display title. `upper` for short titles (poster look). */
+/** Space Grotesk display title — bold, tracking-tighter, uppercase for `upper`. */
 export const Display: React.FC<{ children: React.ReactNode; size?: 'xl' | 'lg' | 'md'; upper?: boolean; color?: string; className?: string; style?: React.CSSProperties }> = ({ children, size = 'lg', upper = false, color = 'var(--text-primary)', className = '', style }) => {
   const sizes = {
-    xl: { fontSize: 'clamp(2.6rem, 5.5vw, 4rem)', lineHeight: 0.96, letterSpacing: '-0.025em' },
-    lg: { fontSize: 'clamp(1.9rem, 3.4vw, 2.6rem)', lineHeight: 1, letterSpacing: '-0.02em' },
-    md: { fontSize: '20px', lineHeight: 1.1, letterSpacing: '-0.01em' },
+    xl: { fontSize: 'clamp(3rem, 6.5vw, 5rem)', lineHeight: 0.92, letterSpacing: '-0.04em' },
+    lg: { fontSize: 'clamp(2.2rem, 4vw, 3.2rem)', lineHeight: 0.96, letterSpacing: '-0.035em' },
+    md: { fontSize: '24px', lineHeight: 1.05, letterSpacing: '-0.02em' },
   }[size];
   return (
-    <h1 className={className} style={{ fontFamily: size === 'xl' ? 'var(--font-display)' : 'var(--font-heading)', fontWeight: 800, color, textTransform: upper ? 'uppercase' : 'none', ...sizes, ...style }}>
+    <h1 className={className} style={{ fontFamily: 'var(--font-display)', fontWeight: 700, color, textTransform: upper ? 'uppercase' : 'none', ...sizes, ...style }}>
       {children}
     </h1>
   );
 };
+
+/** Coral mono label used inside dark data cards ("DURACIÓN", "EFECTOS"). */
+export const MonoLabel: React.FC<{ children: React.ReactNode; color?: string; className?: string }> = ({ children, color = 'var(--accent-primary)', className = '' }) => (
+  <span className={className} style={{ fontFamily: 'var(--font-mono)', fontSize: '13px', fontWeight: 600, letterSpacing: '0.08em', textTransform: 'uppercase', color }}>{children}</span>
+);
+
+/** A labelled data section: coral mono label + content. */
+export const DataBlock: React.FC<{ label: React.ReactNode; children: React.ReactNode; color?: string; className?: string }> = ({ label, children, color, className = '' }) => (
+  <div className={className}>
+    <MonoLabel color={color}>{label}</MonoLabel>
+    <div className="mt-2">{children}</div>
+  </div>
+);
+
+/** The big coral detail panel with a huge rounded corner (SafeTrip signature). */
+export const CoralPanel: React.FC<{ children: React.ReactNode; className?: string; style?: React.CSSProperties }> = ({ children, className = '', style }) => (
+  <div
+    className={`rounded-t-[3rem] md:rounded-l-[4rem] md:rounded-tr-none ${className}`}
+    style={{ background: 'var(--accent-primary)', color: 'var(--accent-ink)', ...style }}
+  >
+    {children}
+  </div>
+);
+
+/** The dark rounded card that floats on the coral panel, holding the data. */
+export const DarkCard: React.FC<{ children: React.ReactNode; className?: string; style?: React.CSSProperties }> = ({ children, className = '', style }) => (
+  <div
+    className={className}
+    style={{ background: 'var(--bg-primary)', color: 'var(--text-primary)', borderRadius: '2.5rem', boxShadow: '0 24px 60px rgba(0,0,0,0.4)', ...style }}
+  >
+    {children}
+  </div>
+);
+
+/** List-rail item with an animated outlined-pill selection (motion layoutId).
+ *  The signature SafeTrip master-list interaction. */
+export const RailItem: React.FC<{ active: boolean; onClick: () => void; layoutId: string; children: React.ReactNode; sub?: React.ReactNode }> = ({ active, onClick, layoutId, children, sub }) => (
+  <button
+    onClick={onClick}
+    className="relative w-full text-center md:text-left transition-colors duration-300 group"
+    style={{ fontFamily: 'var(--font-heading)', textTransform: 'uppercase', letterSpacing: '0.18em', fontWeight: 500, color: active ? 'var(--accent-primary)' : 'var(--text-tertiary)' }}
+  >
+    {active && (
+      <motion.div
+        layoutId={layoutId}
+        className="absolute left-1/2 md:left-0 top-1/2 -translate-y-1/2 -translate-x-1/2 md:translate-x-0"
+        style={{ width: '112%', height: sub ? '76px' : '54px', border: '1px solid var(--accent-primary)', borderRadius: '999px' }}
+        initial={false}
+        transition={{ type: 'spring', stiffness: 300, damping: 30 }}
+      />
+    )}
+    <span className="relative z-10 block px-4 py-2" style={{ fontSize: sub ? '14px' : '15px' }}>{children}</span>
+    {sub && <span className="relative z-10 block px-4 text-xs" style={{ letterSpacing: '0.05em', opacity: 0.5, textTransform: 'none', fontFamily: 'var(--font-ui)' }}>{sub}</span>}
+    {active && <span className="hidden md:block absolute right-0 top-1/2 h-px w-8" style={{ background: 'var(--accent-primary)' }} />}
+  </button>
+);
+
+/** Full-width coral CTA (SafeTrip "Cómo llegar" style). */
+export const CoralButton: React.FC<{ children: React.ReactNode; onClick?: () => void; className?: string; type?: 'button' | 'submit' }> = ({ children, onClick, className = '', type = 'button' }) => (
+  <button
+    type={type}
+    onClick={onClick}
+    className={`w-full flex items-center justify-center gap-2 transition-colors ${className}`}
+    style={{ padding: '15px 20px', borderRadius: '999px', background: 'var(--accent-primary)', color: 'var(--accent-ink)', fontFamily: 'var(--font-heading)', fontWeight: 700, fontSize: '13px', letterSpacing: '0.12em', textTransform: 'uppercase' }}
+    onMouseEnter={(e) => { e.currentTarget.style.background = '#fff'; }}
+    onMouseLeave={(e) => { e.currentTarget.style.background = 'var(--accent-primary)'; }}
+  >
+    {children}
+  </button>
+);
 
 /** "#04" style index marker. */
 export const IndexTag: React.FC<{ children: React.ReactNode; color?: string }> = ({ children, color = 'var(--text-muted)' }) => (
@@ -135,13 +206,15 @@ export const Orb: React.FC<{ color: string; size?: number; label?: React.ReactNo
 );
 
 /** Circular icon button — surface / coral / outline variants (expand, more, ...). */
-export const CircleButton: React.FC<{ children: React.ReactNode; onClick?: () => void; label?: string; variant?: 'surface' | 'coral' | 'outline'; size?: number; active?: boolean; activeColor?: string }> = ({ children, onClick, label, variant = 'surface', size = 40, active, activeColor = 'var(--accent-primary)' }) => {
+export const CircleButton: React.FC<{ children: React.ReactNode; onClick?: () => void; label?: string; variant?: 'surface' | 'coral' | 'outline' | 'dark'; size?: number; active?: boolean; activeColor?: string }> = ({ children, onClick, label, variant = 'surface', size = 40, active, activeColor = 'var(--accent-primary)' }) => {
   const styles: React.CSSProperties =
     variant === 'coral'
       ? { background: 'var(--accent-primary)', color: 'var(--accent-ink)', border: 'none' }
-      : variant === 'outline'
-        ? { background: active ? tint(activeColor) : 'transparent', color: active ? activeColor : 'var(--text-secondary)', border: `1px solid ${active ? activeColor : 'var(--border-medium)'}` }
-        : { background: 'var(--surface-2)', color: active ? activeColor : 'var(--text-secondary)', border: '1px solid var(--border-subtle)' };
+      : variant === 'dark'
+        ? { background: 'var(--bg-primary)', color: 'var(--accent-primary)', border: 'none' }
+        : variant === 'outline'
+          ? { background: active ? tint(activeColor) : 'transparent', color: active ? activeColor : 'var(--text-secondary)', border: `1px solid ${active ? activeColor : 'var(--border-medium)'}` }
+          : { background: 'var(--surface-2)', color: active ? activeColor : 'var(--text-secondary)', border: '1px solid var(--border-subtle)' };
   return (
     <button onClick={onClick} aria-label={label} title={label} className="flex items-center justify-center flex-shrink-0 transition-colors active:scale-95" style={{ width: size, height: size, borderRadius: '50%', ...styles }}>
       {children}

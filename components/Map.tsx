@@ -1,90 +1,9 @@
-
 import React, { useState, useMemo } from 'react';
 import { MAP_DATA } from '../constants';
-import type { MapDataset } from '../types';
 import { ArgentinaMap } from './ArgentinaMap';
-import { PageHeader, InlineNote, Kicker, Display, DataList, IndexNum, Orb, fieldStyle, tint } from './ui';
-
-const SearchIcon: React.FC = () => (
-  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-4 h-4">
-    <path fillRule="evenodd" d="M9 3.5a5.5 5.5 0 1 0 0 11 5.5 5.5 0 0 0 0 -11ZM2 9a7 7 0 1 1 12.452 4.391l3.328 3.329a.75.75 0 1 1-1.06 1.06l-3.329-3.328A7 7 0 0 1 2 9Z" clipRule="evenodd" />
-  </svg>
-);
-
-/** Section medallion glyph — a stroked globe with meridian/parallel. */
-const GlobeIcon: React.FC = () => (
-  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" strokeWidth={1.6} stroke="currentColor" strokeLinecap="round" strokeLinejoin="round">
-    <circle cx="12" cy="12" r="9" />
-    <path d="M3 12h18" />
-    <path d="M12 3c2.5 2.4 3.8 5.6 3.8 9s-1.3 6.6-3.8 9c-2.5-2.4-3.8-5.6-3.8-9s1.3-6.6 3.8-9Z" />
-  </svg>
-);
-
-const SAGE = 'var(--accent-primary)';
-// Warm terracotta, cohesive with the choropleth ramp's bright-coral top stop.
-const TERRACOTTA = '#EC936E';
-
-/** Ruled province list row: name + coral value bar (∝ value/max) + number. */
-const ProvinceRow: React.FC<{ name: string; data: MapDataset; isSelected: boolean; onClick: () => void; maxQueries: number; first?: boolean }> = ({ name, data, isSelected, onClick, maxQueries, first }) => (
-  <button
-    onClick={onClick}
-    className="w-full flex items-center gap-4 py-3.5 text-left transition-colors duration-150"
-    style={{
-      borderTop: first ? 'none' : '1px solid var(--border-subtle)',
-      background: isSelected ? tint(SAGE, 'subtle') : 'transparent',
-      paddingLeft: '10px',
-      paddingRight: '10px',
-    }}
-    onMouseEnter={(e) => { if (!isSelected) e.currentTarget.style.background = 'var(--surface-1)'; }}
-    onMouseLeave={(e) => { if (!isSelected) e.currentTarget.style.background = 'transparent'; }}
-  >
-    <span style={{ fontSize: '13px', fontWeight: isSelected ? 700 : 500, color: isSelected ? SAGE : 'var(--text-secondary)', flex: 1, minWidth: 0 }}>{name}</span>
-    <div className="flex items-center gap-3 flex-shrink-0">
-      <div style={{ width: '56px', height: '3px', borderRadius: '999px', background: 'var(--surface-3)', overflow: 'hidden' }}>
-        <div style={{ width: `${Math.max(6, (data.totalQueries / maxQueries) * 100)}%`, height: '100%', background: SAGE }} />
-      </div>
-      <span style={{ fontFamily: 'var(--font-heading)', fontSize: '13px', fontWeight: 700, color: isSelected ? SAGE : 'var(--text-primary)', minWidth: '36px', textAlign: 'right', fontVariantNumeric: 'tabular-nums' }}>{data.totalQueries}</span>
-    </div>
-  </button>
-);
-
-/** Active-province detail: Kicker + Display + label:value stats (totals + categories). */
-const ProvinceDetail: React.FC<{ name: string; data: MapDataset; isTop?: boolean }> = ({ name, data, isTop }) => (
-  <div className="px-5 sm:px-7 py-8" style={{ animation: 'fadeInUp 0.25s var(--ease-out-strong) both' }}>
-    <Kicker className="mb-4">Provincia seleccionada</Kicker>
-    <div className="flex items-center gap-4">
-      {isTop && <Orb color={TERRACOTTA} size={44} />}
-      <Display size="md" upper>{name}</Display>
-    </div>
-
-    <div className="mt-6">
-      <DataList
-        items={[
-          { label: 'Consultas totales', value: data.totalQueries.toLocaleString('es-AR'), accent: SAGE },
-          ...data.topCategories.map(cat => ({
-            label: cat.category,
-            value: (
-              <div className="flex items-center justify-end gap-3">
-                <div style={{ width: '64px', height: '3px', borderRadius: '999px', background: 'var(--surface-3)', overflow: 'hidden' }}>
-                  <div style={{ width: `${cat.percentage}%`, height: '100%', background: SAGE }} />
-                </div>
-                <span style={{ minWidth: '38px', textAlign: 'right' as const, fontVariantNumeric: 'tabular-nums' }}>{cat.percentage}%</span>
-              </div>
-            ),
-          })),
-        ]}
-      />
-    </div>
-
-    {data.topCategories.length === 0 && (
-      <div className="mt-5">
-        <InlineNote>
-          No hay suficientes datos de categorías para esta provincia.
-        </InlineNote>
-      </div>
-    )}
-  </div>
-);
+import { Kicker, Display, DarkCard, DataBlock, RailItem, MonoLabel } from './ui';
+import { motion, AnimatePresence } from 'motion/react';
+import { Globe, Search } from 'lucide-react';
 
 export const Observatory: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState('');
@@ -92,41 +11,31 @@ export const Observatory: React.FC = () => {
   const [hovered, setHovered] = useState<string | null>(null);
 
   const provinceData = useMemo(() => {
-    const dataArray = Object.entries(MAP_DATA)
+    const arr = Object.entries(MAP_DATA)
       .map(([provinceName, data]) => ({ provinceName, data }))
       .sort((a, b) => b.data.totalQueries - a.data.totalQueries);
-    if (!searchTerm) return dataArray;
-    const lowercasedFilter = searchTerm.toLowerCase();
-    return dataArray.filter(({ provinceName }) => provinceName.toLowerCase().includes(lowercasedFilter));
+    if (!searchTerm) return arr;
+    const l = searchTerm.toLowerCase();
+    return arr.filter(({ provinceName }) => provinceName.toLowerCase().includes(l));
   }, [searchTerm]);
 
   const maxQueries = useMemo(() => Math.max(1, ...Object.values(MAP_DATA).map(d => d.totalQueries)), []);
+  const totalAll = useMemo(() => Object.values(MAP_DATA).reduce((s, d) => s + d.totalQueries, 0), []);
 
-  // Highest-volume province — surfaced as a small terracotta Orb identity.
-  const topProvince = useMemo(() => {
-    const entries = Object.entries(MAP_DATA);
-    if (entries.length === 0) return null;
-    return entries.reduce((best, cur) => (cur[1].totalQueries > best[1].totalQueries ? cur : best))[0];
-  }, []);
-
-  // Warm terracotta sequential ramp (deep ember → bright coral) — cohesive
-  // with the editorial palette. Solid colours, not alpha-over-canvas.
   const rampColor = (intensity: number): string => {
-    const lo = [0x2A, 0x1B, 0x15]; // #2A1B15 deep ember
-    const hi = [0xEC, 0x93, 0x6E]; // #EC936E bright coral
+    const lo = [0x2A, 0x1B, 0x15];
+    const hi = [0xEC, 0x93, 0x6E];
     const t = Math.pow(Math.min(1, Math.max(0, intensity)), 0.8);
-    const c = lo.map((l, i) => Math.round(l + (hi[i] - l) * t));
+    const c = lo.map((v, i) => Math.round(v + (hi[i] - v) * t));
     return `rgb(${c[0]}, ${c[1]}, ${c[2]})`;
   };
 
   const getFill = (provinceName: string): string => {
     const data = MAP_DATA[provinceName];
-    if (!data) return '#1D1712'; // no-data: near-canvas warm neutral
+    if (!data) return '#1D1712';
     return rampColor(data.totalQueries / maxQueries);
   };
 
-  // Top provinces get a value label drawn on the map (skip CABA — too small,
-  // its centroid overlaps Buenos Aires).
   const topLabels = useMemo(() =>
     Object.entries(MAP_DATA)
       .filter(([name]) => name !== 'Ciudad Autónoma de Buenos Aires')
@@ -139,96 +48,115 @@ export const Observatory: React.FC = () => {
   const activeData = activeName ? MAP_DATA[activeName] : null;
 
   return (
-    <div className="flex-1 overflow-y-auto flex flex-col" style={{ background: 'var(--bg-primary)' }}>
-      {/* Header — coral globe medallion beside the title */}
-      <PageHeader
-        eyebrow="Observatorio territorial"
-        title="Mapa epidemiológico anónimo"
-        description="Datos agregados y anónimos de consultas por provincia. Cuanto más intenso el color, mayor el volumen de consultas registradas."
-        accent={SAGE}
-        icon={<GlobeIcon />}
-      />
-      <div className="px-5 sm:px-7 lg:px-8 pt-7 pb-1">
-        <InlineNote label="Nota">
-          Los datos mostrados son actualmente figurativos e inventados. Representan la visión a futuro de lo que Acompañ.Ar aspira a ser: una herramienta de mapeo epidemiológico anónimo en tiempo real para informar políticas públicas de salud preventiva.
-        </InlineNote>
-      </div>
+    <div className="flex flex-col md:flex-row h-full w-full overflow-hidden" style={{ background: 'var(--bg-primary)' }}>
+      {/* ── Rail: ranking ── */}
+      <div className="w-full md:w-1/3 flex-col p-6 md:p-10 relative flex" style={{ borderRight: '1px solid var(--border-subtle)' }}>
+        <div className="flex items-center justify-between mb-6">
+          <Kicker>Observatorio</Kicker>
+          <span style={{ color: 'var(--accent-primary)' }}><Globe size={22} /></span>
+        </div>
+        <p className="text-xs leading-relaxed mb-5" style={{ color: 'var(--text-muted)' }}>Datos figurativos: la visión a futuro de un mapeo epidemiológico anónimo en tiempo real.</p>
 
-      {/* Map + Panel */}
-      <section className="flex-1 flex flex-col lg:flex-row min-h-0 mt-8" style={{ borderTop: '1px solid var(--border-subtle)' }}>
-        {/* Map — kept big and central */}
-        <div className="lg:w-[48%] flex-shrink-0 flex items-center justify-center px-6 py-12 relative" style={{ borderBottom: '1px solid var(--border-subtle)', borderRight: '1px solid var(--border-subtle)' }}>
-          <div style={{ height: 'min(70vh, 560px)', aspectRatio: '0.49', maxWidth: '100%' }}>
-            <ArgentinaMap
-              getFill={getFill}
-              onProvinceHover={setHovered}
-              onProvinceClick={(name) => setSelected(prev => prev === name ? null : name)}
-              hoveredProvince={hovered}
-              selectedProvince={selected}
-              labels={topLabels}
-            />
-          </div>
-
-          {/* Legend */}
-          <div className="absolute bottom-8 left-6 sm:left-8 flex items-center gap-2.5">
-            <span style={{ fontFamily: 'var(--font-heading)', fontSize: '9px', color: 'var(--text-muted)', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.12em' }}>Menos</span>
-            <div style={{ display: 'flex', width: '72px', height: '6px', borderRadius: '999px', overflow: 'hidden' }}>
-              {[0.05, 0.3, 0.55, 0.8, 1].map((a, i) => (
-                <div key={i} style={{ flex: 1, background: rampColor(a) }} />
-              ))}
-            </div>
-            <span style={{ fontFamily: 'var(--font-heading)', fontSize: '9px', color: 'var(--text-muted)', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.12em' }}>Más</span>
-          </div>
+        <div className="relative mb-4">
+          <span className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-4" style={{ color: 'var(--text-muted)' }}><Search size={16} /></span>
+          <input
+            type="text" placeholder="Buscar provincia…" value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)}
+            style={{ background: 'var(--surface-1)', color: 'var(--text-primary)', border: '1px solid var(--border-medium)', borderRadius: 'var(--radius-pill)', outline: 'none', width: '100%', padding: '10px 16px 10px 42px', fontSize: '14px' }}
+            onFocus={(e) => { e.currentTarget.style.borderColor = 'var(--accent-primary)'; }}
+            onBlur={(e) => { e.currentTarget.style.borderColor = 'var(--border-medium)'; }}
+          />
         </div>
 
-        {/* Side panel: detail or list */}
-        <div className="flex-1 min-h-0 flex flex-col">
-          {activeData && activeName ? (
-            <div style={{ borderBottom: '1px solid var(--border-subtle)' }}>
-              <ProvinceDetail name={activeName} data={activeData} isTop={activeName === topProvince} />
-            </div>
-          ) : null}
+        <div className="flex flex-col gap-3 flex-1 overflow-y-auto no-scrollbar pt-2" style={{ paddingBottom: '120px' }}>
+          {provinceData.length === 0 ? (
+            <p className="text-center text-sm mt-8" style={{ color: 'var(--text-muted)' }}>Sin resultados.</p>
+          ) : (
+            provinceData.map(({ provinceName, data }) => (
+              <RailItem
+                key={provinceName}
+                active={selected === provinceName}
+                onClick={() => setSelected(prev => prev === provinceName ? null : provinceName)}
+                layoutId="obs-pill"
+                sub={`${data.totalQueries.toLocaleString('es-AR')} consultas`}
+              >
+                {provinceName}
+              </RailItem>
+            ))
+          )}
+        </div>
+      </div>
 
-          <div className="px-5 sm:px-7 py-8">
-            {/* Search field */}
-            <div className="relative mb-6">
-              <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-4" style={{ color: 'var(--text-muted)' }}>
-                <SearchIcon />
-              </div>
-              <input
-                type="text"
-                placeholder="Buscar provincia..."
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                style={{ ...fieldStyle, paddingLeft: '38px' }}
-                onFocus={(e) => e.currentTarget.style.borderColor = SAGE}
-                onBlur={(e) => e.currentTarget.style.borderColor = 'var(--border-medium)'}
-              />
+      {/* ── Detail (coral): map card + stats ── */}
+      <div className="w-full md:w-2/3 flex">
+        <div className="w-full p-6 md:p-12 flex flex-col overflow-y-auto no-scrollbar rounded-t-[3rem] md:rounded-l-[4rem] md:rounded-tr-none" style={{ background: 'var(--accent-primary)', color: 'var(--accent-ink)', paddingBottom: '120px' }}>
+          <div className="max-w-2xl mx-auto w-full">
+            <div className="text-center md:text-left mb-8">
+              <div className="mb-3" style={{ fontFamily: 'var(--font-mono)', fontSize: '11px', fontWeight: 700, letterSpacing: '0.14em', textTransform: 'uppercase', color: 'var(--accent-ink)', opacity: 0.65 }}>Mapa epidemiológico anónimo</div>
+              <Display size="lg" upper color="var(--accent-ink)">{activeName || 'Argentina'}</Display>
+              <p className="mt-3 font-medium" style={{ fontSize: '15px', opacity: 0.82 }}>{activeData ? `${activeData.totalQueries.toLocaleString('es-AR')} consultas registradas` : `${totalAll.toLocaleString('es-AR')} consultas en todo el país`}</p>
             </div>
 
-            {provinceData.length > 0 ? (
-              <div>
-                {provinceData.map(({ provinceName, data }, idx) => (
-                  <ProvinceRow
-                    key={provinceName}
-                    name={provinceName}
-                    data={data}
-                    first={idx === 0}
-                    isSelected={selected === provinceName}
-                    onClick={() => setSelected(prev => prev === provinceName ? null : provinceName)}
-                    maxQueries={maxQueries}
+            {/* Map framed in a dark card (its native dark canvas) */}
+            <DarkCard className="p-6 md:p-8 mb-6">
+              <div className="flex items-center justify-center relative">
+                <div style={{ height: 'min(52vh, 460px)', aspectRatio: '0.49', maxWidth: '100%' }}>
+                  <ArgentinaMap
+                    getFill={getFill}
+                    onProvinceHover={setHovered}
+                    onProvinceClick={(name) => setSelected(prev => prev === name ? null : name)}
+                    hoveredProvince={hovered}
+                    selectedProvince={selected}
+                    labels={topLabels}
                   />
-                ))}
+                </div>
               </div>
+              <div className="flex items-center justify-center gap-2.5 mt-4">
+                <MonoLabel color="var(--text-muted)">Menos</MonoLabel>
+                <div style={{ display: 'flex', width: '84px', height: '6px', borderRadius: '999px', overflow: 'hidden' }}>
+                  {[0.05, 0.3, 0.55, 0.8, 1].map((a, i) => <div key={i} style={{ flex: 1, background: rampColor(a) }} />)}
+                </div>
+                <MonoLabel color="var(--text-muted)">Más</MonoLabel>
+              </div>
+            </DarkCard>
+
+            {/* Stats card */}
+            {activeData ? (
+              <AnimatePresence mode="wait">
+                <motion.div key={activeName} initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -12 }} transition={{ duration: 0.25 }}>
+                  <DarkCard className="p-7 md:p-9">
+                    <div className="space-y-6">
+                      <DataBlock label="Consultas totales">
+                        <p style={{ fontFamily: 'var(--font-display)', fontWeight: 700, fontSize: '28px', color: 'var(--accent-primary)', lineHeight: 1 }}>{activeData.totalQueries.toLocaleString('es-AR')}</p>
+                      </DataBlock>
+                      {activeData.topCategories.length > 0 ? (
+                        <DataBlock label="Categorías principales">
+                          <div className="mt-2 space-y-3">
+                            {activeData.topCategories.map((cat) => (
+                              <div key={cat.category} className="flex items-center gap-3">
+                                <span className="text-sm flex-1 min-w-0" style={{ color: 'var(--text-secondary)' }}>{cat.category}</span>
+                                <div style={{ width: '90px', height: '4px', borderRadius: '999px', background: 'var(--surface-3)', overflow: 'hidden' }}>
+                                  <div style={{ width: `${cat.percentage}%`, height: '100%', background: 'var(--accent-primary)' }} />
+                                </div>
+                                <span style={{ minWidth: '40px', textAlign: 'right', fontFamily: 'var(--font-mono)', fontSize: '13px', fontWeight: 700, color: 'var(--text-primary)' }}>{cat.percentage}%</span>
+                              </div>
+                            ))}
+                          </div>
+                        </DataBlock>
+                      ) : (
+                        <p className="text-sm" style={{ color: 'var(--text-muted)' }}>Sin datos de categorías para esta provincia.</p>
+                      )}
+                    </div>
+                  </DarkCard>
+                </motion.div>
+              </AnimatePresence>
             ) : (
-              <div className="flex flex-col items-center text-center py-14 gap-3">
-                <IndexNum size={40} color="var(--accent-weak)">00</IndexNum>
-                <p style={{ color: 'var(--text-muted)', fontSize: '13px' }}>No se encontraron resultados para "{searchTerm}".</p>
-              </div>
+              <DarkCard className="p-7 md:p-9">
+                <p className="text-sm leading-relaxed" style={{ color: 'var(--text-secondary)' }}>Pasá el cursor o tocá una provincia en el mapa —o elegila en la lista— para ver el detalle de consultas por categoría.</p>
+              </DarkCard>
             )}
           </div>
         </div>
-      </section>
+      </div>
     </div>
   );
 };

@@ -4,14 +4,14 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes" />
-  <meta name="theme-color" content="#0e0f11" />
+  <meta name="theme-color" content="#121212" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
   <title>Acompañ.Ar — Reducción de Daños</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link
-    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Archivo:wght@400;500;600;700;800;900&family=Archivo+Expanded:wght@600;700;800;900&display=swap"
+    href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap"
     rel="stylesheet">
   <style>
     /* ═══════════════════════════════════════
@@ -22,13 +22,13 @@
          graphic, editorial. Elevation via lighter warm surfaces, not shadows.
          ═══════════════════════════════════════ */
     :root {
-      /* ── Surface ladder (solid, WARM; lighter = higher elevation) ── */
-      --bg-primary: #130F0B;   /* app canvas — deep warm near-black */
-      --bg-secondary: #17120D; /* sidebar / chrome */
-      --bg-tertiary: #1E1811;  /* raised */
-      --surface-1: #1C160F;    /* panel base */
-      --surface-2: #251E15;    /* panel hover / nested */
-      --surface-3: #322820;    /* active / popover */
+      /* ── Surface ladder — SafeTrip neutral near-black ── */
+      --bg-primary: #121212;   /* app canvas */
+      --bg-secondary: #171717; /* chrome */
+      --bg-tertiary: #1e1e1e;  /* raised surface */
+      --surface-1: #1e1e1e;    /* card / nav / input */
+      --surface-2: #262626;    /* nested / hover */
+      --surface-3: #2e2e2e;    /* active */
       --surface: var(--surface-1);
       --surface-hover: var(--surface-2);
       --surface-active: var(--surface-3);
@@ -39,33 +39,33 @@
       --bg-surface: var(--bg-tertiary);
       --bg: var(--bg-primary);
 
-      /* ── Text hierarchy — warm cream ink ── */
-      --text-primary: rgba(247, 240, 232, 0.95);
-      --text-secondary: rgba(247, 240, 232, 0.64);
-      --text-tertiary: rgba(247, 240, 232, 0.45);
-      --text-muted: rgba(247, 240, 232, 0.32);
+      /* ── Text hierarchy — SafeTrip #f5f5f5 ── */
+      --text-primary: rgba(245, 245, 245, 0.95);
+      --text-secondary: rgba(245, 245, 245, 0.60);
+      --text-tertiary: rgba(245, 245, 245, 0.42);
+      --text-muted: rgba(245, 245, 245, 0.30);
       --text: var(--text-primary);
       --muted: var(--text-secondary);
       --text-ink-900: var(--text-primary);
       --text-ink-600: var(--text-secondary);
       --text-ink-400: var(--text-tertiary);
 
-      /* ── Borders — warm hairline ── */
-      --border-subtle: rgba(247, 240, 232, 0.07);
-      --border-medium: rgba(247, 240, 232, 0.12);
-      --border-strong: rgba(247, 240, 232, 0.18);
+      /* ── Borders — neutral hairline (white/5–12) ── */
+      --border-subtle: rgba(255, 255, 255, 0.05);
+      --border-medium: rgba(255, 255, 255, 0.10);
+      --border-strong: rgba(255, 255, 255, 0.16);
       --border: var(--border-subtle);
       --border-thick: 1px solid var(--border-medium);
       --border-editorial: 1px solid var(--border-subtle);
 
-      /* ── Accent — Coral (primary brand), bold like the reference ── */
-      --accent-primary: #E17A54;
-      --accent-hover: #EC8D69;
-      --accent-deep: #C25E3B;   /* darker coral for gradients / depth */
-      --accent-ink: #2A1409;    /* text/icons on coral fills */
-      --accent-subtle: rgba(225, 122, 84, 0.14);
-      --accent-medium: rgba(225, 122, 84, 0.26);
-      --accent-weak: rgba(225, 122, 84, 0.08);
+      /* ── Accent — SafeTrip coral #E87A5D ── */
+      --accent-primary: #E87A5D;
+      --accent-hover: #ff9c83;
+      --accent-deep: #c25e3b;   /* darker coral for gradients / depth */
+      --accent-ink: #121212;    /* text/icons on coral fills */
+      --accent-subtle: rgba(232, 122, 93, 0.14);
+      --accent-medium: rgba(232, 122, 93, 0.26);
+      --accent-weak: rgba(232, 122, 93, 0.08);
       --accent: var(--accent-primary);
 
       /* ── Accent — Sage (secondary; safety / care sections) ── */
@@ -131,10 +131,10 @@
          reserved for large page titles, never for labels/body/chrome. */
       --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
       --font-ui: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-      --font-display: 'Archivo Expanded', 'Archivo', 'Inter', sans-serif;
-      --font-heading: 'Archivo', 'Inter', sans-serif;
+      --font-display: 'Space Grotesk', 'Inter', ui-sans-serif, sans-serif;
+      --font-heading: 'Space Grotesk', 'Inter', ui-sans-serif, sans-serif;
       --font-editorial: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-      --font-mono: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+      --font-mono: 'Space Grotesk', ui-monospace, 'SF Mono', monospace;
 
       /* Type scale */
       --font-size-xs: 12px;
@@ -582,8 +582,8 @@
 </script>
 </head>
 
-<body style="background-color: #0a0a0f !important;">
-  <div id="root" style="background-color: #0a0a0f !important;"></div>
+<body style="background-color: #121212 !important;">
+  <div id="root" style="background-color: #121212 !important;"></div>
   <script type="module" src="/index.tsx"></script>
 </body>
 
