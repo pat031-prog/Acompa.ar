@@ -15,19 +15,19 @@
     rel="stylesheet">
   <style>
     /* ═══════════════════════════════════════
-         Acompañ.Ar — Design System v4 "Editorial Cálido"
-         Warm near-black canvas + terracotta, cream ink, a literary display
-         serif (Fraunces) for big moments, tracked-uppercase labels, and
-         confident scale contrast. Inspired by warm editorial art direction.
-         Elevation = lighter warm surface over the canvas (no heavy shadows).
+         Acompañ.Ar — Design System v5 "MARS"
+         Bold coral + deep warm-black, cream ink. Corner-cut panels with coral
+         tabs, big uppercase grotesque display, outlined-pill navigation,
+         circular motifs, index markers, label:value data lists. Confident,
+         graphic, editorial. Elevation via lighter warm surfaces, not shadows.
          ═══════════════════════════════════════ */
     :root {
       /* ── Surface ladder (solid, WARM; lighter = higher elevation) ── */
-      --bg-primary: #15110D;   /* app canvas — warm near-black */
-      --bg-secondary: #1A1611; /* sidebar / chrome */
-      --bg-tertiary: #211B15;  /* raised */
-      --surface-1: #1F1A14;    /* card base */
-      --surface-2: #271F18;    /* card hover / nested */
+      --bg-primary: #130F0B;   /* app canvas — deep warm near-black */
+      --bg-secondary: #17120D; /* sidebar / chrome */
+      --bg-tertiary: #1E1811;  /* raised */
+      --surface-1: #1C160F;    /* panel base */
+      --surface-2: #251E15;    /* panel hover / nested */
       --surface-3: #322820;    /* active / popover */
       --surface: var(--surface-1);
       --surface-hover: var(--surface-2);
@@ -58,12 +58,14 @@
       --border-thick: 1px solid var(--border-medium);
       --border-editorial: 1px solid var(--border-subtle);
 
-      /* ── Accent — Terracotta (primary brand), warmed toward the reference ── */
-      --accent-primary: #CE7458;
-      --accent-hover: #DD8568;
-      --accent-subtle: rgba(206, 116, 88, 0.13);
-      --accent-medium: rgba(206, 116, 88, 0.24);
-      --accent-weak: rgba(206, 116, 88, 0.08);
+      /* ── Accent — Coral (primary brand), bold like the reference ── */
+      --accent-primary: #E17A54;
+      --accent-hover: #EC8D69;
+      --accent-deep: #C25E3B;   /* darker coral for gradients / depth */
+      --accent-ink: #2A1409;    /* text/icons on coral fills */
+      --accent-subtle: rgba(225, 122, 84, 0.14);
+      --accent-medium: rgba(225, 122, 84, 0.26);
+      --accent-weak: rgba(225, 122, 84, 0.08);
       --accent: var(--accent-primary);
 
       /* ── Accent — Sage (secondary; safety / care sections) ── */
