@@ -1,9 +1,16 @@
 import React from 'react';
-import { PageHeader, Panel, Pill, Display } from './ui';
+import { PageHeader, Panel, Pill, Display, Orb, SectionLabel } from './ui';
 
 const ExternalLinkIcon: React.FC<{ className?: string }> = ({ className = 'w-4 h-4' }) => (
     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className={className}>
         <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 6H5.25A2.25 2.25 0 0 0 3 8.25v10.5A2.25 2.25 0 0 0 5.25 21h10.5A2.25 2.25 0 0 0 18 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25" />
+    </svg>
+);
+
+// Section medallion: an open book (24x24, stroke 1.6, currentColor — renders in accent-ink on coral)
+const BookIcon: React.FC = () => (
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" strokeWidth={1.6} stroke="currentColor">
+        <path strokeLinecap="round" strokeLinejoin="round" d="M12 6.5C12 5.4 10.8 4.5 8.5 4.5S4 5 3.5 5.5v13c.5-.5 2.2-1 4.5-1s3.5.9 4 1.5m0-12.5c0-1.1 1.2-2 3.5-2s4 .5 4.5 1v13c-.5-.5-2.2-1-4.5-1s-3.5.9-4 1.5m0-12.5v12.5" />
     </svg>
 );
 
@@ -173,25 +180,27 @@ const ArticleCard: React.FC<{ article: Article }> = ({ article }) => {
                 interactive
                 tab={<ExternalLinkIcon className="w-[18px] h-[18px]" />}
                 cut="lg"
-                className="flex flex-col h-full p-6 pr-14"
+                className="flex flex-col h-full p-7 pr-14"
             >
-                <div>
+                {/* ── Identity row: a small type-colored orb beside its Pill ── */}
+                <div className="flex items-center gap-3">
+                    <Orb color={color} size={26} />
                     <Pill as="span" active color={color}>{article.type}</Pill>
                 </div>
 
-                <Display size="md" upper className="mt-4" style={{ letterSpacing: '-0.005em' }}>
+                <Display size="md" upper className="mt-6" style={{ letterSpacing: '-0.005em' }}>
                     {article.title}
                 </Display>
 
-                <div className="mt-2.5" style={{ fontFamily: 'var(--font-heading)', fontSize: '11px', fontWeight: 700, letterSpacing: '0.08em', textTransform: 'uppercase', color: 'var(--text-muted)' }}>
+                <div className="mt-3" style={{ fontFamily: 'var(--font-heading)', fontSize: '11px', fontWeight: 700, letterSpacing: '0.08em', textTransform: 'uppercase', color: 'var(--text-muted)' }}>
                     {article.author} · {article.source}, {article.year}
                 </div>
 
-                <p className="mt-3.5 flex-1" style={{ fontSize: '13.5px', lineHeight: 1.55, color: 'var(--text-tertiary)' }}>
+                <p className="mt-4 flex-1" style={{ fontSize: '13.5px', lineHeight: 1.6, color: 'var(--text-tertiary)' }}>
                     {article.summary}
                 </p>
 
-                <span className="inline-flex items-center gap-1.5 mt-6" style={{ fontFamily: 'var(--font-heading)', fontSize: '11px', fontWeight: 700, letterSpacing: '0.1em', textTransform: 'uppercase', color: 'var(--accent-primary)' }}>
+                <span className="inline-flex items-center gap-1.5 mt-8" style={{ fontFamily: 'var(--font-heading)', fontSize: '11px', fontWeight: 700, letterSpacing: '0.1em', textTransform: 'uppercase', color: 'var(--accent-primary)' }}>
                     Leer documento <ExternalLinkIcon className="w-3.5 h-3.5" />
                 </span>
             </Panel>
@@ -207,16 +216,19 @@ export const Literature: React.FC = () => {
                 title="Literatura y Evidencia"
                 description="Papers científicos, artículos de ciencias sociales y publicaciones sobre reducción de daños y políticas de drogas."
                 accent="var(--accent-primary)"
+                icon={<BookIcon />}
             />
 
-            <div className="flex-1 px-5 sm:px-7 lg:px-8" style={{ paddingTop: 'var(--space-6)', paddingBottom: 'var(--space-6)' }}>
-                <div className="grid sm:grid-cols-2 xl:grid-cols-3 gap-4">
+            <div className="flex-1 px-5 sm:px-7 lg:px-8 max-w-6xl w-full mx-auto" style={{ paddingTop: 'var(--space-8)', paddingBottom: 'var(--space-10)' }}>
+                <SectionLabel accent="var(--accent-primary)" count={LITERATURE_DATA.length}>Biblioteca de referencia</SectionLabel>
+
+                <div className="grid sm:grid-cols-2 xl:grid-cols-3 gap-5 sm:gap-6 mt-6">
                     {LITERATURE_DATA.map((article, idx) => (
                         <ArticleCard key={idx} article={article} />
                     ))}
                 </div>
 
-                <div className="mt-10 pt-6" style={{ borderTop: '1px solid var(--border-subtle)' }}>
+                <div className="mt-14 pt-8" style={{ borderTop: '1px solid var(--border-subtle)' }}>
                     <p className="text-center" style={{ fontSize: '12px', lineHeight: 1.65, color: 'var(--text-muted)', maxWidth: '60ch', margin: '0 auto' }}>
                         Esta sección está en construcción. Próximamente incorporaremos un buscador de papers académicos y artículos archivados.
                     </p>

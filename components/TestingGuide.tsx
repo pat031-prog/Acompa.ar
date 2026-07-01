@@ -1,8 +1,16 @@
 import React, { useState } from 'react';
 import { REAGENT_TESTS, TESTING_RESOURCES, TESTING_GUIDE, INSTITUTIONAL_TESTING } from '../constants';
-import { PageHeader, Kicker, Display, Pill, SectionLabel, InlineNote, CircleThumb, IndexNum } from './ui';
+import { PageHeader, Kicker, Display, Pill, SectionLabel, InlineNote, CircleThumb, IndexNum, Orb } from './ui';
 
 const SAGE = 'var(--accent-primary)';
+
+// A dedicated flask/medallion icon for the PageHeader planet (24x24, strokeWidth 1.6).
+const FlaskMedallionIcon: React.FC = () => (
+  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24" strokeWidth={1.6} stroke="currentColor">
+    <path strokeLinecap="round" strokeLinejoin="round" d="M9.5 3h5M10 3v6.2a2 2 0 0 1-.3 1.05l-4.6 7.4A1.8 1.8 0 0 0 6.6 20.5h10.8a1.8 1.8 0 0 0 1.5-2.85l-4.6-7.4A2 2 0 0 1 14 9.2V3" />
+    <path strokeLinecap="round" strokeLinejoin="round" d="M7.4 15.5c1.4-.7 2.9-.7 4.6 0 1.7.7 3.2.7 4.6 0" />
+  </svg>
+);
 
 const BeakerIcon: React.FC = () => (
   <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5">
@@ -45,6 +53,7 @@ export const TestingGuide: React.FC = () => {
         title="Testeo de Sustancias"
         description="Información completa sobre reactivos, recursos y cómo testear sustancias en Argentina."
         accent={SAGE}
+        icon={<FlaskMedallionIcon />}
       />
 
       <div className="flex gap-2.5 px-5 sm:px-7 lg:px-8 py-5 overflow-x-auto scrollbar-hide" style={{ borderBottom: '1px solid var(--border-subtle)' }}>
@@ -56,7 +65,7 @@ export const TestingGuide: React.FC = () => {
         ))}
       </div>
 
-      <div className="flex-1 overflow-y-auto px-5 sm:px-7 lg:px-8" style={{ paddingTop: 'var(--space-6)', paddingBottom: 'var(--space-8)' }}>
+      <div className="flex-1 overflow-y-auto px-5 sm:px-7 lg:px-8" style={{ paddingTop: 'var(--space-8)', paddingBottom: 'var(--space-10)' }}>
         {activeSection === 'institutional' && <InstitutionalSection />}
         {activeSection === 'guide' && <GuideSection />}
         {activeSection === 'reagents' && <ReagentsSection />}
@@ -67,23 +76,23 @@ export const TestingGuide: React.FC = () => {
 };
 
 const InstitutionalSection: React.FC = () => (
-  <div className="max-w-4xl mx-auto">
+  <div className="max-w-3xl mx-auto w-full" style={{ animation: 'fadeInUp 0.3s var(--ease-out-strong) both' }}>
     <InlineNote>
       <span style={{ fontSize: '15px', color: 'var(--text-secondary)', lineHeight: 1.6 }}>{TESTING_GUIDE.intro}</span>
     </InlineNote>
 
-    <section className="mt-10">
+    <section className="py-10">
       <SectionLabel accent={SAGE}>¿Por qué es clave testear?</SectionLabel>
-      <ul className="mt-5">
+      <ul className="mt-6">
         {TESTING_GUIDE.whyTest.map((reason, idx) => (
           <li
             key={idx}
-            className="flex gap-4 py-4"
+            className="flex gap-5 py-5"
             style={{ borderTop: idx === 0 ? 'none' : '1px solid var(--border-subtle)' }}
           >
-            <IndexNum size={18} color="var(--accent-weak)">{String(idx + 1).padStart(2, '0')}</IndexNum>
+            <IndexNum size={20} color="var(--accent-weak)">{String(idx + 1).padStart(2, '0')}</IndexNum>
             <p
-              className="text-sm leading-relaxed"
+              className="text-[15px] leading-relaxed"
               style={{ color: 'var(--text-secondary)' }}
               dangerouslySetInnerHTML={{ __html: reason.replace(/\*\*(.*?)\*\*/g, `<strong style="font-weight:700; color: var(--color-blue)">$1</strong>`) }}
             />
@@ -92,16 +101,16 @@ const InstitutionalSection: React.FC = () => (
       </ul>
     </section>
 
-    <section className="mt-12">
+    <section className="pt-4">
       <SectionLabel accent={SAGE} count={INSTITUTIONAL_TESTING.length}>Centros Oficiales y Asociaciones Civiles</SectionLabel>
-      <p className="text-sm leading-relaxed mt-4 mb-2" style={{ color: 'var(--text-tertiary)', maxWidth: '62ch' }}>
+      <p className="text-sm leading-relaxed mt-5 mb-2" style={{ color: 'var(--text-tertiary)', maxWidth: '58ch' }}>
         Recomendamos acudir prioritariamente a centros de testeo universitarios, laboratorios oficiales o asociaciones civiles formales. Estos espacios cuentan con tecnología avanzada (cromatógrafos, espectrómetros) y personal capacitado para análisis de composición exactos y asesoramiento integral.
       </p>
-      <div>
+      <div className="mt-2">
         {INSTITUTIONAL_TESTING.map((resource, idx) => (
           <div
             key={resource.name}
-            className="py-6 flex flex-col sm:flex-row sm:items-start gap-2 sm:gap-6"
+            className="py-7 flex flex-col sm:flex-row sm:items-start gap-3 sm:gap-6"
             style={{ borderTop: '1px solid var(--border-subtle)' }}
           >
             <span
@@ -112,11 +121,11 @@ const InstitutionalSection: React.FC = () => (
             </span>
             <div className="flex-1 min-w-0">
               <Display size="md" upper>{resource.name}</Display>
-              <p className="text-sm leading-relaxed mt-2" style={{ color: 'var(--text-secondary)' }}>
+              <p className="text-sm leading-relaxed mt-2.5" style={{ color: 'var(--text-secondary)' }}>
                 {resource.description}
               </p>
               {resource.contact && (
-                <div className="mt-2.5" style={{ fontFamily: 'var(--font-heading)', fontSize: '11px', fontWeight: 700, letterSpacing: '0.08em', textTransform: 'uppercase', color: SAGE }}>
+                <div className="mt-3" style={{ fontFamily: 'var(--font-heading)', fontSize: '11px', fontWeight: 700, letterSpacing: '0.08em', textTransform: 'uppercase', color: SAGE }}>
                   Contacto: <span style={{ color: 'var(--text-primary)' }}>{resource.contact}</span>
                 </div>
               )}
@@ -129,38 +138,38 @@ const InstitutionalSection: React.FC = () => (
 );
 
 const GuideSection: React.FC = () => (
-  <div className="max-w-4xl mx-auto">
+  <div className="max-w-3xl mx-auto w-full" style={{ animation: 'fadeInUp 0.3s var(--ease-out-strong) both' }}>
     <section>
       <SectionLabel accent={SAGE} count={TESTING_GUIDE.howToTest.length}>Cómo testear paso a paso</SectionLabel>
-      <ol className="mt-5">
+      <ol className="mt-6">
         {TESTING_GUIDE.howToTest.map((step, idx) => (
           <li
             key={step.step}
-            className="flex gap-5 py-5"
+            className="flex gap-6 py-6"
             style={{ borderTop: idx === 0 ? 'none' : '1px solid var(--border-subtle)' }}
           >
-            <IndexNum size={26} color="var(--accent-weak)">{String(step.step).padStart(2, '0')}</IndexNum>
+            <IndexNum size={28} color="var(--accent-weak)">{String(step.step).padStart(2, '0')}</IndexNum>
             <div className="flex-1 min-w-0">
               <Display size="md" upper>{step.title}</Display>
-              <p className="text-sm leading-relaxed mt-2" style={{ color: 'var(--text-secondary)' }}>{step.description}</p>
+              <p className="text-[15px] leading-relaxed mt-2.5" style={{ color: 'var(--text-secondary)' }}>{step.description}</p>
             </div>
           </li>
         ))}
       </ol>
     </section>
 
-    <section className="mt-12">
+    <section className="pt-12">
       <SectionLabel accent="var(--color-amber)">Recomendaciones importantes</SectionLabel>
-      <ul className="mt-5">
+      <ul className="mt-6">
         {TESTING_GUIDE.recommendations.map((rec, idx) => (
           <li
             key={idx}
-            className="flex gap-4 py-4"
+            className="flex gap-4 py-5"
             style={{ borderTop: idx === 0 ? 'none' : '1px solid var(--border-subtle)' }}
           >
-            <span style={{ width: '7px', height: '7px', borderRadius: '50%', marginTop: '7px', flexShrink: 0, background: 'var(--color-amber)' }} />
+            <span style={{ width: '7px', height: '7px', borderRadius: '50%', marginTop: '8px', flexShrink: 0, background: 'var(--color-amber)' }} />
             <p
-              className="text-sm leading-relaxed"
+              className="text-[15px] leading-relaxed"
               style={{ color: 'var(--text-secondary)' }}
               dangerouslySetInnerHTML={{ __html: rec.replace(/\*\*(.*?)\*\*/g, `<strong style="font-weight:700; color: var(--color-amber)">$1</strong>`) }}
             />
@@ -172,24 +181,24 @@ const GuideSection: React.FC = () => (
 );
 
 const ReagentsSection: React.FC = () => (
-  <div className="max-w-5xl mx-auto">
-    <p className="text-sm leading-relaxed" style={{ color: 'var(--text-tertiary)', maxWidth: '64ch' }}>
+  <div className="max-w-3xl mx-auto w-full" style={{ animation: 'fadeInUp 0.3s var(--ease-out-strong) both' }}>
+    <p className="text-[15px] leading-relaxed" style={{ color: 'var(--text-tertiary)', maxWidth: '60ch' }}>
       Estos son los reactivos más comunes para testear sustancias. Cada reactivo reacciona de forma diferente con distintas sustancias, por eso es crucial usar varios reactivos para confirmar.
     </p>
-    <div className="mt-10 space-y-12">
+    <div className="mt-4 divide-y" style={{ borderColor: 'var(--border-subtle)' }}>
       {REAGENT_TESTS.map((reagent) => (
-        <section key={reagent.name}>
+        <section key={reagent.name} className="py-10">
           <SectionLabel accent={SAGE} count={reagent.substances.length}>{reagent.name}</SectionLabel>
-          <p className="text-sm leading-relaxed mt-4" style={{ color: 'var(--text-tertiary)', maxWidth: '62ch' }}>{reagent.description}</p>
-          <div className="mt-4">
+          <p className="text-sm leading-relaxed mt-4" style={{ color: 'var(--text-tertiary)', maxWidth: '58ch' }}>{reagent.description}</p>
+          <div className="mt-6">
             {reagent.substances.map((sub, idx) => (
               <div
                 key={idx}
-                className="flex items-center gap-4 py-3.5"
+                className="flex items-center gap-5 py-4"
                 style={{ borderTop: idx === 0 ? 'none' : '1px solid var(--border-subtle)' }}
               >
-                <CircleThumb size={28} color={sub.color} ring style={{ border: '1px solid rgba(255,255,255,0.18)' }} />
-                <span className="flex-1 min-w-0 text-sm font-semibold" style={{ color: 'var(--text-primary)' }}>{sub.substance}</span>
+                <Orb size={28} color={sub.color} />
+                <span className="flex-1 min-w-0 text-[15px] font-semibold" style={{ color: 'var(--text-primary)' }}>{sub.substance}</span>
                 <span className="text-xs text-right" style={{ color: 'var(--text-muted)', maxWidth: '20ch' }}>{sub.reaction}</span>
               </div>
             ))}
@@ -201,8 +210,8 @@ const ReagentsSection: React.FC = () => (
 );
 
 const ResourcesSection: React.FC = () => (
-  <div className="max-w-4xl mx-auto">
-    <p className="text-sm leading-relaxed" style={{ color: 'var(--text-tertiary)', maxWidth: '64ch' }}>
+  <div className="max-w-3xl mx-auto w-full">
+    <p className="text-[15px] leading-relaxed" style={{ color: 'var(--text-tertiary)', maxWidth: '60ch' }}>
       Estos son los recursos disponibles en Argentina para conseguir kits de testeo o acceder a servicios de análisis de sustancias.
     </p>
     <div className="mt-8">
@@ -211,7 +220,7 @@ const ResourcesSection: React.FC = () => (
         return (
           <div
             key={idx}
-            className="flex items-start gap-4 py-6"
+            className="flex items-start gap-5 py-7"
             style={{ borderTop: idx === 0 ? 'none' : '1px solid var(--border-subtle)' }}
           >
             <CircleThumb size={40} color={accent} style={{ color: 'var(--accent-ink)' }}>
@@ -238,31 +247,31 @@ const ResourcesSection: React.FC = () => (
 );
 
 const AdulterantsSection: React.FC = () => (
-  <div className="max-w-4xl mx-auto">
+  <div className="max-w-3xl mx-auto w-full" style={{ animation: 'fadeInUp 0.3s var(--ease-out-strong) both' }}>
     <InlineNote label="Advertencia" accent="var(--color-red)">
       Estos son algunos de los adulterantes más peligrosos que se encuentran en el mercado ilegal. El testeo de sustancias es fundamental para detectarlos.
     </InlineNote>
 
-    <section className="mt-10">
+    <section className="py-10">
       <SectionLabel accent="var(--color-red)" count={TESTING_GUIDE.commonAdulterants.length}>Adulterantes frecuentes</SectionLabel>
-      <div className="grid sm:grid-cols-2 gap-x-10 mt-4">
+      <div className="grid sm:grid-cols-2 gap-x-10 mt-5">
         {TESTING_GUIDE.commonAdulterants.map((adulterant, idx) => (
           <div
             key={idx}
-            className="flex gap-4 py-5"
+            className="flex gap-4 py-6"
             style={{ borderTop: '1px solid var(--border-subtle)' }}
           >
-            <span style={{ width: '8px', height: '8px', borderRadius: '50%', marginTop: '6px', flexShrink: 0, background: 'var(--color-red)' }} />
+            <span style={{ width: '8px', height: '8px', borderRadius: '50%', marginTop: '7px', flexShrink: 0, background: 'var(--color-red)' }} />
             <div className="flex-1 min-w-0">
               <h3 style={{ fontFamily: 'var(--font-heading)', fontSize: '13px', fontWeight: 700, letterSpacing: '0.04em', textTransform: 'uppercase', color: 'var(--text-primary)' }}>{adulterant.substance}</h3>
-              <p className="text-sm leading-relaxed mt-1.5" style={{ color: 'var(--text-secondary)' }}>{adulterant.risk}</p>
+              <p className="text-sm leading-relaxed mt-2" style={{ color: 'var(--text-secondary)' }}>{adulterant.risk}</p>
             </div>
           </div>
         ))}
       </div>
     </section>
 
-    <div className="mt-10">
+    <div className="pt-2">
       <InlineNote label="Recuerda" accent="var(--color-blue)">
         Los reactivos de color NO detectan todos los adulterantes. Para un análisis completo (GC/MS), llevá tus sustancias a organizaciones como ArgenPills.
       </InlineNote>

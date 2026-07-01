@@ -7,7 +7,11 @@ import {
   markReminderTriggered,
   type Reminder,
 } from '../services/remindersService';
-import { PageHeader, SectionLabel, IndexNum, RuledRow, InlineNote, Toggle, CircleThumb, Display, tint } from './ui';
+import { PageHeader, SectionLabel, IndexNum, RuledRow, InlineNote, Toggle, CircleThumb, Orb, DataList, tint } from './ui';
+
+const BellIcon: React.FC = () => (
+  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.6} stroke="currentColor" width={24} height={24}><path strokeLinecap="round" strokeLinejoin="round" d="M14.857 17.082a23.848 23.848 0 0 0 5.454-1.31A8.967 8.967 0 0 1 18 9.75V9A6 6 0 0 0 6 9v.75a8.967 8.967 0 0 1-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 0 1-5.714 0m5.714 0a3 3 0 1 1-5.714 0" /></svg>
+);
 
 const ClockIcon: React.FC = () => (
   <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.6} stroke="currentColor" className="w-4 h-4"><path strokeLinecap="round" strokeLinejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" /></svg>
@@ -25,15 +29,15 @@ const ReminderRow: React.FC<{ reminder: Reminder; index: number; first: boolean;
   const color = getTypeColor(reminder.type);
   return (
     <RuledRow first={first}>
-      <div className="flex items-center gap-4 sm:gap-5 py-5 transition-opacity" style={{ opacity: reminder.enabled ? 1 : 0.5 }}>
+      <div className="flex items-center gap-4 sm:gap-5 py-7 transition-opacity" style={{ opacity: reminder.enabled ? 1 : 0.45 }}>
         <IndexNum size={22} color="var(--accent-weak)">{String(index + 1).padStart(2, '0')}</IndexNum>
-        <CircleThumb size={40} color={tint(color)}>
-          <span style={{ fontSize: '17px', lineHeight: 1 }}>{getTypeIcon(reminder.type)}</span>
+        <CircleThumb size={44} color={tint(color)}>
+          <span style={{ fontSize: '18px', lineHeight: 1 }}>{getTypeIcon(reminder.type)}</span>
         </CircleThumb>
         <div className="flex-1 min-w-0">
           <h3 style={{ fontFamily: 'var(--font-heading)', fontSize: '13px', fontWeight: 700, letterSpacing: '0.06em', textTransform: 'uppercase', color: 'var(--text-primary)' }}>{reminder.title}</h3>
-          <p className="text-sm mt-0.5 truncate" style={{ color: 'var(--text-tertiary)' }}>{reminder.message}</p>
-          <div className="flex items-center gap-1.5 mt-2" style={{ color: 'var(--text-muted)', fontSize: '12px' }}>
+          <p className="text-sm mt-1 truncate" style={{ color: 'var(--text-tertiary)' }}>{reminder.message}</p>
+          <div className="flex items-center gap-1.5 mt-2.5" style={{ color: 'var(--text-muted)', fontSize: '12px' }}>
             <span style={{ color }}><ClockIcon /></span>
             {isEditing ? (
               <span className="flex items-center gap-1.5">
@@ -92,50 +96,67 @@ export const CareReminders: React.FC = () => {
         title="Recordatorios"
         description="Configurá recordatorios automáticos para hidratación, descanso y alimentación."
         accent="var(--accent-primary)"
+        icon={<BellIcon />}
       />
 
       <div className="flex-1 overflow-y-auto px-5 sm:px-7 lg:px-8">
         <div className="max-w-3xl">
-          {/* Status strip — a ruled row, not a box */}
-          <div className="flex items-end justify-between gap-6 py-7" style={{ borderBottom: '1px solid var(--border-subtle)' }}>
-            <div className="flex items-end gap-10">
-              <div>
-                <IndexNum size={44} color="var(--accent-primary)">{String(activeReminders.length).padStart(2, '0')}</IndexNum>
-                <div className="mt-2" style={{ fontFamily: 'var(--font-heading)', fontSize: '10px', fontWeight: 700, letterSpacing: '0.16em', textTransform: 'uppercase', color: 'var(--text-muted)' }}>Activos</div>
+          {/* ── Status — focused hero: big orb'd count centered, spec list beside ── */}
+          <div className="py-12 sm:py-14">
+            <div className="flex flex-col sm:flex-row items-center sm:items-start gap-10 sm:gap-14">
+              {/* The big ACTIVOS number, cradled in a coral orb halo */}
+              <div className="relative flex flex-col items-center flex-shrink-0">
+                <div aria-hidden style={{ position: 'absolute', top: '-14%', left: '50%', transform: 'translateX(-50%)', width: '180%', height: '128%', background: `radial-gradient(55% 60% at 50% 45%, ${tint('var(--accent-primary)', 'subtle')}, transparent 72%)`, pointerEvents: 'none' }} />
+                <Orb
+                  color="var(--accent-primary)"
+                  size={148}
+                  className="relative"
+                  label={<IndexNum size={58} color="var(--accent-ink)">{String(activeReminders.length).padStart(2, '0')}</IndexNum>}
+                />
+                <div className="relative mt-4" style={{ fontFamily: 'var(--font-heading)', fontSize: '11px', fontWeight: 700, letterSpacing: '0.18em', textTransform: 'uppercase', color: 'var(--text-muted)' }}>Activos</div>
               </div>
-              <div className="pb-1.5">
-                <div style={{ fontFamily: 'var(--font-heading)', fontSize: '15px', fontWeight: 700, color: notificationsEnabled ? 'var(--color-green)' : 'var(--text-tertiary)' }}>{notificationsEnabled ? 'Habilitadas' : 'Deshabilitadas'}</div>
-                <div className="mt-2" style={{ fontFamily: 'var(--font-heading)', fontSize: '10px', fontWeight: 700, letterSpacing: '0.16em', textTransform: 'uppercase', color: 'var(--text-muted)' }}>Notificaciones</div>
+
+              {/* Spec list — label:value data, no boxes */}
+              <div className="w-full sm:flex-1 min-w-0 sm:pt-3">
+                <DataList
+                  items={[
+                    { label: 'Recordatorios', value: String(reminders.length).padStart(2, '0') },
+                    { label: 'Activos ahora', value: String(activeReminders.length).padStart(2, '0'), accent: 'var(--accent-primary)' },
+                    { label: 'Notificaciones', value: notificationsEnabled ? 'Habilitadas' : 'Deshabilitadas', accent: notificationsEnabled ? 'var(--color-green)' : 'var(--text-tertiary)' },
+                  ]}
+                />
+                {notificationPermission !== 'granted' && (
+                  <button onClick={requestNotificationPermission} className="mt-6 transition-colors" style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', padding: '8px 16px', fontFamily: 'var(--font-heading)', fontSize: '11px', fontWeight: 700, letterSpacing: '0.06em', textTransform: 'uppercase', whiteSpace: 'nowrap', color: 'var(--accent-primary)', background: 'transparent', border: '1px solid var(--accent-primary)', borderRadius: 'var(--radius-pill)' }}
+                    onMouseEnter={(e) => { e.currentTarget.style.background = tint('var(--accent-primary)', 'subtle'); }}
+                    onMouseLeave={(e) => { e.currentTarget.style.background = 'transparent'; }}
+                  >
+                    Permitir notificaciones
+                  </button>
+                )}
               </div>
             </div>
-            {notificationPermission !== 'granted' && (
-              <button onClick={requestNotificationPermission} className="flex-shrink-0 transition-colors" style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', padding: '7px 14px', fontFamily: 'var(--font-heading)', fontSize: '11px', fontWeight: 700, letterSpacing: '0.06em', textTransform: 'uppercase', whiteSpace: 'nowrap', color: 'var(--accent-primary)', background: 'transparent', border: '1px solid var(--accent-primary)', borderRadius: 'var(--radius-pill)' }}
-                onMouseEnter={(e) => { e.currentTarget.style.background = tint('var(--accent-primary)', 'subtle'); }}
-                onMouseLeave={(e) => { e.currentTarget.style.background = 'transparent'; }}
-              >
-                Permitir notificaciones
-              </button>
-            )}
           </div>
 
-          {/* Reminders — ruled list */}
-          <div className="pt-9">
-            <SectionLabel count={reminders.length} accent="var(--accent-primary)">Tus recordatorios</SectionLabel>
-            <div className="mt-2">
-              {reminders.map((r, i) => (
-                <ReminderRow key={r.id} reminder={r} index={i} first={i === 0} onToggle={() => handleToggle(r.id)} onIntervalChange={(m) => handleIntervalChange(r.id, m)} />
-              ))}
+          {/* ── Reminders — ruled list, generous rhythm ── */}
+          <div className="pt-4" style={{ borderTop: '1px solid var(--border-subtle)' }}>
+            <div className="pt-8">
+              <SectionLabel count={reminders.length} accent="var(--accent-primary)">Tus recordatorios</SectionLabel>
+              <div className="mt-3">
+                {reminders.map((r, i) => (
+                  <ReminderRow key={r.id} reminder={r} index={i} first={i === 0} onToggle={() => handleToggle(r.id)} onIntervalChange={(m) => handleIntervalChange(r.id, m)} />
+                ))}
+              </div>
             </div>
           </div>
 
-          {/* Consejo — inline note, no box */}
-          <div className="mt-11">
+          {/* ── Consejo — inline note, no box ── */}
+          <div className="mt-14">
             <InlineNote label="Consejo">
               Los recordatorios son especialmente útiles durante experiencias psicoactivas — hidratarse, descansar y alimentarse de forma regular reduce riesgos y mejora el bienestar.
             </InlineNote>
           </div>
 
-          <p className="text-xs leading-relaxed mt-10 pb-8" style={{ color: 'var(--text-muted)', maxWidth: '60ch' }}>
+          <p className="text-xs leading-relaxed mt-12 pb-10" style={{ color: 'var(--text-muted)', maxWidth: '60ch' }}>
             Los recordatorios son orientativos. Escuchá tu cuerpo y ajustá según tus necesidades. Si te sentís mal, buscá asistencia médica inmediatamente.
           </p>
         </div>

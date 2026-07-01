@@ -3,7 +3,7 @@ import React, { useState, useMemo } from 'react';
 import { MAP_DATA } from '../constants';
 import type { MapDataset } from '../types';
 import { ArgentinaMap } from './ArgentinaMap';
-import { PageHeader, InlineNote, Kicker, Display, DataList, IndexNum, fieldStyle, tint } from './ui';
+import { PageHeader, InlineNote, Kicker, Display, DataList, IndexNum, Orb, fieldStyle, tint } from './ui';
 
 const SearchIcon: React.FC = () => (
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-4 h-4">
@@ -11,13 +11,24 @@ const SearchIcon: React.FC = () => (
   </svg>
 );
 
+/** Section medallion glyph — a stroked globe with meridian/parallel. */
+const GlobeIcon: React.FC = () => (
+  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" strokeWidth={1.6} stroke="currentColor" strokeLinecap="round" strokeLinejoin="round">
+    <circle cx="12" cy="12" r="9" />
+    <path d="M3 12h18" />
+    <path d="M12 3c2.5 2.4 3.8 5.6 3.8 9s-1.3 6.6-3.8 9c-2.5-2.4-3.8-5.6-3.8-9s1.3-6.6 3.8-9Z" />
+  </svg>
+);
+
 const SAGE = 'var(--accent-primary)';
+// Warm terracotta, cohesive with the choropleth ramp's bright-coral top stop.
+const TERRACOTTA = '#EC936E';
 
 /** Ruled province list row: name + coral value bar (∝ value/max) + number. */
 const ProvinceRow: React.FC<{ name: string; data: MapDataset; isSelected: boolean; onClick: () => void; maxQueries: number; first?: boolean }> = ({ name, data, isSelected, onClick, maxQueries, first }) => (
   <button
     onClick={onClick}
-    className="w-full flex items-center gap-4 py-3 text-left transition-colors duration-150"
+    className="w-full flex items-center gap-4 py-3.5 text-left transition-colors duration-150"
     style={{
       borderTop: first ? 'none' : '1px solid var(--border-subtle)',
       background: isSelected ? tint(SAGE, 'subtle') : 'transparent',
@@ -38,12 +49,15 @@ const ProvinceRow: React.FC<{ name: string; data: MapDataset; isSelected: boolea
 );
 
 /** Active-province detail: Kicker + Display + label:value stats (totals + categories). */
-const ProvinceDetail: React.FC<{ name: string; data: MapDataset }> = ({ name, data }) => (
-  <div className="p-5 sm:p-6" style={{ animation: 'fadeInUp 0.25s var(--ease-out-strong) both' }}>
-    <Kicker className="mb-3">Provincia seleccionada</Kicker>
-    <Display size="md" upper>{name}</Display>
+const ProvinceDetail: React.FC<{ name: string; data: MapDataset; isTop?: boolean }> = ({ name, data, isTop }) => (
+  <div className="px-5 sm:px-7 py-8" style={{ animation: 'fadeInUp 0.25s var(--ease-out-strong) both' }}>
+    <Kicker className="mb-4">Provincia seleccionada</Kicker>
+    <div className="flex items-center gap-4">
+      {isTop && <Orb color={TERRACOTTA} size={44} />}
+      <Display size="md" upper>{name}</Display>
+    </div>
 
-    <div className="mt-4">
+    <div className="mt-6">
       <DataList
         items={[
           { label: 'Consultas totales', value: data.totalQueries.toLocaleString('es-AR'), accent: SAGE },
@@ -63,9 +77,11 @@ const ProvinceDetail: React.FC<{ name: string; data: MapDataset }> = ({ name, da
     </div>
 
     {data.topCategories.length === 0 && (
-      <InlineNote>
-        No hay suficientes datos de categorías para esta provincia.
-      </InlineNote>
+      <div className="mt-5">
+        <InlineNote>
+          No hay suficientes datos de categorías para esta provincia.
+        </InlineNote>
+      </div>
     )}
   </div>
 );
@@ -85,6 +101,13 @@ export const Observatory: React.FC = () => {
   }, [searchTerm]);
 
   const maxQueries = useMemo(() => Math.max(1, ...Object.values(MAP_DATA).map(d => d.totalQueries)), []);
+
+  // Highest-volume province — surfaced as a small terracotta Orb identity.
+  const topProvince = useMemo(() => {
+    const entries = Object.entries(MAP_DATA);
+    if (entries.length === 0) return null;
+    return entries.reduce((best, cur) => (cur[1].totalQueries > best[1].totalQueries ? cur : best))[0];
+  }, []);
 
   // Warm terracotta sequential ramp (deep ember → bright coral) — cohesive
   // with the editorial palette. Solid colours, not alpha-over-canvas.
@@ -117,23 +140,24 @@ export const Observatory: React.FC = () => {
 
   return (
     <div className="flex-1 overflow-y-auto flex flex-col" style={{ background: 'var(--bg-primary)' }}>
-      {/* Header */}
+      {/* Header — coral globe medallion beside the title */}
       <PageHeader
         eyebrow="Observatorio territorial"
         title="Mapa epidemiológico anónimo"
         description="Datos agregados y anónimos de consultas por provincia. Cuanto más intenso el color, mayor el volumen de consultas registradas."
         accent={SAGE}
+        icon={<GlobeIcon />}
       />
-      <div className="px-5 sm:px-7 lg:px-8 pt-5">
+      <div className="px-5 sm:px-7 lg:px-8 pt-7 pb-1">
         <InlineNote label="Nota">
           Los datos mostrados son actualmente figurativos e inventados. Representan la visión a futuro de lo que Acompañ.Ar aspira a ser: una herramienta de mapeo epidemiológico anónimo en tiempo real para informar políticas públicas de salud preventiva.
         </InlineNote>
       </div>
 
       {/* Map + Panel */}
-      <section className="flex-1 flex flex-col lg:flex-row min-h-0 mt-5" style={{ borderTop: '1px solid var(--border-subtle)' }}>
-        {/* Map */}
-        <div className="lg:w-[48%] flex-shrink-0 flex items-center justify-center px-6 py-8 relative" style={{ borderBottom: '1px solid var(--border-subtle)', borderRight: '1px solid var(--border-subtle)' }}>
+      <section className="flex-1 flex flex-col lg:flex-row min-h-0 mt-8" style={{ borderTop: '1px solid var(--border-subtle)' }}>
+        {/* Map — kept big and central */}
+        <div className="lg:w-[48%] flex-shrink-0 flex items-center justify-center px-6 py-12 relative" style={{ borderBottom: '1px solid var(--border-subtle)', borderRight: '1px solid var(--border-subtle)' }}>
           <div style={{ height: 'min(70vh, 560px)', aspectRatio: '0.49', maxWidth: '100%' }}>
             <ArgentinaMap
               getFill={getFill}
@@ -146,7 +170,7 @@ export const Observatory: React.FC = () => {
           </div>
 
           {/* Legend */}
-          <div className="absolute bottom-6 left-6 sm:left-8 flex items-center gap-2.5">
+          <div className="absolute bottom-8 left-6 sm:left-8 flex items-center gap-2.5">
             <span style={{ fontFamily: 'var(--font-heading)', fontSize: '9px', color: 'var(--text-muted)', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.12em' }}>Menos</span>
             <div style={{ display: 'flex', width: '72px', height: '6px', borderRadius: '999px', overflow: 'hidden' }}>
               {[0.05, 0.3, 0.55, 0.8, 1].map((a, i) => (
@@ -161,13 +185,13 @@ export const Observatory: React.FC = () => {
         <div className="flex-1 min-h-0 flex flex-col">
           {activeData && activeName ? (
             <div style={{ borderBottom: '1px solid var(--border-subtle)' }}>
-              <ProvinceDetail name={activeName} data={activeData} />
+              <ProvinceDetail name={activeName} data={activeData} isTop={activeName === topProvince} />
             </div>
           ) : null}
 
-          <div className="p-5 sm:p-6">
+          <div className="px-5 sm:px-7 py-8">
             {/* Search field */}
-            <div className="relative mb-5">
+            <div className="relative mb-6">
               <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-4" style={{ color: 'var(--text-muted)' }}>
                 <SearchIcon />
               </div>
@@ -197,7 +221,7 @@ export const Observatory: React.FC = () => {
                 ))}
               </div>
             ) : (
-              <div className="flex flex-col items-center text-center py-12 gap-3">
+              <div className="flex flex-col items-center text-center py-14 gap-3">
                 <IndexNum size={40} color="var(--accent-weak)">00</IndexNum>
                 <p style={{ color: 'var(--text-muted)', fontSize: '13px' }}>No se encontraron resultados para "{searchTerm}".</p>
               </div>
