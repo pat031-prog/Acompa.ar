@@ -1,5 +1,6 @@
 
 import React, { useState } from 'react';
+import { fieldStyle } from './ui';
 
 interface ChatInputProps {
   onSendMessage: (text: string) => void;
@@ -13,7 +14,6 @@ const SendIcon: React.FC = () => (
   </svg>
 );
 
-
 export const ChatInput: React.FC<ChatInputProps> = ({ onSendMessage, isLoading, disabled }) => {
   const [text, setText] = useState('');
 
@@ -25,61 +25,55 @@ export const ChatInput: React.FC<ChatInputProps> = ({ onSendMessage, isLoading, 
     }
   };
 
+  const inactive = isLoading || disabled || !text.trim();
+
   return (
     <form
       onSubmit={handleSubmit}
-      className="flex items-center gap-3 p-3 mb-4"
+      className="flex items-center gap-3 px-5 sm:px-7 lg:px-8 py-4"
       style={{
         background: 'var(--surface-1)',
-        border: '1px solid var(--border-subtle)',
-        borderRadius: '0 0 var(--radius-xl) var(--radius-xl)',
-        boxShadow: 'var(--shadow-ambient)',
+        borderTop: '1px solid var(--border-subtle)',
       }}
     >
       <input
         type="text"
         value={text}
         onChange={(e) => setText(e.target.value)}
-        placeholder={disabled ? "Por favor, aceptá los términos para comenzar..." : "Escribí tu pregunta o situación..."}
-        className="flex-1 w-full px-4 py-3 text-sm"
-        style={{
-          background: 'var(--bg-primary)',
-          color: 'var(--text-primary)',
-          border: '1px solid var(--border-medium)',
-          borderRadius: 'var(--radius-sm)',
-          outline: 'none',
-          transition: 'border-color var(--transition-fast), box-shadow var(--transition-fast)',
-        }}
+        placeholder={disabled ? 'Por favor, aceptá los términos para comenzar...' : 'Escribí tu pregunta o situación...'}
+        className="flex-1"
+        style={fieldStyle}
         onFocus={(e) => {
           e.currentTarget.style.borderColor = 'var(--accent-primary)';
-          e.currentTarget.style.boxShadow = '0 0 0 3px rgba(199, 112, 92, 0.12)';
         }}
         onBlur={(e) => {
           e.currentTarget.style.borderColor = 'var(--border-medium)';
-          e.currentTarget.style.boxShadow = 'none';
         }}
         disabled={isLoading || disabled}
       />
       <button
         type="submit"
-        disabled={isLoading || disabled || !text.trim()}
-        className="p-3 transition-all duration-200"
+        disabled={inactive}
+        className="flex items-center justify-center flex-shrink-0"
         style={{
-          background: (isLoading || disabled || !text.trim()) ? 'var(--surface-2)' : 'var(--accent-primary)',
-          color: (isLoading || disabled || !text.trim()) ? 'var(--text-muted)' : '#fff',
-          borderRadius: 'var(--radius-sm)',
+          width: '48px',
+          height: '48px',
+          borderRadius: '50%',
           border: 'none',
-          cursor: (isLoading || disabled || !text.trim()) ? 'not-allowed' : 'pointer',
-          boxShadow: (isLoading || disabled || !text.trim()) ? 'none' : '0 2px 8px rgba(199, 112, 92, 0.2)',
+          background: inactive ? 'var(--surface-3)' : 'var(--accent-primary)',
+          color: inactive ? 'var(--text-muted)' : 'var(--accent-ink)',
+          cursor: inactive ? 'not-allowed' : 'pointer',
+          boxShadow: inactive ? 'none' : 'var(--shadow-lg)',
+          transition: 'background var(--transition-fast), transform var(--transition-fast)',
         }}
         onMouseEnter={(e) => {
-          if (!isLoading && !disabled && text.trim()) {
+          if (!inactive) {
             e.currentTarget.style.background = 'var(--accent-hover)';
             e.currentTarget.style.transform = 'scale(1.05)';
           }
         }}
         onMouseLeave={(e) => {
-          if (!isLoading && !disabled && text.trim()) {
+          if (!inactive) {
             e.currentTarget.style.background = 'var(--accent-primary)';
             e.currentTarget.style.transform = 'scale(1)';
           }

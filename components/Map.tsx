@@ -3,7 +3,7 @@ import React, { useState, useMemo } from 'react';
 import { MAP_DATA } from '../constants';
 import type { MapDataset } from '../types';
 import { ArgentinaMap } from './ArgentinaMap';
-import { PageHeader, InlineNote } from './ui';
+import { PageHeader, InlineNote, Kicker, Display, DataList, IndexNum, fieldStyle, tint } from './ui';
 
 const SearchIcon: React.FC = () => (
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-4 h-4">
@@ -13,53 +13,59 @@ const SearchIcon: React.FC = () => (
 
 const SAGE = 'var(--accent-primary)';
 
-const ProvinceRow: React.FC<{ name: string; data: MapDataset; isSelected: boolean; onClick: () => void; maxQueries: number }> = ({ name, data, isSelected, onClick, maxQueries }) => (
+/** Ruled province list row: name + coral value bar (∝ value/max) + number. */
+const ProvinceRow: React.FC<{ name: string; data: MapDataset; isSelected: boolean; onClick: () => void; maxQueries: number; first?: boolean }> = ({ name, data, isSelected, onClick, maxQueries, first }) => (
   <button
     onClick={onClick}
-    className="w-full flex items-center gap-3 px-4 py-3 text-left transition-all duration-150"
+    className="w-full flex items-center gap-4 py-3 text-left transition-colors duration-150"
     style={{
-      background: isSelected ? 'var(--accent-secondary-subtle)' : 'transparent',
-      border: `1px solid ${isSelected ? 'var(--accent-secondary-medium)' : 'transparent'}`,
-      borderRadius: 'var(--radius-md)',
+      borderTop: first ? 'none' : '1px solid var(--border-subtle)',
+      background: isSelected ? tint(SAGE, 'subtle') : 'transparent',
+      paddingLeft: '10px',
+      paddingRight: '10px',
     }}
-    onMouseEnter={(e) => { if (!isSelected) e.currentTarget.style.background = 'var(--surface-hover)'; }}
+    onMouseEnter={(e) => { if (!isSelected) e.currentTarget.style.background = 'var(--surface-1)'; }}
     onMouseLeave={(e) => { if (!isSelected) e.currentTarget.style.background = 'transparent'; }}
   >
-    <span style={{ fontSize: '13px', fontWeight: isSelected ? 700 : 500, color: isSelected ? 'var(--text-primary)' : 'var(--text-secondary)', flex: 1 }}>{name}</span>
-    <div className="flex items-center gap-2">
-      <div style={{ width: '48px', height: '4px', borderRadius: '999px', background: 'var(--surface-3)', overflow: 'hidden' }}>
+    <span style={{ fontSize: '13px', fontWeight: isSelected ? 700 : 500, color: isSelected ? SAGE : 'var(--text-secondary)', flex: 1, minWidth: 0 }}>{name}</span>
+    <div className="flex items-center gap-3 flex-shrink-0">
+      <div style={{ width: '56px', height: '3px', borderRadius: '999px', background: 'var(--surface-3)', overflow: 'hidden' }}>
         <div style={{ width: `${Math.max(6, (data.totalQueries / maxQueries) * 100)}%`, height: '100%', background: SAGE }} />
       </div>
-      <span style={{ fontSize: '11px', fontWeight: 700, color: 'var(--text-tertiary)', minWidth: '32px', textAlign: 'right' }}>{data.totalQueries}</span>
+      <span style={{ fontFamily: 'var(--font-heading)', fontSize: '13px', fontWeight: 700, color: isSelected ? SAGE : 'var(--text-primary)', minWidth: '36px', textAlign: 'right', fontVariantNumeric: 'tabular-nums' }}>{data.totalQueries}</span>
     </div>
   </button>
 );
 
+/** Active-province detail: Kicker + Display + label:value stats (totals + categories). */
 const ProvinceDetail: React.FC<{ name: string; data: MapDataset }> = ({ name, data }) => (
   <div className="p-5 sm:p-6" style={{ animation: 'fadeInUp 0.25s var(--ease-out-strong) both' }}>
-    <p style={{ fontSize: '10px', fontWeight: 700, letterSpacing: '0.1em', textTransform: 'uppercase', color: SAGE }}>Provincia seleccionada</p>
-    <h3 className="mt-1" style={{ fontFamily: 'var(--font-editorial)', fontSize: '24px', fontWeight: 700, color: 'var(--text-primary)' }}>{name}</h3>
-    <p className="mt-2" style={{ fontSize: '13px', color: 'var(--text-tertiary)' }}>
-      Consultas totales: <span style={{ fontWeight: 700, color: 'var(--text-primary)' }}>{data.totalQueries.toLocaleString('es-AR')}</span>
-    </p>
+    <Kicker className="mb-3">Provincia seleccionada</Kicker>
+    <Display size="md" upper>{name}</Display>
 
-    {data.topCategories.length > 0 ? (
-      <div className="mt-5 space-y-3">
-        <h4 style={{ fontSize: '11px', fontWeight: 700, letterSpacing: '0.06em', textTransform: 'uppercase', color: 'var(--text-muted)' }}>Categorías principales</h4>
-        {data.topCategories.map(cat => (
-          <div key={cat.category}>
-            <div className="flex justify-between mb-1.5" style={{ fontSize: '13px' }}>
-              <span style={{ color: 'var(--text-secondary)' }}>{cat.category}</span>
-              <span style={{ color: 'var(--text-primary)', fontWeight: 700 }}>{cat.percentage}%</span>
-            </div>
-            <div style={{ width: '100%', height: '6px', borderRadius: '999px', background: 'var(--surface-3)', overflow: 'hidden' }}>
-              <div style={{ width: `${cat.percentage}%`, height: '100%', background: `linear-gradient(90deg, ${SAGE}, var(--accent-primary))`, borderRadius: '999px' }} />
-            </div>
-          </div>
-        ))}
-      </div>
-    ) : (
-      <p className="mt-5" style={{ fontSize: '13px', color: 'var(--text-muted)' }}>No hay suficientes datos de categorías para esta provincia.</p>
+    <div className="mt-4">
+      <DataList
+        items={[
+          { label: 'Consultas totales', value: data.totalQueries.toLocaleString('es-AR'), accent: SAGE },
+          ...data.topCategories.map(cat => ({
+            label: cat.category,
+            value: (
+              <div className="flex items-center justify-end gap-3">
+                <div style={{ width: '64px', height: '3px', borderRadius: '999px', background: 'var(--surface-3)', overflow: 'hidden' }}>
+                  <div style={{ width: `${cat.percentage}%`, height: '100%', background: SAGE }} />
+                </div>
+                <span style={{ minWidth: '38px', textAlign: 'right' as const, fontVariantNumeric: 'tabular-nums' }}>{cat.percentage}%</span>
+              </div>
+            ),
+          })),
+        ]}
+      />
+    </div>
+
+    {data.topCategories.length === 0 && (
+      <InlineNote>
+        No hay suficientes datos de categorías para esta provincia.
+      </InlineNote>
     )}
   </div>
 );
@@ -110,7 +116,7 @@ export const Observatory: React.FC = () => {
   const activeData = activeName ? MAP_DATA[activeName] : null;
 
   return (
-    <div className="flex-1 overflow-y-auto flex flex-col">
+    <div className="flex-1 overflow-y-auto flex flex-col" style={{ background: 'var(--bg-primary)' }}>
       {/* Header */}
       <PageHeader
         eyebrow="Observatorio territorial"
@@ -125,7 +131,7 @@ export const Observatory: React.FC = () => {
       </div>
 
       {/* Map + Panel */}
-      <section className="flex-1 flex flex-col lg:flex-row min-h-0 mt-2">
+      <section className="flex-1 flex flex-col lg:flex-row min-h-0 mt-5" style={{ borderTop: '1px solid var(--border-subtle)' }}>
         {/* Map */}
         <div className="lg:w-[48%] flex-shrink-0 flex items-center justify-center px-6 py-8 relative" style={{ borderBottom: '1px solid var(--border-subtle)', borderRight: '1px solid var(--border-subtle)' }}>
           <div style={{ height: 'min(70vh, 560px)', aspectRatio: '0.49', maxWidth: '100%' }}>
@@ -160,8 +166,9 @@ export const Observatory: React.FC = () => {
           ) : null}
 
           <div className="p-5 sm:p-6">
-            <div className="relative mb-4">
-              <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3" style={{ color: 'var(--text-muted)' }}>
+            {/* Search field */}
+            <div className="relative mb-5">
+              <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-4" style={{ color: 'var(--text-muted)' }}>
                 <SearchIcon />
               </div>
               <input
@@ -169,26 +176,20 @@ export const Observatory: React.FC = () => {
                 placeholder="Buscar provincia..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="w-full py-2.5 pl-9 pr-3 text-sm"
-                style={{
-                  background: 'var(--surface-1)',
-                  color: 'var(--text-primary)',
-                  border: '1px solid var(--border-subtle)',
-                  borderRadius: 'var(--radius-md)',
-                  outline: 'none',
-                }}
+                style={{ ...fieldStyle, paddingLeft: '38px' }}
                 onFocus={(e) => e.currentTarget.style.borderColor = SAGE}
-                onBlur={(e) => e.currentTarget.style.borderColor = 'var(--border-subtle)'}
+                onBlur={(e) => e.currentTarget.style.borderColor = 'var(--border-medium)'}
               />
             </div>
 
             {provinceData.length > 0 ? (
-              <div className="space-y-1">
-                {provinceData.map(({ provinceName, data }) => (
+              <div>
+                {provinceData.map(({ provinceName, data }, idx) => (
                   <ProvinceRow
                     key={provinceName}
                     name={provinceName}
                     data={data}
+                    first={idx === 0}
                     isSelected={selected === provinceName}
                     onClick={() => setSelected(prev => prev === provinceName ? null : provinceName)}
                     maxQueries={maxQueries}
@@ -196,7 +197,8 @@ export const Observatory: React.FC = () => {
                 ))}
               </div>
             ) : (
-              <div className="text-center py-10">
+              <div className="flex flex-col items-center text-center py-12 gap-3">
+                <IndexNum size={40} color="var(--accent-weak)">00</IndexNum>
                 <p style={{ color: 'var(--text-muted)', fontSize: '13px' }}>No se encontraron resultados para "{searchTerm}".</p>
               </div>
             )}

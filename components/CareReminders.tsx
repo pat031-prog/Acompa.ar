@@ -7,13 +7,10 @@ import {
   markReminderTriggered,
   type Reminder,
 } from '../services/remindersService';
-import { PageHeader, SectionLabel, IndexNum, RuledRow, InlineNote, Toggle, tint } from './ui';
+import { PageHeader, SectionLabel, IndexNum, RuledRow, InlineNote, Toggle, CircleThumb, Display, tint } from './ui';
 
-const BellIcon: React.FC = () => (
-  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6"><path strokeLinecap="round" strokeLinejoin="round" d="M14.857 17.082a23.848 23.848 0 0 0 5.454-1.31A8.967 8.967 0 0 1 18 9.75V9A6 6 0 0 0 6 9v.75a8.967 8.967 0 0 1-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 0 1-5.714 0m5.714 0a3 3 0 1 1-5.714 0" /></svg>
-);
 const ClockIcon: React.FC = () => (
-  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5"><path strokeLinecap="round" strokeLinejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" /></svg>
+  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.6} stroke="currentColor" className="w-4 h-4"><path strokeLinecap="round" strokeLinejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" /></svg>
 );
 
 const getTypeIcon = (type: Reminder['type']) => ({ hydration: '💧', rest: '🛋️', nutrition: '🍎', break: '⏸️', custom: '📝' }[type] || '🔔');
@@ -28,23 +25,25 @@ const ReminderRow: React.FC<{ reminder: Reminder; index: number; first: boolean;
   const color = getTypeColor(reminder.type);
   return (
     <RuledRow first={first}>
-      <div className="flex items-center gap-4 sm:gap-5 py-5 transition-opacity" style={{ opacity: reminder.enabled ? 1 : 0.55 }}>
-        <IndexNum size={26}>{String(index + 1).padStart(2, '0')}</IndexNum>
-        <div className="flex-shrink-0 w-9 h-9 flex items-center justify-center text-base rounded-full" style={{ background: tint(color) }}>{getTypeIcon(reminder.type)}</div>
+      <div className="flex items-center gap-4 sm:gap-5 py-5 transition-opacity" style={{ opacity: reminder.enabled ? 1 : 0.5 }}>
+        <IndexNum size={22} color="var(--accent-weak)">{String(index + 1).padStart(2, '0')}</IndexNum>
+        <CircleThumb size={40} color={tint(color)}>
+          <span style={{ fontSize: '17px', lineHeight: 1 }}>{getTypeIcon(reminder.type)}</span>
+        </CircleThumb>
         <div className="flex-1 min-w-0">
           <h3 style={{ fontFamily: 'var(--font-heading)', fontSize: '13px', fontWeight: 700, letterSpacing: '0.06em', textTransform: 'uppercase', color: 'var(--text-primary)' }}>{reminder.title}</h3>
           <p className="text-sm mt-0.5 truncate" style={{ color: 'var(--text-tertiary)' }}>{reminder.message}</p>
-          <div className="flex items-center gap-1.5 mt-1.5 text-xs" style={{ color: 'var(--text-muted)' }}>
-            <ClockIcon />
+          <div className="flex items-center gap-1.5 mt-2" style={{ color: 'var(--text-muted)', fontSize: '12px' }}>
+            <span style={{ color }}><ClockIcon /></span>
             {isEditing ? (
-              <span className="flex items-center gap-1">
-                <input type="number" value={customInterval} onChange={(e) => setCustomInterval(e.target.value)} min="1" max="1440" className="w-14 px-1.5 py-0.5" style={{ background: 'var(--surface-1)', border: '1px solid var(--border-medium)', borderRadius: 'var(--radius-sm)', color: 'var(--text-primary)', fontSize: '12px' }} />
-                <span>min</span>
+              <span className="flex items-center gap-1.5">
+                <input type="number" value={customInterval} onChange={(e) => setCustomInterval(e.target.value)} min="1" max="1440" className="w-14 px-2 py-0.5" style={{ background: 'var(--surface-1)', border: '1px solid var(--border-medium)', borderRadius: 'var(--radius-sm)', color: 'var(--text-primary)', fontSize: '12px' }} />
+                <span style={{ fontFamily: 'var(--font-heading)', fontWeight: 700, letterSpacing: '0.08em', textTransform: 'uppercase', fontSize: '10px' }}>min</span>
                 <button onClick={handleSave} style={{ color: 'var(--accent-primary)', fontWeight: 700 }}>✓</button>
                 <button onClick={() => { setCustomInterval(reminder.intervalMinutes.toString()); setIsEditing(false); }} style={{ color: 'var(--text-muted)' }}>✕</button>
               </span>
             ) : (
-              <button onClick={() => setIsEditing(true)} style={{ color: 'var(--text-tertiary)' }} className="hover:!text-[var(--accent-primary)] transition-colors">cada {reminder.intervalMinutes} min</button>
+              <button onClick={() => setIsEditing(true)} className="transition-colors" style={{ fontFamily: 'var(--font-heading)', fontSize: '11px', fontWeight: 700, letterSpacing: '0.06em', textTransform: 'uppercase', color: 'var(--accent-primary)' }}>Cada {reminder.intervalMinutes} min</button>
             )}
           </div>
         </div>
@@ -92,26 +91,26 @@ export const CareReminders: React.FC = () => {
         eyebrow="Cuidado"
         title="Recordatorios"
         description="Configurá recordatorios automáticos para hidratación, descanso y alimentación."
-        accent="var(--color-amber)"
+        accent="var(--accent-primary)"
       />
 
       <div className="flex-1 overflow-y-auto px-5 sm:px-7 lg:px-8">
         <div className="max-w-3xl">
           {/* Status strip — a ruled row, not a box */}
-          <div className="flex items-center justify-between gap-6 py-6" style={{ borderBottom: '1px solid var(--border-subtle)' }}>
-            <div className="flex items-end gap-8">
+          <div className="flex items-end justify-between gap-6 py-7" style={{ borderBottom: '1px solid var(--border-subtle)' }}>
+            <div className="flex items-end gap-10">
               <div>
-                <IndexNum size={44} color="var(--text-primary)">{String(activeReminders.length).padStart(2, '0')}</IndexNum>
-                <div className="mt-1" style={{ fontFamily: 'var(--font-heading)', fontSize: '10px', fontWeight: 700, letterSpacing: '0.14em', textTransform: 'uppercase', color: 'var(--text-muted)' }}>Activos</div>
+                <IndexNum size={44} color="var(--accent-primary)">{String(activeReminders.length).padStart(2, '0')}</IndexNum>
+                <div className="mt-2" style={{ fontFamily: 'var(--font-heading)', fontSize: '10px', fontWeight: 700, letterSpacing: '0.16em', textTransform: 'uppercase', color: 'var(--text-muted)' }}>Activos</div>
               </div>
-              <div className="pb-1">
-                <div style={{ fontSize: '14px', fontWeight: 600, color: notificationsEnabled ? 'var(--color-green)' : 'var(--text-tertiary)' }}>{notificationsEnabled ? 'Habilitadas' : 'Deshabilitadas'}</div>
-                <div className="mt-1" style={{ fontFamily: 'var(--font-heading)', fontSize: '10px', fontWeight: 700, letterSpacing: '0.14em', textTransform: 'uppercase', color: 'var(--text-muted)' }}>Notificaciones</div>
+              <div className="pb-1.5">
+                <div style={{ fontFamily: 'var(--font-heading)', fontSize: '15px', fontWeight: 700, color: notificationsEnabled ? 'var(--color-green)' : 'var(--text-tertiary)' }}>{notificationsEnabled ? 'Habilitadas' : 'Deshabilitadas'}</div>
+                <div className="mt-2" style={{ fontFamily: 'var(--font-heading)', fontSize: '10px', fontWeight: 700, letterSpacing: '0.16em', textTransform: 'uppercase', color: 'var(--text-muted)' }}>Notificaciones</div>
               </div>
             </div>
             {notificationPermission !== 'granted' && (
-              <button onClick={requestNotificationPermission} className="flex-shrink-0 px-4 py-2.5 transition-colors" style={{ fontFamily: 'var(--font-heading)', fontSize: '11px', fontWeight: 700, letterSpacing: '0.1em', textTransform: 'uppercase', color: 'var(--accent-primary)', border: '1px solid var(--accent-medium)', borderRadius: 'var(--radius-pill)' }}
-                onMouseEnter={(e) => { e.currentTarget.style.background = 'var(--accent-subtle)'; }}
+              <button onClick={requestNotificationPermission} className="flex-shrink-0 transition-colors" style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', padding: '7px 14px', fontFamily: 'var(--font-heading)', fontSize: '11px', fontWeight: 700, letterSpacing: '0.06em', textTransform: 'uppercase', whiteSpace: 'nowrap', color: 'var(--accent-primary)', background: 'transparent', border: '1px solid var(--accent-primary)', borderRadius: 'var(--radius-pill)' }}
+                onMouseEnter={(e) => { e.currentTarget.style.background = tint('var(--accent-primary)', 'subtle'); }}
                 onMouseLeave={(e) => { e.currentTarget.style.background = 'transparent'; }}
               >
                 Permitir notificaciones
@@ -120,9 +119,9 @@ export const CareReminders: React.FC = () => {
           </div>
 
           {/* Reminders — ruled list */}
-          <div className="pt-8">
+          <div className="pt-9">
             <SectionLabel count={reminders.length} accent="var(--accent-primary)">Tus recordatorios</SectionLabel>
-            <div className="mt-1">
+            <div className="mt-2">
               {reminders.map((r, i) => (
                 <ReminderRow key={r.id} reminder={r} index={i} first={i === 0} onToggle={() => handleToggle(r.id)} onIntervalChange={(m) => handleIntervalChange(r.id, m)} />
               ))}
@@ -130,7 +129,7 @@ export const CareReminders: React.FC = () => {
           </div>
 
           {/* Consejo — inline note, no box */}
-          <div className="mt-10">
+          <div className="mt-11">
             <InlineNote label="Consejo">
               Los recordatorios son especialmente útiles durante experiencias psicoactivas — hidratarse, descansar y alimentarse de forma regular reduce riesgos y mejora el bienestar.
             </InlineNote>

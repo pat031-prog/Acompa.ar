@@ -8,11 +8,12 @@ interface ChatWindowProps {
   isLoading: boolean;
 }
 
+/** Typing indicator — three coral dots pulsing. */
 const TypingIndicator: React.FC = () => (
-  <div className="flex items-center space-x-2 p-3">
-    <div className="w-2 h-2 rounded-full" style={{ background: 'var(--accent-primary)', animation: 'pulse 1.4s ease-in-out infinite', animationDelay: '-0.3s' }}></div>
-    <div className="w-2 h-2 rounded-full" style={{ background: 'var(--accent-primary)', animation: 'pulse 1.4s ease-in-out infinite', animationDelay: '-0.15s' }}></div>
-    <div className="w-2 h-2 rounded-full" style={{ background: 'var(--accent-primary)', animation: 'pulse 1.4s ease-in-out infinite' }}></div>
+  <div className="flex items-center gap-2 px-4 py-3">
+    <span className="w-2 h-2 rounded-full" style={{ background: 'var(--accent-primary)', animation: 'pulse 1.4s ease-in-out infinite', animationDelay: '-0.3s' }} />
+    <span className="w-2 h-2 rounded-full" style={{ background: 'var(--accent-primary)', animation: 'pulse 1.4s ease-in-out infinite', animationDelay: '-0.15s' }} />
+    <span className="w-2 h-2 rounded-full" style={{ background: 'var(--accent-primary)', animation: 'pulse 1.4s ease-in-out infinite' }} />
   </div>
 );
 
@@ -28,12 +29,10 @@ export const ChatWindow: React.FC<ChatWindowProps> = ({ messages, isLoading }) =
   return (
     <div
       ref={scrollRef}
-      className="flex-1 overflow-y-auto p-5 space-y-5 mt-4"
+      className="flex-1 overflow-y-auto px-5 sm:px-7 lg:px-8 py-6 space-y-5"
       style={{
         background: 'var(--surface-1)',
-        border: '1px solid var(--border-subtle)',
-        borderBottom: 'none',
-        borderRadius: 'var(--radius-xl) var(--radius-xl) 0 0',
+        borderTop: '1px solid var(--border-subtle)',
       }}
     >
       {messages.map((msg) => (

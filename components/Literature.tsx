@@ -1,14 +1,8 @@
 import React from 'react';
-import { PageHeader, Pill } from './ui';
+import { PageHeader, Panel, Pill, Display } from './ui';
 
-const BookIcon: React.FC = () => (
-    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5">
-        <path strokeLinecap="round" strokeLinejoin="round" d="M12 6.042A8.967 8.967 0 0 0 6 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 0 1 6 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 0 1 6-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0 0 18 18a8.967 8.967 0 0 0-6 2.292m0-14.25v14.25" />
-    </svg>
-);
-
-const ExternalLinkIcon: React.FC = () => (
-    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-4 h-4">
+const ExternalLinkIcon: React.FC<{ className?: string }> = ({ className = 'w-4 h-4' }) => (
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className={className}>
         <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 6H5.25A2.25 2.25 0 0 0 3 8.25v10.5A2.25 2.25 0 0 0 5.25 21h10.5A2.25 2.25 0 0 0 18 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25" />
     </svg>
 );
@@ -162,7 +156,7 @@ const LITERATURE_DATA: Article[] = [
 const TYPE_COLOR: Record<Article['type'], string> = {
     'Paper Científico': 'var(--color-blue)',
     'Ciencias Sociales': 'var(--color-violet)',
-    'Nota / Artículo': 'var(--accent-secondary)',
+    'Nota / Artículo': 'var(--accent-primary)',
 };
 
 const ArticleCard: React.FC<{ article: Article }> = ({ article }) => {
@@ -172,39 +166,50 @@ const ArticleCard: React.FC<{ article: Article }> = ({ article }) => {
             href={article.url}
             target="_blank"
             rel="noopener noreferrer"
-            className="group flex flex-col h-full p-5 transition-colors"
-            style={{ background: 'var(--surface-1)', border: '1px solid var(--border-subtle)', borderRadius: 'var(--radius-lg)', textDecoration: 'none' }}
-            onMouseEnter={(e) => { e.currentTarget.style.background = 'var(--surface-2)'; e.currentTarget.style.borderColor = 'var(--border-medium)'; }}
-            onMouseLeave={(e) => { e.currentTarget.style.background = 'var(--surface-1)'; e.currentTarget.style.borderColor = 'var(--border-subtle)'; }}
+            className="group block h-full"
+            style={{ textDecoration: 'none' }}
         >
-            <div><Pill as="span" active color={color}>{article.type}</Pill></div>
-            <h2 className="mt-3 mb-1.5" style={{ fontSize: '16px', fontWeight: 600, color: 'var(--text-primary)', lineHeight: 1.35, letterSpacing: '-0.01em' }}>
-                {article.title}
-            </h2>
-            <div className="mb-3" style={{ fontSize: '12px', color: 'var(--text-muted)' }}>
-                {article.author} · {article.source}, {article.year}
-            </div>
-            <p className="mb-4 leading-relaxed flex-1" style={{ fontSize: '13.5px', color: 'var(--text-tertiary)' }}>
-                {article.summary}
-            </p>
-            <span className="inline-flex items-center gap-1.5 mt-auto" style={{ fontSize: '12px', fontWeight: 600, color }}>
-                Leer documento <ExternalLinkIcon />
-            </span>
+            <Panel
+                interactive
+                tab={<ExternalLinkIcon className="w-[18px] h-[18px]" />}
+                cut="lg"
+                className="flex flex-col h-full p-6 pr-14"
+            >
+                <div>
+                    <Pill as="span" active color={color}>{article.type}</Pill>
+                </div>
+
+                <Display size="md" upper className="mt-4" style={{ letterSpacing: '-0.005em' }}>
+                    {article.title}
+                </Display>
+
+                <div className="mt-2.5" style={{ fontFamily: 'var(--font-heading)', fontSize: '11px', fontWeight: 700, letterSpacing: '0.08em', textTransform: 'uppercase', color: 'var(--text-muted)' }}>
+                    {article.author} · {article.source}, {article.year}
+                </div>
+
+                <p className="mt-3.5 flex-1" style={{ fontSize: '13.5px', lineHeight: 1.55, color: 'var(--text-tertiary)' }}>
+                    {article.summary}
+                </p>
+
+                <span className="inline-flex items-center gap-1.5 mt-6" style={{ fontFamily: 'var(--font-heading)', fontSize: '11px', fontWeight: 700, letterSpacing: '0.1em', textTransform: 'uppercase', color: 'var(--accent-primary)' }}>
+                    Leer documento <ExternalLinkIcon className="w-3.5 h-3.5" />
+                </span>
+            </Panel>
         </a>
     );
 };
 
 export const Literature: React.FC = () => {
     return (
-        <div className="flex-1 flex flex-col min-h-0 bg-[var(--bg-primary)]">
+        <div className="flex-1 flex flex-col min-h-0 overflow-y-auto" style={{ background: 'var(--bg-primary)' }}>
             <PageHeader
                 eyebrow="Lecturas"
                 title="Literatura y Evidencia"
                 description="Papers científicos, artículos de ciencias sociales y publicaciones sobre reducción de daños y políticas de drogas."
-                accent="var(--color-blue)"
+                accent="var(--accent-primary)"
             />
 
-            <div className="flex-1 overflow-y-auto px-5 sm:px-7 lg:px-8 py-6">
+            <div className="flex-1 px-5 sm:px-7 lg:px-8" style={{ paddingTop: 'var(--space-6)', paddingBottom: 'var(--space-6)' }}>
                 <div className="grid sm:grid-cols-2 xl:grid-cols-3 gap-4">
                     {LITERATURE_DATA.map((article, idx) => (
                         <ArticleCard key={idx} article={article} />
@@ -212,7 +217,7 @@ export const Literature: React.FC = () => {
                 </div>
 
                 <div className="mt-10 pt-6" style={{ borderTop: '1px solid var(--border-subtle)' }}>
-                    <p className="text-center" style={{ fontSize: '12px', color: 'var(--text-muted)' }}>
+                    <p className="text-center" style={{ fontSize: '12px', lineHeight: 1.65, color: 'var(--text-muted)', maxWidth: '60ch', margin: '0 auto' }}>
                         Esta sección está en construcción. Próximamente incorporaremos un buscador de papers académicos y artículos archivados.
                     </p>
                 </div>

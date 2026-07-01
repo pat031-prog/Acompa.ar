@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { REAGENT_TESTS, TESTING_RESOURCES, TESTING_GUIDE, INSTITUTIONAL_TESTING } from '../constants';
-import { PageHeader } from './ui';
+import { PageHeader, Kicker, Display, Pill, SectionLabel, InlineNote, CircleThumb, IndexNum } from './ui';
 
 const SAGE = 'var(--accent-primary)';
 
@@ -28,29 +28,18 @@ const ExclamationTriangleIcon: React.FC = () => (
 
 type Section = 'institutional' | 'guide' | 'reagents' | 'adulterants';
 
-const tabStyle = (active: boolean): React.CSSProperties => ({
-  background: active ? SAGE : 'var(--surface-1)',
-  color: active ? '#0e1410' : 'var(--text-tertiary)',
-  border: `1px solid ${active ? SAGE : 'var(--border-subtle)'}`,
-  borderRadius: '999px',
-  padding: '8px 16px',
-  fontSize: '13px',
-  fontWeight: 600,
-  letterSpacing: '0.01em',
-  cursor: 'pointer',
-  transition: 'all var(--transition-fast)',
-  whiteSpace: 'nowrap' as const,
-  display: 'flex',
-  alignItems: 'center',
-  gap: '8px',
-  boxShadow: active ? '0 10px 30px rgba(124,152,133,0.25)' : 'none',
-});
+const SECTIONS: { id: Section; label: string; icon: React.ReactNode }[] = [
+  { id: 'institutional', label: 'Centros Oficiales', icon: <MapPinIcon /> },
+  { id: 'guide', label: 'Testeo Manual', icon: <BookOpenIcon /> },
+  { id: 'reagents', label: 'Reactivos', icon: <BeakerIcon /> },
+  { id: 'adulterants', label: 'Adulterantes', icon: <ExclamationTriangleIcon /> },
+];
 
 export const TestingGuide: React.FC = () => {
   const [activeSection, setActiveSection] = useState<Section>('institutional');
 
   return (
-    <div className="flex-1 flex flex-col min-h-0">
+    <div className="flex-1 flex flex-col min-h-0" style={{ background: 'var(--bg-primary)' }}>
       <PageHeader
         eyebrow="Guía de reducción de riesgos"
         title="Testeo de Sustancias"
@@ -58,14 +47,16 @@ export const TestingGuide: React.FC = () => {
         accent={SAGE}
       />
 
-      <div className="flex gap-2 p-5 sm:p-6 overflow-x-auto scrollbar-hide" style={{ borderBottom: '1px solid var(--border-subtle)' }}>
-        <button onClick={() => setActiveSection('institutional')} style={tabStyle(activeSection === 'institutional')}><MapPinIcon /> Centros Oficiales</button>
-        <button onClick={() => setActiveSection('guide')} style={tabStyle(activeSection === 'guide')}><BookOpenIcon /> Testeo Manual</button>
-        <button onClick={() => setActiveSection('reagents')} style={tabStyle(activeSection === 'reagents')}><BeakerIcon /> Reactivos</button>
-        <button onClick={() => setActiveSection('adulterants')} style={tabStyle(activeSection === 'adulterants')}><ExclamationTriangleIcon /> Adulterantes</button>
+      <div className="flex gap-2.5 px-5 sm:px-7 lg:px-8 py-5 overflow-x-auto scrollbar-hide" style={{ borderBottom: '1px solid var(--border-subtle)' }}>
+        {SECTIONS.map((s) => (
+          <Pill key={s.id} active={activeSection === s.id} color={SAGE} onClick={() => setActiveSection(s.id)}>
+            <span style={{ display: 'inline-flex', width: '15px', height: '15px' }}>{s.icon}</span>
+            {s.label}
+          </Pill>
+        ))}
       </div>
 
-      <div className="flex-1 overflow-y-auto p-6 sm:p-8 md:p-10 lg:p-12">
+      <div className="flex-1 overflow-y-auto px-5 sm:px-7 lg:px-8" style={{ paddingTop: 'var(--space-6)', paddingBottom: 'var(--space-8)' }}>
         {activeSection === 'institutional' && <InstitutionalSection />}
         {activeSection === 'guide' && <GuideSection />}
         {activeSection === 'reagents' && <ReagentsSection />}
@@ -76,49 +67,56 @@ export const TestingGuide: React.FC = () => {
 };
 
 const InstitutionalSection: React.FC = () => (
-  <div className="max-w-4xl mx-auto space-y-6">
-    <div className="editorial-pullquote">{TESTING_GUIDE.intro}</div>
+  <div className="max-w-4xl mx-auto">
+    <InlineNote>
+      <span style={{ fontSize: '15px', color: 'var(--text-secondary)', lineHeight: 1.6 }}>{TESTING_GUIDE.intro}</span>
+    </InlineNote>
 
-    <section>
-      <h2 className="editorial-heading text-xl mb-3">¿Por qué es clave testear?</h2>
-      <hr className="editorial-divider-accent" style={{ marginTop: '0', marginBottom: '16px' }} />
-      <ul className="space-y-2">
+    <section className="mt-10">
+      <SectionLabel accent={SAGE}>¿Por qué es clave testear?</SectionLabel>
+      <ul className="mt-5">
         {TESTING_GUIDE.whyTest.map((reason, idx) => (
-          <li key={idx} className="editorial-body text-sm" dangerouslySetInnerHTML={{ __html: reason.replace(/\*\*(.*?)\*\*/g, `<strong style="font-weight:600; color: var(--color-blue)">$1</strong>`) }} />
+          <li
+            key={idx}
+            className="flex gap-4 py-4"
+            style={{ borderTop: idx === 0 ? 'none' : '1px solid var(--border-subtle)' }}
+          >
+            <IndexNum size={18} color="var(--accent-weak)">{String(idx + 1).padStart(2, '0')}</IndexNum>
+            <p
+              className="text-sm leading-relaxed"
+              style={{ color: 'var(--text-secondary)' }}
+              dangerouslySetInnerHTML={{ __html: reason.replace(/\*\*(.*?)\*\*/g, `<strong style="font-weight:700; color: var(--color-blue)">$1</strong>`) }}
+            />
+          </li>
         ))}
       </ul>
     </section>
 
-    <hr className="editorial-divider" />
-
-    <section>
-      <h2 className="editorial-heading text-xl mb-3">Centros Oficiales y Asociaciones Civiles</h2>
-      <p className="text-sm mb-4" style={{ color: 'var(--text-secondary)' }}>
+    <section className="mt-12">
+      <SectionLabel accent={SAGE} count={INSTITUTIONAL_TESTING.length}>Centros Oficiales y Asociaciones Civiles</SectionLabel>
+      <p className="text-sm leading-relaxed mt-4 mb-2" style={{ color: 'var(--text-tertiary)', maxWidth: '62ch' }}>
         Recomendamos acudir prioritariamente a centros de testeo universitarios, laboratorios oficiales o asociaciones civiles formales. Estos espacios cuentan con tecnología avanzada (cromatógrafos, espectrómetros) y personal capacitado para análisis de composición exactos y asesoramiento integral.
       </p>
-      <hr className="editorial-divider-accent" style={{ marginTop: '0', marginBottom: '4px', background: SAGE }} />
       <div>
         {INSTITUTIONAL_TESTING.map((resource, idx) => (
           <div
             key={resource.name}
-            className="py-5 flex flex-col sm:flex-row sm:items-start gap-3 sm:gap-6"
-            style={{ borderBottom: idx < INSTITUTIONAL_TESTING.length - 1 ? '1px solid var(--border-subtle)' : 'none' }}
+            className="py-6 flex flex-col sm:flex-row sm:items-start gap-2 sm:gap-6"
+            style={{ borderTop: '1px solid var(--border-subtle)' }}
           >
             <span
-              className="flex-shrink-0 text-[10px] uppercase tracking-wider font-bold sm:w-28"
-              style={{ color: SAGE }}
+              className="flex-shrink-0 sm:w-28"
+              style={{ fontFamily: 'var(--font-heading)', fontSize: '10px', fontWeight: 700, letterSpacing: '0.14em', textTransform: 'uppercase', color: SAGE, lineHeight: 1.5 }}
             >
               {resource.type}
             </span>
             <div className="flex-1 min-w-0">
-              <h3 className="font-bold text-base mb-1.5" style={{ color: 'var(--text-primary)', fontFamily: 'var(--font-editorial)' }}>
-                {resource.name}
-              </h3>
-              <p className="text-sm leading-relaxed" style={{ color: 'var(--text-secondary)' }}>
+              <Display size="md" upper>{resource.name}</Display>
+              <p className="text-sm leading-relaxed mt-2" style={{ color: 'var(--text-secondary)' }}>
                 {resource.description}
               </p>
               {resource.contact && (
-                <div className="text-xs font-semibold mt-2" style={{ color: SAGE }}>
+                <div className="mt-2.5" style={{ fontFamily: 'var(--font-heading)', fontSize: '11px', fontWeight: 700, letterSpacing: '0.08em', textTransform: 'uppercase', color: SAGE }}>
                   Contacto: <span style={{ color: 'var(--text-primary)' }}>{resource.contact}</span>
                 </div>
               )}
@@ -131,29 +129,42 @@ const InstitutionalSection: React.FC = () => (
 );
 
 const GuideSection: React.FC = () => (
-  <div className="max-w-4xl mx-auto space-y-6">
-
+  <div className="max-w-4xl mx-auto">
     <section>
-      <h2 className="editorial-heading text-xl mb-3">Cómo testear paso a paso</h2>
-      <hr className="editorial-divider-accent" style={{ marginTop: '0', marginBottom: '16px' }} />
-      <ol className="editorial-list">
-        {TESTING_GUIDE.howToTest.map((step) => (
-          <li key={step.step}>
-            <strong style={{ color: 'var(--text-primary)', display: 'block', marginBottom: '4px', fontFamily: 'var(--font-editorial)' }}>{step.title}</strong>
-            <span className="editorial-body" style={{ fontSize: '14px' }}>{step.description}</span>
+      <SectionLabel accent={SAGE} count={TESTING_GUIDE.howToTest.length}>Cómo testear paso a paso</SectionLabel>
+      <ol className="mt-5">
+        {TESTING_GUIDE.howToTest.map((step, idx) => (
+          <li
+            key={step.step}
+            className="flex gap-5 py-5"
+            style={{ borderTop: idx === 0 ? 'none' : '1px solid var(--border-subtle)' }}
+          >
+            <IndexNum size={26} color="var(--accent-weak)">{String(step.step).padStart(2, '0')}</IndexNum>
+            <div className="flex-1 min-w-0">
+              <Display size="md" upper>{step.title}</Display>
+              <p className="text-sm leading-relaxed mt-2" style={{ color: 'var(--text-secondary)' }}>{step.description}</p>
+            </div>
           </li>
         ))}
       </ol>
     </section>
 
-    <hr className="editorial-divider" />
-
-    <section>
-      <h2 className="editorial-heading text-xl mb-3">Recomendaciones importantes</h2>
-      <hr className="editorial-divider-accent" style={{ marginTop: '0', marginBottom: '16px' }} />
-      <ul className="space-y-2">
+    <section className="mt-12">
+      <SectionLabel accent="var(--color-amber)">Recomendaciones importantes</SectionLabel>
+      <ul className="mt-5">
         {TESTING_GUIDE.recommendations.map((rec, idx) => (
-          <li key={idx} className="editorial-body text-sm" dangerouslySetInnerHTML={{ __html: rec.replace(/\*\*(.*?)\*\*/g, `<strong style="font-weight:600; color: var(--color-amber)">$1</strong>`) }} />
+          <li
+            key={idx}
+            className="flex gap-4 py-4"
+            style={{ borderTop: idx === 0 ? 'none' : '1px solid var(--border-subtle)' }}
+          >
+            <span style={{ width: '7px', height: '7px', borderRadius: '50%', marginTop: '7px', flexShrink: 0, background: 'var(--color-amber)' }} />
+            <p
+              className="text-sm leading-relaxed"
+              style={{ color: 'var(--text-secondary)' }}
+              dangerouslySetInnerHTML={{ __html: rec.replace(/\*\*(.*?)\*\*/g, `<strong style="font-weight:700; color: var(--color-amber)">$1</strong>`) }}
+            />
+          </li>
         ))}
       </ul>
     </section>
@@ -161,100 +172,100 @@ const GuideSection: React.FC = () => (
 );
 
 const ReagentsSection: React.FC = () => (
-  <div className="max-w-5xl mx-auto space-y-6">
-    <p className="text-sm" style={{ color: 'var(--text-secondary)' }}>
+  <div className="max-w-5xl mx-auto">
+    <p className="text-sm leading-relaxed" style={{ color: 'var(--text-tertiary)', maxWidth: '64ch' }}>
       Estos son los reactivos más comunes para testear sustancias. Cada reactivo reacciona de forma diferente con distintas sustancias, por eso es crucial usar varios reactivos para confirmar.
     </p>
-    <div className="grid gap-6">
+    <div className="mt-10 space-y-12">
       {REAGENT_TESTS.map((reagent) => (
-        <div key={reagent.name} className="overflow-hidden rounded-2xl" style={{ background: 'var(--surface-1)', border: '1px solid var(--border-subtle)' }}>
-          <div className="p-4 sm:p-5" style={{ background: 'var(--surface-2)', borderBottom: '1px solid var(--border-subtle)' }}>
-            <h3 className="text-lg font-bold" style={{ color: 'var(--text-primary)', fontFamily: 'var(--font-editorial)' }}>{reagent.name}</h3>
-            <p className="text-sm mt-1" style={{ color: 'var(--text-tertiary)' }}>{reagent.description}</p>
+        <section key={reagent.name}>
+          <SectionLabel accent={SAGE} count={reagent.substances.length}>{reagent.name}</SectionLabel>
+          <p className="text-sm leading-relaxed mt-4" style={{ color: 'var(--text-tertiary)', maxWidth: '62ch' }}>{reagent.description}</p>
+          <div className="mt-4">
+            {reagent.substances.map((sub, idx) => (
+              <div
+                key={idx}
+                className="flex items-center gap-4 py-3.5"
+                style={{ borderTop: idx === 0 ? 'none' : '1px solid var(--border-subtle)' }}
+              >
+                <CircleThumb size={28} color={sub.color} ring style={{ border: '1px solid rgba(255,255,255,0.18)' }} />
+                <span className="flex-1 min-w-0 text-sm font-semibold" style={{ color: 'var(--text-primary)' }}>{sub.substance}</span>
+                <span className="text-xs text-right" style={{ color: 'var(--text-muted)', maxWidth: '20ch' }}>{sub.reaction}</span>
+              </div>
+            ))}
           </div>
-          <div className="p-3 sm:p-4">
-            <div className="grid gap-1.5">
-              {reagent.substances.map((sub, idx) => (
-                <div key={idx} className="flex items-center justify-between gap-3 p-2.5 rounded-xl" style={{ background: 'var(--bg-primary)' }}>
-                  <span className="text-sm font-medium" style={{ color: 'var(--text-primary)' }}>{sub.substance}</span>
-                  <div className="flex items-center gap-3">
-                    <span className="text-xs text-right" style={{ color: 'var(--text-muted)' }}>{sub.reaction}</span>
-                    <div className="w-12 h-6 rounded-lg flex-shrink-0" style={{ backgroundColor: sub.color, border: '1px solid rgba(255,255,255,0.18)' }} title={sub.reaction} />
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
+        </section>
       ))}
     </div>
   </div>
 );
 
 const ResourcesSection: React.FC = () => (
-  <div className="max-w-4xl mx-auto space-y-6">
-    <p className="text-sm" style={{ color: 'var(--text-secondary)' }}>
+  <div className="max-w-4xl mx-auto">
+    <p className="text-sm leading-relaxed" style={{ color: 'var(--text-tertiary)', maxWidth: '64ch' }}>
       Estos son los recursos disponibles en Argentina para conseguir kits de testeo o acceder a servicios de análisis de sustancias.
     </p>
-    <div className="grid gap-5 sm:gap-6">
-      {TESTING_RESOURCES.map((resource, idx) => (
-        <div key={idx} className="p-5 sm:p-6" style={{ background: 'var(--surface-1)', border: '1px solid var(--border-subtle)', borderRadius: 'var(--radius-lg)' }}>
-          <div className="flex items-start gap-3">
-            <div className="flex-shrink-0 mt-1">
-              {resource.type === 'organization' && (
-                <div className="w-10 h-10 flex items-center justify-center" style={{ background: 'var(--color-violet-subtle)', borderRadius: 'var(--radius-md)', color: 'var(--color-violet)' }}><BeakerIcon /></div>
+    <div className="mt-8">
+      {TESTING_RESOURCES.map((resource, idx) => {
+        const accent = resource.type === 'organization' ? 'var(--color-violet)' : resource.type === 'online' ? 'var(--color-blue)' : 'var(--color-green)';
+        return (
+          <div
+            key={idx}
+            className="flex items-start gap-4 py-6"
+            style={{ borderTop: idx === 0 ? 'none' : '1px solid var(--border-subtle)' }}
+          >
+            <CircleThumb size={40} color={accent} style={{ color: 'var(--accent-ink)' }}>
+              {resource.type === 'online' ? (
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.8} stroke="currentColor" className="w-5 h-5"><path strokeLinecap="round" strokeLinejoin="round" d="M13.19 8.688a4.5 4.5 0 0 1 1.242 7.244l-4.5 4.5a4.5 4.5 0 0 1-6.364-6.364l1.757-1.757m13.35-.622 1.757-1.757a4.5 4.5 0 0 0-6.364-6.364l-4.5 4.5a4.5 4.5 0 0 0 1.242 7.244" /></svg>
+              ) : resource.type === 'physical' ? (
+                <MapPinIcon />
+              ) : (
+                <BeakerIcon />
               )}
-              {resource.type === 'online' && (
-                <div className="w-10 h-10 flex items-center justify-center" style={{ background: 'var(--color-blue-subtle)', borderRadius: 'var(--radius-md)', color: 'var(--color-blue)' }}>
-                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5"><path strokeLinecap="round" strokeLinejoin="round" d="M13.19 8.688a4.5 4.5 0 0 1 1.242 7.244l-4.5 4.5a4.5 4.5 0 0 1-6.364-6.364l1.757-1.757m13.35-.622 1.757-1.757a4.5 4.5 0 0 0-6.364-6.364l-4.5 4.5a4.5 4.5 0 0 0 1.242 7.244" /></svg>
-                </div>
-              )}
-              {resource.type === 'physical' && (
-                <div className="w-10 h-10 flex items-center justify-center" style={{ background: 'var(--color-green-subtle)', borderRadius: 'var(--radius-md)', color: 'var(--color-green)' }}><MapPinIcon /></div>
-              )}
-            </div>
-            <div className="flex-1">
-              <h3 className="font-semibold" style={{ color: 'var(--text-primary)' }}>{resource.name}</h3>
-              {resource.location && <p className="text-xs mt-0.5" style={{ color: 'var(--text-muted)' }}>📍 {resource.location}</p>}
-              <p className="text-sm mt-2" style={{ color: 'var(--text-secondary)' }}>{resource.description}</p>
-              {resource.website && <a href={resource.website} target="_blank" rel="noopener noreferrer" className="text-xs mt-2 inline-block" style={{ color: 'var(--color-blue)' }}>🔗 {resource.website}</a>}
-              {resource.contact && <p className="text-xs mt-1" style={{ color: 'var(--text-muted)' }}>📞 {resource.contact}</p>}
+            </CircleThumb>
+            <div className="flex-1 min-w-0">
+              <Display size="md" upper>{resource.name}</Display>
+              {resource.location && <p className="text-xs mt-1" style={{ color: 'var(--text-muted)' }}>{resource.location}</p>}
+              <p className="text-sm leading-relaxed mt-2" style={{ color: 'var(--text-secondary)' }}>{resource.description}</p>
+              {resource.website && <a href={resource.website} target="_blank" rel="noopener noreferrer" className="text-xs mt-2 inline-block" style={{ color: SAGE, fontWeight: 700 }}>{resource.website}</a>}
+              {resource.contact && <p className="text-xs mt-1" style={{ color: 'var(--text-muted)' }}>{resource.contact}</p>}
             </div>
           </div>
-        </div>
-      ))}
+        );
+      })}
     </div>
   </div>
 );
 
 const AdulterantsSection: React.FC = () => (
-  <div className="max-w-4xl mx-auto space-y-6">
-    <div className="p-4 sm:p-5 rounded-2xl" style={{ background: 'var(--color-red-subtle)', border: '1px solid var(--color-red-medium)', borderLeft: '4px solid var(--color-red)' }}>
-      <p className="text-sm leading-relaxed" style={{ color: 'var(--text-primary)' }}>
-        <strong style={{ color: 'var(--color-red)' }}>⚠️ Advertencia:</strong> Estos son algunos de los adulterantes más peligrosos que se encuentran en el mercado ilegal. El testeo de sustancias es fundamental para detectarlos.
-      </p>
-    </div>
+  <div className="max-w-4xl mx-auto">
+    <InlineNote label="Advertencia" accent="var(--color-red)">
+      Estos son algunos de los adulterantes más peligrosos que se encuentran en el mercado ilegal. El testeo de sustancias es fundamental para detectarlos.
+    </InlineNote>
 
-    <div className="grid sm:grid-cols-2 gap-x-8">
-      {TESTING_GUIDE.commonAdulterants.map((adulterant, idx) => (
-        <div
-          key={idx}
-          className="py-4 flex gap-3"
-          style={{ borderBottom: idx < TESTING_GUIDE.commonAdulterants.length - (TESTING_GUIDE.commonAdulterants.length % 2 === 0 ? 2 : 1) ? '1px solid var(--border-subtle)' : 'none' }}
-        >
-          <span className="flex-shrink-0 mt-0.5" style={{ color: 'var(--color-red)' }}><ExclamationTriangleIcon /></span>
-          <div>
-            <h3 className="font-bold" style={{ color: 'var(--text-primary)' }}>{adulterant.substance}</h3>
-            <p className="text-sm mt-1" style={{ color: 'var(--text-secondary)' }}>{adulterant.risk}</p>
+    <section className="mt-10">
+      <SectionLabel accent="var(--color-red)" count={TESTING_GUIDE.commonAdulterants.length}>Adulterantes frecuentes</SectionLabel>
+      <div className="grid sm:grid-cols-2 gap-x-10 mt-4">
+        {TESTING_GUIDE.commonAdulterants.map((adulterant, idx) => (
+          <div
+            key={idx}
+            className="flex gap-4 py-5"
+            style={{ borderTop: '1px solid var(--border-subtle)' }}
+          >
+            <span style={{ width: '8px', height: '8px', borderRadius: '50%', marginTop: '6px', flexShrink: 0, background: 'var(--color-red)' }} />
+            <div className="flex-1 min-w-0">
+              <h3 style={{ fontFamily: 'var(--font-heading)', fontSize: '13px', fontWeight: 700, letterSpacing: '0.04em', textTransform: 'uppercase', color: 'var(--text-primary)' }}>{adulterant.substance}</h3>
+              <p className="text-sm leading-relaxed mt-1.5" style={{ color: 'var(--text-secondary)' }}>{adulterant.risk}</p>
+            </div>
           </div>
-        </div>
-      ))}
-    </div>
+        ))}
+      </div>
+    </section>
 
-    <div className="p-4 sm:p-5 mt-6 rounded-2xl" style={{ background: 'var(--color-blue-subtle)', border: '1px solid var(--color-blue-medium)', borderLeft: '4px solid var(--color-blue)' }}>
-      <p className="text-sm leading-relaxed" style={{ color: 'var(--text-primary)' }}>
-        <strong style={{ color: 'var(--color-blue)' }}>💡 Recuerda:</strong> Los reactivos de color NO detectan todos los adulterantes. Para un análisis completo (GC/MS), llevá tus sustancias a organizaciones como ArgenPills.
-      </p>
+    <div className="mt-10">
+      <InlineNote label="Recuerda" accent="var(--color-blue)">
+        Los reactivos de color NO detectan todos los adulterantes. Para un análisis completo (GC/MS), llevá tus sustancias a organizaciones como ArgenPills.
+      </InlineNote>
     </div>
   </div>
 );

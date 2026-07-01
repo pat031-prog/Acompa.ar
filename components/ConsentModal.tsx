@@ -1,10 +1,24 @@
 import React, { useState } from 'react';
 import type { ConsentData, ConsumptionType } from '../types';
 import { PROVINCES, CONSUMPTION_TYPE_LABELS } from '../constants';
+import { Panel, Display, Kicker, SectionLabel, FieldLabel, fieldStyle, InlineNote, IndexNum, tint } from './ui';
 
 interface ConsentModalProps {
   onConsent: (consentData: ConsentData, apiKey: string) => void;
 }
+
+const ShieldGlyph: React.FC = () => (
+  <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor">
+    <g opacity="0.55">
+      <circle cx="8.6" cy="8" r="2.4" />
+      <path d="M3.9 18.6c0-2.7 2.1-4.7 4.7-4.7s4.7 2 4.7 4.7a.6.6 0 0 1-.6.6H4.5a.6.6 0 0 1-.6-.6Z" />
+    </g>
+    <g>
+      <circle cx="15.2" cy="9" r="2.7" />
+      <path d="M9.6 19.4c0-3 2.5-5.3 5.6-5.3s5.6 2.3 5.6 5.3a.7.7 0 0 1-.7.7H10.3a.7.7 0 0 1-.7-.7Z" />
+    </g>
+  </svg>
+);
 
 export const ConsentModal: React.FC<ConsentModalProps> = ({ onConsent }) => {
   const [province, setProvince] = useState<string>('');
@@ -31,252 +45,188 @@ export const ConsentModal: React.FC<ConsentModalProps> = ({ onConsent }) => {
   return (
     <div
       className="fixed inset-0 flex items-center justify-center z-50 p-4 overflow-y-auto"
-      style={{ background: 'rgba(0, 0, 0, 0.7)', backdropFilter: 'blur(8px)' }}
+      style={{ background: 'rgba(0, 0, 0, 0.7)', backdropFilter: 'blur(8px)', WebkitBackdropFilter: 'blur(8px)' }}
       role="dialog"
       aria-modal="true"
     >
-      <div
+      <Panel
+        cut="lg"
+        tab={<ShieldGlyph />}
         className="max-w-lg w-full my-8"
-        style={{
-          background: 'var(--glass-bg)',
-          backdropFilter: 'var(--glass-blur)',
-          WebkitBackdropFilter: 'var(--glass-blur)',
-          border: '1px solid var(--glass-border)',
-          borderRadius: 'var(--radius-xl)',
-          padding: '32px',
-          boxShadow: 'var(--shadow-modal), var(--shadow-glow-accent)',
-          animation: 'scaleIn 0.3s var(--ease-out-strong) both',
-        }}
+        style={{ animation: 'scaleIn 0.3s var(--ease-out-strong) both', boxShadow: 'var(--shadow-modal), var(--shadow-glow-accent)' }}
       >
-        {/* Header */}
-        <div className="flex items-center gap-3 mb-1">
-          <div
-            className="w-11 h-11 flex items-center justify-center flex-shrink-0"
-            style={{ background: 'linear-gradient(150deg, var(--accent-hover), var(--accent-primary))', borderRadius: '12px', boxShadow: 'var(--shadow-glow-accent), inset 0 1px 0 rgba(255,255,255,0.18)' }}
-          >
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="white">
-              <g opacity="0.55">
-                <circle cx="8.6" cy="8" r="2.4" />
-                <path d="M3.9 18.6c0-2.7 2.1-4.7 4.7-4.7s4.7 2 4.7 4.7a.6.6 0 0 1-.6.6H4.5a.6.6 0 0 1-.6-.6Z" />
-              </g>
-              <g>
-                <circle cx="15.2" cy="9" r="2.7" />
-                <path d="M9.6 19.4c0-3 2.5-5.3 5.6-5.3s5.6 2.3 5.6 5.3a.7.7 0 0 1-.7.7H10.3a.7.7 0 0 1-.7-.7Z" />
-              </g>
-            </svg>
-          </div>
-          <div>
-            <h2 className="editorial-heading text-xl sm:text-2xl">
-              Antes de empezar
-            </h2>
-          </div>
-        </div>
-        <p className="text-sm mt-2" style={{ color: 'var(--text-secondary)', lineHeight: '1.6' }}>
-          Este chat brinda acompañamiento con enfoque de reducción de daños. No es un servicio de emergencia.
-        </p>
+        <div className="p-6 sm:p-8 pr-8">
 
-        {/* DeepInfra API Key Section */}
-        <div
-          className="mt-5 p-4"
-          style={{
-            background: 'var(--surface-1)',
-            border: '1px solid var(--border-subtle)',
-            borderRadius: 'var(--radius-md)',
-          }}
-        >
-          <div className="flex items-start justify-between">
-            <div className="flex-1">
-              <h3 className="text-sm font-semibold flex items-center gap-2" style={{ color: 'var(--text-primary)' }}>
-                <svg className="w-4 h-4" style={{ color: 'var(--color-amber)' }} fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
-                </svg>
-                Configuración de IA
-              </h3>
-              <p className="text-xs mt-1" style={{ color: 'var(--text-tertiary)' }}>
-                Este chatbot usa <b style={{ color: 'var(--text-secondary)' }}>DeepInfra</b> para respuestas de IA. Necesitas una API key gratuita.
-              </p>
+          {/* ── Masthead ── */}
+          <Kicker className="mb-3">Consentimiento · Reducción de daños</Kicker>
+          <Display size="md" upper>Antes de empezar</Display>
+          <p className="mt-3" style={{ fontSize: '14px', lineHeight: 1.6, color: 'var(--text-secondary)', maxWidth: '46ch' }}>
+            Este chat brinda acompañamiento con enfoque de reducción de daños. No es un servicio de emergencia.
+          </p>
+
+          {/* ── DeepInfra API Key ── */}
+          <div className="mt-7">
+            <div className="flex items-center justify-between mb-4">
+              <SectionLabel accent="var(--accent-primary)" rule={false}>Configuración de IA</SectionLabel>
+              <button
+                onClick={() => setShowInfo(!showInfo)}
+                style={{ fontFamily: 'var(--font-heading)', fontSize: '11px', fontWeight: 700, letterSpacing: '0.08em', textTransform: 'uppercase', color: 'var(--accent-primary)' }}
+                onMouseEnter={(e) => (e.currentTarget.style.color = 'var(--accent-hover)')}
+                onMouseLeave={(e) => (e.currentTarget.style.color = 'var(--accent-primary)')}
+              >
+                {showInfo ? 'Ocultar' : '¿Cómo?'}
+              </button>
             </div>
+
+            <p className="mb-4" style={{ fontSize: '13px', lineHeight: 1.55, color: 'var(--text-tertiary)' }}>
+              Este chatbot usa <b style={{ color: 'var(--text-secondary)' }}>DeepInfra</b> para respuestas de IA. Necesitás una API key gratuita.
+            </p>
+
+            {showInfo && (
+              <div className="mb-5" style={{ animation: 'fadeInUp 0.2s var(--ease-out-strong) both' }}>
+                <InlineNote label="Cómo obtenerla" accent="var(--accent-primary)">
+                  <div className="space-y-2.5">
+                    {[
+                      <>Ve a <a href="https://deepinfra.com" target="_blank" rel="noopener noreferrer" style={{ color: 'var(--accent-primary)', fontWeight: 700 }}>deepinfra.com</a></>,
+                      <>Creá una cuenta gratuita (incluye $5 de crédito)</>,
+                      <>Andá a tu dashboard y copiá tu API key</>,
+                      <>Pegala aquí abajo</>,
+                    ].map((step, i) => (
+                      <div key={i} className="flex items-baseline gap-3">
+                        <IndexNum size={15} color="var(--accent-weak)">{`0${i + 1}`}</IndexNum>
+                        <span style={{ fontSize: '13px', lineHeight: 1.5, color: 'var(--text-secondary)' }}>{step}</span>
+                      </div>
+                    ))}
+                    <p className="pt-1" style={{ fontSize: '11px', color: 'var(--text-muted)' }}>
+                      Tu API key se almacena solo en tu navegador, no en nuestros servidores.
+                    </p>
+                  </div>
+                </InlineNote>
+              </div>
+            )}
+
+            <div>
+              <FieldLabel>
+                API Key de DeepInfra <span style={{ color: 'var(--accent-primary)' }}>*</span>
+              </FieldLabel>
+              <input
+                id="apiKey"
+                type="password"
+                value={apiKey}
+                onChange={(e) => setApiKey(e.target.value)}
+                placeholder="Ej: sk-xxxxxxxxxxxxxxxx"
+                style={fieldStyle}
+                onFocus={(e) => (e.currentTarget.style.borderColor = 'var(--accent-primary)')}
+                onBlur={(e) => (e.currentTarget.style.borderColor = 'var(--border-medium)')}
+              />
+            </div>
+          </div>
+
+          {/* ── Privacidad ── */}
+          <div className="mt-7">
+            <SectionLabel accent="var(--accent-primary)">Privacidad</SectionLabel>
+            <p className="mt-4" style={{ fontSize: '13.5px', lineHeight: 1.6, color: 'var(--text-tertiary)' }}>
+              Con tu consentimiento, registramos <b style={{ color: 'var(--text-secondary)' }}>solo</b> categoría de consulta y provincia para un mapa agregado. No guardamos datos personales.
+            </p>
+
+            <div className="mt-5">
+              <FieldLabel>Provincia (opcional)</FieldLabel>
+              <select
+                id="province"
+                name="province"
+                value={province}
+                onChange={(e) => setProvince(e.target.value)}
+                style={{ ...fieldStyle, paddingRight: '40px', appearance: 'none', WebkitAppearance: 'none', MozAppearance: 'none' }}
+                onFocus={(e) => (e.currentTarget.style.borderColor = 'var(--accent-primary)')}
+                onBlur={(e) => (e.currentTarget.style.borderColor = 'var(--border-medium)')}
+              >
+                <option value="">Prefiero no decir</option>
+                {PROVINCES.map((p) => <option key={p} value={p}>{p}</option>)}
+              </select>
+            </div>
+          </div>
+
+          {/* ── Consumo ── */}
+          <div className="mt-7">
+            <SectionLabel accent="var(--accent-primary)">Tu relación con el consumo</SectionLabel>
+            <p className="mt-4 mb-3" style={{ fontSize: '13px', color: 'var(--text-muted)' }}>
+              ¿Cómo la describirías? (opcional)
+            </p>
+            <div>
+              {Object.entries(CONSUMPTION_TYPE_LABELS).map(([value, { label, description, icon }], idx) => {
+                const active = consumptionType === value;
+                return (
+                  <label
+                    key={value}
+                    className="flex items-start gap-4 py-3.5 cursor-pointer"
+                    style={{ borderTop: idx === 0 ? 'none' : '1px solid var(--border-subtle)' }}
+                  >
+                    <input
+                      type="radio"
+                      name="consumptionType"
+                      value={value}
+                      checked={active}
+                      onChange={(e) => setConsumptionType(e.target.value as ConsumptionType)}
+                      className="sr-only"
+                    />
+                    <span
+                      className="flex items-center justify-center flex-shrink-0"
+                      style={{
+                        width: '20px', height: '20px', borderRadius: '50%', marginTop: '2px',
+                        border: `2px solid ${active ? 'var(--accent-primary)' : 'var(--border-medium)'}`,
+                        background: active ? 'var(--accent-primary)' : 'transparent',
+                        transition: 'border-color var(--transition-fast), background var(--transition-fast)',
+                      }}
+                    >
+                      {active && <span style={{ width: '7px', height: '7px', borderRadius: '50%', background: 'var(--accent-ink)' }} />}
+                    </span>
+                    <div className="min-w-0">
+                      <span style={{ fontFamily: 'var(--font-heading)', fontSize: '13px', fontWeight: 700, letterSpacing: '0.04em', textTransform: 'uppercase', color: active ? 'var(--text-primary)' : 'var(--text-secondary)' }}>
+                        {icon} {label}
+                      </span>
+                      <p className="mt-1" style={{ fontSize: '12.5px', lineHeight: 1.5, color: 'var(--text-muted)' }}>
+                        {description}
+                      </p>
+                    </div>
+                  </label>
+                );
+              })}
+            </div>
+          </div>
+
+          {/* ── Actions ── */}
+          <div className="mt-8 flex flex-col sm:flex-row gap-3">
             <button
-              onClick={() => setShowInfo(!showInfo)}
-              className="text-xs font-medium ml-2"
-              style={{ color: 'var(--accent-primary)' }}
-              onMouseEnter={(e) => e.currentTarget.style.color = 'var(--accent-hover)'}
-              onMouseLeave={(e) => e.currentTarget.style.color = 'var(--accent-primary)'}
+              onClick={handleAccept}
+              className="flex-1"
+              style={{
+                background: 'var(--accent-primary)', color: 'var(--accent-ink)',
+                border: 'none', borderRadius: 'var(--radius-pill)', padding: '12px 20px',
+                fontFamily: 'var(--font-heading)', fontSize: '12px', fontWeight: 700, letterSpacing: '0.08em', textTransform: 'uppercase',
+                cursor: 'pointer', transition: 'background var(--transition-fast)',
+              }}
+              onMouseEnter={(e) => (e.currentTarget.style.background = 'var(--accent-hover)')}
+              onMouseLeave={(e) => (e.currentTarget.style.background = 'var(--accent-primary)')}
             >
-              {showInfo ? 'Ocultar' : '¿Cómo?'}
+              Acepto y continúo
+            </button>
+            <button
+              onClick={handleSkip}
+              className="flex-1"
+              style={{
+                background: 'transparent', color: 'var(--text-secondary)',
+                border: '1px solid var(--border-medium)', borderRadius: 'var(--radius-pill)', padding: '12px 20px',
+                fontFamily: 'var(--font-heading)', fontSize: '12px', fontWeight: 700, letterSpacing: '0.08em', textTransform: 'uppercase',
+                cursor: 'pointer', transition: 'border-color var(--transition-fast), color var(--transition-fast), background var(--transition-fast)',
+              }}
+              onMouseEnter={(e) => { e.currentTarget.style.borderColor = 'var(--accent-primary)'; e.currentTarget.style.color = 'var(--text-primary)'; e.currentTarget.style.background = tint('var(--accent-primary)', 'subtle'); }}
+              onMouseLeave={(e) => { e.currentTarget.style.borderColor = 'var(--border-medium)'; e.currentTarget.style.color = 'var(--text-secondary)'; e.currentTarget.style.background = 'transparent'; }}
+            >
+              Usar sin compartir
             </button>
           </div>
-
-          {showInfo && (
-            <div
-              className="mt-3 p-3 text-xs space-y-2"
-              style={{
-                background: 'var(--bg-primary)',
-                borderRadius: 'var(--radius-sm)',
-                color: 'var(--text-secondary)',
-                border: '1px solid var(--border-subtle)',
-                animation: 'fadeInUp 0.2s var(--ease-out-strong) both',
-              }}
-            >
-              <p><strong style={{ color: 'var(--text-primary)' }}>1.</strong> Ve a <a href="https://deepinfra.com" target="_blank" rel="noopener noreferrer" style={{ color: 'var(--accent-primary)', textDecoration: 'underline' }}>deepinfra.com</a></p>
-              <p><strong style={{ color: 'var(--text-primary)' }}>2.</strong> Crea una cuenta gratuita (incluye $5 de crédito)</p>
-              <p><strong style={{ color: 'var(--text-primary)' }}>3.</strong> Ve a tu dashboard y copia tu API key</p>
-              <p><strong style={{ color: 'var(--text-primary)' }}>4.</strong> Pégala aquí abajo</p>
-              <p className="text-[11px] mt-2" style={{ color: 'var(--text-muted)' }}>
-                Tu API key se almacena solo en tu navegador, no en nuestros servidores.
-              </p>
-            </div>
-          )}
-
-          <div className="mt-3">
-            <label htmlFor="apiKey" className="block text-xs font-medium mb-1" style={{ color: 'var(--text-secondary)' }}>
-              API Key de DeepInfra <span style={{ color: 'var(--color-red)' }}>*</span>
-            </label>
-            <input
-              id="apiKey"
-              type="password"
-              value={apiKey}
-              onChange={(e) => setApiKey(e.target.value)}
-              placeholder="Ej: sk-xxxxxxxxxxxxxxxx"
-              className="block w-full px-3 py-2.5 text-sm"
-              style={{
-                background: 'var(--bg-primary)',
-                border: '1px solid var(--border-medium)',
-                borderRadius: 'var(--radius-sm)',
-                color: 'var(--text-primary)',
-                outline: 'none',
-                transition: 'border-color var(--transition-fast)',
-              }}
-              onFocus={(e) => e.currentTarget.style.borderColor = 'var(--accent-primary)'}
-              onBlur={(e) => e.currentTarget.style.borderColor = 'var(--border-medium)'}
-            />
-          </div>
         </div>
-
-        {/* Privacy Section */}
-        <div className="mt-5">
-          <p className="text-sm" style={{ color: 'var(--text-tertiary)', lineHeight: '1.6' }}>
-            Con tu consentimiento, registramos <b style={{ color: 'var(--text-secondary)' }}>solo</b> categoría de consulta y provincia para un mapa agregado. No guardamos datos personales.
-          </p>
-        </div>
-
-        <div className="mt-4">
-          <label htmlFor="province" className="block text-sm font-medium" style={{ color: 'var(--text-secondary)' }}>
-            Provincia (opcional)
-          </label>
-          <select
-            id="province"
-            name="province"
-            value={province}
-            onChange={(e) => setProvince(e.target.value)}
-            className="mt-1 block w-full pl-3 pr-10 py-2.5 text-sm"
-            style={{
-              background: 'var(--bg-primary)',
-              border: '1px solid var(--border-medium)',
-              borderRadius: 'var(--radius-sm)',
-              color: 'var(--text-primary)',
-              outline: 'none',
-            }}
-          >
-            <option value="">Prefiero no decir</option>
-            {PROVINCES.map(p => <option key={p} value={p}>{p}</option>)}
-          </select>
-        </div>
-
-        {/* Consumption type question */}
-        <div className="mt-4">
-          <label className="block text-sm font-medium mb-2" style={{ color: 'var(--text-secondary)' }}>
-            ¿Cómo describirías tu relación con el consumo? (opcional)
-          </label>
-          <div className="space-y-2">
-            {Object.entries(CONSUMPTION_TYPE_LABELS).map(([value, { label, description, icon }]) => (
-              <label
-                key={value}
-                className="flex items-start gap-3 p-2.5 cursor-pointer"
-                style={{
-                  background: consumptionType === value ? 'var(--surface-2)' : 'transparent',
-                  borderRadius: 'var(--radius-sm)',
-                  transition: 'background 0.15s ease',
-                }}
-                onMouseEnter={(e) => {
-                  if (consumptionType !== value) {
-                    e.currentTarget.style.background = 'var(--surface-1)';
-                  }
-                }}
-                onMouseLeave={(e) => {
-                  if (consumptionType !== value) {
-                    e.currentTarget.style.background = 'transparent';
-                  }
-                }}
-              >
-                <input
-                  type="radio"
-                  name="consumptionType"
-                  value={value}
-                  checked={consumptionType === value}
-                  onChange={(e) => setConsumptionType(e.target.value as ConsumptionType)}
-                  className="w-4 h-4 mt-0.5"
-                  style={{ accentColor: 'var(--accent-primary)' }}
-                />
-                <div>
-                  <span className="text-sm font-medium" style={{ color: 'var(--text-primary)' }}>
-                    {icon} {label}
-                  </span>
-                  <p className="text-xs mt-0.5" style={{ color: 'var(--text-tertiary)' }}>
-                    {description}
-                  </p>
-                </div>
-              </label>
-            ))}
-          </div>
-        </div>
-
-        <div className="mt-6 flex flex-col sm:flex-row gap-3">
-          <button
-            onClick={handleAccept}
-            className="flex-1 px-4 py-2.5 text-sm font-medium transition-all duration-200"
-            style={{
-              background: 'var(--accent-primary)',
-              color: '#fff',
-              borderRadius: 'var(--radius-sm)',
-              border: 'none',
-              boxShadow: '0 2px 8px rgba(199, 112, 92, 0.25)',
-            }}
-            onMouseEnter={(e) => {
-              e.currentTarget.style.background = 'var(--accent-hover)';
-              e.currentTarget.style.transform = 'translateY(-1px)';
-              e.currentTarget.style.boxShadow = '0 4px 12px rgba(199, 112, 92, 0.35)';
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.background = 'var(--accent-primary)';
-              e.currentTarget.style.transform = 'translateY(0)';
-              e.currentTarget.style.boxShadow = '0 2px 8px rgba(199, 112, 92, 0.25)';
-            }}
-          >
-            Acepto y continúo
-          </button>
-          <button
-            onClick={handleSkip}
-            className="flex-1 px-4 py-2.5 text-sm font-medium transition-all duration-200"
-            style={{
-              background: 'var(--surface-2)',
-              color: 'var(--text-secondary)',
-              borderRadius: 'var(--radius-sm)',
-              border: '1px solid var(--border-medium)',
-            }}
-            onMouseEnter={(e) => {
-              e.currentTarget.style.background = 'var(--surface-3)';
-              e.currentTarget.style.color = 'var(--text-primary)';
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.background = 'var(--surface-2)';
-              e.currentTarget.style.color = 'var(--text-secondary)';
-            }}
-          >
-            Usar sin compartir
-          </button>
-        </div>
-      </div>
+      </Panel>
     </div>
   );
 };
