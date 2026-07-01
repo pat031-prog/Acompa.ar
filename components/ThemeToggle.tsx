@@ -2,7 +2,7 @@ import React from 'react';
 import { motion } from 'motion/react';
 import type { ThemeName } from './theme';
 import { SPRING } from './motion';
-import { Waves, Gamepad2 } from 'lucide-react';
+import { Waves, Palette } from 'lucide-react';
 
 interface Props {
   theme: ThemeName;
@@ -11,7 +11,7 @@ interface Props {
 
 const OPTIONS: { id: ThemeName; label: string; Icon: React.ComponentType<{ size?: number }> }[] = [
   { id: 'safetrip', label: 'SafeTrip', Icon: Waves },
-  { id: 'gba', label: 'GBA', Icon: Gamepad2 },
+  { id: 'vivid', label: 'Vívido', Icon: Palette },
 ];
 
 /** Small fixed top-right toggle to switch the whole app's visual theme.
