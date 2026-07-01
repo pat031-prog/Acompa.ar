@@ -9,8 +9,10 @@ import { categoryColor, primaryCategoryColor, withAlpha } from './categoryStyles
 import {
   Kicker,
   Display,
-  Panel,
-  CornerTab,
+  Orb,
+  CircleButton,
+  DiscoverStrip,
+  IndexTag,
   CircleThumb,
   SectionLabel,
   DataList,
@@ -66,7 +68,7 @@ const ArrowLeftIcon: React.FC = () => (
 );
 // --- End Icon Components ---
 
-const LibraryDetailView: React.FC<{ item: LibraryEntry; onFavoriteToggle: () => void; onBack: () => void }> = ({ item, onFavoriteToggle, onBack }) => {
+const LibraryDetailView: React.FC<{ item: LibraryEntry; index: number; onFavoriteToggle: () => void; onBack: () => void; onSelect: (item: LibraryEntry) => void }> = ({ item, index, onFavoriteToggle, onBack, onSelect }) => {
   const [imageError, setImageError] = useState(false);
   const [isItemFavorite, setIsItemFavorite] = useState(isFavorite(item.title));
   const color = primaryCategoryColor(item.category);
@@ -82,81 +84,73 @@ const LibraryDetailView: React.FC<{ item: LibraryEntry; onFavoriteToggle: () => 
     onFavoriteToggle();
   };
 
+  const related = LIBRARY_DATA
+    .filter(s => s.title !== item.title && s.category.some(c => item.category.includes(c)))
+    .slice(0, 4)
+    .map(s => ({ color: primaryCategoryColor(s.category), name: s.title, onClick: () => onSelect(s) }));
+
   return (
-    <div className="px-4 sm:px-6 lg:px-8 xl:px-10 py-6 sm:py-8 max-w-3xl mx-auto w-full" style={{ animation: 'fadeInUp 0.3s var(--ease-out-strong) both' }} key={item.title}>
-      {/* Mobile back */}
-      <button
-        onClick={onBack}
-        className="md:hidden inline-flex items-center gap-2 mb-5"
-        style={{ fontFamily: 'var(--font-heading)', fontSize: '11px', fontWeight: 700, letterSpacing: '0.1em', textTransform: 'uppercase', color: 'var(--accent-primary)' }}
-      >
-        <ArrowLeftIcon /> Volver
-      </button>
-
-      {/* ── Hero — corner-cut Panel with coral favorite tab ── */}
-      <Panel
-        cut="lg"
-        tab={<StarIcon filled={isItemFavorite} className="w-[18px] h-[18px]" />}
-        onTabClick={handleFavoriteClick}
-        className="p-6 sm:p-7 pr-14"
-      >
-        <div className="flex items-start justify-between gap-5">
-          <div className="min-w-0">
-            <div className="flex flex-wrap gap-1.5 mb-4">
-              {item.category.map(cat => (
-                <Pill key={cat} as="span" color={categoryColor(cat)} active>{cat}</Pill>
-              ))}
-            </div>
-            <Display size="lg" upper>{item.title}</Display>
-            {item.aliases.length > 0 && (
-              <p className="mt-3" style={{ fontSize: '13.5px', color: 'var(--text-tertiary)', lineHeight: 1.5 }}>
-                También conocido como{' '}
-                <span style={{ color: 'var(--text-secondary)', fontWeight: 500 }}>{item.aliases.join(', ')}</span>
-              </p>
-            )}
-          </div>
-
-          {item.structureImage && !imageError ? (
-            <CircleThumb size={84} color="#fff" ring style={{ padding: '10px' }}>
-              <img src={item.structureImage} alt={`Estructura química de ${item.title}`} className="max-h-full max-w-full object-contain" onError={() => setImageError(true)} />
-            </CircleThumb>
-          ) : (
-            <span
-              className="flex-shrink-0 select-all"
-              style={{
-                fontFamily: 'ui-monospace, SFMono-Regular, monospace',
-                fontSize: '12px',
-                letterSpacing: '0.02em',
-                color: 'var(--accent-primary)',
-                background: hexAlpha(C.accent, 0.14),
-                border: `1px solid ${hexAlpha(C.accent, 0.3)}`,
-                borderRadius: 'var(--radius-pill)',
-                padding: '6px 12px',
-                whiteSpace: 'nowrap',
-              }}
-            >
-              {item.chemicalFormula}
-            </span>
-          )}
+    <div className="px-5 sm:px-8 py-7 sm:py-9 max-w-xl mx-auto w-full" style={{ animation: 'fadeInUp 0.3s var(--ease-out-strong) both' }} key={item.title}>
+      {/* ── Top row: #index · circular actions ── */}
+      <div className="flex items-center justify-between">
+        <button onClick={onBack} className="md:hidden" aria-label="Volver">
+          <CircleButton variant="surface" size={38}><ArrowLeftIcon /></CircleButton>
+        </button>
+        <IndexTag color="var(--text-tertiary)">{String(index).padStart(2, '0')}</IndexTag>
+        <div className="flex items-center gap-2">
+          <CircleButton variant="outline" size={38} active={isItemFavorite} activeColor={C.amber} onClick={handleFavoriteClick} label={isItemFavorite ? 'Quitar de favoritos' : 'Agregar a favoritos'}>
+            <StarIcon filled={isItemFavorite} className="w-[17px] h-[17px]" />
+          </CircleButton>
         </div>
-      </Panel>
+      </div>
 
-      {/* Description on the canvas */}
-      <p className="mt-7 text-[15px] leading-relaxed" style={{ color: 'var(--text-secondary)' }}>{item.content.description}</p>
+      {/* ── Hero — focused, centered, big orb ── */}
+      <div className="relative text-center" style={{ paddingTop: '20px', paddingBottom: '8px' }}>
+        <div aria-hidden style={{ position: 'absolute', top: '10%', left: '50%', transform: 'translateX(-50%)', width: '140%', height: '90%', background: `radial-gradient(55% 60% at 50% 45%, ${hexAlpha(color, 0.20)}, transparent 72%)`, pointerEvents: 'none' }} />
+        <div className="relative">
+          <div className="flex justify-center gap-1.5 mb-3">
+            {item.category.map(cat => (
+              <span key={cat} style={{ fontFamily: 'var(--font-heading)', fontSize: '11px', fontWeight: 700, letterSpacing: '0.22em', textTransform: 'uppercase', color: categoryColor(cat) }}>{cat}</span>
+            ))}
+          </div>
+          <Display size="xl" upper>{item.title}</Display>
+          {item.aliases.length > 0 && (
+            <p className="mt-3" style={{ fontSize: '13px', color: 'var(--text-tertiary)', lineHeight: 1.5 }}>
+              {item.aliases.join(' · ')}
+            </p>
+          )}
+          <div className="flex justify-center mt-8">
+            <Orb color={color} size={230} label={
+              item.structureImage && !imageError ? (
+                <img src={item.structureImage} alt="" className="max-h-[120px] max-w-[120px] object-contain" style={{ filter: 'brightness(0) invert(0.12)' }} onError={() => setImageError(true)} />
+              ) : (
+                <span style={{ fontFamily: 'ui-monospace, monospace', fontSize: '13px', fontWeight: 700, letterSpacing: '0.02em' }}>{item.chemicalFormula}</span>
+              )
+            } />
+          </div>
+        </div>
+      </div>
 
-      {/* ── Duración — DataList ── */}
-      <div className="mt-9">
-        <SectionLabel accent={C.blue}>Duración</SectionLabel>
-        <div className="mt-4">
+      {/* ── Ficha: duration data + related orbs ── */}
+      <div className="flex items-start gap-8 mt-10">
+        <div className="flex-1 min-w-0">
           <DataList
             items={[
               { label: 'Inicio', value: item.content.duration.onset },
               { label: 'Pico / Meseta', value: item.content.duration.peak },
-              { label: 'Total', value: item.content.duration.total },
+              { label: 'Duración total', value: item.content.duration.total, accent: 'var(--accent-primary)' },
             ]}
           />
         </div>
+        {related.length > 0 && (
+          <div className="flex-shrink-0 pt-1 hidden sm:block">
+            <DiscoverStrip label="Relacionadas" items={related} />
+          </div>
+        )}
       </div>
+
+      {/* Description */}
+      <p className="mt-9 text-[15px] leading-relaxed" style={{ color: 'var(--text-secondary)' }}>{item.content.description}</p>
 
       {/* ── Efectos — two flowing columns, no boxes ── */}
       <div className="mt-9">
@@ -379,12 +373,12 @@ export const Library: React.FC = () => {
           </div>
         </div>
 
-        <nav className="overflow-y-auto px-4 sm:px-5 flex-1">
+        <nav className="overflow-y-auto px-3 sm:px-4 py-2 flex-1">
           {filteredLibraryData.length === 0 ? (
             <p className="text-center text-sm mt-8" style={{ color: 'var(--text-muted)' }}>Sin resultados.</p>
           ) : (
-            <ul>
-              {filteredLibraryData.map((item, idx) => {
+            <ul className="space-y-1">
+              {filteredLibraryData.map((item) => {
                 const active = selectedItem?.title === item.title;
                 const dot = primaryCategoryColor(item.category);
                 const fav = isFavorite(item.title);
@@ -392,37 +386,30 @@ export const Library: React.FC = () => {
                   <li key={item.title}>
                     <button
                       onClick={() => handleSelect(item)}
-                      className="group w-full text-left flex items-center gap-3 transition-colors"
+                      className="group w-full text-left flex items-center gap-3 transition-all"
                       style={{
-                        padding: '13px 8px',
-                        borderTop: idx === 0 ? 'none' : '1px solid var(--border-subtle)',
-                        background: active ? hexAlpha(C.accent, 0.1) : 'transparent',
+                        padding: active ? '10px 12px 10px 16px' : '10px 12px',
+                        borderRadius: '999px',
+                        border: `1px solid ${active ? 'var(--accent-primary)' : 'transparent'}`,
+                        background: active ? 'var(--accent-subtle)' : 'transparent',
                       }}
                       onMouseEnter={(e) => { if (!active) e.currentTarget.style.background = 'var(--surface-1)'; }}
                       onMouseLeave={(e) => { if (!active) e.currentTarget.style.background = 'transparent'; }}
                     >
-                      <span
-                        className="w-2.5 h-2.5 rounded-full flex-shrink-0"
-                        style={{ background: dot, boxShadow: active ? `0 0 0 4px ${withAlpha(dot, 0.18)}` : 'none', transition: 'box-shadow var(--transition-fast)' }}
-                      />
+                      {!active && <span className="w-2 h-2 rounded-full flex-shrink-0" style={{ background: dot }} />}
                       <span className="flex-1 min-w-0">
                         <span
                           className="block truncate"
-                          style={{ fontFamily: 'var(--font-heading)', fontSize: '13px', fontWeight: 700, letterSpacing: '0.04em', textTransform: 'uppercase', color: active ? 'var(--accent-primary)' : 'var(--text-primary)' }}
+                          style={{ fontFamily: 'var(--font-heading)', fontSize: active ? '14px' : '12.5px', fontWeight: 700, letterSpacing: '0.1em', textTransform: 'uppercase', color: active ? 'var(--accent-primary)' : 'var(--text-secondary)', transition: 'color var(--transition-fast)' }}
                         >
                           {item.title}
                         </span>
-                        {item.aliases.length > 0 && (
-                          <span className="block text-xs truncate mt-0.5" style={{ color: 'var(--text-muted)' }}>{item.aliases.slice(0, 3).join(' · ')}</span>
+                        {active && item.aliases.length > 0 && (
+                          <span className="block text-xs truncate mt-0.5" style={{ color: 'var(--text-tertiary)', letterSpacing: '0.02em', textTransform: 'none', fontFamily: 'var(--font-ui)' }}>{item.aliases.slice(0, 3).join(' · ')}</span>
                         )}
                       </span>
-                      {fav && <span style={{ color: C.amber }}><StarIcon filled className="w-3.5 h-3.5" /></span>}
-                      <span
-                        className="flex-shrink-0 transition-opacity"
-                        style={{ color: active ? 'var(--accent-primary)' : 'var(--text-muted)', opacity: active ? 1 : 0 }}
-                      >
-                        <ChevronRightIcon />
-                      </span>
+                      {fav && !active && <span style={{ color: C.amber }}><StarIcon filled className="w-3.5 h-3.5" /></span>}
+                      {active && <Orb color={dot} size={30} />}
                     </button>
                   </li>
                 );
@@ -435,7 +422,13 @@ export const Library: React.FC = () => {
       {/* Right Pane: Detail View */}
       <div className={`${mobileDetailOpen ? 'flex' : 'hidden md:flex'} flex-1 flex-col min-h-0 overflow-y-auto`}>
         {selectedItem ? (
-          <LibraryDetailView item={selectedItem} onFavoriteToggle={handleFavoriteToggle} onBack={() => setMobileDetailOpen(false)} />
+          <LibraryDetailView
+            item={selectedItem}
+            index={LIBRARY_DATA.findIndex(s => s.title === selectedItem.title) + 1}
+            onFavoriteToggle={handleFavoriteToggle}
+            onBack={() => setMobileDetailOpen(false)}
+            onSelect={handleSelect}
+          />
         ) : (
           <div className="flex-1 flex flex-col items-center justify-center text-center p-10">
             <CircleThumb size={56} color="var(--surface-1)" ring><span style={{ color: 'var(--text-muted)' }}><SearchIcon /></span></CircleThumb>

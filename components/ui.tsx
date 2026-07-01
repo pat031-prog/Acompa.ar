@@ -117,6 +117,54 @@ export const FAB: React.FC<{ children: React.ReactNode; onClick?: () => void; la
   </button>
 );
 
+/** The "planet" — a big circular hero orb with a 3D radial sheen and a subtle
+ *  speckled surface. The centrepiece of a focused detail screen. */
+export const Orb: React.FC<{ color: string; size?: number; label?: React.ReactNode; className?: string; style?: React.CSSProperties }> = ({ color, size = 200, label, className = '', style }) => (
+  <div
+    className={`relative flex items-center justify-center flex-shrink-0 ${className}`}
+    style={{
+      width: size, height: size, borderRadius: '50%',
+      background: `radial-gradient(circle at 34% 27%, rgba(255,255,255,0.5), rgba(255,255,255,0.06) 30%, transparent 46%), radial-gradient(circle at 74% 80%, rgba(0,0,0,0.55), transparent 55%), ${color}`,
+      boxShadow: `0 30px 70px ${hexAlpha(color, 0.32)}, inset -6px -10px 42px rgba(0,0,0,0.42)`,
+      ...style,
+    }}
+  >
+    <span aria-hidden style={{ position: 'absolute', inset: 0, borderRadius: '50%', backgroundImage: 'radial-gradient(rgba(0,0,0,0.22) 1px, transparent 1.5px)', backgroundSize: '15px 15px', opacity: 0.45, mixBlendMode: 'multiply' }} />
+    {label && <span className="relative" style={{ color: 'var(--accent-ink)' }}>{label}</span>}
+  </div>
+);
+
+/** Circular icon button — surface / coral / outline variants (expand, more, ...). */
+export const CircleButton: React.FC<{ children: React.ReactNode; onClick?: () => void; label?: string; variant?: 'surface' | 'coral' | 'outline'; size?: number; active?: boolean; activeColor?: string }> = ({ children, onClick, label, variant = 'surface', size = 40, active, activeColor = 'var(--accent-primary)' }) => {
+  const styles: React.CSSProperties =
+    variant === 'coral'
+      ? { background: 'var(--accent-primary)', color: 'var(--accent-ink)', border: 'none' }
+      : variant === 'outline'
+        ? { background: active ? tint(activeColor) : 'transparent', color: active ? activeColor : 'var(--text-secondary)', border: `1px solid ${active ? activeColor : 'var(--border-medium)'}` }
+        : { background: 'var(--surface-2)', color: active ? activeColor : 'var(--text-secondary)', border: '1px solid var(--border-subtle)' };
+  return (
+    <button onClick={onClick} aria-label={label} title={label} className="flex items-center justify-center flex-shrink-0 transition-colors active:scale-95" style={{ width: size, height: size, borderRadius: '50%', ...styles }}>
+      {children}
+    </button>
+  );
+};
+
+/** "DISCOVER" strip — related items as small circular orbs with labels. */
+export const DiscoverStrip: React.FC<{ label?: string; items: { color: string; name: string; onClick?: () => void }[]; vertical?: boolean }> = ({ label = 'Relacionadas', items, vertical = true }) => (
+  <div>
+    {label && <div className="mb-3" style={{ fontFamily: 'var(--font-heading)', fontSize: '10px', fontWeight: 700, letterSpacing: '0.2em', textTransform: 'uppercase', color: 'var(--text-muted)', textAlign: vertical ? 'right' : 'left' }}>{label}</div>}
+    <div className={vertical ? 'flex flex-col items-end gap-3' : 'flex items-center gap-3'}>
+      {items.map((it, i) => (
+        <button key={i} onClick={it.onClick} className="group flex items-center gap-3" title={it.name}>
+          {vertical && <span className="text-xs opacity-0 group-hover:opacity-100 transition-opacity" style={{ color: 'var(--text-tertiary)' }}>{it.name}</span>}
+          <Orb color={it.color} size={34} />
+          {!vertical && <span className="text-xs" style={{ color: 'var(--text-tertiary)' }}>{it.name}</span>}
+        </button>
+      ))}
+    </div>
+  </div>
+);
+
 /* ════════════ Data ════════════ */
 
 /** label:value rows (the Mars-stats "ficha técnica"). Values bold. */
