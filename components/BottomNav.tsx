@@ -38,8 +38,8 @@ export const BottomNav: React.FC<Props> = ({ active, onChange }) => {
     >
       <div
         ref={scrollRef}
-        className="pointer-events-auto flex items-center gap-0 sm:gap-1 rounded-full overflow-x-auto no-scrollbar p-1.5 sm:p-2"
-        style={{ background: 'var(--surface-1)', border: '1px solid var(--border-subtle)', boxShadow: '0 14px 44px rgba(0,0,0,0.55)', maxWidth: 'calc(100vw - 16px)' }}
+        className="pointer-events-auto flex items-center gap-0 sm:gap-1 rounded-[var(--radius-pill)] overflow-x-auto no-scrollbar p-1.5 sm:p-2"
+        style={{ background: 'var(--surface-1)', border: '1px solid var(--border-subtle)', boxShadow: 'var(--shadow-nav)', maxWidth: 'calc(100vw - 16px)' }}
       >
         {ITEMS.map((item) => {
           const isActive = active === item.id;
@@ -53,7 +53,7 @@ export const BottomNav: React.FC<Props> = ({ active, onChange }) => {
               aria-pressed={isActive}
               aria-label={item.label}
               title={item.label}
-              className="relative flex items-center justify-center gap-2 flex-shrink-0 rounded-full transition-colors p-2.5 sm:p-3"
+              className="relative flex items-center justify-center gap-2 flex-shrink-0 rounded-[var(--radius-pill)] transition-colors p-2.5 sm:p-3"
               style={{
                 color: isActive ? 'var(--accent-ink)' : 'var(--text-tertiary)',
                 zIndex: 1,
@@ -65,8 +65,8 @@ export const BottomNav: React.FC<Props> = ({ active, onChange }) => {
               {isActive && (
                 <motion.span
                   layoutId="nav-active"
-                  className="absolute inset-0 rounded-full"
-                  style={{ background: 'var(--accent-primary)', boxShadow: '0 0 22px rgba(232,122,93,0.32)', zIndex: -1 }}
+                  className="absolute inset-0 rounded-[var(--radius-pill)]"
+                  style={{ background: 'var(--accent-primary)', boxShadow: 'var(--shadow-active-glow)', zIndex: -1 }}
                   transition={SPRING}
                 />
               )}

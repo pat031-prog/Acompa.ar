@@ -93,7 +93,7 @@ export const Observatory: React.FC = () => {
 
       {/* ── Detail (coral): map card + stats ── */}
       <div className="w-full md:w-2/3 flex">
-        <div className="w-full p-6 md:p-12 flex flex-col overflow-y-auto no-scrollbar rounded-t-[3rem] md:rounded-l-[4rem] md:rounded-tr-none" style={{ background: 'var(--accent-primary)', color: 'var(--accent-ink)', paddingBottom: '120px' }}>
+        <div className="w-full p-6 md:p-12 flex flex-col overflow-y-auto no-scrollbar rounded-t-[var(--radius-panel-mobile)] md:rounded-l-[var(--radius-panel-desktop)] md:rounded-tr-none" style={{ background: 'var(--accent-primary)', color: 'var(--accent-ink)', paddingBottom: '120px' }}>
           <div className="max-w-2xl mx-auto w-full">
             <div className="text-center md:text-left mb-8">
               <div className="mb-3" style={{ fontFamily: 'var(--font-mono)', fontSize: '11px', fontWeight: 700, letterSpacing: '0.14em', textTransform: 'uppercase', color: 'var(--accent-ink)', opacity: 0.65 }}>Mapa epidemiológico anónimo</div>

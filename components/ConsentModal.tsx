@@ -44,7 +44,7 @@ export const ConsentModal: React.FC<ConsentModalProps> = ({ onConsent }) => {
     >
       <motion.div
         className="max-w-lg w-full my-auto"
-        style={{ background: 'var(--surface-1)', border: '1px solid var(--border-subtle)', borderRadius: '2rem', boxShadow: '0 40px 100px rgba(0,0,0,0.6)' }}
+        style={{ background: 'var(--surface-1)', border: '1px solid var(--border-subtle)', borderRadius: 'var(--radius-surface)', boxShadow: 'var(--shadow-modal-panel)' }}
         initial={{ opacity: 0, y: 24, scale: 0.98 }}
         animate={{ opacity: 1, y: 0, scale: 1 }}
         exit={{ opacity: 0, y: 12, scale: 0.98 }}

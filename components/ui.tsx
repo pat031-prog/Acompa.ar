@@ -50,7 +50,7 @@ export const DataBlock: React.FC<{ label: React.ReactNode; children: React.React
 /** The big coral detail panel with a huge rounded corner (SafeTrip signature). */
 export const CoralPanel: React.FC<{ children: React.ReactNode; className?: string; style?: React.CSSProperties }> = ({ children, className = '', style }) => (
   <div
-    className={`rounded-t-[3rem] md:rounded-l-[4rem] md:rounded-tr-none ${className}`}
+    className={`rounded-t-[var(--radius-panel-mobile)] md:rounded-l-[var(--radius-panel-desktop)] md:rounded-tr-none ${className}`}
     style={{ background: 'var(--accent-primary)', color: 'var(--accent-ink)', ...style }}
   >
     {children}
@@ -61,7 +61,7 @@ export const CoralPanel: React.FC<{ children: React.ReactNode; className?: strin
 export const DarkCard: React.FC<{ children: React.ReactNode; className?: string; style?: React.CSSProperties }> = ({ children, className = '', style }) => (
   <div
     className={className}
-    style={{ background: 'var(--bg-primary)', color: 'var(--text-primary)', borderRadius: '2.5rem', boxShadow: '0 24px 60px rgba(0,0,0,0.4)', ...style }}
+    style={{ background: 'var(--bg-primary)', color: 'var(--text-primary)', borderRadius: 'var(--radius-card)', boxShadow: 'var(--shadow-card)', ...style }}
   >
     {children}
   </div>
@@ -79,7 +79,7 @@ export const RailItem: React.FC<{ active: boolean; onClick: () => void; layoutId
       <motion.div
         layoutId={layoutId}
         className="absolute left-1/2 md:left-0 top-1/2 -translate-y-1/2 -translate-x-1/2 md:translate-x-0"
-        style={{ width: '112%', height: sub ? '76px' : '54px', border: '1px solid var(--accent-primary)', borderRadius: '999px' }}
+        style={{ width: '112%', height: sub ? '76px' : '54px', border: '1px solid var(--accent-primary)', borderRadius: 'var(--radius-pill)' }}
         initial={false}
         transition={{ type: 'spring', stiffness: 300, damping: 30 }}
       />
@@ -96,7 +96,7 @@ export const CoralButton: React.FC<{ children: React.ReactNode; onClick?: () => 
     type={type}
     onClick={onClick}
     className={`w-full flex items-center justify-center gap-2 transition-colors ${className}`}
-    style={{ padding: '15px 20px', borderRadius: '999px', background: 'var(--accent-primary)', color: 'var(--accent-ink)', fontFamily: 'var(--font-heading)', fontWeight: 700, fontSize: '13px', letterSpacing: '0.12em', textTransform: 'uppercase' }}
+    style={{ padding: '15px 20px', borderRadius: 'var(--radius-pill)', background: 'var(--accent-primary)', color: 'var(--accent-ink)', fontFamily: 'var(--font-heading)', fontWeight: 700, fontSize: '13px', letterSpacing: '0.12em', textTransform: 'uppercase' }}
     onMouseEnter={(e) => { e.currentTarget.style.background = '#fff'; }}
     onMouseLeave={(e) => { e.currentTarget.style.background = 'var(--accent-primary)'; }}
   >

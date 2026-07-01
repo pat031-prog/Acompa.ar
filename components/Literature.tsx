@@ -242,7 +242,7 @@ export const Literature: React.FC = () => {
             {/* ── Detail (coral) ── */}
             <div className={`w-full md:w-2/3 min-h-0 flex-1 md:flex-none ${mobileDetail ? 'flex' : 'hidden md:flex'}`}>
                 {selected ? (
-                    <div className="w-full min-h-0 p-6 md:p-12 flex flex-col overflow-y-auto overflow-x-hidden no-scrollbar rounded-t-[3rem] md:rounded-l-[4rem] md:rounded-tr-none" style={{ background: 'var(--accent-primary)', color: 'var(--accent-ink)', paddingBottom: '120px' }}>
+                    <div className="w-full min-h-0 p-6 md:p-12 flex flex-col overflow-y-auto overflow-x-hidden no-scrollbar rounded-t-[var(--radius-panel-mobile)] md:rounded-l-[var(--radius-panel-desktop)] md:rounded-tr-none" style={{ background: 'var(--accent-primary)', color: 'var(--accent-ink)', paddingBottom: '120px' }}>
                         <Detail article={selected} index={LITERATURE_DATA.findIndex(a => a.title === selected.title) + 1} onBack={() => setMobileDetail(false)} />
                     </div>
                 ) : (

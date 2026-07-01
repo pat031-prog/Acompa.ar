@@ -7,6 +7,8 @@ import { ChatInput } from './components/ChatInput';
 import { ConsentModal } from './components/ConsentModal';
 import { getDeepInfraResponse } from './services/deepinfraService';
 import { BottomNav } from './components/BottomNav';
+import { ThemeToggle } from './components/ThemeToggle';
+import { getStoredTheme, storeTheme, THEME_META, type ThemeName } from './components/theme';
 import { Home } from './components/Home';
 import { Library } from './components/Library';
 import { TestingGuide } from './components/TestingGuide';
@@ -24,6 +26,13 @@ const App: React.FC = () => {
   const [consent, setConsent] = useState<ConsentData | null>(null);
   const [apiKey, setApiKey] = useState<string>('');
   const [activeTab, setActiveTab] = useState<Tab>('home');
+  const [theme, setTheme] = useState<ThemeName>(getStoredTheme);
+
+  useEffect(() => {
+    document.documentElement.setAttribute('data-theme', theme);
+    storeTheme(theme);
+    document.querySelector('meta[name="theme-color"]')?.setAttribute('content', THEME_META[theme].metaColor);
+  }, [theme]);
 
   useEffect(() => {
     if (consent && messages.length === 0) {
@@ -114,6 +123,8 @@ const App: React.FC = () => {
   return (
     <MotionConfig reducedMotion="user">
       <div className="h-[100dvh] w-full overflow-hidden relative" style={{ color: 'var(--text-primary)', fontFamily: 'var(--font-ui)', background: 'var(--bg-primary)' }}>
+        <ThemeToggle theme={theme} onChange={setTheme} />
+
         <AnimatePresence>{gated && <ConsentModal onConsent={handleConsent} />}</AnimatePresence>
 
         <AnimatePresence mode="wait">

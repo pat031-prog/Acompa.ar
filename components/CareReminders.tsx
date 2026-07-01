@@ -17,7 +17,7 @@ const getTypeColor = (type: Reminder['type']): string => ({ hydration: 'var(--co
 // Messages carry a leading emoji in the data; strip it so it isn't duplicated beside the lucide icon.
 const cleanMessage = (m: string) => m.replace(/^[\p{Emoji_Presentation}\p{Extended_Pictographic}️‍]+\s*/u, '');
 
-const surfaceCard: React.CSSProperties = { background: 'var(--surface-1)', border: '1px solid var(--border-subtle)', borderRadius: '2rem' };
+const surfaceCard: React.CSSProperties = { background: 'var(--surface-1)', border: '1px solid var(--border-subtle)', borderRadius: 'var(--radius-surface)' };
 
 const ReminderCard: React.FC<{ reminder: Reminder; onToggle: () => void; onIntervalChange: (m: number) => void }> = ({ reminder, onToggle, onIntervalChange }) => {
   const [customInterval, setCustomInterval] = useState(reminder.intervalMinutes.toString());
@@ -98,7 +98,7 @@ export const CareReminders: React.FC = () => {
         </div>
 
         {/* Coral hero stat */}
-        <div className="p-8 md:p-10 mb-8" style={{ background: 'var(--accent-primary)', color: 'var(--accent-ink)', borderRadius: '2.5rem' }}>
+        <div className="p-8 md:p-10 mb-8" style={{ background: 'var(--accent-primary)', color: 'var(--accent-ink)', borderRadius: 'var(--radius-card)' }}>
           <div className="flex items-end justify-between gap-6">
             <div>
               <div style={{ fontFamily: 'var(--font-display)', fontWeight: 700, fontSize: 'clamp(3.5rem, 10vw, 5rem)', lineHeight: 0.85, letterSpacing: '-0.04em' }}>{String(activeReminders.length).padStart(2, '0')}</div>

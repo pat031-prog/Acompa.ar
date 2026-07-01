@@ -26,7 +26,7 @@ import { BarChart3, X } from 'lucide-react';
 
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, BarElement, Title, Tooltip, Legend, ArcElement);
 
-const surfaceCard: React.CSSProperties = { background: 'var(--surface-1)', border: '1px solid var(--border-subtle)', borderRadius: '2rem' };
+const surfaceCard: React.CSSProperties = { background: 'var(--surface-1)', border: '1px solid var(--border-subtle)', borderRadius: 'var(--radius-surface)' };
 const selectStyle: React.CSSProperties = { background: 'var(--surface-1)', color: 'var(--text-primary)', border: '1px solid var(--border-medium)', borderRadius: 'var(--radius-pill)', outline: 'none', width: '100%', padding: '10px 16px', fontSize: '14px' };
 
 const getSeverityAccent = (s: TerritorialAlert['severity']) => ({ high: 'var(--color-red)', medium: 'var(--color-amber)', low: 'var(--color-blue)' }[s]);

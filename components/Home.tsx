@@ -19,7 +19,7 @@ const getTimeAgo = (timestamp: number): string => {
 
 interface HomeProps { onNavigate?: (tab: string) => void; }
 
-const surfaceCard: React.CSSProperties = { background: 'var(--surface-1)', border: '1px solid var(--border-subtle)', borderRadius: '2rem' };
+const surfaceCard: React.CSSProperties = { background: 'var(--surface-1)', border: '1px solid var(--border-subtle)', borderRadius: 'var(--radius-surface)' };
 
 const EXPLORE = [
   { num: '02', title: 'Biblioteca', desc: '+100 sustancias documentadas.', tab: 'library', icon: BookOpen },

@@ -11,7 +11,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link
-    href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap"
+    href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=Press+Start+2P&family=VT323&display=swap"
     rel="stylesheet">
   <style>
     /* ═══════════════════════════════════════
@@ -163,6 +163,101 @@
       --ease: cubic-bezier(0.4, 0, 0.2, 1);
       --ease-standard: cubic-bezier(0.4, 0, 0.2, 1);
       --ease-out-strong: cubic-bezier(0.16, 1, 0.3, 1);
+
+      /* ── Theme-able shape/shadow tokens (SafeTrip defaults) ──
+         Components read these instead of hardcoding radius/shadow so an
+         alternate theme (see [data-theme="gba"] below) can reshape the whole
+         app's "signature" surfaces (the coral detail panel, the dark data
+         card, pill nav/buttons) without touching component code. */
+      --radius-panel-mobile: 3rem;   /* CoralPanel top corner, mobile */
+      --radius-panel-desktop: 4rem;  /* CoralPanel left corner, desktop */
+      --radius-card: 2.5rem;         /* DarkCard */
+      --radius-surface: 2rem;        /* Home/Dashboard/Reminders cards, ConsentModal */
+      --shadow-card: 0 24px 60px rgba(0, 0, 0, 0.4);
+      --shadow-nav: 0 14px 44px rgba(0, 0, 0, 0.55);
+      --shadow-active-glow: 0 0 22px rgba(232, 122, 93, 0.32);
+      --shadow-modal-panel: 0 40px 100px rgba(0, 0, 0, 0.6);
+    }
+
+    /* ═══════════════════════════════════════
+         Theme: "GBA" — Game Boy Advance-inspired alt skin
+         Deep indigo/violet shell, LCD-green accent, chunky pixel-menu
+         corners, hard offset shadows (no blur), pixel display type.
+         Switchable at runtime via <html data-theme="gba">; every component
+         reads the same custom properties, so this block is the *entire*
+         reskin — no component markup changes between themes.
+         ═══════════════════════════════════════ */
+    [data-theme="gba"] {
+      --bg-primary: #171029;
+      --bg-secondary: #1d1533;
+      --bg-tertiary: #241c3d;
+      --surface-1: #241c3d;
+      --surface-2: #2d234a;
+      --surface-3: #362b58;
+
+      --text-primary: rgba(232, 228, 250, 0.96);
+      --text-secondary: rgba(232, 228, 250, 0.64);
+      --text-tertiary: rgba(232, 228, 250, 0.44);
+      --text-muted: rgba(232, 228, 250, 0.30);
+
+      --border-subtle: rgba(163, 137, 244, 0.18);
+      --border-medium: rgba(163, 137, 244, 0.32);
+      --border-strong: rgba(163, 137, 244, 0.48);
+
+      --accent-primary: #9BE35A;
+      --accent-hover: #B6F27A;
+      --accent-deep: #6FA83A;
+      --accent-ink: #141024;
+      --accent-subtle: rgba(155, 227, 90, 0.16);
+      --accent-medium: rgba(155, 227, 90, 0.28);
+      --accent-weak: rgba(155, 227, 90, 0.09);
+
+      --accent-secondary: #A389F4;
+      --accent-secondary-hover: #BBA8FF;
+      --accent-secondary-subtle: rgba(163, 137, 244, 0.14);
+      --accent-secondary-medium: rgba(163, 137, 244, 0.26);
+
+      --color-blue: #5FC8F2;
+      --color-blue-subtle: rgba(95, 200, 242, 0.12);
+      --color-blue-medium: rgba(95, 200, 242, 0.24);
+      --color-green: #9BE35A;
+      --color-green-subtle: rgba(155, 227, 90, 0.12);
+      --color-green-medium: rgba(155, 227, 90, 0.24);
+      --color-amber: #F7C948;
+      --color-amber-subtle: rgba(247, 201, 72, 0.12);
+      --color-amber-medium: rgba(247, 201, 72, 0.24);
+      --color-red: #FF6B7A;
+      --color-red-subtle: rgba(255, 107, 122, 0.12);
+      --color-red-medium: rgba(255, 107, 122, 0.24);
+      --color-violet: #C6A6FF;
+      --color-violet-subtle: rgba(198, 166, 255, 0.12);
+      --color-violet-medium: rgba(198, 166, 255, 0.24);
+
+      --font-display: 'Press Start 2P', 'VT323', ui-monospace, monospace;
+      --font-heading: 'Press Start 2P', 'VT323', ui-monospace, monospace;
+      --font-mono: 'Press Start 2P', ui-monospace, monospace;
+      --font-ui: 'VT323', ui-monospace, monospace;
+      --font-sans: 'VT323', ui-monospace, monospace;
+      --font-editorial: 'VT323', ui-monospace, monospace;
+
+      /* Pixel-menu shapes: small chunky corners instead of big soft ones. */
+      --radius-panel-mobile: 0.6rem;
+      --radius-panel-desktop: 0.6rem;
+      --radius-card: 0.85rem;
+      --radius-surface: 0.65rem;
+      --radius-pill: 0.4rem;
+      --radius-sm: 3px;
+      --radius-md: 4px;
+      --radius-lg: 6px;
+      --radius-xl: 8px;
+
+      /* Hard pixel-offset shadows, no blur — cartridge-menu depth. */
+      --shadow-card: 4px 4px 0 rgba(0, 0, 0, 0.55);
+      --shadow-nav: 4px 4px 0 rgba(0, 0, 0, 0.6);
+      --shadow-active-glow: 3px 3px 0 rgba(0, 0, 0, 0.55);
+      --shadow-modal-panel: 6px 6px 0 rgba(0, 0, 0, 0.6);
+      --shadow-lg: 4px 4px 0 rgba(0, 0, 0, 0.55);
+      --shadow-glow-accent: 3px 3px 0 rgba(0, 0, 0, 0.4);
     }
 
     /* ── Reset ── */
@@ -587,7 +682,33 @@
         scroll-behavior: auto !important;
       }
     }
+
+    /* ── GBA scanline overlay — decorative only, never blocks input/reading ── */
+    html[data-theme="gba"]::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      z-index: 2147483000;
+      pointer-events: none;
+      background-image: repeating-linear-gradient(to bottom,
+          rgba(0, 0, 0, 0.12) 0px,
+          rgba(0, 0, 0, 0.12) 1px,
+          transparent 1px,
+          transparent 3px);
+      mix-blend-mode: multiply;
+    }
   </style>
+  <script>
+    /* Set the persisted theme on <html> before first paint, so switching
+       themes doesn't flash the other theme's colors on load. */
+    (function () {
+      try {
+        if (localStorage.getItem('acompanar_theme') === 'gba') {
+          document.documentElement.setAttribute('data-theme', 'gba');
+        }
+      } catch (e) { /* localStorage unavailable (private mode, etc.) */ }
+    })();
+  </script>
   <script type="importmap">
 {
   "imports": {
@@ -600,8 +721,8 @@
 </script>
 </head>
 
-<body style="background-color: #121212 !important;">
-  <div id="root" style="background-color: #121212 !important;"></div>
+<body>
+  <div id="root"></div>
   <script type="module" src="/index.tsx"></script>
 </body>
 
